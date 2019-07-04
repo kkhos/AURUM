@@ -1,0 +1,7 @@
+option('tizen',
+  type: 'boolean',
+  value: false,
+  description: 'enable tizen specific dependancy'
+)
+
+

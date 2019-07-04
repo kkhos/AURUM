@@ -1,0 +1,11 @@
+build*/
+.vscode/
+misc/rpm/
+node_modules/
+*_pb.js
+__pycache__
+*.pyc
+*.pyo
+*.pc
+v
+aurum_pb2*.py

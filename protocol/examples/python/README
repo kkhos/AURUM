@@ -1,0 +1,15 @@
+```sh
+
+python3 -m venv v
+
+source v/bin/active
+
+pip3 install -r requiements.txt
+
+./gen.sh
+
+python3 sample01.py
+
+./deactivate
+
+```

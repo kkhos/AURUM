@@ -1,0 +1,7 @@
+[Unit]
+Description=Server for testing UI testing
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/aurum_bootstrap
+EnvironmentFile=-/run/tizen-system-env
