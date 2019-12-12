@@ -2,7 +2,7 @@
 #include <atspi/atspi.h>
 #include <loguru.hpp>
 
-PreCommand::PreCommand() {}
+PreCommand::PreCommand() : PreCommand(nullptr) {}
 PreCommand::PreCommand(Command *cmd) : mCommand{cmd} {}
 
 ::grpc::Status PreCommand::execute()

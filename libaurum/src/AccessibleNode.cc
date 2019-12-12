@@ -13,14 +13,14 @@ AccessibleNode::~AccessibleNode()
     g_object_unref(mNode);
 }
 
-AccessibleNode::AccessibleNode()
+AccessibleNode::AccessibleNode() : AccessibleNode(nullptr)
 {
     // No meaning without AtspiAccessbile object
     // prohibited to create this object with this constructor
 }
 
 AccessibleNode::AccessibleNode(AtspiAccessible *node)
-    : mNode(node), mSupportingIfaces(0), mIsAlive(true)
+    : mNode(node), mSupportingIfaces(0), mFeatureProperty(0), mIsAlive(true)
 {
     // prohibited to create this object this constructor
     // better to use AccessibleNode::get factory method.
