@@ -7,7 +7,7 @@
 
 #include "loguru.hpp"
 
-UiObject::UiObject() {}
+UiObject::UiObject() : UiObject(nullptr, nullptr, nullptr) {}
 
 UiObject::~UiObject()
 {

@@ -20,7 +20,7 @@ std::string ObjectMapper::addElement(std::unique_ptr<UiObject> object)
 
 UiObject *ObjectMapper::getElement(const std::string &key)
 {
-    unsigned long long keyCnt = std::stoi(key);
+    unsigned long long keyCnt = (unsigned long long)std::stoi(key); // this key is a result of calling std:to_string(mObjCounter)
     if (keyCnt <= 0 || keyCnt > mObjCounter) return nullptr;
     if (mObjectMap.count(key)) {
         UiObject *obj = mObjectMap[key].get();
