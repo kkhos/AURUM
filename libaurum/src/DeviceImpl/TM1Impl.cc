@@ -31,7 +31,7 @@ bool TM1Impl::click(const int x, const int y)
 #ifdef GBSBUILD
     efl_util_input_generate_touch(mFakeTouchHandle, 0,
                                   EFL_UTIL_INPUT_TOUCH_BEGIN, x, y);
-    usleep(50);
+    usleep(5*10000);
     efl_util_input_generate_touch(mFakeTouchHandle, 0, EFL_UTIL_INPUT_TOUCH_END,
                                   x, y);
     return true;
@@ -77,6 +77,7 @@ bool TM1Impl::drag(const int sx, const int sy, const int ex, const int ey,
     int i, j;
 
     // TODO fixed fps implementation
+    if (duration < 10) duration = 10;
 
     i = sx, j = sy;
     LOG_SCOPE_F(INFO, "flicking (%d, %d)", i, j);
