@@ -75,9 +75,10 @@ bool TM1Impl::drag(const int sx, const int sy, const int ex, const int ey,
 {
 #ifdef GBSBUILD
     int i, j;
-
+    int dur;
     // TODO fixed fps implementation
-    if (duration < 10) duration = 10;
+    if (duration < 10) dur = 10;
+    else dur = duration;
 
     i = sx, j = sy;
     LOG_SCOPE_F(INFO, "flicking (%d, %d)", i, j);
@@ -87,7 +88,7 @@ bool TM1Impl::drag(const int sx, const int sy, const int ex, const int ey,
     for (; i <= ex && j <= ey; i += (ex - sx) / 10, j += (ey - sy) / 10) {
         efl_util_input_generate_touch(mFakeTouchHandle, 0,
                                       EFL_UTIL_INPUT_TOUCH_UPDATE, i, j);
-        usleep(duration * 1000);
+        usleep(dur * 1000);
         LOG_SCOPE_F(INFO, "flicking (%d, %d)", i, j);
     }
     LOG_SCOPE_F(INFO, "flicking (%d, %d)", i, j);
