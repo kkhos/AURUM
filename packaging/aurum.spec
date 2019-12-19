@@ -64,6 +64,8 @@ ninja \
     -v \
     all
 
+%check
+
 ninja \
     -C gbsbuild \
     -j %(echo "`/usr/bin/getconf _NPROCESSORS_ONLN`") \
