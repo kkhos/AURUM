@@ -46,6 +46,8 @@ public:
     std::string getText() const;
     void        setText(std::string &text);
 
+    const Rect<int> getBoundingBox() const;
+
     bool isCheckable() const;
     bool isChecked() const;
     bool isClickable() const;
@@ -56,13 +58,16 @@ public:
     bool isScrollable() const;
     bool isSelectable() const;
     bool isSelected() const;
+    bool isVisible() const;
 
     void click() const;
+    void longClick(const unsigned int intv = LOGNCLICK_INTERVAL) const;
     void refresh() const;
 
 private:
     UiObject();
     const AccessibleNode *getAccessibleNode() const;
+    static const unsigned int LOGNCLICK_INTERVAL = 50;
 
 private:
     const UiDevice *      mDevice;

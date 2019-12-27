@@ -39,6 +39,7 @@ enum class NodeFeatureProperties {
 
     SELECTABLE = 0X0100,
     SELECTED = 0X0200,
+    VISIBILITY = 0X0400,
 };
 
 template <typename T>
@@ -123,6 +124,7 @@ public:
     bool isScrollable() const;
     bool isSelectable() const;
     bool isSelected() const;
+    bool isVisible() const;
 
 public:
     void print(int) const;

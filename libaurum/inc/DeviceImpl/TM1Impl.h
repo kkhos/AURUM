@@ -14,6 +14,8 @@ public:
     ~TM1Impl();
 
     bool click(const int x, const int y) override;
+    bool click(const int x, const int y, const unsigned int intv) override;
+
     bool drag(const int sx, const int sy, const int ex, const int ey,
               const int steps) override;
 
@@ -34,8 +36,8 @@ private:
 #ifdef GBS_BUILD
     efl_util_inputgen_h mFakeTouchHandle;
     efl_util_inputgen_h mFakeKeyboardHandle;
-
 #endif
+    static const unsigned int INTV_CLICK = 5;
 };
 
 #endif

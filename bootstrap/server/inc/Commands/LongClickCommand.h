@@ -17,6 +17,8 @@ public:
     LongClickCommand(const ::aurum::ReqClick* request,
                      ::aurum::RspClick*       response);
     ::grpc::Status execute() override;
+private:
+    const static unsigned int LOGNCLICK_INTERVAL = 50;
 };
 
 #endif

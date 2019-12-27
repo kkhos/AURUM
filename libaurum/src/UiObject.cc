@@ -184,9 +184,20 @@ bool UiObject::isSelected() const
     return getAccessibleNode()->isSelected();
 }
 
+bool UiObject::isVisible() const
+{
+    return getAccessibleNode()->isVisible();
+}
+
 void UiObject::refresh() const
 {
     mNode->refresh();
+}
+
+const Rect<int> UiObject::getBoundingBox() const
+{
+    mNode->refresh();
+    return mNode->getBoundingBox();
 }
 
 void UiObject::click() const
@@ -198,6 +209,16 @@ void UiObject::click() const
     const Point2D<int> midPoint = rect.midPoint();
     const_cast<UiDevice *>(mDevice)->click(midPoint.x, midPoint.y);
     // todo click implementation
+}
+
+void UiObject::longClick(const unsigned int intv) const
+{
+    LOG_SCOPE_F(INFO, "click on obj %p", this);
+    mNode->refresh();
+    const Rect<int> rect = mNode->getBoundingBox();
+    std::cout << rect.mTopLeft.x << ", " << rect.mTopLeft.y << std::endl;
+    const Point2D<int> midPoint = rect.midPoint();
+    const_cast<UiDevice *>(mDevice)->click(midPoint.x, midPoint.y, intv);
 }
 
 const AccessibleNode *UiObject::getAccessibleNode() const

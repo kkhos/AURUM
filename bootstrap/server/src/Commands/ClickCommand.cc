@@ -1,6 +1,7 @@
 #include "ClickCommand.h"
 
 #include "UiObject.h"
+#include "UiDevice.h"
 
 #include <loguru.hpp>
 
@@ -25,7 +26,10 @@ ClickCommand::ClickCommand(const ::aurum::ReqClick* request,
         } else
             mResponse->set_status(::aurum::RspStatus::ERROR);
     } else if (type == ::aurum::ReqClick_RequestType_COORD) {
-        mResponse->set_status(::aurum::RspStatus::ERROR);
+        UiDevice* obj = UiDevice::getInstance(DeviceType::DEFAULT);
+        const ::aurum::Point& point = mRequest->coordination();
+        obj->click(point.x(), point.y());
+        mResponse->set_status(::aurum::RspStatus::OK);
     } else if (type == ::aurum::ReqClick_RequestType_ATSPI) {
         mResponse->set_status(::aurum::RspStatus::ERROR);
     }

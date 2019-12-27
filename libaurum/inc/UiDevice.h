@@ -22,6 +22,8 @@ enum class DeviceType {
 class UiDevice : public IDevice, public ISearchable {
 public:
     bool click(const int x, const int y) override;
+    bool click(const int x, const int y, const unsigned int intv) override;
+
     bool drag(const int sx, const int sy, const int ex, const int ey,
               const int steps) override;
 

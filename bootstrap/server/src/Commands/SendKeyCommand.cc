@@ -21,8 +21,17 @@ SendKeyCommand::SendKeyCommand(const ::aurum::ReqKey* request,
         mDevice->pressHome();
     else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_MENU)
         mDevice->pressMenu();
-    else {
-        // TODO : handle keycode
+    else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_VOLUP)
+        mDevice->pressVolUp();
+    else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_VOLDOWN)
+        mDevice->pressVolDown();
+    else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_POWER)
+        mDevice->pressPower();
+    else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_KEY) {
+        ; // TODO
+    }
+    else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_XF86) {
+        ; // TODO
     }
     return grpc::Status::OK;
 }
