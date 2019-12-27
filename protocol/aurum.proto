@@ -98,7 +98,7 @@ message RspGetValue {
       string stringValue = 3;
       int32 intValue = 4;
       double doubleValue = 5;
-      double boolValue = 6;
+      bool boolValue = 6;
    }
 }
 
@@ -109,7 +109,7 @@ message ReqSetValue {
       string stringValue = 3;
       int32 intValue = 4;
       double doubleValue = 5;
-      double boolValue = 6;
+      bool boolValue = 6;
    }
 }
 message RspSetValue {
@@ -154,7 +154,7 @@ message RspGetAttribute {
       string stringValue = 3;
       int32 intValue = 4;
       double doubleValue = 5;
-      double boolValue = 6;
+      bool boolValue = 6;
    }
 }
 
