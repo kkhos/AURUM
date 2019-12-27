@@ -20,4 +20,17 @@ public:
     ::grpc::Status execute() override;
 };
 
+class AttributeGetter {
+private:
+public:
+    static AttributeGetter *Creator(::aurum::ReqGetAttribute_RequestType type);
+    virtual bool getPerform(UiObject *obj,  ::aurum::RspGetAttribute* mResponse){}
+};
+
+class VisibleGetter : public AttributeGetter{
+private:
+public:
+    bool getPerform(UiObject *obj, ::aurum::RspGetAttribute* rsp) override;
+};
+
 #endif

@@ -12,15 +12,14 @@ FlickCommand::FlickCommand(const ::aurum::ReqFlick *request,
 ::grpc::Status FlickCommand::execute()
 {
     LOG_SCOPE_F(INFO, "Flick --------------- ");
-    // ObjectMapper *mObjMap = ObjectMapper::getInstance();
 
     const ::aurum::Point &startPoint = mRequest->startpoint();
     const ::aurum::Point &endPoint = mRequest->endpoint();
     int                   durationMs = mRequest->durationms();
 
     UiDevice *device = UiDevice::getInstance(DeviceType::DEFAULT);
-
-    device->drag(10, 200, 400, 400, durationMs);
+    device->drag(startPoint.x(), startPoint.y(), endPoint.x(), endPoint.y(), durationMs);
+    mResponse->set_status(::aurum::RspStatus::OK);
 
     return grpc::Status::OK;
 }

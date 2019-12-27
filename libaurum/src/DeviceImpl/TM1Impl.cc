@@ -27,11 +27,16 @@ TM1Impl::~TM1Impl()
 
 bool TM1Impl::click(const int x, const int y)
 {
-    LOG_SCOPE_F(INFO, "click at (%d, %d)", x, y);
+    click(x, y, INTV_CLICK);
+}
+
+bool TM1Impl::click(const int x, const int y, const unsigned int intv)
+{
+LOG_SCOPE_F(INFO, "click at (%d, %d)", x, y);
 #ifdef GBSBUILD
     efl_util_input_generate_touch(mFakeTouchHandle, 0,
                                   EFL_UTIL_INPUT_TOUCH_BEGIN, x, y);
-    usleep(5*10000);
+    usleep(intv*10000);
     efl_util_input_generate_touch(mFakeTouchHandle, 0, EFL_UTIL_INPUT_TOUCH_END,
                                   x, y);
     return true;
@@ -39,6 +44,7 @@ bool TM1Impl::click(const int x, const int y)
     return false;
 #endif
 }
+
 
 bool TM1Impl::touchDown(const int x, const int y)
 {

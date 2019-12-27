@@ -286,6 +286,11 @@ bool AccessibleNode::isSelected() const
     return hasFeatureProperty(NodeFeatureProperties::SELECTED);
 }
 
+bool AccessibleNode::isVisible() const
+{
+    return hasFeatureProperty(NodeFeatureProperties::VISIBILITY);
+}
+
 AtspiAccessible *AccessibleNode::getAccessible()
 {
     return mNode;

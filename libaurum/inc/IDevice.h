@@ -9,6 +9,7 @@ public:
     virtual ~IDevice() {}
 
     virtual bool click(const int x, const int y) = 0;
+    virtual bool click(const int x, const int y, const unsigned int intv) = 0;
     virtual bool drag(const int sx, const int sy, const int ex, const int ey,
                       const int steps) = 0;
 

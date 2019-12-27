@@ -83,6 +83,11 @@ bool UiDevice::click(const int x, const int y)
     return mDeviceImpl->click(x, y);
 }
 
+bool UiDevice::click(const int x, const int y, const unsigned int intv)
+{
+    return mDeviceImpl->click(x, y, intv);
+}
+
 bool UiDevice::drag(const int sx, const int sy, const int ex, const int ey,
                     const int steps)
 {
