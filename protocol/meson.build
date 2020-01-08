@@ -23,5 +23,6 @@ grpc_src = grpc_grpc_gen.process(files('aurum.proto'))
 
 ui_protocol_bin = executable('ui_protocol_bin',
     files('empty.cpp'), grpc_pb_src, grpc_src,
-    dependencies: [grpc_deps]
+    dependencies: [grpc_deps],
+    pie:true,
 )
