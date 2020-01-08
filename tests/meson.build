@@ -14,6 +14,7 @@ test_deps = [
 test_bin = executable('ua_test', test_src, 
                     include_directories: test_inc,
                     dependencies: test_deps,
+                    pie:true,
             )
 
 test('ua test', test_bin)
