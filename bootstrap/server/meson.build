@@ -61,6 +61,7 @@ bootstrap_svr_bin = executable(
    include_directories: bootstrap_svr_inc,
    link_with: libloguru,
    install:true,
+   pie:true,
 )
 
 system_unit_dir = ''
