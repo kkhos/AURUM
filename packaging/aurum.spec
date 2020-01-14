@@ -13,7 +13,6 @@ BuildRequires:  pkgconfig(grpc++)
 BuildRequires:  pkgconfig(atspi-2)
 BuildRequires:  pkgconfig(capi-system-info)
 BuildRequires:  pkgconfig(capi-ui-efl-util)
-BuildRequires:  pkgconfig(dlog)
 BuildRequires:  pkgconfig(elementary)
 BuildRequires:  gtest-devel
 
@@ -23,7 +22,6 @@ BuildRequires: pkgconfig(capi-appfw-app-control)
 BuildRequires: pkgconfig(capi-appfw-app-manager)
 
 Requires:  pkgconfig(atspi-2)
-Requires:  pkgconfig(dlog)
 
 %description
 aurum is a project for testing ui.
