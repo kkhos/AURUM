@@ -9,6 +9,12 @@ PostCommand::PostCommand(Command *cmd) : mCommand{cmd} {}
 {
     ::grpc::Status rst = mCommand->execute();
     LOG_SCOPE_F(INFO, "PostCommand --------------- ");
+    mCommand->executePost();
     // do post-command
     return rst;
+}
+
+::grpc::Status PostCommand::executePre()
+{
+    return mCommand->executePre();
 }

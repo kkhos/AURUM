@@ -11,7 +11,7 @@ public:
     virtual ~aurumServiceImpl();
 
 protected:
-    ::grpc::Status execute(Command &cmd);
+    ::grpc::Status execute(Command *cmd);
 
 public:
     ::grpc::Status sync(::grpc::ServerContext *  context,

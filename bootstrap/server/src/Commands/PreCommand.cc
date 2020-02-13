@@ -10,9 +10,17 @@ PreCommand::PreCommand(Command *cmd) : mCommand{cmd} {}
     {
         LOG_SCOPE_F(INFO, "PreCommand --------------- ");
         AtspiAccessible *n = atspi_get_desktop(0);
-        free(atspi_accessible_get_name(n, NULL));
-        g_object_unref(n);
+        if (n) {
+            char *name = atspi_accessible_get_name(n, NULL);
+            if(name) free(name);
+            g_object_unref(n);
+        }
     }
-
+    mCommand->executePre();
     return mCommand->execute();
+}
+
+::grpc::Status PreCommand::executePost()
+{
+    return mCommand->executePost();
 }

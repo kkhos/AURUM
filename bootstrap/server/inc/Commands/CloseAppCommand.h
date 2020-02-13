@@ -16,8 +16,8 @@ private:
 public:
     CloseAppCommand(const ::aurum::ReqCloseApp* request,
                     ::aurum::RspCloseApp*       response);
-    ;
     ::grpc::Status execute() override;
+    ::grpc::Status executePost() override;
 };
 
 #endif

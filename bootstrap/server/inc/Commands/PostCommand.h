@@ -15,6 +15,7 @@ private:
 public:
     PostCommand(Command *cmd);
     ::grpc::Status execute() override;
+    ::grpc::Status executePre() override;
 };
 
 #endif

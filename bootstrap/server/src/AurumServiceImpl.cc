@@ -16,11 +16,11 @@ aurumServiceImpl::aurumServiceImpl()
     Accessible::getInstance();
 }
 
-::grpc::Status aurumServiceImpl::execute(Command& cmd)
+::grpc::Status aurumServiceImpl::execute(Command* cmd)
 {
-    PreCommand     proxyPreCmd{&cmd};
-    PostCommand    proxyPostCmd{&proxyPreCmd};
-    ::grpc::Status rst = proxyPostCmd.execute();
+    std::unique_ptr<PreCommand>  proxyPreCmd  = std::make_unique<PreCommand>(cmd);
+    std::unique_ptr<PostCommand> proxyPostCmd = std::make_unique<PostCommand>(proxyPreCmd.get());
+    ::grpc::Status rst = proxyPostCmd->execute();
     return rst;
 }
 
@@ -29,154 +29,154 @@ aurumServiceImpl::~aurumServiceImpl() {}
     ::grpc::ServerContext* context, const ::aurum::ReqEmpty* request,
     ::aurum::RspEmpty* response)
 {
-    SyncCommand cmd(request, response);
-    return execute(cmd);
+    std::unique_ptr<SyncCommand> cmd = std::make_unique<SyncCommand>(request, response);
+    return execute(cmd.get());
 }
 ::grpc::Status aurumServiceImpl::aurumServiceImpl::killServer(
     ::grpc::ServerContext* context, const ::aurum::ReqEmpty* request,
     ::aurum::RspEmpty* response)
 {
-    KillServerCommand cmd(request, response);
-    return execute(cmd);
+    std::unique_ptr<KillServerCommand> cmd = std::make_unique<KillServerCommand>(request, response);
+    return execute(cmd.get());
 }
 ::grpc::Status aurumServiceImpl::aurumServiceImpl::findElement(
     ::grpc::ServerContext* context, const ::aurum::ReqFindElement* request,
     ::aurum::RspFindElement* response)
 {
-    FindElementCommand cmd(request, response);
-    return execute(cmd);
+    std::unique_ptr<FindElementCommand> cmd = std::make_unique<FindElementCommand>(request, response);
+    return execute(cmd.get());
 }
 ::grpc::Status aurumServiceImpl::aurumServiceImpl::click(
     ::grpc::ServerContext* context, const ::aurum::ReqClick* request,
     ::aurum::RspClick* response)
 {
-    ClickCommand cmd(request, response);
-    return execute(cmd);
+    std::unique_ptr<ClickCommand> cmd = std::make_unique<ClickCommand>(request, response);
+    return execute(cmd.get());
 }
 ::grpc::Status aurumServiceImpl::getValue(::grpc::ServerContext*      context,
                                           const ::aurum::ReqGetValue* request,
                                           ::aurum::RspGetValue*       response)
 {
-    GetValueCommand cmd(request, response);
-    return execute(cmd);
+    std::unique_ptr<GetValueCommand> cmd = std::make_unique<GetValueCommand>(request, response);
+    return execute(cmd.get());
 }
 ::grpc::Status aurumServiceImpl::setValue(::grpc::ServerContext*      context,
                                           const ::aurum::ReqSetValue* request,
                                           ::aurum::RspSetValue*       response)
 {
-    SetValueCommand cmd(request, response);
-    return execute(cmd);
+    std::unique_ptr<SetValueCommand> cmd = std::make_unique<SetValueCommand>(request, response);
+    return execute(cmd.get());
 }
 ::grpc::Status aurumServiceImpl::getAttribute(
     ::grpc::ServerContext* context, const ::aurum::ReqGetAttribute* request,
     ::aurum::RspGetAttribute* response)
 {
-    GetAttributeCommand cmd(request, response);
-    return execute(cmd);
+    std::unique_ptr<GetAttributeCommand> cmd = std::make_unique<GetAttributeCommand>(request, response);
+    return execute(cmd.get());
 }
 ::grpc::Status aurumServiceImpl::getSize(::grpc::ServerContext*     context,
                                          const ::aurum::ReqGetSize* request,
                                          ::aurum::RspGetSize*       response)
 {
-    GetSizeCommand cmd(request, response);
-    return execute(cmd);
+    std::unique_ptr<GetSizeCommand> cmd = std::make_unique<GetSizeCommand>(request, response);
+    return execute(cmd.get());
 }
 ::grpc::Status aurumServiceImpl::clear(::grpc::ServerContext*   context,
                                        const ::aurum::ReqClear* request,
                                        ::aurum::RspClear*       response)
 {
-    ClearCommand cmd(request, response);
-    return execute(cmd);
+    std::unique_ptr<ClearCommand> cmd = std::make_unique<ClearCommand>(request, response);
+    return execute(cmd.get());
 }
 ::grpc::Status aurumServiceImpl::installApp(
     ::grpc::ServerContext*                         context,
     ::grpc::ServerReader< ::aurum::ReqInstallApp>* request,
     ::aurum::RspInstallApp*                        response)
 {
-    InstallAppCommand cmd(request, response);
-    return execute(cmd);
+    std::unique_ptr<InstallAppCommand> cmd = std::make_unique<InstallAppCommand>(request, response);
+    return execute(cmd.get());
 }
 ::grpc::Status aurumServiceImpl::removeApp(::grpc::ServerContext*       context,
                                            const ::aurum::ReqRemoveApp* request,
                                            ::aurum::RspRemoveApp* response)
 {
-    RemoveAppCommand cmd(request, response);
-    return execute(cmd);
+    std::unique_ptr<RemoveAppCommand> cmd = std::make_unique<RemoveAppCommand>(request, response);
+    return execute(cmd.get());
 }
 ::grpc::Status aurumServiceImpl::getAppInfo(
     ::grpc::ServerContext* context, const ::aurum::ReqGetAppInfo* request,
     ::aurum::RspGetAppInfo* response)
 {
-    GetAppInfoCommand cmd(request, response);
-    return execute(cmd);
+    std::unique_ptr<GetAppInfoCommand> cmd = std::make_unique<GetAppInfoCommand>(request, response);
+    return execute(cmd.get());
 }
 ::grpc::Status aurumServiceImpl::launchApp(::grpc::ServerContext*       context,
                                            const ::aurum::ReqLaunchApp* request,
                                            ::aurum::RspLaunchApp* response)
 {
-    LaunchAppCommand cmd(request, response);
-    return execute(cmd);
+    std::unique_ptr<LaunchAppCommand> cmd = std::make_unique<LaunchAppCommand>(request, response);
+    return execute(cmd.get());
 }
 ::grpc::Status aurumServiceImpl::closeApp(::grpc::ServerContext*      context,
                                           const ::aurum::ReqCloseApp* request,
                                           ::aurum::RspCloseApp*       response)
 {
-    CloseAppCommand cmd(request, response);
-    return execute(cmd);
+    std::unique_ptr<CloseAppCommand> cmd = std::make_unique<CloseAppCommand>(request, response);
+    return execute(cmd.get());
 }
 ::grpc::Status aurumServiceImpl::touchDown(::grpc::ServerContext*       context,
                                            const ::aurum::ReqTouchDown* request,
                                            ::aurum::RspTouchDown* response)
 {
-    TouchDownCommand cmd(request, response);
-    return execute(cmd);
+    std::unique_ptr<TouchDownCommand> cmd = std::make_unique<TouchDownCommand>(request, response);
+    return execute(cmd.get());
 }
 ::grpc::Status aurumServiceImpl::touchUp(::grpc::ServerContext*     context,
                                          const ::aurum::ReqTouchUp* request,
                                          ::aurum::RspTouchUp*       response)
 {
-    TouchUpCommand cmd(request, response);
-    return execute(cmd);
+    std::unique_ptr<TouchUpCommand> cmd = std::make_unique<TouchUpCommand>(request, response);
+    return execute(cmd.get());
 }
 ::grpc::Status aurumServiceImpl::touchMove(::grpc::ServerContext*       context,
                                            const ::aurum::ReqTouchMove* request,
                                            ::aurum::RspTouchMove* response)
 {
-    TouchMoveCommand cmd(request, response);
-    return execute(cmd);
+    std::unique_ptr<TouchMoveCommand> cmd = std::make_unique<TouchMoveCommand>(request, response);
+    return execute(cmd.get());
 }
 ::grpc::Status aurumServiceImpl::longClick(::grpc::ServerContext*   context,
                                            const ::aurum::ReqClick* request,
                                            ::aurum::RspClick*       response)
 {
-    LongClickCommand cmd(request, response);
-    return execute(cmd);
+    std::unique_ptr<LongClickCommand> cmd = std::make_unique<LongClickCommand>(request, response);
+    return execute(cmd.get());
 }
 ::grpc::Status aurumServiceImpl::flick(::grpc::ServerContext*   context,
                                        const ::aurum::ReqFlick* request,
                                        ::aurum::RspFlick*       response)
 {
-    FlickCommand cmd(request, response);
-    return execute(cmd);
+    std::unique_ptr<FlickCommand> cmd = std::make_unique<FlickCommand>(request, response);
+    return execute(cmd.get());
 }
 ::grpc::Status aurumServiceImpl::getDeviceTime(
     ::grpc::ServerContext* context, const ::aurum::ReqGetDeviceTime* request,
     ::aurum::RspGetDeviceTime* response)
 {
-    GetDeviceTimeCommand cmd(request, response);
-    return execute(cmd);
+    std::unique_ptr<GetDeviceTimeCommand> cmd = std::make_unique<GetDeviceTimeCommand>(request, response);
+    return execute(cmd.get());
 }
 ::grpc::Status aurumServiceImpl::getLocation(
     ::grpc::ServerContext* context, const ::aurum::ReqGetLocation* request,
     ::aurum::RspGetLocation* response)
 {
-    GetLocationCommand cmd(request, response);
-    return execute(cmd);
+    std::unique_ptr<GetLocationCommand> cmd = std::make_unique<GetLocationCommand>(request, response);
+    return execute(cmd.get());
 }
 ::grpc::Status aurumServiceImpl::sendKey(::grpc::ServerContext* context,
                                          const ::aurum::ReqKey* request,
                                          ::aurum::RspKey*       response)
 {
-    SendKeyCommand cmd(request, response);
-    return execute(cmd);
+    std::unique_ptr<SendKeyCommand> cmd = std::make_unique<SendKeyCommand>(request, response);
+    return execute(cmd.get());
 }
