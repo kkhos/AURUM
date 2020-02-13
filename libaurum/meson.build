@@ -9,7 +9,7 @@ libaurum_src = [
   files('src/UiDevice.cc'),
   files('src/UiObject.cc'),
   files('src/UiSelector.cc'),
-  files('src/Accessible.cc'),
+  files('src/AccessibleWatcher.cc'),
   files('src/AccessibleNode.cc'),
   files('src/Comparer.cc'),
   files('src/Until.cc'),
