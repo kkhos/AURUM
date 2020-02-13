@@ -78,12 +78,12 @@ ninja -C gbsbuild install
 %post
 sbin/ldconfig
 
-%postun 
+%postun
 sbin/ldconfig
 
 %post bootstrap
-#/sbin/ldconfig
-chsmack -e "User" %{_bindir}/bootstrap_server
+chsmack -e "User" %{_bindir}/aurum_bootstrap
+
 
 %postun bootstrap
 /sbin/ldconfig
