@@ -1,6 +1,6 @@
 #include "AurumServiceImpl.h"
 
-#include <Accessible.h>
+#include <AccessibleWatcher.h>
 #include "Commands/Commands.h"
 #include "Commands/PostCommand.h"
 #include "Commands/PreCommand.h"
@@ -13,7 +13,7 @@ using namespace aurum;
 
 aurumServiceImpl::aurumServiceImpl()
 {
-    Accessible::getInstance();
+    AccessibleWatcher::getInstance();
 }
 
 ::grpc::Status aurumServiceImpl::execute(Command* cmd)

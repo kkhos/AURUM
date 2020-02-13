@@ -1,7 +1,7 @@
 #include "SyncCommand.h"
 #include <loguru.hpp>
 
-#include <Accessible.h>
+#include <AccessibleWatcher.h>
 #include <AccessibleNode.h>
 
 SyncCommand::SyncCommand(const ::aurum::ReqEmpty *request,
@@ -13,7 +13,7 @@ SyncCommand::SyncCommand(const ::aurum::ReqEmpty *request,
 ::grpc::Status SyncCommand::execute()
 {
     LOG_SCOPE_F(INFO, "Sync Command ");
-    const Accessible *accObj = Accessible::getInstance();
+    const AccessibleWatcher *accObj = AccessibleWatcher::getInstance();
 
     AccessibleNode *root = accObj->getRootNode();
     AccessibleNode *top = accObj->getTopNode();

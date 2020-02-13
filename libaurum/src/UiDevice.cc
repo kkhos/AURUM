@@ -1,5 +1,5 @@
 #include "UiDevice.h"
-#include "Accessible.h"
+#include "AccessibleWatcher.h"
 #include "Comparer.h"
 #include "DeviceImpl/TM1Impl.h"
 
@@ -31,7 +31,7 @@ UiDevice *UiDevice::getInstance(DeviceType type)
 
 const AccessibleNode *UiDevice::getWindowRoot() const
 {
-    AccessibleNode *root = Accessible::getInstance()->getTopNode();
+    AccessibleNode *root = AccessibleWatcher::getInstance()->getTopNode();
     // root->print(0,6);
     return root;
 }
