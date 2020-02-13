@@ -12,6 +12,8 @@ class Command {
 public:
     virtual ~Command(){};
     virtual ::grpc::Status execute() = 0;
+    virtual ::grpc::Status executePost();
+    virtual ::grpc::Status executePre();
 };
 
 #endif

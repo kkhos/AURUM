@@ -23,13 +23,15 @@ public:
 class AttributeGetter {
 private:
 public:
+    virtual ~AttributeGetter();
     static AttributeGetter *Creator(::aurum::ReqGetAttribute_RequestType type);
-    virtual bool getPerform(UiObject *obj,  ::aurum::RspGetAttribute* mResponse){}
+    virtual bool getPerform(UiObject *obj,  ::aurum::RspGetAttribute* mResponse){return true;}
 };
 
 class VisibleGetter : public AttributeGetter{
 private:
 public:
+    virtual ~VisibleGetter();
     bool getPerform(UiObject *obj, ::aurum::RspGetAttribute* rsp) override;
 };
 

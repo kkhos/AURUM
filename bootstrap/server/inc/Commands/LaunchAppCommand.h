@@ -16,8 +16,8 @@ private:
 public:
     LaunchAppCommand(const ::aurum::ReqLaunchApp* request,
                      ::aurum::RspLaunchApp*       response);
-    ;
     ::grpc::Status execute() override;
+    ::grpc::Status executePost() override;
 };
 
 #endif

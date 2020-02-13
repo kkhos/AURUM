@@ -1,5 +1,8 @@
 #include "LaunchAppCommand.h"
 #include <loguru.hpp>
+#include <chrono>
+#include <thread>
+
 #ifdef GBSBUILD
 #include <app_control.h>
 #endif
@@ -41,5 +44,11 @@ LaunchAppCommand::LaunchAppCommand(const ::aurum::ReqLaunchApp* request,
         return grpc::Status::OK;
     }
 #endif
+    return grpc::Status::OK;
+}
+::grpc::Status LaunchAppCommand::executePost()
+{
+    LOG_SCOPE_F(INFO, "LaunchAppCommand::executePost");
+    std::this_thread::sleep_for(std::chrono::milliseconds{1500});
     return grpc::Status::OK;
 }
