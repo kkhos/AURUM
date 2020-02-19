@@ -47,6 +47,8 @@ gRPC Server
 %setup -q
 cp %{SOURCE1001} .
 
+export LDFLAGS+="-Wl,-z,noexecstack"
+
 meson \
     --prefix /usr \
     --libdir %{_libdir} \
