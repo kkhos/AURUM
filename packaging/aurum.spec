@@ -10,7 +10,8 @@ Source1001:     %{name}.manifest
 BuildRequires:  meson
 BuildRequires:  pkgconfig(grpc)
 BuildRequires:  pkgconfig(grpc++)
-BuildRequires:  pkgconfig(atspi-2)
+BuildRequires:  at-spi2-core
+BuildRequires:  at-spi2-core-devel
 BuildRequires:  pkgconfig(capi-system-info)
 BuildRequires:  pkgconfig(capi-ui-efl-util)
 BuildRequires:  pkgconfig(elementary)
@@ -21,9 +22,9 @@ BuildRequires: pkgconfig(capi-appfw-package-manager)
 BuildRequires: pkgconfig(capi-appfw-app-control)
 BuildRequires: pkgconfig(capi-appfw-app-manager)
 
-Requires: atspi-2
-Requires: grpc
-Requires: grpc++
+#equires: libatspi0
+#equires: grpc
+#equires: grpc++
 
 %description
 aurum is a project for testing ui.
