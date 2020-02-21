@@ -21,7 +21,9 @@ BuildRequires: pkgconfig(capi-appfw-package-manager)
 BuildRequires: pkgconfig(capi-appfw-app-control)
 BuildRequires: pkgconfig(capi-appfw-app-manager)
 
-Requires:  pkgconfig(atspi-2)
+Requires: atspi-2
+Requires: grpc
+Requires: grpc++
 
 %description
 aurum is a project for testing ui.
@@ -37,8 +39,6 @@ devel package for libaurum
 Summary: bootstrap
 License: Apache-2.0
 Requires: %{name} = %{version}-%{release}
-Requires: pkgconfig(grpc)
-Requires: pkgconfig(grpc++)
 
 %description bootstrap
 gRPC Server
