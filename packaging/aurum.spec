@@ -10,7 +10,10 @@ Source1001:     %{name}.manifest
 BuildRequires:  meson
 BuildRequires:  pkgconfig(grpc)
 BuildRequires:  pkgconfig(grpc++)
-BuildRequires:  pkgconfig(atspi-2)
+
+Requires:       at-spi2-core
+BuildRequires:  at-spi2-core-devel
+
 BuildRequires:  pkgconfig(capi-system-info)
 BuildRequires:  pkgconfig(capi-ui-efl-util)
 BuildRequires:  pkgconfig(elementary)
@@ -20,10 +23,6 @@ BuildRequires: pkgconfig(aul)
 BuildRequires: pkgconfig(capi-appfw-package-manager)
 BuildRequires: pkgconfig(capi-appfw-app-control)
 BuildRequires: pkgconfig(capi-appfw-app-manager)
-
-Requires: atspi-2
-Requires: grpc
-Requires: grpc++
 
 %description
 aurum is a project for testing ui.
@@ -39,6 +38,7 @@ devel package for libaurum
 Summary: bootstrap
 License: Apache-2.0
 Requires: %{name} = %{version}-%{release}
+Requires: libgrpc
 
 %description bootstrap
 gRPC Server
