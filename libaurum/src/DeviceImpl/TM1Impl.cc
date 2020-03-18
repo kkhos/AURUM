@@ -27,7 +27,7 @@ TM1Impl::~TM1Impl()
 
 bool TM1Impl::click(const int x, const int y)
 {
-    click(x, y, INTV_CLICK);
+    return click(x, y, INTV_CLICK);
 }
 
 bool TM1Impl::click(const int x, const int y, const unsigned int intv)
