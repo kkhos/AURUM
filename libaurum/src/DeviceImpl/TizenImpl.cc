@@ -1,4 +1,4 @@
-#include "DeviceImpl/TM1Impl.h"
+#include "DeviceImpl/TizenImpl.h"
 
 #include <stdlib.h>
 #include <iostream>
@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include "loguru.hpp"
 
-TM1Impl::TM1Impl()
+TizenImpl::TizenImpl()
 {
     LOG_SCOPE_F(INFO, "device implementation init");
 #ifdef GBSBUILD
@@ -17,7 +17,7 @@ TM1Impl::TM1Impl()
 #endif
 }
 
-TM1Impl::~TM1Impl()
+TizenImpl::~TizenImpl()
 {
 #ifdef GBSBUILD
     efl_util_input_deinitialize_generator(mFakeTouchHandle);
@@ -25,12 +25,12 @@ TM1Impl::~TM1Impl()
 #endif
 }
 
-bool TM1Impl::click(const int x, const int y)
+bool TizenImpl::click(const int x, const int y)
 {
     return click(x, y, INTV_CLICK);
 }
 
-bool TM1Impl::click(const int x, const int y, const unsigned int intv)
+bool TizenImpl::click(const int x, const int y, const unsigned int intv)
 {
 LOG_SCOPE_F(INFO, "click at (%d, %d)", x, y);
 #ifdef GBSBUILD
@@ -46,7 +46,7 @@ LOG_SCOPE_F(INFO, "click at (%d, %d)", x, y);
 }
 
 
-bool TM1Impl::touchDown(const int x, const int y)
+bool TizenImpl::touchDown(const int x, const int y)
 {
 #ifdef GBSBUILD
     LOG_F(INFO, "%d %d", x, y);
@@ -56,7 +56,7 @@ bool TM1Impl::touchDown(const int x, const int y)
     return true;
 }
 
-bool TM1Impl::touchMove(const int x, const int y)
+bool TizenImpl::touchMove(const int x, const int y)
 {
 #ifdef GBSBUILD
     LOG_F(INFO, "%d %d", x, y);
@@ -66,7 +66,7 @@ bool TM1Impl::touchMove(const int x, const int y)
     return true;
 }
 
-bool TM1Impl::touchUp(const int x, const int y)
+bool TizenImpl::touchUp(const int x, const int y)
 {
 #ifdef GBSBUILD
     LOG_F(INFO, "%d %d", x, y);
@@ -76,7 +76,7 @@ bool TM1Impl::touchUp(const int x, const int y)
     return true;
 }
 
-bool TM1Impl::drag(const int sx, const int sy, const int ex, const int ey,
+bool TizenImpl::drag(const int sx, const int sy, const int ex, const int ey,
                          const int duration)
 {
 #ifdef GBSBUILD
@@ -104,37 +104,37 @@ bool TM1Impl::drag(const int sx, const int sy, const int ex, const int ey,
     return true;
 }
 
-bool TM1Impl::pressBack()
+bool TizenImpl::pressBack()
 {
     return pressKeyCode("XF86Back");
 }
 
-bool TM1Impl::pressHome()
+bool TizenImpl::pressHome()
 {
     return pressKeyCode("XF86Home");
 }
 
-bool TM1Impl::pressMenu()
+bool TizenImpl::pressMenu()
 {
     return pressKeyCode("XF86Menu");
 }
 
-bool TM1Impl::pressVolUp()
+bool TizenImpl::pressVolUp()
 {
     return pressKeyCode("XF86AudioRaiseVolume");
 }
 
-bool TM1Impl::pressVolDown()
+bool TizenImpl::pressVolDown()
 {
     return pressKeyCode("XF86AudioLowerVolume");
 }
 
-bool TM1Impl::pressPower()
+bool TizenImpl::pressPower()
 {
     return pressKeyCode("XF86PowerOff");
 }
 
-bool TM1Impl::pressKeyCode(std::string keycode)
+bool TizenImpl::pressKeyCode(std::string keycode)
 {
 #ifdef GBSBUILD
     efl_util_input_generate_key(mFakeKeyboardHandle, keycode.c_str(), 1);
@@ -143,7 +143,7 @@ bool TM1Impl::pressKeyCode(std::string keycode)
     return true;
 }
 
-bool TM1Impl::takeScreenshot(std::string path, float scale, int quality)
+bool TizenImpl::takeScreenshot(std::string path, float scale, int quality)
 {
     return false;
 }

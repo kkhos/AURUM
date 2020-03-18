@@ -19,7 +19,7 @@ libaurum_src = [
 
 if get_option('tizen') == true
 libaurum_src +=[
-  files('src/DeviceImpl/TM1Impl.cc'),
+  files('src/DeviceImpl/TizenImpl.cc'),
 ]
 endif
 

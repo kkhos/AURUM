@@ -1,7 +1,7 @@
 #include "UiDevice.h"
 #include "AccessibleWatcher.h"
 #include "Comparer.h"
-#include "DeviceImpl/TM1Impl.h"
+#include "DeviceImpl/TizenImpl.h"
 
 #include <unistd.h>
 #include <utility>
@@ -24,7 +24,7 @@ UiDevice *UiDevice::getInstance(DeviceType type)
 {
     static UiDevice *device = nullptr;
 #ifdef TIZEN
-    if (!device) device = new UiDevice(type, new TM1Impl());
+    if (!device) device = new UiDevice(type, new TizenImpl());
 #endif
     return device;
 }
