@@ -12,8 +12,7 @@ SetValueCommand::SetValueCommand(const ::aurum::ReqSetValue* request,
     LOG_SCOPE_F(INFO, "SetValue --------------- ");
     ObjectMapper* mObjMap = ObjectMapper::getInstance();
     UiObject*     obj = mObjMap->getElement(mRequest->elementid());
-    obj->setText(const_cast<std::string&>(mRequest->stringvalue()));
+    if (obj) obj->setText(const_cast<std::string&>(mRequest->stringvalue()));
     LOG_F(INFO, "%p %s", obj, mRequest->stringvalue().c_str());
-
     return grpc::Status::OK;
 }
