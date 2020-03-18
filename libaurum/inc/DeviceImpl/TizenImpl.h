@@ -8,10 +8,10 @@
 #include <efl_util.h>
 #endif
 
-class TM1Impl : public IDevice {
+class TizenImpl : public IDevice {
 public:
-    TM1Impl();
-    ~TM1Impl();
+    TizenImpl();
+    ~TizenImpl();
 
     bool click(const int x, const int y) override;
     bool click(const int x, const int y, const unsigned int intv) override;
