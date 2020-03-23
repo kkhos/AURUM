@@ -9,17 +9,19 @@
 #include "config.h"
 
 class FindElementCommand : public Command {
-private:
+protected:
     const ::aurum::ReqFindElement* mRequest;
     ::aurum::RspFindElement*       mResponse;
 
-private:
+protected:
     ObjectMapper* mObjMap;
 
 public:
     FindElementCommand(const ::aurum::ReqFindElement* request,
                        ::aurum::RspFindElement*       response);
     ::grpc::Status execute() override;
+protected:
+    virtual ISearchable* getSearchableTop(void);
+    virtual std::shared_ptr<UiSelector> getSelector(void);
 };
-
 #endif

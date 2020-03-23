@@ -15,27 +15,28 @@ FindElementCommand::FindElementCommand(const ::aurum::ReqFindElement* request,
 {
     mObjMap = ObjectMapper::getInstance();
 }
+ISearchable* FindElementCommand::getSearchableTop(void)
+{
+    ISearchable* searchableObj = nullptr;
+    bool fromObject = mRequest->elementid().empty() == false;
+
+    if (fromObject) searchableObj = mObjMap->getElement(mRequest->elementid());
+    if (!searchableObj) searchableObj = UiDevice::getInstance(DeviceType::DEFAULT);
+
+    return searchableObj;
+}
+std::shared_ptr<UiSelector> FindElementCommand::getSelector(void)
+{
+    return Sel::text(mRequest->textfield());
+}
 
 ::grpc::Status FindElementCommand::execute()
 {
     LOG_SCOPE_F(INFO, "findElement --------------- ");
+    auto searchableObj = getSearchableTop();
+    auto sel           = getSelector();
 
-    bool         fromObject = mRequest->elementid().empty() == false;
-    ISearchable* searchableObj = nullptr;
-
-    LOG_SCOPE_F(INFO, "fromObject:%d ei:%s tf:%s", fromObject,
-                mRequest->elementid().c_str(), mRequest->textfield().c_str());
-
-    if (fromObject) searchableObj = mObjMap->getElement(mRequest->elementid());
-
-    if (searchableObj == nullptr)
-        searchableObj = UiDevice::getInstance(DeviceType::DEFAULT);
-
-    std::unique_ptr<UiSelector> sel = Sel::text(mRequest->textfield());
-    sel->type(mRequest->widgettype());
-
-    std::vector<std::unique_ptr<UiObject>> founds =
-        searchableObj->findObjects(sel.get());
+    std::vector<std::unique_ptr<UiObject>> founds = searchableObj->findObjects(sel);
 
     if (founds.size() > 0) {
         for (auto& found : founds) {
