@@ -65,8 +65,16 @@ AccessibleWatcher::AccessibleWatcher() : mActivatedWindowList{}, mWindowSet{}
 {
     GVariant *enabled_variant = nullptr, *result = nullptr;
     GError *  error = nullptr;
-    atspi_init();
     atspi_set_main_context (g_main_context_default ());
+    atspi_init();
+
+    listener =
+        atspi_event_listener_new(AccessibleWatcher::onAtspiWindowEvent, this, NULL);
+    atspi_event_listener_register(listener, "window:create", NULL);
+    atspi_event_listener_register(listener, "window:destroy", NULL);
+    atspi_event_listener_register(listener, "window:activate", NULL);
+    atspi_event_listener_register(listener, "window:deactivate", NULL);
+    atspi_event_listener_register(listener, "object:", NULL);
 
     mDbusProxy = g_dbus_proxy_new_for_bus_sync(
         G_BUS_TYPE_SESSION, G_DBUS_PROXY_FLAGS_NONE,
@@ -83,17 +91,20 @@ AccessibleWatcher::AccessibleWatcher() : mActivatedWindowList{}, mWindowSet{}
     g_variant_unref(enabled_variant);
     g_variant_unref(result);
 
-    listener =
-        atspi_event_listener_new(AccessibleWatcher::onAtspiWindowEvent, this, NULL);
-    atspi_event_listener_register(listener, "window:create", NULL);
-    atspi_event_listener_register(listener, "window:destroy", NULL);
-    atspi_event_listener_register(listener, "window:activate", NULL);
-    atspi_event_listener_register(listener, "window:deactivate", NULL);
-    atspi_event_listener_register(listener, "object:", NULL);
 }
 
 AccessibleWatcher::~AccessibleWatcher()
 {
+    GVariant *enabled_variant = nullptr, *result = nullptr;
+    GError *  error = nullptr;
+
+    enabled_variant = g_variant_new_boolean(false);
+    result = g_dbus_proxy_call_sync(
+        mDbusProxy, "Set",
+        g_variant_new("(ssv)", "org.a11y.Status", "IsEnabled", enabled_variant),
+        G_DBUS_CALL_FLAGS_NONE, -1, NULL, &error);
+
+
     for (auto it = mAccessibleNode.begin(); it != mAccessibleNode.end(); ++it) {
         g_object_unref(it->first);
         delete it->second;
@@ -103,6 +114,8 @@ AccessibleWatcher::~AccessibleWatcher()
 
     g_object_unref(listener);
     g_object_unref(mDbusProxy);
+    g_variant_unref(enabled_variant);
+    g_variant_unref(result);
 
     atspi_event_quit();
     atspi_exit();
