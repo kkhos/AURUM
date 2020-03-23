@@ -29,31 +29,22 @@ GetAppInfoCommand::GetAppInfoCommand(const ::aurum::ReqGetAppInfo* request,
     mResponse->set_isrunning(false);
     mResponse->set_isfocused(false);
 
-
-    ret = package_manager_get_package_info(packageName.c_str(), &package_info);
-    if (!ret) {
-        package_info_get_label(package_info, &label);
-        if (label) {
-            free(label);
-            mResponse->set_isinstalled(true);
-        } else {
-            return grpc::Status::OK;
+    if (!package_manager_get_package_info(packageName.c_str(), &package_info)) {
+        if (!package_info_get_label(package_info, &label)) {
+            if (label) {
+                free(label);
+                mResponse->set_isinstalled(true);
+            }
         }
-    } else {
-        return grpc::Status::OK;
     }
 
-    ret = app_manager_get_app_context(packageName.c_str(), &app_context);
-    if (!ret) {
-        mResponse->set_isrunning(!(appState & APP_STATE_TERMINATED));
-    } else {
-        return grpc::Status::OK;
+    if (!app_manager_get_app_context(packageName.c_str(), &app_context)) {
+        if (!app_context_get_app_state(app_context, &appState)) {
+            mResponse->set_isfocused(appState & APP_STATE_FOREGROUND);
+            mResponse->set_isrunning(!(appState & APP_STATE_TERMINATED));
+        }
     }
 
-    ret = app_context_get_app_state(app_context, &appState);
-    if (!ret) {
-        mResponse->set_isfocused(appState & APP_STATE_FOREGROUND);
-    }
 #endif
     return grpc::Status::OK;
 }
