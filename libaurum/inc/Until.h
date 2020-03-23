@@ -8,7 +8,7 @@
 class Until {
 private:
     Until();
-    Until(const UiSelector *selector);
+    Until(const std::shared_ptr<UiSelector> selector);
     Until(const Until &src);
     Until(const Until &&src);
 
@@ -17,9 +17,9 @@ public:
 
 public:
     static std::function<bool(const ISearchable *)> hasObject(
-        const UiSelector *selector);
+        const std::shared_ptr<UiSelector> selector);
     static std::function<std::unique_ptr<UiObject>(const ISearchable *)>
-                                                 findObject(const UiSelector *selector);
+                                                 findObject(const std::shared_ptr<UiSelector> selector);
     static std::function<bool(const UiObject *)> checkable(
         const bool isCheckable);
 };

@@ -29,41 +29,50 @@ UiDevice *UiDevice::getInstance(DeviceType type)
     return device;
 }
 
-const AccessibleNode *UiDevice::getWindowRoot() const
+const std::vector<std::unique_ptr<AccessibleNode>> UiDevice::getWindowRoot() const
 {
-    AccessibleNode *root = AccessibleWatcher::getInstance()->getTopNode();
+    std::vector<std::unique_ptr<AccessibleNode>> root = AccessibleWatcher::getInstance()->getTopNode();
     // root->print(0,6);
     return root;
 }
 
-bool UiDevice::hasObject(const UiSelector *selector) const
+bool UiDevice::hasObject(const std::shared_ptr<UiSelector> selector) const
 {
-    AccessibleNode *node =
-        Comparer::findObject(this, selector, getWindowRoot());
-    if (node != nullptr) return true;
+    auto root = getWindowRoot();
+    for (auto it = root.begin(); it != root.end(); ++it) {
+        std::unique_ptr<AccessibleNode> node =
+            Comparer::findObject(this, selector, (*it).get());
+        if (node != nullptr) return true;
+    }
+
     return false;
 }
 
-std::unique_ptr<UiObject> UiDevice::findObject(const UiSelector *selector) const
+std::unique_ptr<UiObject> UiDevice::findObject(const std::shared_ptr<UiSelector> selector) const
 {
-    AccessibleNode *node =
-        Comparer::findObject(this, selector, getWindowRoot());
-    if (node)
-        return std::make_unique<UiObject>(this, selector, node);
-    else
-        return std::unique_ptr<UiObject>{nullptr};
+    auto root = getWindowRoot();
+    for (auto it = root.begin(); it != root.end(); ++it) {
+        std::unique_ptr<AccessibleNode> node =
+            Comparer::findObject(this, selector, (*it).get());
+        if (node)
+            return std::make_unique<UiObject>(this, selector, std::move(node));
+    }
+    return std::unique_ptr<UiObject>{nullptr};
 }
 
 std::vector<std::unique_ptr<UiObject>> UiDevice::findObjects(
-    const UiSelector *selector) const
+    const std::shared_ptr<UiSelector> selector) const
 {
     std::vector<std::unique_ptr<UiObject>> ret{};
-    std::vector<AccessibleNode *>          nodes =
-        Comparer::findObjects(this, selector, getWindowRoot());
-    for (const AccessibleNode *node : nodes)
-        ret.push_back(std::make_unique<UiObject>(this, selector, node));
+    auto root = getWindowRoot();
+    for (auto it = root.begin(); it != root.end(); ++it) {
+        std::vector<std::unique_ptr<AccessibleNode>>          nodes =
+            Comparer::findObjects(this, selector, (*it).get());
 
-    return std::move(ret);
+        for (auto &node : nodes)
+            ret.push_back(std::make_unique<UiObject>(this, selector, std::move(node)));
+    }
+    return ret;
 }
 bool UiDevice::waitFor(
     const std::function<bool(const ISearchable *)> condition) const

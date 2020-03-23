@@ -4,7 +4,7 @@
 #include <loguru.hpp>
 
 std::function<bool(const ISearchable *)> Until::hasObject(
-    const UiSelector *selector)
+    const std::shared_ptr<UiSelector> selector)
 {
     return [=](const ISearchable *searchable) -> bool {
         LOG_SCOPE_F(INFO, "sel:%p, search:%p", selector, searchable);
@@ -14,7 +14,7 @@ std::function<bool(const ISearchable *)> Until::hasObject(
 }
 
 std::function<std::unique_ptr<UiObject>(const ISearchable *)> Until::findObject(
-    const UiSelector *selector)
+    const std::shared_ptr<UiSelector> selector)
 {
     return [=](const ISearchable *searchable) -> std::unique_ptr<UiObject> {
         LOG_SCOPE_F(INFO, "sel:%p, search:%p", selector, searchable);

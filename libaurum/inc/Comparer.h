@@ -14,33 +14,33 @@
 
 class Comparer {
 private:
-    Comparer(const UiDevice *device, const UiSelector *selector,
+    Comparer(const UiDevice *device, const std::shared_ptr<UiSelector> selector,
              const bool &earlyReturn);
     ~Comparer();
 
 public:
-    static AccessibleNode *              findObject(const UiDevice *      device,
-                                                    const UiSelector *    selector,
+    static std::unique_ptr<AccessibleNode>             findObject(const UiDevice *      device,
+                                                    const std::shared_ptr<UiSelector> selector,
                                                     const AccessibleNode *root);
-    static std::vector<AccessibleNode *> findObjects(
-        const UiDevice *device, const UiSelector *selector,
+    static std::vector<std::unique_ptr<AccessibleNode>> findObjects(
+        const UiDevice *device, const std::shared_ptr<UiSelector> selector,
         const AccessibleNode *root);
 
 private:
-    std::vector<AccessibleNode *> findObjects(const AccessibleNode *root);
-    std::vector<AccessibleNode *> findObjects(
+    std::vector<std::unique_ptr<AccessibleNode>> findObjects(const AccessibleNode *root);
+    std::vector<std::unique_ptr<AccessibleNode>> findObjects(
         const AccessibleNode *root, const int &index, const int &depth,
         std::list<std::shared_ptr<PartialMatch>> &partialMatches);
 
 private:
     std::unique_ptr<PartialMatch> accept(const AccessibleNode *node,
-                                         const UiSelector *    selector,
+                                         const std::shared_ptr<UiSelector> selector,
                                          const int &index, const int &depth,
                                          const int &relDepth);
 
 private:
-    const UiDevice *  mDevice;
-    const UiSelector *mSelector;
+    const UiDevice *mDevice;
+    const std::shared_ptr<UiSelector> mSelector;
     bool              mEarlyReturn;
 };
 

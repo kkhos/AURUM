@@ -4,6 +4,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 class UiSelector {
 public:
@@ -22,7 +23,7 @@ public:
 
     UiSelector *depth(int depth);
 
-    UiSelector *hasChild(UiSelector *child);
+    UiSelector *hasChild(std::shared_ptr<UiSelector> child);
 
 public:
     std::string mText;
@@ -32,7 +33,7 @@ public:
     std::string mType;
     int         mDepth;
 
-    std::vector<UiSelector *> mChild;
+    std::vector<std::shared_ptr<UiSelector>> mChild;
 };
 
 #endif

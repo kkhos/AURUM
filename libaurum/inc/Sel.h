@@ -9,9 +9,9 @@
 
 class Sel {
 public:
-    static std::unique_ptr<UiSelector> text(const std::string &text);
-    static std::unique_ptr<UiSelector> type(const std::string &text);
-    static std::unique_ptr<UiSelector> depth(const int &depth);
+    static std::shared_ptr<UiSelector> text(const std::string &text);
+    static std::shared_ptr<UiSelector> type(const std::string &text);
+    static std::shared_ptr<UiSelector> depth(const int &depth);
 };
 
 #endif

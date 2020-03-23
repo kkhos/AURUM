@@ -5,30 +5,30 @@
 
 #include "loguru.hpp"
 
-bool PartialMatch::checkCriteria(const UiSelector *    sel,
+bool PartialMatch::checkCriteria(const std::shared_ptr<UiSelector> selector,
                                  const AccessibleNode *node)
 {
-    if (sel->mPkg.length() > 0 && sel->mPkg.compare(node->getPkg()))
+    if (selector->mPkg.length() > 0 && selector->mPkg.compare(node->getPkg()))
         return false;
-    if (sel->mRes.length() > 0 && sel->mRes.compare(node->getRes()))
+    if (selector->mRes.length() > 0 && selector->mRes.compare(node->getRes()))
         return false;
-    if (sel->mText.length() > 0 && sel->mText.compare(node->getText()))
+    if (selector->mText.length() > 0 && selector->mText.compare(node->getText()))
         return false;
-    if (sel->mDesc.length() > 0 && sel->mDesc.compare(node->getDesc()))
+    if (selector->mDesc.length() > 0 && selector->mDesc.compare(node->getDesc()))
         return false;
-    if (sel->mType.length() > 0 && sel->mType.compare(node->getType()))
+    if (selector->mType.length() > 0 && selector->mType.compare(node->getType()))
         return false;
 
-    LOG_F(INFO, "node mPkg :%s, sel->desc :%s | %ld", node->getPkg().c_str(),
-          sel->mPkg.c_str(), sel->mPkg.length());
-    LOG_F(INFO, "node mRes :%s, sel->desc :%s | %ld", node->getRes().c_str(),
-          sel->mRes.c_str(), sel->mRes.length());
-    LOG_F(INFO, "node mText :%s, sel->desc :%s | %ld", node->getText().c_str(),
-          sel->mText.c_str(), sel->mText.length());
-    LOG_F(INFO, "node mDesc :%s, sel->desc :%s | %ld", node->getDesc().c_str(),
-          sel->mDesc.c_str(), sel->mDesc.length());
-    LOG_F(INFO, "node mType :%s, sel->type :%s | %ld", node->getType().c_str(),
-          sel->mType.c_str(), sel->mType.length());
+    LOG_F(INFO, "node mPkg :%s, selector->desc :%s | %ld", node->getPkg().c_str(),
+          selector->mPkg.c_str(), selector->mPkg.length());
+    LOG_F(INFO, "node mRes :%s, selector->desc :%s | %ld", node->getRes().c_str(),
+          selector->mRes.c_str(), selector->mRes.length());
+    LOG_F(INFO, "node mText :%s, selector->desc :%s | %ld", node->getText().c_str(),
+          selector->mText.c_str(), selector->mText.length());
+    LOG_F(INFO, "node mDesc :%s, selector->desc :%s | %ld", node->getDesc().c_str(),
+          selector->mDesc.c_str(), selector->mDesc.length());
+    LOG_F(INFO, "node mType :%s, selector->type :%s | %ld", node->getType().c_str(),
+          selector->mType.c_str(), selector->mType.length());
 
     return true;
 }
@@ -37,20 +37,20 @@ PartialMatch::PartialMatch() : mSelector{nullptr}, mDepth{-1}, mPartialMatches{}
 {
 }
 
-PartialMatch::PartialMatch(const UiSelector *selector, const int absDepth)
+PartialMatch::PartialMatch(const std::shared_ptr<UiSelector> selector, const int absDepth)
     : mSelector{selector}, mDepth{absDepth}, mPartialMatches{}
 {
 }
 
 std::shared_ptr<PartialMatch> PartialMatch::accept(const AccessibleNode *node,
-                                                   const UiSelector *selector,
+                                                   const std::shared_ptr<UiSelector> selector,
                                                    int index, int depth)
 {
     return PartialMatch::accept(node, selector, index, depth, depth);
 }
 
 std::shared_ptr<PartialMatch> PartialMatch::accept(const AccessibleNode *node,
-                                                   const UiSelector *selector,
+                                                   const std::shared_ptr<UiSelector> selector,
                                                    int index, int absoluteDepth,
                                                    int relativeDepth)
 {
@@ -80,10 +80,10 @@ void PartialMatch::update(
 
 bool PartialMatch::finalizeMatch()
 {
-    std::set<UiSelector *> matches;
+    std::set<std::shared_ptr<UiSelector>> matches;
     for (auto match : mPartialMatches) {
         if (match->finalizeMatch()) {
-            matches.insert(const_cast<UiSelector *>(match->mSelector));
+            matches.insert(match->mSelector);
         }
     }
 

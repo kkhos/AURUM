@@ -12,11 +12,11 @@ class UiObject;
 class ISearchable {
 public:
     virtual ~ISearchable() {}
-    virtual bool hasObject(const UiSelector *selector) const = 0;
+    virtual bool hasObject(const std::shared_ptr<UiSelector> selector) const = 0;
     virtual std::unique_ptr<UiObject> findObject(
-        const UiSelector *selector) const = 0;
+        const std::shared_ptr<UiSelector> selector) const = 0;
     virtual std::vector<std::unique_ptr<UiObject>> findObjects(
-        const UiSelector *selector) const = 0;
+        const std::shared_ptr<UiSelector> selector) const = 0;
 };
 
 #endif
