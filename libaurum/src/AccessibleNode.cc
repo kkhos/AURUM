@@ -20,7 +20,7 @@ AccessibleNode::AccessibleNode() : AccessibleNode(nullptr)
 }
 
 AccessibleNode::AccessibleNode(AtspiAccessible *node)
-    : mNode(node), mSupportingIfaces(0), mFeatureProperty(0), mIsAlive(true)
+    : mNode(node), mBoundingBox{0,0,0,0}, mSupportingIfaces(0), mFeatureProperty(0), mIsAlive(true)
 {
     // prohibited to create this object this constructor
     // better to use AccessibleNode::get factory method.
