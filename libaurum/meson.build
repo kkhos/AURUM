@@ -11,6 +11,7 @@ libaurum_src = [
   files('src/UiSelector.cc'),
   files('src/AccessibleWatcher.cc'),
   files('src/AccessibleNode.cc'),
+  files('src/AccessibleUtils.cc'),
   files('src/Comparer.cc'),
   files('src/Until.cc'),
   files('src/Waiter.cc'),

@@ -3,6 +3,7 @@
 
 #include <atspi/atspi.h>
 #include "AccessibleNode.h"
+#include "AccessibleUtils.h"
 
 #include <list>
 #include <map>
