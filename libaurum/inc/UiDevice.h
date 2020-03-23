@@ -43,11 +43,11 @@ public:
     bool takeScreenshot(std::string path, float scale, int quality);
 
 public:
-    bool hasObject(const UiSelector *selector) const override;
+    bool hasObject(const std::shared_ptr<UiSelector> selector) const override;
     std::unique_ptr<UiObject> findObject(
-        const UiSelector *selector) const override;
+        const std::shared_ptr<UiSelector> selector) const override;
     std::vector<std::unique_ptr<UiObject>> findObjects(
-        const UiSelector *selector) const override;
+        const std::shared_ptr<UiSelector> selector) const override;
 
     bool waitFor(
         const std::function<bool(const ISearchable *)> condition) const;
@@ -59,7 +59,7 @@ public:
     static UiDevice *getInstance(DeviceType type);
 
 private:
-    const AccessibleNode *getWindowRoot() const;
+    const std::vector<std::unique_ptr<AccessibleNode>> getWindowRoot() const;
 
 private:
     UiDevice();

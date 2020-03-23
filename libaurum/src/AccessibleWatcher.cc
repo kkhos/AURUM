@@ -9,56 +9,51 @@
 
 AtspiEventListener *AccessibleWatcher::listener = nullptr;
 
+
+
 static bool iShowingNode(AtspiAccessible *node)
 {
-    char *name = atspi_accessible_get_name(node, NULL);
-    char *pname = atspi_accessible_get_name(
-        atspi_accessible_get_parent(node, NULL), NULL);
+    char *name = NULL;
+    if (node) name = atspi_accessible_get_name(node, NULL);
+    else return false;
 
-    LOG_SCOPE_F(INFO, "isShowing %s %s", name, pname);
+    LOG_SCOPE_F(INFO, "isShowing %s", name);
+    auto stateSet = make_gobj_unique(atspi_accessible_get_state_set(node));
+    auto states = make_garray_unique(atspi_state_set_get_states(stateSet.get()));
 
-    // if (!strcmp(name, "Keyboard") && !strcmp(pname, "ise-default")) {
-    //     free(name);
-    //     free(pname);
-    //     return false;
-    // }
-    free(name);
-    free(pname);
-
-    AtspiStateSet *stateSet = atspi_accessible_get_state_set(node);
-    if (atspi_state_set_contains(stateSet, ATSPI_STATE_ACTIVE) &&
-        atspi_state_set_contains(stateSet, ATSPI_STATE_SHOWING)) {
-        g_object_unref(stateSet);
+    if (atspi_state_set_contains(stateSet.get(), ATSPI_STATE_ACTIVE)
+        && atspi_state_set_contains(stateSet.get(), ATSPI_STATE_SHOWING)) {
+        LOG_F(INFO, "active and showing %p %s", node, name);
+        free(name);
         return true;
     }
+    free(name);
     return false;
 }
 
-static AtspiAccessible *findActiveNode(AtspiAccessible *node, int depth,
+static std::vector<AtspiAccessible *>
+findActiveNode(AtspiAccessible *node, int depth,
                                        int max_depth)
 {
-    if (depth >= max_depth) return NULL;
+    std::vector<AtspiAccessible *> ret{};
+    if (depth >= max_depth) return ret;
 
     if (iShowingNode(node)) {
         g_object_ref(node);
-
         char *name = atspi_accessible_get_name(node, NULL);
-        char *pname = atspi_accessible_get_name(
-            atspi_accessible_get_parent(node, NULL), NULL);
-        LOG_SCOPE_F(INFO, "%s %s", name, pname);
-        return node;
+        LOG_SCOPE_F(INFO, "%s", name);
+        ret.push_back(node);
+        return ret;
     }
 
     int nchild = atspi_accessible_get_child_count(node, NULL);
     for (int i = 0; i < nchild; i++) {
-        AtspiAccessible *child =
-            atspi_accessible_get_child_at_index(node, i, NULL);
-        AtspiAccessible *active = findActiveNode(child, depth + 1, max_depth);
-        g_object_unref(child);
-        if (active) return active;
+        auto child = make_gobj_unique(atspi_accessible_get_child_at_index(node, i, NULL));
+        std::vector<AtspiAccessible *> childRet = findActiveNode(child.get(), depth + 1, max_depth);
+        ret.insert(ret.end(), childRet.begin(), childRet.end());
     }
 
-    return NULL;
+    return ret;
 }
 
 AccessibleWatcher::AccessibleWatcher() : mActivatedWindowList{}, mWindowSet{}
@@ -121,57 +116,83 @@ AccessibleWatcher::~AccessibleWatcher()
     atspi_exit();
 }
 
-AccessibleNode *AccessibleWatcher::getRootNode() const
+std::unique_ptr<AccessibleNode> AccessibleWatcher::getRootNode() const
 {
-    AtspiAccessible *node = atspi_get_desktop(0);
-    AccessibleNode * accNode = AccessibleNode::get(node);
-    if (node) g_object_unref(node);
+    auto node = make_gobj_unique(atspi_get_desktop(0));
+    auto accNode = AccessibleNode::get(node.get());
+    if(node.get()) g_object_unref(node.get());
     return accNode;
 }
 
-AccessibleNode *AccessibleWatcher::getTopNode() const
+std::vector<std::unique_ptr<AccessibleNode>> AccessibleWatcher::getTopNode() const
 {
-    AtspiAccessible *topNode = nullptr, *activeNode = nullptr,
-                    *rootNode = nullptr;
+    AtspiAccessible *topNode = nullptr, *activeNode = nullptr;
+    std::vector<std::unique_ptr<AccessibleNode>> ret;
+
     {
         std::unique_lock<std::mutex> lock(mLock);
         if (!mActivatedWindowList.empty()) {
             topNode = mActivatedWindowList.front();
-            if (topNode && iShowingNode(topNode))
-                return AccessibleNode::get(atspi_accessible_get_application(topNode, NULL));
+            std::list<AtspiAccessible *>::const_iterator iterator;
+            for (iterator = mActivatedWindowList.begin(); iterator != mActivatedWindowList.end(); ++iterator){
+                if (*iterator && iShowingNode(*iterator)) {
+                    AtspiAccessible *child = atspi_accessible_get_application(*iterator, NULL);
+                    if (child) {
+                        auto tmpNode = make_gobj_unique(child);
+                        auto node =  AccessibleNode::get(tmpNode.get());
+                        if (tmpNode.get()) g_object_unref(tmpNode.get());
+                        ret.push_back(std::move(node));
+                    }
+                }
+            }
+            return ret;
         }
     }
 
     LOG_F(INFO, "Mo activated window node or Invisible acticated window / topNdoe(%p)", topNode);
     LOG_F(INFO, "Trying fallback logic");
 
-    rootNode = atspi_get_desktop(0);
+    auto rootNode = make_gobj_unique(atspi_get_desktop(0));
 
     if (rootNode) {
-        activeNode = atspi_accessible_get_application(findActiveNode(rootNode, 0, 2), NULL);
-        if (activeNode) {
-            AccessibleNode *node = AccessibleNode::get(activeNode);
-            return node;
+        std::vector<AtspiAccessible*> activeNodes = findActiveNode(rootNode.get(), 0, 2);
+        if (!activeNodes.empty()) {
+            std::vector<AtspiAccessible*>::const_iterator iterator;
+            for (iterator = activeNodes.begin(); iterator != activeNodes.end(); ++iterator){
+                auto tmpNode = make_gobj_unique(atspi_accessible_get_application(*iterator, NULL));
+                auto node = AccessibleNode::get(tmpNode.get());
+                if (tmpNode.get()) g_object_unref(tmpNode.get());
+                g_object_unref(*iterator);
+                ret.push_back(std::move(node));
+            }
+        } else {
+            auto node = AccessibleNode::get(rootNode.get());
+            if (rootNode.get()) g_object_unref(rootNode.get());
+            ret.push_back(std::move(node));
         }
-        AccessibleNode *node = AccessibleNode::get(rootNode);
-        return node;
     }
-    return nullptr;
+    return ret;
 }
 
 void AccessibleWatcher::onAtspiWindowEvent(AtspiEvent *event, void *user_data)
 {
-    char *              name, *pname;
+    char *name = NULL, *pname = NULL;
     IAtspiEvents *instance = (IAtspiEvents *)user_data;
 
-    AtspiAccessible *p = atspi_accessible_get_parent(event->source, NULL);
+    if (!event->source)
+    {
+        LOG_F(INFO, "event->source is NULL. Skip event handling");
+        return;
+    }
+
+    auto p = make_gobj_unique(atspi_accessible_get_parent(event->source, NULL));
 
     name = atspi_accessible_get_name(event->source, NULL);
-    pname = atspi_accessible_get_name(p, NULL);
+    if (p) pname = atspi_accessible_get_name(p.get(), NULL);
 
-    // LOG_SCOPE_F(INFO, "event:%s, src:%p(%s), p:%p(%s), d1:%p d2:%p instance:%p",
-    //             event->type, event->source, name, p, pname, event->detail1,
-    //             event->detail2, instance);
+     LOG_SCOPE_F(INFO, "event:%s, src:%p(%s), p:%p(%s), d1:%p d2:%p instance:%p",
+                 event->type, event->source, name, p.get(), pname, event->detail1,
+                 event->detail2, instance);
 
     if (!strcmp(event->type, "window:activate")) {
         instance->onWindowActivated(
@@ -191,6 +212,8 @@ void AccessibleWatcher::onAtspiWindowEvent(AtspiEvent *event, void *user_data)
         instance->onObjectDefunct(
             static_cast<AtspiAccessible *>(event->source));
     }
+    if (name) free(name);
+    if (pname) free(pname);
 }
 
 void AccessibleWatcher::printDbgInformation() const
@@ -235,7 +258,6 @@ bool AccessibleWatcher::removeFromActivatedList(AtspiAccessible *node)
 bool AccessibleWatcher::addToActivatedList(AtspiAccessible *node)
 {
     mActivatedWindowList.remove_if([&](auto &n) { return n == node; });
-    //if (!strcmp(name, "Keyboard") && !strcmp(pname, "ise-default")) return;
     mActivatedWindowList.push_front(node);
 
     auto iter = mWindowSet.find(node);
@@ -268,20 +290,8 @@ void AccessibleWatcher::onWindowActivated(AtspiAccessible *      node,
                             WindowActivateInfoType type)
 {
     std::unique_lock<std::mutex> lock(mLock);
-
     addToActivatedList(node);
-
     return;
-    /*
-    char *name = atspi_accessible_get_name(node, NULL);
-    char *pname = atspi_accessible_get_name(
-        atspi_accessible_get_parent(node, NULL), NULL);
-    LOG_SCOPE_F(INFO, "%s %s", name, pname);
-
-    mActivatedWindowList.remove_if([&](auto &n) { return n == node; });
-    if (!strcmp(name, "Keyboard") && !strcmp(pname, "ise-default")) return;
-    mActivatedWindowList.push_front(node);
-    */
 }
 
 void AccessibleWatcher::onWindowDeactivated(AtspiAccessible *node)
@@ -289,10 +299,6 @@ void AccessibleWatcher::onWindowDeactivated(AtspiAccessible *node)
     std::unique_lock<std::mutex> lock(mLock);
     removeFromActivatedList(node);
     return;
-/*
-    mActivatedWindowList.remove_if([&](auto &n) { return n == node; });
-    mActivatedWindowList.push_back(node);
-    */
 }
 
 void AccessibleWatcher::onWindowCreated(AtspiAccessible *node)

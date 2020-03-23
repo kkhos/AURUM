@@ -27,6 +27,6 @@ TEST_F(UaTest, DeviceInit)
 
 TEST_F(UaTest, TextSelector)
 {
-    std::unique_ptr<UiSelector> sel = Sel::text("test");
+    std::shared_ptr<UiSelector> sel = Sel::text("test");
     ASSERT_NE(sel.get(), nullptr);
 }

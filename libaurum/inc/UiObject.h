@@ -14,18 +14,22 @@ class UiDevice;
 
 class UiObject : public ISearchable {
 public:
-    UiObject(const UiDevice *device, const UiSelector *selector,
+    UiObject(const UiDevice *device, const std::shared_ptr<UiSelector> selector,
              const AccessibleNode *node);
-    UiObject(const UiObject &src);  // copy constroctur
+
+    UiObject(const UiDevice *device, const std::shared_ptr<UiSelector> selector,
+             std::unique_ptr<AccessibleNode> node);
+
+//    UiObject(const UiObject &src);  // copy constroctur
     UiObject(UiObject &&src);       // move constructor
 
     virtual ~UiObject();
 
-    bool hasObject(const UiSelector *selector) const override;
+    bool hasObject(const std::shared_ptr<UiSelector> selector) const override;
     std::unique_ptr<UiObject> findObject(
-        const UiSelector *selector) const override;
+        const std::shared_ptr<UiSelector> selector) const override;
     std::vector<std::unique_ptr<UiObject>> findObjects(
-        const UiSelector *selector) const override;
+        const std::shared_ptr<UiSelector> selector) const override;
 
     bool waitFor(
         const std::function<bool(const ISearchable *)> condition) const;
@@ -71,9 +75,10 @@ private:
 
 private:
     const UiDevice *      mDevice;
-    const UiSelector *    mSelector;
-    const AccessibleNode *mNode;
+    std::shared_ptr<UiSelector>  mSelector;
+    std::unique_ptr<AccessibleNode> mNode;
     const Waiter *        mWaiter;
+    //std::unique_ptr<AccessibleNode> mNode_src;
 };
 
 #endif

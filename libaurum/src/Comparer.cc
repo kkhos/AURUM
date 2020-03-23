@@ -2,7 +2,7 @@
 
 #include "loguru.hpp"
 
-Comparer::Comparer(const UiDevice *device, const UiSelector *selector,
+Comparer::Comparer(const UiDevice *device, const std::shared_ptr<UiSelector> selector,
                    const bool &earlyReturn)
     : mDevice(device), mSelector(selector), mEarlyReturn(earlyReturn)
 {
@@ -10,43 +10,40 @@ Comparer::Comparer(const UiDevice *device, const UiSelector *selector,
 
 Comparer::~Comparer() {}
 
-AccessibleNode *Comparer::findObject(const UiDevice *      device,
-                                     const UiSelector *    selector,
+std::unique_ptr<AccessibleNode> Comparer::findObject(const UiDevice *      device,
+                                     const std::shared_ptr<UiSelector> selector,
                                      const AccessibleNode *root)
 {
     Comparer                      comparer(device, selector, true);
-    std::vector<AccessibleNode *> ret = comparer.findObjects(root);
+    std::vector<std::unique_ptr<AccessibleNode>> ret = comparer.findObjects(root);
     if (ret.size() > 0)
-        return ret[0];
+        return std::move(ret[0]);
     else
         return nullptr;
 }
 
-std::vector<AccessibleNode *> Comparer::findObjects(const UiDevice *  device,
-                                                    const UiSelector *selector,
+std::vector<std::unique_ptr<AccessibleNode>> Comparer::findObjects(const UiDevice *  device,
+                                                    const std::shared_ptr<UiSelector> selector,
                                                     const AccessibleNode *root)
 {
     Comparer                      comparer(device, selector, false);
-    std::vector<AccessibleNode *> ret = comparer.findObjects(root);
-    return std::move(ret);
+    std::vector<std::unique_ptr<AccessibleNode>> ret = comparer.findObjects(root);
+    return ret;
 }
 
-std::vector<AccessibleNode *> Comparer::findObjects(const AccessibleNode *root)
+std::vector<std::unique_ptr<AccessibleNode>> Comparer::findObjects(const AccessibleNode *root)
 {
     std::list<std::shared_ptr<PartialMatch>> partialList{};
-    std::vector<AccessibleNode *> ret = findObjects(root, 0, 0, partialList);
-    return std::move(ret);
+    std::vector<std::unique_ptr<AccessibleNode>> ret = findObjects(root, 0, 0, partialList);
+    return ret;
 }
 
-std::vector<AccessibleNode *> Comparer::findObjects(
+std::vector<std::unique_ptr<AccessibleNode>> Comparer::findObjects(
     const AccessibleNode *root, const int &index, const int &depth,
     std::list<std::shared_ptr<PartialMatch>> &partialMatches)
 {
-    std::vector<AccessibleNode *> ret;
+    std::vector<std::unique_ptr<AccessibleNode>> ret;
     root->refresh();
-
-    // LOG_F(INFO, "%p %s / i:%d d:%d", root, root->getText().c_str(), index,
-    // depth);
 
     for (auto match : partialMatches)
         match->update(root, index, depth, partialMatches);
@@ -57,16 +54,16 @@ std::vector<AccessibleNode *> Comparer::findObjects(
 
     int childCnt = root->getChildCount();
     for (int i = 0; i < childCnt; i++) {
-        AccessibleNode *              childNode = root->getChildAt(i);
-        std::vector<AccessibleNode *> childret =
-            findObjects(childNode, i, depth + 1, partialMatches);
-        ret.insert(ret.end(), childret.begin(), childret.end());
+        std::unique_ptr<AccessibleNode> childNode = root->getChildAt(i);
+        std::vector<std::unique_ptr<AccessibleNode>> childret =
+            findObjects(childNode.get(), i, depth + 1, partialMatches);
+        std::move(std::begin(childret), std::end(childret), std::back_inserter(ret));
 
         if (!ret.empty() && mEarlyReturn) return ret;
     }
 
     if (currentMatch && currentMatch->finalizeMatch())
-        ret.push_back(const_cast<AccessibleNode *>(root));
+        ret.push_back(AccessibleNode::get(root->getAccessible()));
 
     return ret;
 }

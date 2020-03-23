@@ -12,27 +12,27 @@ class PartialMatch {
 private:
     PartialMatch();
 
-    const UiSelector *                       mSelector;
+    const std::shared_ptr<UiSelector>        mSelector;
     const int                                mDepth;
     std::list<std::shared_ptr<PartialMatch>> mPartialMatches;
 
 public:
-    PartialMatch(const UiSelector *selector, const int absDepth);
+    PartialMatch(const std::shared_ptr<UiSelector> selector, const int absDepth);
     void update(const AccessibleNode *node, int index, int depth,
                 std::list<std::shared_ptr<PartialMatch>> &partialMatches);
     bool finalizeMatch();
 
 public:
     static std::shared_ptr<PartialMatch> accept(const AccessibleNode *node,
-                                                const UiSelector *    selector,
+                                                const std::shared_ptr<UiSelector> selector,
                                                 int index, int depth);
     static std::shared_ptr<PartialMatch> accept(const AccessibleNode *node,
-                                                const UiSelector *    selector,
+                                                const std::shared_ptr<UiSelector> selector,
                                                 int index, int absoluteDepth,
                                                 int relativeDepth);
 
 private:
-    static bool checkCriteria(const UiSelector *    sel,
+    static bool checkCriteria(const std::shared_ptr<UiSelector> selector,
                               const AccessibleNode *node);
 };
 

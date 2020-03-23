@@ -14,29 +14,38 @@ UiObject::~UiObject()
     if (mWaiter) delete mWaiter;
 }
 
-UiObject::UiObject(const UiDevice *device, const UiSelector *selector,
+UiObject::UiObject(const UiDevice *device, const std::shared_ptr<UiSelector> selector,
                    const AccessibleNode *node)
     : mDevice(device),
       mSelector(selector),
-      mNode(node),
+      mNode(std::unique_ptr<AccessibleNode>(const_cast<AccessibleNode*>(node))),
       mWaiter(new Waiter{this, this})
 {
-    // tood interface to interact with input interface
-    // mInputImple = mDevice->getInputInterface();
 }
 
-UiObject::UiObject(const UiObject &src)
-    : mDevice(src.mDevice),
-      mSelector(src.mSelector),
-      mNode(src.mNode),
-      mWaiter{src.mWaiter}
+UiObject::UiObject(const UiDevice *device, const std::shared_ptr<UiSelector> selector,
+                   std::unique_ptr<AccessibleNode> node)
+    : mDevice(device),
+      mSelector(selector),
+      mNode(std::move(node)),
+      mWaiter(new Waiter{this, this})
 {
 }
+
+// UiObject::UiObject(const UiObject &src)
+//     : mDevice(src.mDevice),
+//       mSelector(src.mSelector),
+//       mNode(src.mNode),
+//       mWaiter{src.mWaiter},
+//       mNode_src(std::move(src.mNode_src))
+
+// {
+// }
 
 UiObject::UiObject(UiObject &&src)
     : mDevice(src.mDevice),
-      mSelector(src.mSelector),
-      mNode(src.mNode),
+      mSelector(std::move(src.mSelector)),
+      mNode(std::move(src.mNode)),
       mWaiter{src.mWaiter}
 {
     src.mDevice = nullptr;
@@ -45,9 +54,9 @@ UiObject::UiObject(UiObject &&src)
     src.mWaiter = nullptr;
 }
 
-bool UiObject::hasObject(const UiSelector *selector) const
+bool UiObject::hasObject(const std::shared_ptr<UiSelector> selector) const
 {
-    AccessibleNode *node =
+    std::unique_ptr<AccessibleNode> node =
         Comparer::findObject(mDevice, selector, getAccessibleNode());
     if (node != nullptr) {
         // todo : what is this node.recycle()
@@ -56,18 +65,18 @@ bool UiObject::hasObject(const UiSelector *selector) const
     return false;
 }
 
-std::unique_ptr<UiObject> UiObject::findObject(const UiSelector *selector) const
+std::unique_ptr<UiObject> UiObject::findObject(const std::shared_ptr<UiSelector> selector) const
 {
-    AccessibleNode *node =
+    std::unique_ptr<AccessibleNode> node =
         Comparer::findObject(mDevice, selector, getAccessibleNode());
     if (node)
-        return std::make_unique<UiObject>(mDevice, selector, node);
+        return std::make_unique<UiObject>(mDevice, selector, std::move(node));
     else
         return std::unique_ptr<UiObject>{nullptr};
 }
 
 std::vector<std::unique_ptr<UiObject>> UiObject::findObjects(
-    const UiSelector *selector) const
+    const std::shared_ptr<UiSelector> selector) const
 {
     return std::vector<std::unique_ptr<UiObject>>{};
 }
@@ -94,9 +103,9 @@ bool UiObject::waitFor(
 
 UiObject *UiObject::getParent() const
 {
-    AccessibleNode *node = getAccessibleNode()->getParent();
+    std::unique_ptr<AccessibleNode> node = getAccessibleNode()->getParent();
     if (!node) return nullptr;
-    return new UiObject(mDevice, mSelector, node);
+    return new UiObject(mDevice, mSelector, std::move(node));
 }
 
 int UiObject::getChildCount() const
@@ -106,7 +115,7 @@ int UiObject::getChildCount() const
 
 std::vector<std::unique_ptr<UiObject>> UiObject::getChildren() const
 {
-    return findObjects(Sel::depth(1).get());
+    return findObjects(Sel::depth(1));
 }
 
 std::string UiObject::getContentDescription() const
@@ -208,7 +217,6 @@ void UiObject::click() const
     std::cout << rect.mTopLeft.x << ", " << rect.mTopLeft.y << std::endl;
     const Point2D<int> midPoint = rect.midPoint();
     const_cast<UiDevice *>(mDevice)->click(midPoint.x, midPoint.y);
-    // todo click implementation
 }
 
 void UiObject::longClick(const unsigned int intv) const
@@ -229,5 +237,5 @@ const AccessibleNode *UiObject::getAccessibleNode() const
     // mDevice->waitForIdle();
     // mNode->refresh();
 
-    return mNode;
+    return mNode.get();
 }

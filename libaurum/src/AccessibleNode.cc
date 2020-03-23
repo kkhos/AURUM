@@ -3,14 +3,13 @@
 #include <iostream>
 
 #include "loguru.hpp"
-
 #include "config.h"
 
 std::map<AtspiAccessible *, AccessibleNode *> AccessibleNode::mNodeMap{};
 
 AccessibleNode::~AccessibleNode()
 {
-    g_object_unref(mNode);
+
 }
 
 AccessibleNode::AccessibleNode() : AccessibleNode(nullptr)
@@ -20,13 +19,13 @@ AccessibleNode::AccessibleNode() : AccessibleNode(nullptr)
 }
 
 AccessibleNode::AccessibleNode(AtspiAccessible *node)
-    : mNode(node), mBoundingBox{0,0,0,0}, mSupportingIfaces(0), mFeatureProperty(0), mIsAlive(true)
+    : mNode(make_gobj_ref_unique(node)), mBoundingBox{0,0,0,0}, mSupportingIfaces(0), mFeatureProperty(0), mIsAlive(true)
 {
     // prohibited to create this object this constructor
     // better to use AccessibleNode::get factory method.
-    LOG_SCOPE_F(1, "AccessibleNode constructor %p", node);
-    g_object_ref(node);
-    GArray *ifaces = atspi_accessible_get_interfaces(mNode);
+
+    LOG_SCOPE_F(1, "AccessibleNode constructor %p", mNode.get());
+    GArray *ifaces = atspi_accessible_get_interfaces(mNode.get());
     if (ifaces) {
         for (unsigned int i = 0; i < ifaces->len; i++) {
             char *iface = g_array_index(ifaces, char *, i);
@@ -76,32 +75,25 @@ AccessibleNode::AccessibleNode(AtspiAccessible *node)
     this->refresh();
 }
 
-AccessibleNode *AccessibleNode::get(AtspiAccessible *node)
+std::unique_ptr<AccessibleNode> AccessibleNode::get(AtspiAccessible *node)
 {
-    LOG_SCOPE_F(9, "Accessible Node Factory %p", node);
-    if (node == nullptr) return nullptr;
-
-    AccessibleNode *cache = mNodeMap[node];
-    LOG_F(9, "Cache hit ? %p", cache);
-
-    if (!cache)
-        mNodeMap[node] = new AccessibleNode(node);
-    else
-        cache->refresh();
-
-    return mNodeMap[node];
+    return std::make_unique<AccessibleNode>(node);
 }
 
 void AccessibleNode::refresh() const
 {
-    gchar *rolename = atspi_accessible_get_role_name(mNode, NULL);
-    mRole = rolename;
-    g_free(rolename);
+    gchar *rolename = atspi_accessible_get_role_name(mNode.get(), NULL);
+    if (rolename) {
+        mRole = rolename;
+        g_free(rolename);
+    }
 
 #ifdef GBS_BUILD
-    gchar *uID = atspi_accessible_get_unique_id(mNode, NULL);
-    mRes = uID;
-    g_free(uID);
+    gchar *uID = atspi_accessible_get_unique_id(mNode.get(), NULL);
+    if (uID) {
+        mRes = uID;
+        g_free(uID);
+    }
 #else
     mRes = "Not_Supported";
 #endif
@@ -125,22 +117,25 @@ void AccessibleNode::refresh() const
 
 int AccessibleNode::getChildCount() const
 {
-    return atspi_accessible_get_child_count(mNode, NULL);
+    return atspi_accessible_get_child_count(mNode.get(), NULL);
 }
 
-AccessibleNode *AccessibleNode::getChildAt(int index) const
+std::unique_ptr<AccessibleNode> AccessibleNode::getChildAt(int index) const
 {
     AtspiAccessible *child =
-        atspi_accessible_get_child_at_index(mNode, index, NULL);
-    AccessibleNode *node = AccessibleNode::get(child);
-    if (child) g_object_unref(child);
-    return node;
+        atspi_accessible_get_child_at_index(mNode.get(), index, NULL);
+    if (child) {
+        auto node = AccessibleNode::get(child);
+        g_object_unref(child);
+        return node;
+    }
+    return AccessibleNode::get(nullptr);
 }
 
-AccessibleNode *AccessibleNode::getParent() const
+std::unique_ptr<AccessibleNode> AccessibleNode::getParent() const
 {
-    AtspiAccessible *parent = atspi_accessible_get_parent(mNode, NULL);
-    AccessibleNode * node = AccessibleNode::get(parent);
+    AtspiAccessible *parent = atspi_accessible_get_parent(mNode.get(), NULL);
+    auto node = AccessibleNode::get(parent);
     if (parent) g_object_unref(parent);
     return node;
 }
@@ -150,23 +145,21 @@ void AccessibleNode::print(int d, int m) const
     if (m <= 0 || d > m) return;
 
     int             n = 0;
-    AccessibleNode *child = nullptr;
-
     this->print(d);
     n = getChildCount();
 
     for (int i = 0; i < n; i++) {
-        child = getChildAt(i);
+        auto child = getChildAt(i);
         if (child) child->print(d + 1, m);
     }
 }
 
 void AccessibleNode::print(int d) const
 {
-    char *name = atspi_accessible_get_name(mNode, NULL);
-    char *role = atspi_accessible_get_role_name(mNode, NULL);
+    char *name = atspi_accessible_get_name(mNode.get(), NULL);
+    char *role = atspi_accessible_get_role_name(mNode.get(), NULL);
     LOG_F(INFO, "%s - %p(%s)  /  role:%s, pkg:%s, text:%s",
-          std::string(d, ' ').c_str(), mNode, name, role, getPkg().c_str(),
+          std::string(d, ' ').c_str(), mNode.get(), name, role, getPkg().c_str(),
           getText().c_str());
     free(name);
     free(role);
@@ -197,7 +190,7 @@ std::string AccessibleNode::getDesc() const
 
 std::string AccessibleNode::getText() const
 {
-    gchar *name = atspi_accessible_get_name(mNode, NULL);
+    gchar *name = atspi_accessible_get_name(mNode.get(), NULL);
     mText = name;
     mPkg = name;
     g_free(name);
@@ -220,7 +213,7 @@ std::string AccessibleNode::getType() const
 }
 Rect<int> AccessibleNode::getBoundingBox() const
 {
-    AtspiComponent *component = atspi_accessible_get_component_iface(mNode);
+    AtspiComponent *component = atspi_accessible_get_component_iface(mNode.get());
     if (component) {
         AtspiRect *extent = atspi_component_get_extents(
             component, ATSPI_COORD_TYPE_SCREEN, NULL);
@@ -291,14 +284,14 @@ bool AccessibleNode::isVisible() const
     return hasFeatureProperty(NodeFeatureProperties::VISIBILITY);
 }
 
-AtspiAccessible *AccessibleNode::getAccessible()
+AtspiAccessible *AccessibleNode::getAccessible() const
 {
-    return mNode;
+    return mNode.get();
 }
 
 void AccessibleNode::setValue(std::string &text) const
 {
-    AtspiEditableText *iface = atspi_accessible_get_editable_text(mNode);
+    AtspiEditableText *iface = atspi_accessible_get_editable_text(mNode.get());
     if (iface) {
         atspi_editable_text_insert_text(iface, 0, text.c_str(), text.length(),
                                         NULL);

@@ -50,8 +50,8 @@ public:
     virtual ~AccessibleWatcher();
 
 public:
-    AccessibleNode *getRootNode() const;
-    AccessibleNode *getTopNode() const;
+    std::unique_ptr<AccessibleNode> getRootNode() const;
+    std::vector<std::unique_ptr<AccessibleNode>> getTopNode() const;
 
     void onWindowActivated(AtspiAccessible *      node,
                                    WindowActivateInfoType type) override;

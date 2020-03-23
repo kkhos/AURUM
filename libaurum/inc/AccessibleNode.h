@@ -2,6 +2,8 @@
 #define ACCESSIBLE_NODE_H
 #include "config.h"
 
+#include "AccessibleUtils.h"
+
 #include <atspi/atspi.h>
 #include <map>
 #include <memory>
@@ -91,19 +93,17 @@ public:
 };
 
 class AccessibleNode {
-private:
+public:
     AccessibleNode();
     AccessibleNode(AtspiAccessible *node);
-
-public:
-    static AccessibleNode *get(AtspiAccessible *node);
     ~AccessibleNode();
+    static std::unique_ptr<AccessibleNode> get(AtspiAccessible *node);
 
 public:
     int              getChildCount() const;
-    AccessibleNode * getChildAt(int index) const;
-    AccessibleNode * getParent() const;
-    AtspiAccessible *getAccessible();
+    std::unique_ptr<AccessibleNode> getChildAt(int index) const;
+    std::unique_ptr<AccessibleNode> getParent() const;
+    AtspiAccessible *getAccessible() const;
 
 public:
     std::string getDesc() const;
@@ -140,7 +140,7 @@ private:
     static std::map<AtspiAccessible *, AccessibleNode *> mNodeMap;
 
 private:
-    AtspiAccessible *mNode;
+    unique_ptr_gobj<AtspiAccessible> mNode;
 
     mutable std::string mText;
     mutable std::string mPkg;

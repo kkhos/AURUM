@@ -55,7 +55,7 @@ UiSelector *UiSelector::depth(int depth)
     return this;
 }
 
-UiSelector *UiSelector::hasChild(UiSelector *child)
+UiSelector *UiSelector::hasChild(std::shared_ptr<UiSelector> child)
 {
     mChild.push_back(child);
     return this;
