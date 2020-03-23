@@ -15,14 +15,9 @@ SyncCommand::SyncCommand(const ::aurum::ReqEmpty *request,
     LOG_SCOPE_F(INFO, "Sync Command ");
     const AccessibleWatcher *accObj = AccessibleWatcher::getInstance();
 
-    AccessibleNode *root = accObj->getRootNode();
-    AccessibleNode *top = accObj->getTopNode();
-    LOG_F(INFO, "%p(%p) %p(%p)", root, root->getAccessible(), top,
-          top->getAccessible());
-
+    auto root = accObj->getRootNode();
+    LOG_F(INFO, "root node tree / depth : 2");
     root->print(0, 2);
-    LOG_F(INFO, "---------");
-    top->print(0, 2);
 
     return grpc::Status::OK;
 }
