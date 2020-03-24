@@ -3,6 +3,7 @@
 
 #include <atspi/atspi.h>
 #include <gio/gio.h>
+#include <string.h>
 
 #include <memory>
 #include "config.h"
@@ -37,6 +38,6 @@ unique_ptr_gobj<T> make_gobj_ref_unique(T *ptr)
     return unique_ptr_gobj<T>(ptr);
 }
 
-char *state_to_char(AtspiStateType state);
+char* state_to_char(AtspiStateType state);
 
 #endif

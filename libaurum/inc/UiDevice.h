@@ -59,7 +59,7 @@ public:
     static UiDevice *getInstance(DeviceType type);
 
 private:
-    const std::vector<std::unique_ptr<AccessibleNode>> getWindowRoot() const;
+    std::vector<std::unique_ptr<AccessibleNode>> getWindowRoot() const;
 
 private:
     UiDevice();

@@ -1,7 +1,7 @@
 #include "AccessibleUtils.h"
 #include "loguru.hpp"
 
-char *state_to_char(AtspiStateType state)
+char* state_to_char(AtspiStateType state)
 {
    switch (state) {
    case ATSPI_STATE_INVALID:
