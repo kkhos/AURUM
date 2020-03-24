@@ -3,6 +3,7 @@
 
 #include <atspi/atspi.h>
 #include <gio/gio.h>
+#include <string.h>
 
 #include <memory>
 #include "config.h"

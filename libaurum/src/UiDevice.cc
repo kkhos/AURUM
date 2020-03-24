@@ -29,11 +29,9 @@ UiDevice *UiDevice::getInstance(DeviceType type)
     return device;
 }
 
-const std::vector<std::unique_ptr<AccessibleNode>> UiDevice::getWindowRoot() const
+std::vector<std::unique_ptr<AccessibleNode>> UiDevice::getWindowRoot() const
 {
-    std::vector<std::unique_ptr<AccessibleNode>> root = AccessibleWatcher::getInstance()->getTopNode();
-    // root->print(0,6);
-    return root;
+    return AccessibleWatcher::getInstance()->getTopNode();
 }
 
 bool UiDevice::hasObject(const std::shared_ptr<UiSelector> selector) const
