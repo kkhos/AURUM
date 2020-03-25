@@ -1,5 +1,6 @@
 #include "AccessibleUtils.h"
 #include "loguru.hpp"
+#include <string.h>
 
 char* state_to_char(AtspiStateType state)
 {
@@ -99,7 +100,7 @@ char* state_to_char(AtspiStateType state)
    }
 }
 
-static void debug( AtspiStateSet *stateSet)
+static void _print_stateset_debug( AtspiStateSet *stateSet)
 {
    if (!stateSet) return;
    GArray *states = atspi_state_set_get_states(stateSet);
