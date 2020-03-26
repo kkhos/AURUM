@@ -46,11 +46,12 @@ aurumServiceImpl::~aurumServiceImpl() {}
     std::unique_ptr<FindElementCommand> cmd = std::make_unique<FindElementCommand>(request, response);
     return execute(cmd.get());
 }
+
 ::grpc::Status aurumServiceImpl::aurumServiceImpl::click(
     ::grpc::ServerContext* context, const ::aurum::ReqClick* request,
     ::aurum::RspClick* response)
 {
-    std::unique_ptr<ClickCommand> cmd = std::make_unique<ClickCommand>(request, response);
+    std::unique_ptr<ClickCommand> cmd = ClickCommand::createCommand(request, response);
     return execute(cmd.get());
 }
 ::grpc::Status aurumServiceImpl::getValue(::grpc::ServerContext*      context,
