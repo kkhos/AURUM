@@ -9,10 +9,9 @@ SetValueCommand::SetValueCommand(const ::aurum::ReqSetValue* request,
 
 ::grpc::Status SetValueCommand::execute()
 {
-    LOG_SCOPE_F(INFO, "SetValue --------------- ");
+    LOG_SCOPE_F(INFO, "SetValue (text:%s) --------------- ", mRequest->stringvalue().c_str());
     ObjectMapper* mObjMap = ObjectMapper::getInstance();
     UiObject*     obj = mObjMap->getElement(mRequest->elementid());
     if (obj) obj->setText(const_cast<std::string&>(mRequest->stringvalue()));
-    LOG_F(INFO, "%p %s", obj, mRequest->stringvalue().c_str());
     return grpc::Status::OK;
 }

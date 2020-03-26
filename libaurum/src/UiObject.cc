@@ -138,7 +138,7 @@ std::string UiObject::getText() const
     return getAccessibleNode()->getText();
 }
 
-void UiObject::setText(std::string &text)
+void UiObject::setText(std::string text)
 {
     getAccessibleNode()->setValue(text);
 }

@@ -48,7 +48,7 @@ public:
     std::string getResourceName() const;
 
     std::string getText() const;
-    void        setText(std::string &text);
+    void        setText(std::string text);
 
     const Rect<int> getBoundingBox() const;
 
