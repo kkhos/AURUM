@@ -133,7 +133,7 @@ public:
     void print(int, int) const;
     void refresh() const;
 
-    void setValue(std::string &text) const;
+    void setValue(std::string text) const;
 
 private:
     bool isSupporting(AccessibleNodeInterface thisIface) const;

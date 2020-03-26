@@ -377,10 +377,13 @@ AtspiAccessible *AccessibleNode::getAccessible() const
     return mNode.get();
 }
 
-void AccessibleNode::setValue(std::string &text) const
+void AccessibleNode::setValue(std::string text) const
 {
     AtspiEditableText *iface = atspi_accessible_get_editable_text(mNode.get());
+    LOG_F(INFO,"set Value iface:%p obj:%p text:%s", iface, mNode.get(), text.c_str() );
     if (iface) {
+        int len = getText().length();
+        atspi_editable_text_delete_text(iface, 0, len, NULL);
         atspi_editable_text_insert_text(iface, 0, text.c_str(), text.length(),
                                         NULL);
     }

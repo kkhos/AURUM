@@ -1,13 +1,26 @@
 #include "ClearCommand.h"
 #include <UiObject.h>
 #include <loguru.hpp>
-
 #include <string>
 
 ClearCommand::ClearCommand(const ::aurum::ReqClear* request,
                            ::aurum::RspClear*       response)
     : mRequest{request}, mResponse{response}
 {
+}
+
+bool ClearCommand::hasHintText(UiObject *obj)
+{
+    if (!obj) return false;
+
+    auto old_text = obj->getText();
+    obj->setText("");
+    if (!old_text.compare(obj->getText())) {
+        return true;
+    } else {
+        obj->setText(old_text);
+        return false;
+    }
 }
 
 ::grpc::Status ClearCommand::execute()
@@ -17,9 +30,18 @@ ClearCommand::ClearCommand(const ::aurum::ReqClear* request,
     UiObject*     obj = mObjMap->getElement(mRequest->elementid());
 
     if (obj) {
-        std::string empty{};
-        obj->setText(empty);
-        mResponse->set_status(::aurum::RspStatus::OK);
+        obj->setText("");
+        obj->refresh();
+        auto text = obj->getText();
+        if (text.length() != 0) {
+            if (hasHintText(obj)) {
+                mResponse->set_status(::aurum::RspStatus::OK);
+            } else {
+                mResponse->set_status(::aurum::RspStatus::ERROR);
+            }
+        } else {
+            mResponse->set_status(::aurum::RspStatus::OK);
+        }
     }
 
     return grpc::Status::OK;

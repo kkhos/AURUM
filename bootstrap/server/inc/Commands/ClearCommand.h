@@ -15,8 +15,10 @@ private:
 
 public:
     ClearCommand(const ::aurum::ReqClear* request, ::aurum::RspClear* response);
-    ;
     ::grpc::Status execute() override;
+
+protected:
+    bool hasHintText(UiObject *obj);
 };
 
 #endif
