@@ -25,18 +25,26 @@ ISearchable* FindElementCommand::getSearchableTop(void)
 
     return searchableObj;
 }
-std::shared_ptr<UiSelector> FindElementCommand::getSelector(void)
+
+std::vector<std::shared_ptr<UiSelector>> FindElementCommand::getSelectors(void)
 {
-    return Sel::text(mRequest->textfield());
+    std::vector<std::shared_ptr<UiSelector>> ret = {};
+    ret.push_back(Sel::text(mRequest->textfield()));
+    return ret;
 }
 
 ::grpc::Status FindElementCommand::execute()
 {
     LOG_SCOPE_F(INFO, "findElement --------------- ");
     auto searchableObj = getSearchableTop();
-    auto sel           = getSelector();
+    auto selectors     = getSelectors();
 
-    std::vector<std::unique_ptr<UiObject>> founds = searchableObj->findObjects(sel);
+    std::vector<std::unique_ptr<UiObject>> founds = {};
+
+    for ( auto sel : selectors ) {
+        auto ret = searchableObj->findObjects(sel);
+        std::move(std::begin(ret), std::end(ret), std::back_inserter(founds));
+    }
 
     if (founds.size() > 0) {
         for (auto& found : founds) {

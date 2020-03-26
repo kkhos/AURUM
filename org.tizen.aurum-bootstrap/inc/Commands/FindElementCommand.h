@@ -22,6 +22,6 @@ public:
     ::grpc::Status execute() override;
 protected:
     virtual ISearchable* getSearchableTop(void);
-    virtual std::shared_ptr<UiSelector> getSelector(void);
+    virtual std::vector<std::shared_ptr<UiSelector>> getSelectors(void);
 };
 #endif
