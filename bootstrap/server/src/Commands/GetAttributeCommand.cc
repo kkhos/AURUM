@@ -6,44 +6,172 @@
 
 GetAttributeCommand::GetAttributeCommand(
     const ::aurum::ReqGetAttribute* request, ::aurum::RspGetAttribute* response)
-    : mRequest{request}, mResponse{response}
+    : mRequest{request}, mResponse{response},  mObjMap{ObjectMapper::getInstance()}
 {
 }
 
 ::grpc::Status GetAttributeCommand::execute()
 {
-    LOG_SCOPE_F(INFO, "GetAttribute --------------- ");
-    ObjectMapper* mObjMap = ObjectMapper::getInstance();
-    UiObject*     obj = mObjMap->getElement(mRequest->elementid());
+    return grpc::Status::CANCELLED;
+}
 
-    ::aurum::ReqGetAttribute_RequestType type = mRequest->attribute();
-    AttributeGetter *getter = AttributeGetter::Creator(type);
+std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::aurum::ReqGetAttribute* request,
+                                                                        ::aurum::RspGetAttribute*       response)
+{
+    ::aurum::ReqGetAttribute_RequestType type = request->attribute();
 
-    if (getter)
-        getter->getPerform(obj, mResponse);
+    LOG_SCOPE_F(INFO, "type : %d", type);
 
+    if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_VISIBLE)
+        return std::make_unique<GetVisibleAttributeCommand>(request, response);
+    else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_FOCUSABLE)
+        return std::make_unique<GetFocusableAttributeCommand>(request, response);
+    else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_FOCUSED)
+        return std::make_unique<GetFocusedAttributeCommand>(request, response);
+    else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_ENABLED)
+        return std::make_unique<GetEnabledAttributeCommand>(request, response);
+    else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_CLICKABLE)
+        return std::make_unique<GetClickableAttributeCommand>(request, response);
+    else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_SCROLLABLE)
+        return std::make_unique<GetScrollableAttributeCommand>(request, response);
+    else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_CHECKABLE)
+        return std::make_unique<GetCheckableAttributeCommand>(request, response);
+    else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_CHECKED)
+        return std::make_unique<GetCheckedAttributeCommand>(request, response);
+    else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_SELECTED)
+        return std::make_unique<GetSelectedAttributeCommand>(request, response);
+    else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_SELECTABLE)
+        return std::make_unique<GetSelectableAttributeCommand>(request, response);
+    else
+        return std::make_unique<GetAttributeCommand>(request, response);
+}
+
+::grpc::Status GetVisibleAttributeCommand::execute()
+{
+    UiObject* obj = mObjMap->getElement(mRequest->elementid());
+    if (!obj) {
+        mResponse->set_boolvalue(false);
+        mResponse->set_status(aurum::RspStatus::ERROR);
+        return grpc::Status::OK;
+    }
+    mResponse->set_boolvalue(obj->isVisible());
+    mResponse->set_status(aurum::RspStatus::OK);
     return grpc::Status::OK;
 }
 
-AttributeGetter* AttributeGetter::Creator(::aurum::ReqGetAttribute_RequestType type)
+::grpc::Status GetFocusedAttributeCommand::execute()
 {
-    switch(type)
-    {
-        case ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_VISIBLE:
-            return new VisibleGetter();
-        default:
-            return nullptr;
+    UiObject* obj = mObjMap->getElement(mRequest->elementid());
+    if (!obj) {
+        mResponse->set_boolvalue(false);
+        mResponse->set_status(aurum::RspStatus::ERROR);
+        return grpc::Status::OK;
     }
+    mResponse->set_boolvalue(obj->isFocused());
+    mResponse->set_status(aurum::RspStatus::OK);
+    return grpc::Status::OK;
 }
 
-bool VisibleGetter::getPerform(UiObject *obj, ::aurum::RspGetAttribute* rsp)
+::grpc::Status GetFocusableAttributeCommand::execute()
 {
-    bool isVisible = obj->isVisible();
-
-    rsp->set_boolvalue(isVisible);
-    rsp->set_status(aurum::RspStatus::OK);
-
-    return true;
+    UiObject* obj = mObjMap->getElement(mRequest->elementid());
+    if (!obj) {
+        mResponse->set_boolvalue(false);
+        mResponse->set_status(aurum::RspStatus::ERROR);
+        return grpc::Status::OK;
+    }
+    mResponse->set_boolvalue(obj->isFocusable());
+    mResponse->set_status(aurum::RspStatus::OK);
+    return grpc::Status::OK;
 }
-AttributeGetter::~AttributeGetter(){}
-VisibleGetter::~VisibleGetter(){}
+
+::grpc::Status GetCheckableAttributeCommand::execute()
+{
+    UiObject* obj = mObjMap->getElement(mRequest->elementid());
+    if (!obj) {
+        mResponse->set_boolvalue(false);
+        mResponse->set_status(aurum::RspStatus::ERROR);
+        return grpc::Status::OK;
+    }
+    mResponse->set_boolvalue(obj->isCheckable());
+    mResponse->set_status(aurum::RspStatus::OK);
+    return grpc::Status::OK;
+}
+
+::grpc::Status GetCheckedAttributeCommand::execute()
+{
+    UiObject* obj = mObjMap->getElement(mRequest->elementid());
+    if (!obj) {
+        mResponse->set_boolvalue(false);
+        mResponse->set_status(aurum::RspStatus::ERROR);
+        return grpc::Status::OK;
+    }
+    mResponse->set_boolvalue(obj->isChecked());
+    mResponse->set_status(aurum::RspStatus::OK);
+    return grpc::Status::OK;
+}
+
+::grpc::Status GetEnabledAttributeCommand::execute()
+{
+    UiObject* obj = mObjMap->getElement(mRequest->elementid());
+    if (!obj) {
+        mResponse->set_boolvalue(false);
+        mResponse->set_status(aurum::RspStatus::ERROR);
+        return grpc::Status::OK;
+    }
+    mResponse->set_boolvalue(obj->isEnabled());
+    mResponse->set_status(aurum::RspStatus::OK);
+    return grpc::Status::OK;
+}
+
+::grpc::Status GetClickableAttributeCommand::execute()
+{
+    UiObject* obj = mObjMap->getElement(mRequest->elementid());
+    if (!obj) {
+        mResponse->set_boolvalue(false);
+        mResponse->set_status(aurum::RspStatus::ERROR);
+        return grpc::Status::OK;
+    }
+    mResponse->set_boolvalue(obj->isClickable());
+    mResponse->set_status(aurum::RspStatus::OK);
+    return grpc::Status::OK;
+}
+
+::grpc::Status GetScrollableAttributeCommand::execute()
+{
+    UiObject* obj = mObjMap->getElement(mRequest->elementid());
+    if (!obj) {
+        mResponse->set_boolvalue(false);
+        mResponse->set_status(aurum::RspStatus::ERROR);
+        return grpc::Status::OK;
+    }
+    mResponse->set_boolvalue(obj->isScrollable());
+    mResponse->set_status(aurum::RspStatus::OK);
+    return grpc::Status::OK;
+}
+
+::grpc::Status GetSelectableAttributeCommand::execute()
+{
+    UiObject* obj = mObjMap->getElement(mRequest->elementid());
+    if (!obj) {
+        mResponse->set_boolvalue(false);
+        mResponse->set_status(aurum::RspStatus::ERROR);
+        return grpc::Status::OK;
+    }
+    mResponse->set_boolvalue(obj->isSelectable());
+    mResponse->set_status(aurum::RspStatus::OK);
+    return grpc::Status::OK;
+}
+
+::grpc::Status GetSelectedAttributeCommand::execute()
+{
+    UiObject* obj = mObjMap->getElement(mRequest->elementid());
+    if (!obj) {
+        mResponse->set_boolvalue(false);
+        mResponse->set_status(aurum::RspStatus::ERROR);
+        return grpc::Status::OK;
+    }
+    mResponse->set_boolvalue(obj->isSelected());
+    mResponse->set_status(aurum::RspStatus::OK);
+    return grpc::Status::OK;
+}

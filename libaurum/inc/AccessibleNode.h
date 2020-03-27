@@ -41,7 +41,9 @@ enum class NodeFeatureProperties {
 
     SELECTABLE = 0X0100,
     SELECTED = 0X0200,
-    VISIBILITY = 0X0400,
+    VISIBLE = 0X0400,
+    SHOWING = 0X0800,
+    ACTIVE = 0X0800,
 };
 
 template <typename T>
@@ -136,7 +138,8 @@ public:
 private:
     bool isSupporting(AccessibleNodeInterface thisIface) const;
     bool hasFeatureProperty(NodeFeatureProperties prop) const;
-    void setFeatureProperty(NodeFeatureProperties prop, bool has);
+    void setFeatureProperty(NodeFeatureProperties prop, bool has) const;
+    void setFeatureProperty(AtspiStateType type) const;
     static std::map<AtspiAccessible *, AccessibleNode *> mNodeMap;
 
 private:
@@ -153,7 +156,7 @@ private:
     mutable Rect<int> mBoundingBox;
 
     int  mSupportingIfaces;
-    int  mFeatureProperty;
+    mutable int  mFeatureProperty;
     bool mIsAlive;
 };
 

@@ -9,30 +9,77 @@
 #include "config.h"
 
 class GetAttributeCommand : public Command {
-private:
+protected:
     const ::aurum::ReqGetAttribute* mRequest;
     ::aurum::RspGetAttribute*       mResponse;
+    ObjectMapper* mObjMap;
 
 public:
     GetAttributeCommand(const ::aurum::ReqGetAttribute* request,
                         ::aurum::RspGetAttribute*       response);
-    ;
+    ::grpc::Status execute() override;
+    static std::unique_ptr<GetAttributeCommand> createCommand(const ::aurum::ReqGetAttribute* request,
+                                                              ::aurum::RspGetAttribute*       response);
+};
+
+class GetVisibleAttributeCommand : public GetAttributeCommand {
+    using GetAttributeCommand::GetAttributeCommand;
+public:
     ::grpc::Status execute() override;
 };
 
-class AttributeGetter {
-private:
+class GetFocusedAttributeCommand : public GetAttributeCommand {
+    using GetAttributeCommand::GetAttributeCommand;
 public:
-    virtual ~AttributeGetter();
-    static AttributeGetter *Creator(::aurum::ReqGetAttribute_RequestType type);
-    virtual bool getPerform(UiObject *obj,  ::aurum::RspGetAttribute* mResponse){return true;}
+    ::grpc::Status execute() override;
 };
 
-class VisibleGetter : public AttributeGetter{
-private:
+class GetFocusableAttributeCommand : public GetAttributeCommand {
+    using GetAttributeCommand::GetAttributeCommand;
 public:
-    virtual ~VisibleGetter();
-    bool getPerform(UiObject *obj, ::aurum::RspGetAttribute* rsp) override;
+    ::grpc::Status execute() override;
+};
+
+class GetCheckableAttributeCommand : public GetAttributeCommand {
+    using GetAttributeCommand::GetAttributeCommand;
+public:
+    ::grpc::Status execute() override;
+};
+
+class GetCheckedAttributeCommand : public GetAttributeCommand {
+    using GetAttributeCommand::GetAttributeCommand;
+public:
+    ::grpc::Status execute() override;
+};
+
+class GetEnabledAttributeCommand : public GetAttributeCommand {
+    using GetAttributeCommand::GetAttributeCommand;
+public:
+    ::grpc::Status execute() override;
+};
+
+class GetClickableAttributeCommand : public GetAttributeCommand {
+    using GetAttributeCommand::GetAttributeCommand;
+public:
+    ::grpc::Status execute() override;
+};
+
+class GetScrollableAttributeCommand : public GetAttributeCommand {
+    using GetAttributeCommand::GetAttributeCommand;
+public:
+    ::grpc::Status execute() override;
+};
+
+class GetSelectableAttributeCommand : public GetAttributeCommand {
+    using GetAttributeCommand::GetAttributeCommand;
+public:
+    ::grpc::Status execute() override;
+};
+
+class GetSelectedAttributeCommand : public GetAttributeCommand {
+    using GetAttributeCommand::GetAttributeCommand;
+public:
+    ::grpc::Status execute() override;
 };
 
 #endif

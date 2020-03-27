@@ -72,7 +72,7 @@ aurumServiceImpl::~aurumServiceImpl() {}
     ::grpc::ServerContext* context, const ::aurum::ReqGetAttribute* request,
     ::aurum::RspGetAttribute* response)
 {
-    std::unique_ptr<GetAttributeCommand> cmd = std::make_unique<GetAttributeCommand>(request, response);
+    std::unique_ptr<GetAttributeCommand> cmd = GetAttributeCommand::createCommand(request, response);
     return execute(cmd.get());
 }
 ::grpc::Status aurumServiceImpl::getSize(::grpc::ServerContext*     context,
