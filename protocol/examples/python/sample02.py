@@ -75,10 +75,19 @@ def clickById(stub, id):
             )
         )
 
+def getAttrById(stub, id, attr):
+   rsp = stub.getAttribute(aurum_pb2.ReqGetAttribute(attribute=attr, elementId=id))
+   print(rsp)
+
 def run_memo(stub):
     foundId = findElementByText(stub, 'All apps')
     time.sleep(1)
     if foundId != None:
+        getAttrById(stub, foundId, 'VISIBLE')
+        getAttrById(stub, foundId, 'CLICKABLE')
+        getAttrById(stub, foundId, 'FOCUSED')
+        getAttrById(stub, foundId, 'ENABLED')
+        getAttrById(stub, foundId, 'CHECKED')
         clickById(stub, foundId)
         time.sleep(1)
 

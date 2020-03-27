@@ -98,21 +98,30 @@ void AccessibleNode::refresh() const
     mRes = "Not_Supported";
 #endif
 
-    /*
-        GHashTable *attributes = atspi_accessible_get_attributes(mNode, NULL);
-        char *t = (char*)g_hash_table_lookup(attributes, "type");
-        char *s = (char*)g_hash_table_lookup(attributes, "style");
 
-        //LOG_F(INFO, "%s %s", t, s);
+    GHashTable *attributes = atspi_accessible_get_attributes(mNode.get(), NULL);
+    char *t = (char*)g_hash_table_lookup(attributes, "type");
+    char *s = (char*)g_hash_table_lookup(attributes, "style");
 
-        if (t) mType =  std::string(t);
-        if (s) mStyle = std::string(s);
+    if (t) mType =  std::string(t);
+    if (s) mStyle = std::string(s);
 
-        free(t);
-        free(s);
+    free(t);
+    free(s);
 
-        g_hash_table_unref(attributes);
-    */
+    g_hash_table_unref(attributes);
+
+    AtspiStateSet *st = atspi_accessible_get_state_set(mNode.get());
+    GArray *states = atspi_state_set_get_states(st);
+
+    char *state_name = NULL;
+    AtspiStateType stat;
+    for (int i = 0; states && (i < states->len); ++i) {
+        stat = g_array_index(states, AtspiStateType, i);
+        setFeatureProperty(stat);
+    }
+
+    if (states) g_array_free(states, 0);
 }
 
 int AccessibleNode::getChildCount() const
@@ -175,7 +184,86 @@ bool AccessibleNode::hasFeatureProperty(NodeFeatureProperties prop) const
     return (mFeatureProperty & static_cast<int>(prop)) != 0;
 }
 
-void AccessibleNode::setFeatureProperty(NodeFeatureProperties prop, bool has)
+void AccessibleNode::setFeatureProperty(AtspiStateType type) const
+{
+/*
+    LONGCLICKABLE = 0X0040,
+    SCROLLABLE = 0X0080,
+*/
+    switch(type) {
+        case ATSPI_STATE_CHECKED:
+            setFeatureProperty(NodeFeatureProperties::CHECKED, true);
+            break;
+        case ATSPI_STATE_CHECKABLE:
+            setFeatureProperty(NodeFeatureProperties::CHECKABLE, true);
+            break;
+        case ATSPI_STATE_ENABLED:
+            setFeatureProperty(NodeFeatureProperties::ENABLED, true);
+            break;
+        case ATSPI_STATE_FOCUSABLE:
+            setFeatureProperty(NodeFeatureProperties::FOCUSABLE, true);
+            break;
+        case ATSPI_STATE_FOCUSED:
+            setFeatureProperty(NodeFeatureProperties::FOCUSED, true);
+            break;
+        case ATSPI_STATE_SELECTABLE:
+            setFeatureProperty(NodeFeatureProperties::SELECTABLE, true);
+            break;
+        case ATSPI_STATE_SELECTED:
+            setFeatureProperty(NodeFeatureProperties::SELECTED, true);
+            break;
+        case ATSPI_STATE_SHOWING:
+            setFeatureProperty(NodeFeatureProperties::SHOWING, true);
+            break;
+        case ATSPI_STATE_VISIBLE:
+            setFeatureProperty(NodeFeatureProperties::VISIBLE, true);
+            break;
+        case ATSPI_STATE_ACTIVE:
+            setFeatureProperty(NodeFeatureProperties::ACTIVE, true);
+            break;
+        case ATSPI_STATE_SENSITIVE:
+            setFeatureProperty(NodeFeatureProperties::CLICKABLE, true);
+            break;
+
+        case ATSPI_STATE_TRANSIENT:
+        case ATSPI_STATE_TRUNCATED:
+        case ATSPI_STATE_ANIMATED:
+        case ATSPI_STATE_INVALID:
+        case ATSPI_STATE_ARMED:
+        case ATSPI_STATE_BUSY:
+        case ATSPI_STATE_COLLAPSED:
+        case ATSPI_STATE_DEFUNCT:
+        case ATSPI_STATE_EDITABLE:
+        case ATSPI_STATE_EXPANDABLE:
+        case ATSPI_STATE_EXPANDED:
+        case ATSPI_STATE_HAS_TOOLTIP:
+        case ATSPI_STATE_HORIZONTAL:
+        case ATSPI_STATE_ICONIFIED:
+        case ATSPI_STATE_MODAL:
+        case ATSPI_STATE_MULTI_LINE:
+        case ATSPI_STATE_MULTISELECTABLE:
+        case ATSPI_STATE_OPAQUE:
+        case ATSPI_STATE_PRESSED:
+        case ATSPI_STATE_RESIZABLE:
+        case ATSPI_STATE_SINGLE_LINE:
+        case ATSPI_STATE_STALE:
+        case ATSPI_STATE_VERTICAL:
+        case ATSPI_STATE_MANAGES_DESCENDANTS:
+        case ATSPI_STATE_INDETERMINATE:
+        case ATSPI_STATE_REQUIRED:
+        case ATSPI_STATE_INVALID_ENTRY:
+        case ATSPI_STATE_SUPPORTS_AUTOCOMPLETION:
+        case ATSPI_STATE_SELECTABLE_TEXT:
+        case ATSPI_STATE_IS_DEFAULT:
+        case ATSPI_STATE_VISITED:
+        case ATSPI_STATE_HAS_POPUP:
+        case ATSPI_STATE_READ_ONLY:
+        case ATSPI_STATE_LAST_DEFINED:
+        break;
+    }
+}
+
+void AccessibleNode::setFeatureProperty(NodeFeatureProperties prop, bool has) const
 {
     if (has)
         mFeatureProperty |= static_cast<int>(prop);
@@ -281,7 +369,7 @@ bool AccessibleNode::isSelected() const
 
 bool AccessibleNode::isVisible() const
 {
-    return hasFeatureProperty(NodeFeatureProperties::VISIBILITY);
+    return hasFeatureProperty(NodeFeatureProperties::VISIBLE);
 }
 
 AtspiAccessible *AccessibleNode::getAccessible() const
