@@ -50,6 +50,7 @@ std::unique_ptr<ClickCommand> ClickCommand::createCommand(const ::aurum::ReqClic
     const ::aurum::Point& point = mRequest->coordination();
     obj->click(point.x(), point.y());
     mResponse->set_status(::aurum::RspStatus::OK);
+    return grpc::Status::OK;
 }
 
 ::grpc::Status ClickAtspiCommand::execute()
