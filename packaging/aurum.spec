@@ -23,6 +23,8 @@ BuildRequires: pkgconfig(aul)
 BuildRequires: pkgconfig(capi-appfw-package-manager)
 BuildRequires: pkgconfig(capi-appfw-app-control)
 BuildRequires: pkgconfig(capi-appfw-app-manager)
+BuildRequires: pkgconfig(capi-appfw-service-application) 
+BuildRequires: pkgconfig(libtzplatform-config)
 
 %description
 aurum is a project for testing ui.
@@ -54,6 +56,8 @@ meson \
     --libdir %{_libdir} \
     -Dcpp_std=c++17 \
     -Dtizen=true \
+    -Dtzapp_path=%{TZ_SYS_RO_APP} \
+    -Dtzpackage_path=%{TZ_SYS_RO_PACKAGES} \
     gbsbuild 2>&1 | sed \
         -e 's%^.*: error: .*$%\x1b[37;41m&\x1b[m%' \
         -e 's%^.*: warning: .*$%\x1b[30;43m&\x1b[m%'
@@ -89,11 +93,15 @@ sbin/ldconfig
 sbin/ldconfig
 
 %post bootstrap
-chsmack -e "User" %{_bindir}/aurum_bootstrap
+#chsmack -e "User" %{_bindir}/aurum_bootstrap
+%if 0%{?sec_product_feature_profile_wearable}                                           
+/usr/bin/signing-client/hash-signer-client.sh -a -d -p platform %{TZ_SYS_RO_APP}/%{name}-bootstrap
+%endif                                                                                  
 
 
 %postun bootstrap
 /sbin/ldconfig
+
 
 %files
 %manifest %{name}.manifest
@@ -111,5 +119,8 @@ chsmack -e "User" %{_bindir}/aurum_bootstrap
 %manifest %{name}.manifest
 %defattr(-,root,root)
 %license COPYING
-%{_bindir}/aurum_bootstrap
-%{_unitdir_user}/aurum-bootstrap.service
+#%{_bindir}/aurum_bootstrap
+#%{_unitdir_user}/aurum-bootstrap.service
+%{TZ_SYS_RO_PACKAGES}/org.tizen.aurum-bootstrap.xml  
+%{TZ_SYS_RO_APP}/org.tizen.aurum-bootstrap/*         
+
