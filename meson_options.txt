@@ -3,5 +3,13 @@ option('tizen',
   value: false,
   description: 'enable tizen specific dependancy'
 )
-
-
+option('tzapp_path',
+  type: 'string',
+  value: '/usr/apps/',
+  description: 'installation path for tizen app binary'
+)
+option('tzpackage_path',
+  type: 'string',
+  value: '/usr/share/packages/',
+  description: 'installation path for registering tizen service app'
+)
