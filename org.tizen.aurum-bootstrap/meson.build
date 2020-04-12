@@ -51,25 +51,19 @@ bootstrap_svr_dep += [
    dependency('capi-appfw-app-control'),
    dependency('capi-appfw-app-manager'),
    dependency('capi-appfw-package-manager'),
+   dependency('capi-appfw-service-application'),
 ]
 endif
 
 bootstrap_svr_bin = executable(
-   'aurum_bootstrap',
+   'aurum-bootstrap',
    [bootstrap_svr_src, grpc_src, grpc_pb_src],
    dependencies: bootstrap_svr_dep,
    include_directories: bootstrap_svr_inc,
    link_with: libloguru,
    install:true,
+   install_dir:  join_paths(get_option('tzapp_path'), 'org.tizen.aurum-bootstrap', 'bin'),
    pie:true,
 )
 
-system_unit_dir = ''
-user_unit_dir = ''
-
-systemd = dependency('systemd', required: false)
-if systemd.found()
-   user_unit_dir = systemd.get_pkgconfig_variable('systemduserunitdir')
-endif
-
-install_data('aurum-bootstrap.service', install_dir:user_unit_dir)
+install_data('org.tizen.aurum-bootstrap.xml', install_dir: get_option('tzpackage_path'))

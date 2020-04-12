@@ -23,6 +23,21 @@ BuildRequires: pkgconfig(aul)
 BuildRequires: pkgconfig(capi-appfw-package-manager)
 BuildRequires: pkgconfig(capi-appfw-app-control)
 BuildRequires: pkgconfig(capi-appfw-app-manager)
+BuildRequires: pkgconfig(capi-appfw-service-application)
+BuildRequires: pkgconfig(libtzplatform-config)
+
+%if "%{?profile}" == "tv"
+  %define __hash_signing 0
+%else
+  %define __hash_signing 1
+%endif
+
+%if 0%{?__hash_signing}
+BuildRequires:  hash-signer
+%if 0%{?sec_product_feature_profile_wearable}
+Requires(post): signing-client
+%endif
+%endif
 
 %description
 aurum is a project for testing ui.
@@ -54,6 +69,8 @@ meson \
     --libdir %{_libdir} \
     -Dcpp_std=c++17 \
     -Dtizen=true \
+    -Dtzapp_path=%{TZ_SYS_RO_APP} \
+    -Dtzpackage_path=%{TZ_SYS_RO_PACKAGES} \
     gbsbuild 2>&1 | sed \
         -e 's%^.*: error: .*$%\x1b[37;41m&\x1b[m%' \
         -e 's%^.*: warning: .*$%\x1b[30;43m&\x1b[m%'
@@ -84,6 +101,14 @@ ninja \
 export DESTDIR=%{buildroot}
 ninja -C gbsbuild install
 
+%if 0%{?__hash_signing}
+%define tizen_sign 1
+%define tizen_sign_base /usr/apps/org.tizen.aurum-bootstrap
+%define tizen_sign_level platform
+%define tizen_author_sign 1
+%define tizen_dist_sign 1
+%endif
+
 %post
 sbin/ldconfig
 
@@ -91,11 +116,15 @@ sbin/ldconfig
 sbin/ldconfig
 
 %post bootstrap
-chsmack -e "User" %{_bindir}/aurum_bootstrap
-
+%if 0%{?sec_product_feature_profile_wearable}
+echo "signing %{TZ_SYS_RO_APP}/org.tizen.aurum-bootstrap"
+/usr/bin/signing-client/hash-signer-client.sh -a -d -p platform %{TZ_SYS_RO_APP}/org.tizen.aurum-bootstrap
+%endif
+#chsmack -e "User" %{_bindir}/aurum_bootstrap
 
 %postun bootstrap
 /sbin/ldconfig
+
 
 %files
 %manifest %{name}.manifest
@@ -113,5 +142,8 @@ chsmack -e "User" %{_bindir}/aurum_bootstrap
 %manifest %{name}.manifest
 %defattr(-,root,root)
 %license COPYING
-%{_bindir}/aurum_bootstrap
-%{_unitdir_user}/aurum-bootstrap.service
+#%{_bindir}/aurum_bootstrap
+#%{_unitdir_user}/aurum-bootstrap.service
+%{TZ_SYS_RO_PACKAGES}/org.tizen.aurum-bootstrap.xml
+%{TZ_SYS_RO_APP}/org.tizen.aurum-bootstrap/*
+
