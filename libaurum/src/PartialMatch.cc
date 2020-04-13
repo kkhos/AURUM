@@ -5,30 +5,55 @@
 
 #include "loguru.hpp"
 
+bool PartialMatch::checkCriteria(const std::string *textA, const std::string textB)
+{
+    if (!textA) return false;
+    return textA->compare(textB);
+}
+
+bool PartialMatch::checkCriteria(const bool *boolA, const bool boolB)
+{
+    if (!boolA) return false;
+    return *boolA != boolB;
+}
+
+void PartialMatch::debugPrint()
+{
+    if (mSelector->mPkg)
+        LOG_F(INFO, "selector->pkg :%s", mSelector->mPkg->c_str());
+    if (mSelector->mRes)
+        LOG_F(INFO, "selector->pkg :%s", mSelector->mRes->c_str());
+    if (mSelector->mText)
+        LOG_F(INFO, "selector->pkg :%s", mSelector->mText->c_str());
+    if (mSelector->mDesc)
+        LOG_F(INFO, "selector->pkg :%s", mSelector->mDesc->c_str());
+    if (mSelector->mType)
+        LOG_F(INFO, "selector->pkg :%s", mSelector->mType->c_str());
+    if (mSelector->mStyle)
+        LOG_F(INFO, "selector->pkg :%s", mSelector->mStyle->c_str());
+}
+
 bool PartialMatch::checkCriteria(const std::shared_ptr<UiSelector> selector,
                                  const AccessibleNode *node)
 {
-    if (selector->mPkg.length() > 0 && selector->mPkg.compare(node->getPkg()))
-        return false;
-    if (selector->mRes.length() > 0 && selector->mRes.compare(node->getRes()))
-        return false;
-    if (selector->mText.length() > 0 && selector->mText.compare(node->getText()))
-        return false;
-    if (selector->mDesc.length() > 0 && selector->mDesc.compare(node->getDesc()))
-        return false;
-    if (selector->mType.length() > 0 && selector->mType.compare(node->getType()))
-        return false;
+    if(checkCriteria(selector->mPkg.get(), node->getPkg())) return false;
+    if(checkCriteria(selector->mRes.get(), node->getRes())) return false;
+    if(checkCriteria(selector->mText.get(), node->getText())) return false;
+    if(checkCriteria(selector->mDesc.get(), node->getDesc())) return false;
+    if(checkCriteria(selector->mType.get(), node->getType())) return false;
+    if(checkCriteria(selector->mStyle.get(), node->getStyle())) return false;
+    if(checkCriteria(selector->mStyle.get(), node->getStyle())) return false;
 
-    LOG_F(INFO, "node mPkg :%s, selector->desc :%s | %ld", node->getPkg().c_str(),
-          selector->mPkg.c_str(), selector->mPkg.length());
-    LOG_F(INFO, "node mRes :%s, selector->desc :%s | %ld", node->getRes().c_str(),
-          selector->mRes.c_str(), selector->mRes.length());
-    LOG_F(INFO, "node mText :%s, selector->desc :%s | %ld", node->getText().c_str(),
-          selector->mText.c_str(), selector->mText.length());
-    LOG_F(INFO, "node mDesc :%s, selector->desc :%s | %ld", node->getDesc().c_str(),
-          selector->mDesc.c_str(), selector->mDesc.length());
-    LOG_F(INFO, "node mType :%s, selector->type :%s | %ld", node->getType().c_str(),
-          selector->mType.c_str(), selector->mType.length());
+    if(checkCriteria(selector->mIschecked.get(), node->isChecked())) return false;
+    if(checkCriteria(selector->mIscheckable.get(), node->isCheckable())) return false;
+    if(checkCriteria(selector->mIsclickable.get(), node->isClickable())) return false;
+    if(checkCriteria(selector->mIsenabled.get(), node->isEnabled())) return false;
+    if(checkCriteria(selector->mIsfocused.get(), node->isFocused())) return false;
+    if(checkCriteria(selector->mIsfocusable.get(), node->isFocusable())) return false;
+    if(checkCriteria(selector->mIsscrollable.get(), node->isScrollable())) return false;
+    if(checkCriteria(selector->mIsselected.get(), node->isSelected())) return false;
+    if(checkCriteria(selector->mIsshowing.get(), node->isShowing())) return false;
+    if(checkCriteria(selector->mIsactive.get(), node->isActive())) return false;
 
     return true;
 }

@@ -127,6 +127,8 @@ public:
     bool isSelectable() const;
     bool isSelected() const;
     bool isVisible() const;
+    bool isShowing() const;
+    bool isActive() const;
 
 public:
     void print(int) const;

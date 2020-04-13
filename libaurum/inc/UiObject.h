@@ -23,7 +23,10 @@ public:
 //    UiObject(const UiObject &src);  // copy constroctur
     UiObject(UiObject &&src);       // move constructor
 
+    UiObject();
     virtual ~UiObject();
+
+    std::shared_ptr<UiSelector> getSelector();
 
     bool hasObject(const std::shared_ptr<UiSelector> selector) const override;
     std::unique_ptr<UiObject> findObject(
@@ -63,13 +66,14 @@ public:
     bool isSelectable() const;
     bool isSelected() const;
     bool isVisible() const;
+    bool isShowing() const;
+    bool isActive() const;
 
     void click() const;
     void longClick(const unsigned int intv = LOGNCLICK_INTERVAL) const;
     void refresh() const;
 
 private:
-    UiObject();
     const AccessibleNode *getAccessibleNode() const;
     static const unsigned int LOGNCLICK_INTERVAL = 50;
 

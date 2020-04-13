@@ -18,9 +18,9 @@ FindElementCommand::FindElementCommand(const ::aurum::ReqFindElement* request,
 ISearchable* FindElementCommand::getSearchableTop(void)
 {
     ISearchable* searchableObj = nullptr;
-    bool fromObject = mRequest->elementid().empty() == false;
 
-    if (fromObject) searchableObj = mObjMap->getElement(mRequest->elementid());
+    if (mRequest->_automationid_case() != 0)
+        searchableObj = mObjMap->getElement(mRequest->elementid());
     if (!searchableObj) searchableObj = UiDevice::getInstance(DeviceType::DEFAULT);
 
     return searchableObj;
@@ -28,9 +28,26 @@ ISearchable* FindElementCommand::getSearchableTop(void)
 
 std::vector<std::shared_ptr<UiSelector>> FindElementCommand::getSelectors(void)
 {
-    std::vector<std::shared_ptr<UiSelector>> ret = {};
-    ret.push_back(Sel::text(mRequest->textfield()));
-    return ret;
+    auto sel = std::make_shared<UiSelector>();
+
+    if(mRequest->_automationid_case())    sel->id(mRequest->automationid());
+    if(mRequest->_textfield_case())       sel->text(mRequest->textfield());
+    if(mRequest->_widgettype_case())      sel->type(mRequest->widgettype());
+    if(mRequest->_widgetstyle_case())     sel->style(mRequest->widgetstyle());
+    if(mRequest->_ischecked_case())       sel->isChecked(mRequest->ischecked());
+    if(mRequest->_ischeckable_case())     sel->isCheckable(mRequest->ischeckable());
+    if(mRequest->_isclickable_case())     sel->isClickable(mRequest->isclickable());
+    if(mRequest->_isenabled_case())       sel->isEnabled(mRequest->isenabled());
+    if(mRequest->_isfocused_case())       sel->isFocused(mRequest->isfocused());
+    if(mRequest->_isfocusable_case())     sel->isFocusable(mRequest->isfocusable());
+    if(mRequest->_isscrollable_case())    sel->isScrollable(mRequest->isscrollable());
+    if(mRequest->_isselected_case())      sel->isSelected(mRequest->isselected());
+    if(mRequest->_isshowing_case())       sel->isShowing(mRequest->isshowing());
+    if(mRequest->_isactive_case())        sel->isActive(mRequest->isactive());
+    if(mRequest->_mindepth_case())        sel->minDepth(mRequest->mindepth());
+    if(mRequest->_maxdepth_case())        sel->maxDepth(mRequest->maxdepth());
+
+    return std::vector<std::shared_ptr<UiSelector>>{sel};
 }
 
 ::grpc::Status FindElementCommand::execute()

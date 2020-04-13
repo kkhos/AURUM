@@ -82,4 +82,15 @@ public:
     ::grpc::Status execute() override;
 };
 
+class GetShowingAttributeCommand : public GetAttributeCommand {
+    using GetAttributeCommand::GetAttributeCommand;
+public:
+    ::grpc::Status execute() override;
+};
+
+class GetActiveAttributeCommand : public GetAttributeCommand {
+    using GetAttributeCommand::GetAttributeCommand;
+public:
+    ::grpc::Status execute() override;
+};
 #endif

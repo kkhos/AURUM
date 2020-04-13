@@ -42,6 +42,10 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
         return std::make_unique<GetSelectedAttributeCommand>(request, response);
     else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_SELECTABLE)
         return std::make_unique<GetSelectableAttributeCommand>(request, response);
+    else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_SHOWING)
+        return std::make_unique<GetShowingAttributeCommand>(request, response);
+    else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_ACTIVE)
+        return std::make_unique<GetActiveAttributeCommand>(request, response);
     else
         return std::make_unique<GetAttributeCommand>(request, response);
 }
@@ -172,6 +176,35 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
         return grpc::Status::OK;
     }
     mResponse->set_boolvalue(obj->isSelected());
+    mResponse->set_status(aurum::RspStatus::OK);
+    return grpc::Status::OK;
+}
+
+
+::grpc::Status GetShowingAttributeCommand::execute()
+{
+    UiObject* obj = mObjMap->getElement(mRequest->elementid());
+    if (!obj) {
+        mResponse->set_boolvalue(false);
+        mResponse->set_status(aurum::RspStatus::ERROR);
+        return grpc::Status::OK;
+    }
+    mResponse->set_boolvalue(obj->isShowing());
+    mResponse->set_status(aurum::RspStatus::OK);
+    return grpc::Status::OK;
+}
+
+
+
+::grpc::Status GetActiveAttributeCommand::execute()
+{
+    UiObject* obj = mObjMap->getElement(mRequest->elementid());
+    if (!obj) {
+        mResponse->set_boolvalue(false);
+        mResponse->set_status(aurum::RspStatus::ERROR);
+        return grpc::Status::OK;
+    }
+    mResponse->set_boolvalue(obj->isActive());
     mResponse->set_status(aurum::RspStatus::OK);
     return grpc::Status::OK;
 }

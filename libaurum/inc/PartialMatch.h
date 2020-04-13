@@ -21,6 +21,7 @@ public:
     void update(const AccessibleNode *node, int index, int depth,
                 std::list<std::shared_ptr<PartialMatch>> &partialMatches);
     bool finalizeMatch();
+    void debugPrint();
 
 public:
     static std::shared_ptr<PartialMatch> accept(const AccessibleNode *node,
@@ -30,10 +31,12 @@ public:
                                                 const std::shared_ptr<UiSelector> selector,
                                                 int index, int absoluteDepth,
                                                 int relativeDepth);
-
 private:
     static bool checkCriteria(const std::shared_ptr<UiSelector> selector,
                               const AccessibleNode *node);
+
+    static bool checkCriteria(const std::string *textA, const std::string textB);
+    static bool checkCriteria(const bool *boolA, const bool boolB);
 };
 
 #endif
