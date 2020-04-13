@@ -98,7 +98,6 @@ void AccessibleNode::refresh() const
     mRes = "Not_Supported";
 #endif
 
-
     GHashTable *attributes = atspi_accessible_get_attributes(mNode.get(), NULL);
     char *t = (char*)g_hash_table_lookup(attributes, "type");
     char *s = (char*)g_hash_table_lookup(attributes, "style");
@@ -295,10 +294,17 @@ std::string AccessibleNode::getRes() const
 {
     return mRes;
 }
+
 std::string AccessibleNode::getType() const
 {
     return mType;
 }
+
+std::string AccessibleNode::getStyle() const
+{
+    return mStyle;
+}
+
 Rect<int> AccessibleNode::getBoundingBox() const
 {
     AtspiComponent *component = atspi_accessible_get_component_iface(mNode.get());
@@ -370,6 +376,16 @@ bool AccessibleNode::isSelected() const
 bool AccessibleNode::isVisible() const
 {
     return hasFeatureProperty(NodeFeatureProperties::VISIBLE);
+}
+
+bool AccessibleNode::isShowing() const
+{
+    return hasFeatureProperty(NodeFeatureProperties::SHOWING);
+}
+
+bool AccessibleNode::isActive() const
+{
+    return hasFeatureProperty(NodeFeatureProperties::ACTIVE);
 }
 
 AtspiAccessible *AccessibleNode::getAccessible() const

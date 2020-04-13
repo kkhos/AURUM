@@ -54,6 +54,11 @@ UiObject::UiObject(UiObject &&src)
     src.mWaiter = nullptr;
 }
 
+std::shared_ptr<UiSelector> UiObject::getSelector()
+{
+    return this->mSelector;
+}
+
 bool UiObject::hasObject(const std::shared_ptr<UiSelector> selector) const
 {
     std::unique_ptr<AccessibleNode> node =
@@ -196,6 +201,16 @@ bool UiObject::isSelected() const
 bool UiObject::isVisible() const
 {
     return getAccessibleNode()->isVisible();
+}
+
+bool UiObject::isShowing() const
+{
+    return getAccessibleNode()->isShowing();
+}
+
+bool UiObject::isActive() const
+{
+    return getAccessibleNode()->isActive();
 }
 
 void UiObject::refresh() const
