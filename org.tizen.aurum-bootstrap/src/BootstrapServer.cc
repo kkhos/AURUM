@@ -60,20 +60,20 @@ void service_app_terminate(void *data)
     g_thread_join(ctx->thread);
 }
 
-void service_app_control(app_control_h app_control, void *data) 
+void service_app_control(app_control_h app_control, void *data)
 {
     ServiceContext *ctx = (ServiceContext*)data;
 }
 
 int main(int argc, char **argv)
 {
-    service_app_lifecycle_callback_s event_callback;  
+    service_app_lifecycle_callback_s event_callback;
     app_event_handler_h handlers[5] = {NULL, };
-    ServiceContext ctx = {0,};    
-                                                  
-    event_callback.create = service_app_create;       
-    event_callback.terminate = service_app_terminate; 
-    event_callback.app_control = service_app_control; 
+    ServiceContext ctx = {0,};
+
+    event_callback.create = service_app_create;
+    event_callback.terminate = service_app_terminate;
+    event_callback.app_control = service_app_control;
 
     return service_app_main(argc, argv, &event_callback, &ctx);
 }
