@@ -6,6 +6,7 @@ service Bootstrap {
    rpc killServer(ReqEmpty) returns (RspEmpty) {}
 
    rpc findElement(ReqFindElement) returns (RspFindElement) {}
+   rpc scrollTo(ReqScrollTo) returns (RspScrollTo) {}
 
    rpc getValue(ReqGetValue) returns (RspGetValue) {}
    rpc setValue(ReqSetValue) returns (RspSetValue) {}
@@ -138,6 +139,18 @@ message ReqFindElement {
 message RspFindElement {
    RspStatus status = 1;
    repeated Element elements = 2;
+}
+
+// ------------------------------------ //
+
+message ReqScrollTo {
+   oneof parmas {
+      string elementId = 1;
+      Point position = 2;
+   }
+}
+message RspScrollTo {
+   RspStatus status = 1;
 }
 
 // ------------------------------------ //
