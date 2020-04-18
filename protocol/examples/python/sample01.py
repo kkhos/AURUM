@@ -1,125 +1,123 @@
 from __future__ import print_function
-import aurum_pb2
-import aurum_pb2_grpc
+from aurum_pb2 import *
+from aurum_pb2_grpc import BootstrapStub
 import logging
 import grpc
 import time
 
-def back(stub):
-    rsp_key = stub.sendKey(aurum_pb2.ReqKey(
-                    type='BACK',
-                    actionType='STROKE',
-                )
-            )
+def findElementTest(stub):
+    response = stub.findElement(ReqFindElement(isClickable=True))
+    for el in response.elements:
+        return True
+    return False
 
-    rsp_find = stub.findElement(aurum_pb2.ReqFindElement(
-                    strategy='TEXT',
-                    textField='TestMemo'
-                )
-            )
+def getValueTest(stub):
+    response = stub.findElement(ReqFindElement(textField='Widgets'))
+    print("els", response)
+    for el in response.elements:
+        response = stub.getValue(ReqGetValue(elementId=el.elementId))
+        return response.stringValue == 'Widgets'
+    return False
 
-    for item in rsp_find.elements:
-        print(item)
-        stub.click(aurum_pb2.ReqClick(
-                type='ELEMENTID',
-                elementId=item.elementId
-            )
-        )
+def setValueTest(stub):
+    response = stub.findElement(ReqFindElement(textField='Widgets'))
+    for el in response.elements:
+        print(el)
+        stub.click(ReqClick(type='ELEMENTID', elementId=el.elemenetId))
+        break
 
-def findNclick(stub, text):
-    rsp_find = stub.findElement(aurum_pb2.ReqFindElement(
-                    strategy='TEXT',
-                    textField=text
-                )
-            )
+    response = stub.findElement(ReqFindElement(textField='Entry/Editfield'))
+    for el in response.elements:
+        print(el)
+        stub.click(ReqClick(type='ELEMENTID', elementId=el.elemenetId))
+        break
 
-    for item in rsp_find.elements:
-        print(item)
-        stub.click(aurum_pb2.ReqClick(
-                type='ELEMENTID',
-                elementId=item.elementId
-            )
-        )
+    return False
 
-def flick(stub):
-    rsp_flick = stub.flick(aurum_pb2.ReqFlick(
-        startPoint=aurum_pb2.Point(x=100, y=100),
-        endPoint=aurum_pb2.Point(x=400, y=400),
-        durationMs=1
-    ))
+def getSizeTest(stub):
+    return False
 
-def launchApp(stub):
-    rsp_launch = stub.launchApp(aurum_pb2.ReqLaunchApp(
-           packageName='org.example.uicomponents'
-    ))
+def clearTest(stub):
+    return False
 
-def closeApp(stub):
-    rsp_launch = stub.closeApp(aurum_pb2.ReqCloseApp(
-           packageName='org.example.uicomponents'
-    ))
+def getAttributeTest(stub):
+    return False
 
-CHUNK_SIZE = 1024 * 1024
-def get_file_chunks(filename):
-   with open(filename, 'rb') as f:
-       while True:
-           piece = f.read(CHUNK_SIZE)
-           if len(piece) == 0:
-               return
-           yield aurum_pb2.ReqInstallApp(package=piece)
+def clickTest(stub):
+    return False
 
-def installApp(stub):
-   in_file_name = './org.tizen.uicomponents.arm.tpk'
-   chunks_generator = get_file_chunks(in_file_name)
-   rsp_install = stub.installApp(chunks_generator)
+def longClickTest(stub):
+    return False
 
-def removeApp(stub):
-   rsp_install = stub.removeApp(aurum_pb2.ReqRemoveApp(
-                            packageName='org.example.uicomponents'
-                        )
-                    )
+def flickTest(stub):
+    return False
 
-def getAppInfo(stub):
-   rsp_info = stub.getAppInfo(aurum_pb2.ReqGetAppInfo(packageName='org.example.uicomponents'))
-   print(rsp_info)
+def touchDownTest(stub):
+    return False
 
-def touchdown(stub, xx, yy):
-   rsp = stub.touchDown(aurum_pb2.ReqTouchDown(coordination=aurum_pb2.Point(x=xx,y=yy)))
-   print(rsp)
+def touchMoveTest(stub):
+    return False
 
-def touchmove(stub, xx, yy):
-   rsp = stub.touchMove(aurum_pb2.ReqTouchMove(coordination=aurum_pb2.Point(x=xx,y=yy)))
-   print(rsp)
+def touchUpTest(stub):
+    return False
 
-def touchup(stub, xx, yy):
-   rsp = stub.touchUp(aurum_pb2.ReqTouchUp(coordination=aurum_pb2.Point(x=xx,y=yy)))
-   print(rsp)
+def installAppTest(stub):
+    return False
 
-def sync(stub):
-   rsp = stub.sync(aurum_pb2.ReqEmpty())
-   print(rsp)
+def removeAppTest(stub):
+    return False
+
+def getAppInfoTest(stub):
+    return False
+
+def launchAppTest(stub):
+    return False
+
+def closeAppTest(stub):
+    return False
+
+def sendKeyTest(stub):
+    return False
+
+def scrollToTest(stub):
+    return False
+
+def getDeviceTimeTest(stub):
+    return False
+
+def getLocationTest(stub):
+    return False
+
+
+def runTest(stub, testFunc):
+    print("Testing started :", testFunc)
+    assert True == testFunc(stub)
 
 def run():
     with grpc.insecure_channel('127.0.0.1:50051') as channel:
-        stub = aurum_pb2_grpc.BootstrapStub(channel)
-
-        findNclick(stub, 'Testmemo')
-        back(stub)
-        flick(stub)
-        installApp(stub)
-        time.sleep(1)
-        launchApp(stub)
-        time.sleep(1)
-        getAppInfo(stub)
-        time.sleep(1)
-        closeApp(stub)
-        time.sleep(1)
-#        removeApp(stub)
-        flick(stub)
-        touchdown(stub, 300, 300)
-        touchmove(stub, 250, 250)
-        touchmove(stub, 200, 200)
-        touchmove(stub, 110, 110)
-        touchup(stub, 100, 100)
+        stub = BootstrapStub(channel)
+        stub.launchApp(ReqLaunchApp(packageName='com.samsung.ui-widget-sample'))
+        #runTest(stub, findElementTest)
+        runTest(stub, getValueTest)
+        runTest(stub, setValueTest)
+        runTest(stub, getSizeTest)
+        runTest(stub, clearTest)
+        runTest(stub, getAttributeTest)
+        runTest(stub, clickTest)
+        runTest(stub, longClickTest)
+        runTest(stub, flickTest)
+        runTest(stub, touchDownTest)
+        runTest(stub, touchMoveTest)
+        runTest(stub, touchUpTest)
+        runTest(stub, installAppTest)
+        runTest(stub, removeAppTest)
+        runTest(stub, getAppInfoTest)
+        runTest(stub, launchAppTest)
+        runTest(stub, closeAppTest)
+        runTest(stub, sendKeyTest)
+        runTest(stub, scrollToTest)
+        runTest(stub, getDeviceTimeTest)
+        runTest(stub, getLocationTest)
 
 if __name__ == '__main__':
     logging.basicConfig()
