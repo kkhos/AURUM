@@ -88,15 +88,11 @@ void AccessibleNode::refresh() const
         g_free(rolename);
     }
 
-#ifdef GBS_BUILD
     gchar *uID = atspi_accessible_get_unique_id(mNode.get(), NULL);
     if (uID) {
         mRes = uID;
         g_free(uID);
     }
-#else
-    mRes = "Not_Supported";
-#endif
 
     GHashTable *attributes = atspi_accessible_get_attributes(mNode.get(), NULL);
     char *t = (char*)g_hash_table_lookup(attributes, "type");

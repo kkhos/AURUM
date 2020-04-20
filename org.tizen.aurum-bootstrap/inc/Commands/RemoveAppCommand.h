@@ -18,6 +18,7 @@ public:
                      ::aurum::RspRemoveApp*       response);
     ;
     ::grpc::Status execute() override;
+    ::grpc::Status executePost() override;
 };
 
 #endif
