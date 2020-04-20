@@ -11,27 +11,23 @@
 TizenImpl::TizenImpl()
 {
     LOG_SCOPE_F(INFO, "device implementation init");
-#ifdef GBSBUILD
     ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
         TizenImpl *obj = static_cast<TizenImpl*>(data);
         obj->mFakeTouchHandle = efl_util_input_initialize_generator(EFL_UTIL_INPUT_DEVTYPE_TOUCHSCREEN);
         obj->mFakeKeyboardHandle =
             efl_util_input_initialize_generator(EFL_UTIL_INPUT_DEVTYPE_KEYBOARD);
+        return NULL;
     }, this);
-#endif
-
 }
 
 TizenImpl::~TizenImpl()
 {
-#ifdef GBSBUILD
     ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
         TizenImpl *obj = static_cast<TizenImpl*>(data);
         efl_util_input_deinitialize_generator(obj->mFakeTouchHandle);
         efl_util_input_deinitialize_generator(obj->mFakeKeyboardHandle);
         return NULL;
     }, this);
-#endif
 }
 
 bool TizenImpl::click(const int x, const int y)
@@ -41,8 +37,7 @@ bool TizenImpl::click(const int x, const int y)
 
 bool TizenImpl::click(const int x, const int y, const unsigned int intv)
 {
-LOG_SCOPE_F(INFO, "click at (%d, %d)", x, y);
-#ifdef GBSBUILD
+    LOG_SCOPE_F(INFO, "click at (%d, %d)", x, y);
     auto args = std::make_tuple(this, x, y, intv);
     ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
         TizenImpl *obj;
@@ -58,15 +53,11 @@ LOG_SCOPE_F(INFO, "click at (%d, %d)", x, y);
         return NULL;
     }, (void*)(&args));
     return true;
-#else
-    return false;
-#endif
 }
 
 
 bool TizenImpl::touchDown(const int x, const int y)
 {
-#ifdef GBSBUILD
     LOG_F(INFO, "%d %d", x, y);
     auto args = std::make_tuple(this, x, y);
     ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
@@ -78,13 +69,11 @@ bool TizenImpl::touchDown(const int x, const int y)
 
         return NULL;
     }, (void*)(&args));
-#endif
     return true;
 }
 
 bool TizenImpl::touchMove(const int x, const int y)
 {
-#ifdef GBSBUILD
     LOG_F(INFO, "%d %d", x, y);
     auto args = std::make_tuple(this, x, y);
     ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
@@ -97,13 +86,11 @@ bool TizenImpl::touchMove(const int x, const int y)
 
         return NULL;
     }, (void*)(&args));
-#endif
     return true;
 }
 
 bool TizenImpl::touchUp(const int x, const int y)
 {
-#ifdef GBSBUILD
     LOG_F(INFO, "touch up %d %d", x, y);
     auto args = std::make_tuple(this, x, y);
     ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
@@ -117,46 +104,72 @@ bool TizenImpl::touchUp(const int x, const int y)
     }, (void*)(&args));
 
     return true;
-#endif
-    return false;
 }
 
 bool TizenImpl::drag(const int sx, const int sy, const int ex, const int ey,
                          const int duration)
 {
-#ifdef GBSBUILD
-    auto args = std::make_tuple(this, sx, sy, ex, ey, duration);
+    int i, j, dirX, dirY, stepX, stepY;
+    int dur;
+
+    // TODO fixed fps implementation
+    if (duration < 10) dur = 10;
+    else dur = duration;
+
+    dirX = sx > ex ? -1 : 1;
+    dirY = sy > ey ? -1 : 1;
+
+    stepX = (ex - sx)/20;
+    stepY = (ey - sy)/20;
+
+    LOG_SCOPE_F(INFO, "flicking (%d, %d) -> (%d, %d) for (%d ms)", sx, sy, ex, ey, duration);
+
+    auto args1 = std::make_tuple(this, sx, sy);
     ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
         TizenImpl *obj;
-        int sx, sy, ex, ey, duration;
-        std::tie(obj, sx, sy, ex, ey, duration) = *static_cast<std::tuple<TizenImpl*, int, int, int, int, int>*>(data);
-
         int i, j;
-        int dur;
-        // TODO fixed fps implementation
-        if (duration < 10) dur = 10;
-        else dur = duration;
-
-        i = sx, j = sy;
-        LOG_SCOPE_F(INFO, "flicking (%d, %d)", i, j);
-
+        std::tie(obj, i, j) = *static_cast<std::tuple<TizenImpl*, int, int>*>(data);
         efl_util_input_generate_touch(obj->mFakeTouchHandle, 0,
                                         EFL_UTIL_INPUT_TOUCH_BEGIN, i, j);
-        for (; i <= ex && j <= ey; i += (ex - sx) / 10, j += (ey - sy) / 10) {
+        LOG_F(INFO, "flick begin (%d, %d)", i, j);
+        return NULL;
+    }, (void*)(&args1));
+
+    i = sx, j = sy;
+    do {
+        std::tuple<TizenImpl*, int, int> args;
+        args = std::make_tuple(this, i, j);
+        ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
+            TizenImpl *obj;
+            int i, j;
+            std::tie(obj, i, j) = *static_cast<std::tuple<TizenImpl*, int, int>*>(data);
+            LOG_F(INFO, "flick move (%d, %d)", i, j);
+
             efl_util_input_generate_touch(obj->mFakeTouchHandle, 0,
                                             EFL_UTIL_INPUT_TOUCH_UPDATE, i, j);
-            usleep(dur * 1000);
-            LOG_SCOPE_F(INFO, "flicking (%d, %d)", i, j);
-        }
-        LOG_SCOPE_F(INFO, "flicking (%d, %d)", i, j);
+            return NULL;
+        }, (void*)(&args));
+
+        usleep(dur * 1000);
+        LOG_F(INFO, "sleep ms %d", dur);
+        i += stepX;
+        j += stepY;
+    } while(i*dirX <= ex && j*dirY <= ey);
+
+    auto args2 = std::make_tuple(this, ex, ey);
+    ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
+        TizenImpl *obj;
+        int i, j;
+        std::tie(obj, i, j) = *static_cast<std::tuple<TizenImpl*, int, int>*>(data);
         efl_util_input_generate_touch(obj->mFakeTouchHandle, 0, EFL_UTIL_INPUT_TOUCH_END,
                                         i, j);
-
+        LOG_SCOPE_F(INFO, "flick end: (%d, %d)", i, j);
         return NULL;
-    }, (void*)(&args));
+    }, (void*)(&args2));
+
+    ecore_main_loop_thread_safe_call_sync([](void *data)->void*{return NULL;}, NULL);
+
     return true;
-#endif
-    return false;
 }
 
 bool TizenImpl::pressBack()
@@ -191,19 +204,31 @@ bool TizenImpl::pressPower()
 
 bool TizenImpl::pressKeyCode(std::string keycode)
 {
-#ifdef GBSBUILD
+    return pressKeyCode(keycode, INTV_KEYPRESS);
+}
+
+bool TizenImpl::pressKeyCode(std::string keycode, unsigned int intv)
+{
     auto args = std::make_tuple(this, keycode);
     ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
         TizenImpl *obj;
         std::string keycode;
         std::tie(obj, keycode) = *static_cast<std::tuple<TizenImpl*, std::string>*>(data);
-
         efl_util_input_generate_key(obj->mFakeKeyboardHandle, keycode.c_str(), 1);
-        efl_util_input_generate_key(obj->mFakeKeyboardHandle, keycode.c_str(), 0);
-
         return NULL;
     }, (void*)(&args));
-#endif
+
+    ecore_main_loop_thread_safe_call_sync([](void *data)->void*{return NULL;}, NULL);
+    usleep(intv * 1000);
+
+    ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
+        TizenImpl *obj;
+        std::string keycode;
+        std::tie(obj, keycode) = *static_cast<std::tuple<TizenImpl*, std::string>*>(data);
+        efl_util_input_generate_key(obj->mFakeKeyboardHandle, keycode.c_str(), 0);
+        return NULL;
+    }, (void*)(&args));
+
     return true;
 }
 

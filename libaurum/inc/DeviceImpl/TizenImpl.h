@@ -32,12 +32,14 @@ public:
     bool pressKeyCode(std::string keycode) override;
     bool takeScreenshot(std::string path, float scale, int quality) override;
 
+protected:
+    bool pressKeyCode(std::string keycode, unsigned int intv);
+
 private:
-#ifdef GBS_BUILD
     efl_util_inputgen_h mFakeTouchHandle;
     efl_util_inputgen_h mFakeKeyboardHandle;
-#endif
     static const unsigned int INTV_CLICK = 5;
+    static const unsigned int INTV_KEYPRESS = 10;
 };
 
 #endif

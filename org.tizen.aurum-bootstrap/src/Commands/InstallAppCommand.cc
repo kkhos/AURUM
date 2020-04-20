@@ -1,5 +1,7 @@
 #include "InstallAppCommand.h"
 #include <fstream>
+#include <chrono>
+#include <thread>
 #include <loguru.hpp>
 #ifdef GBSBUILD
 #include <package_manager.h>
@@ -33,5 +35,12 @@ InstallAppCommand::InstallAppCommand(
     package_manager_request_create(&pkgRequest);
     package_manager_request_install(pkgRequest, "/tmp/app.tpk", &id);
 #endif
+    return grpc::Status::OK;
+}
+
+::grpc::Status InstallAppCommand::executePost()
+{
+    LOG_SCOPE_F(INFO, "InstallAppCommand::executePost");
+    std::this_thread::sleep_for(std::chrono::milliseconds{5000});
     return grpc::Status::OK;
 }
