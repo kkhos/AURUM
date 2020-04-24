@@ -1,12 +1,15 @@
 #include "DeviceImpl/TizenImpl.h"
+#include <loguru.hpp>
 
 #include <functional>
 #include <tuple>
+#include <iostream>
+#include <memory>
 
 #include <stdlib.h>
-#include <iostream>
+#include <time.h>
+
 #include <Ecore.h>
-#include "loguru.hpp"
 
 TizenImpl::TizenImpl()
 {
@@ -235,4 +238,51 @@ bool TizenImpl::pressKeyCode(std::string keycode, unsigned int intv)
 bool TizenImpl::takeScreenshot(std::string path, float scale, int quality)
 {
     return false;
+}
+
+class Clock {
+public:
+    virtual ~Clock(){};
+
+public:
+    virtual long long getTime() = 0;
+protected:
+    long long convertTime(struct timespec t){
+        return (long long)t.tv_sec * 1000L + (long long)(t.tv_nsec / 1000000);
+    }
+};
+
+class MonotonicClock : public Clock {
+public:
+    virtual ~MonotonicClock(){};
+
+    long long getTime() override {
+        struct timespec t;
+        clock_gettime(CLOCK_MONOTONIC, &t);
+        return convertTime(t);
+    }
+
+};
+
+class WallClock : public Clock {
+public:
+    virtual ~WallClock(){};
+
+    long long getTime() override {
+        struct timespec t;
+        clock_gettime(CLOCK_REALTIME, &t);
+        return convertTime(t);
+    }
+};
+
+long long TizenImpl::getSystemTime(TypeRequestType type)
+{
+    std::unique_ptr<Clock> clock;
+    if (type == TypeRequestType::MONOTONIC)
+        clock = std::make_unique<MonotonicClock>();
+    else if (type == TypeRequestType::WALLCLOCK)
+        clock = std::make_unique<WallClock>();
+
+    return clock->getTime();
+
 }

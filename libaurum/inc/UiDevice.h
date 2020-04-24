@@ -39,8 +39,8 @@ public:
     bool pressPower() override;
 
     bool pressKeyCode(std::string keycode) override;
-
-    bool takeScreenshot(std::string path, float scale, int quality);
+    bool takeScreenshot(std::string path, float scale, int quality) override;
+    long long getSystemTime(TypeRequestType type) override;
 
 public:
     bool hasObject(const std::shared_ptr<UiSelector> selector) const override;

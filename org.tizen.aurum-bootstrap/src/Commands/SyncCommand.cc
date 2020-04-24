@@ -1,8 +1,7 @@
 #include "SyncCommand.h"
 #include <loguru.hpp>
 
-#include <AccessibleWatcher.h>
-#include <AccessibleNode.h>
+#include "UiDevice.h"
 
 SyncCommand::SyncCommand(const ::aurum::ReqEmpty *request,
                          ::aurum::RspEmpty *      response)
@@ -12,12 +11,9 @@ SyncCommand::SyncCommand(const ::aurum::ReqEmpty *request,
 
 ::grpc::Status SyncCommand::execute()
 {
-    LOG_SCOPE_F(INFO, "Sync Command ");
-    const AccessibleWatcher *accObj = AccessibleWatcher::getInstance();
-
-    auto root = accObj->getRootNode();
-    LOG_F(INFO, "root node tree / depth : 2");
-    root->print(0, 2);
-
+    UiDevice *obj = UiDevice::getInstance(DeviceType::DEFAULT);
+    long long timeMs = obj->getSystemTime(TypeRequestType::WALLCLOCK);
+    LOG_SCOPE_F(INFO, "Sync Command @ %f", timeMs/1000.0);
+    // do post-command
     return grpc::Status::OK;
 }
