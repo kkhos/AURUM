@@ -5,7 +5,7 @@
 #include <grpcpp/grpcpp.h>
 #include "Commands/Command.h"
 #include "ObjectMapper.h"
-#include "aurum.grpc.pb.h"
+#include <aurum.grpc.pb.h>
 #include "config.h"
 
 class CloseAppCommand : public Command {

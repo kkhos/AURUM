@@ -6,7 +6,7 @@
 #include "Commands/PreCommand.h"
 
 #include "config.h"
-#include "loguru.hpp"
+#include <loguru.hpp>
 
 using namespace grpc;
 using namespace aurum;

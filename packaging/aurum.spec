@@ -17,7 +17,7 @@ BuildRequires:  at-spi2-core-devel
 BuildRequires:  pkgconfig(capi-system-info)
 BuildRequires:  pkgconfig(capi-ui-efl-util)
 BuildRequires:  pkgconfig(elementary)
-BuildRequires:  gtest-devel
+BuildRequires:  pkgconfig(gmock)
 
 BuildRequires: pkgconfig(aul)
 BuildRequires: pkgconfig(capi-appfw-package-manager)
@@ -28,6 +28,10 @@ BuildRequires: pkgconfig(capi-system-device)
 BuildRequires: pkgconfig(libtzplatform-config)
 BuildRequires: pkgconfig(capi-system-system-settings)
 BuildRequires: pkgconfig(capi-base-utils-i18n)
+
+%if 0%{?gcov:1}
+BuildRequires:  lcov
+%endif
 
 %if "%{?profile}" == "tv"
   %define __hash_signing 0
@@ -61,23 +65,47 @@ Requires: libgrpc
 %description bootstrap
 gRPC Server
 
+%if 0%{?gcov:1}
+%package gcov
+Summary:    Aurum - Ui Automation (gcov)
+Group:      Graphics & UI Framework/Testing
+%description gcov
+Ui Automation Library Aurum gcov objects
+%endif
+
+
 %prep
 %setup -q
 cp %{SOURCE1001} .
 
 export LDFLAGS+="-Wl,-z,noexecstack"
 
+%if "%{asan}" == "1"
+%restore_fcommon
+%endif
+
+
+%if 0%{?gcov:1}
+export CFLAGS+=" -fprofile-arcs -ftest-coverage "
+export CXXFLAGS+=" -fprofile-arcs -ftest-coverage "
+export FFLAGS+=" -fprofile-arcs -ftest-coverage"
+export LDFLAGS+=" -lgcov"
+%define TIZEN_GCOV true
+%else
+%define TIZEN_GCOV false
+%endif
+
 meson \
     --prefix /usr \
     --libdir %{_libdir} \
     -Dcpp_std=c++17 \
     -Dtizen=true \
+    -Dtizen_gcov=%{TIZEN_GCOV} \
     -Dtzapp_path=%{TZ_SYS_RO_APP} \
     -Dtzpackage_path=%{TZ_SYS_RO_PACKAGES} \
     gbsbuild 2>&1 | sed \
         -e 's%^.*: error: .*$%\x1b[37;41m&\x1b[m%' \
         -e 's%^.*: warning: .*$%\x1b[30;43m&\x1b[m%'
-
 
 %build
 ninja \
@@ -97,10 +125,12 @@ ninja \
         -e 's%^.*: error: .*$%\x1b[37;41m&\x1b[m%' \
         -e 's%^.*: warning: .*$%\x1b[30;43m&\x1b[m%'
 
-%install
+%if 0%{?gcov:1}
+  mkdir -p gcov-obj
+  find . -name '*.gcno' -exec cp '{}' gcov-obj ';'
+%endif
 
-export DESTDIR=%{buildroot}
-ninja -C gbsbuild install
+%install
 
 %if 0%{?__hash_signing}
 %define tizen_sign 1
@@ -108,6 +138,14 @@ ninja -C gbsbuild install
 %define tizen_sign_level platform
 %define tizen_author_sign 1
 %define tizen_dist_sign 1
+%endif
+
+export DESTDIR=%{buildroot}
+ninja -C gbsbuild install
+
+%if 0%{?gcov:1}
+mkdir -p %{buildroot}%{_datadir}/gcov/obj
+install -m 0644 gcov-obj/* %{buildroot}%{_datadir}/gcov/obj
 %endif
 
 %post
@@ -121,11 +159,9 @@ sbin/ldconfig
 echo "signing %{TZ_SYS_RO_APP}/org.tizen.aurum-bootstrap"
 /usr/bin/signing-client/hash-signer-client.sh -a -d -p platform %{TZ_SYS_RO_APP}/org.tizen.aurum-bootstrap
 %endif
-#chsmack -e "User" %{_bindir}/aurum_bootstrap
 
 %postun bootstrap
 /sbin/ldconfig
-
 
 %files
 %manifest %{name}.manifest
@@ -143,8 +179,14 @@ echo "signing %{TZ_SYS_RO_APP}/org.tizen.aurum-bootstrap"
 %manifest %{name}.manifest
 %defattr(-,root,root)
 %license COPYING
-#%{_bindir}/aurum_bootstrap
-#%{_unitdir_user}/aurum-bootstrap.service
 %{TZ_SYS_RO_PACKAGES}/org.tizen.aurum-bootstrap.xml
 %{TZ_SYS_RO_APP}/org.tizen.aurum-bootstrap/*
+
+%if 0%{?gcov:1}
+%files gcov
+%{_datadir}/gcov/obj/*
+%{_bindir}/gtest_aurum
+%else
+%exclude %{_bindir}/gtest_aurum
+%endif
 

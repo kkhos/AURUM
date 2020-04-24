@@ -12,6 +12,9 @@ if get_option('tizen') == true
 else
   message('')
 endif
+if get_option('tizen_gcov') == true
+  config_h.set10('TIZEN_GCOV', true)
+endif
 
 root_inc = include_directories('./')
 

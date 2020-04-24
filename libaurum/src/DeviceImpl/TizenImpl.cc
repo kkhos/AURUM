@@ -8,7 +8,6 @@
 
 #include <stdlib.h>
 #include <time.h>
-
 #include <Ecore.h>
 
 TizenImpl::TizenImpl()

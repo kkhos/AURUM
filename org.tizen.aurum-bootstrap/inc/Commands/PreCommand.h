@@ -4,7 +4,7 @@
 #include <gio/gio.h>
 #include <grpcpp/grpcpp.h>
 #include "Commands/Command.h"
-#include "aurum.grpc.pb.h"
+#include <aurum.grpc.pb.h>
 #include "config.h"
 
 class PreCommand : public Command {

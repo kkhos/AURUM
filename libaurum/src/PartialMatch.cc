@@ -3,7 +3,7 @@
 #include <iostream>
 #include <set>
 
-#include "loguru.hpp"
+#include <loguru.hpp>
 
 bool PartialMatch::checkCriteria(const std::string *textA, const std::string textB)
 {

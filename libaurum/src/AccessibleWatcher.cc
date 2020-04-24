@@ -5,7 +5,7 @@
 #include <iostream>
 #include <utility>
 
-#include "loguru.hpp"
+#include <loguru.hpp>
 
 AtspiEventListener *AccessibleWatcher::listener = nullptr;
 
