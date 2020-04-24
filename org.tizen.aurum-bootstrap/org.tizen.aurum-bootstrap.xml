@@ -22,6 +22,7 @@
 		<privilege>http://tizen.org/privilege/inputgenerator</privilege>
 		<privilege>http://tizen.org/privilege/screenshot</privilege>
 		<privilege>http://tizen.org/privilege/location</privilege>
+		<privilege>http://tizen.org/privilege/display</privilege>
 	</privileges>
 	<feature name="http://tizen.org/feature/network.ethernet">true</feature>
 </manifest>

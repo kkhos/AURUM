@@ -49,6 +49,7 @@ bootstrap_svr_dep = [
 if get_option('tizen') == true
 bootstrap_svr_dep += [
    dependency('capi-appfw-app-control'),
+   dependency('capi-system-device'),
    dependency('capi-appfw-app-manager'),
    dependency('capi-appfw-package-manager'),
    dependency('capi-appfw-service-application'),
