@@ -49,6 +49,6 @@ LaunchAppCommand::LaunchAppCommand(const ::aurum::ReqLaunchApp* request,
 ::grpc::Status LaunchAppCommand::executePost()
 {
     LOG_SCOPE_F(INFO, "LaunchAppCommand::executePost");
-    std::this_thread::sleep_for(std::chrono::milliseconds{1500});
+    std::this_thread::sleep_for(std::chrono::milliseconds{2500});
     return grpc::Status::OK;
 }
