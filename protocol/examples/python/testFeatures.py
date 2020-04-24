@@ -148,6 +148,9 @@ def clickTest(stub):
     return True
 
 def longClickTest(stub):
+    response = stub.sendKey(ReqKey(type='HOME', actionType='STROKE'))
+    stub.click(ReqClick(coordination=Point(x=160, y=160), type='COORD'))
+    # TODO : find out something changed
     return False
 
 def flickTest(stub):
@@ -244,13 +247,15 @@ def scrollToTest(stub):
 def getDeviceTimeTest(stub):
     response1 = stub.getDeviceTime(ReqGetDeviceTime(type='WALLCLOCK'))
     response2 = stub.getDeviceTime(ReqGetDeviceTime(type='WALLCLOCK'))
-
     print(response1, response2)
-    return response2.timeStampUTC > response1.timeStampUTC;
+    return response2.timestampUTC > response1.timestampUTC;
 
 def getLocationTest(stub):
-    print('getLocation command not implemented')
-    return False
+    response = stub.getLocation(ReqGetLocation())
+
+    if response.alt < 0: return False
+    if response.lat < 0: return False
+    return True
 
 def defaultSetup(stub):
     if stub.getAppInfo(ReqGetAppInfo(packageName='com.samsung.ui-widget-sample')).isRunning:
@@ -300,10 +305,10 @@ def run():
         runTestWithoutSetupAndTearDown(stub, closeAppTest)
         runTestWithoutSetupAndTearDown(stub, removeAppTest)
 
-
-        runTest(stub, scrollToTest, alwaySucceed=True)
         runTest(stub, longClickTest, alwaySucceed=True)
         runTest(stub, getLocationTest, alwaySucceed=True)
+
+        runTest(stub, scrollToTest, alwaySucceed=True)
 
 if __name__ == '__main__':
     logging.basicConfig()

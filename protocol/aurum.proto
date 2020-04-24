@@ -325,8 +325,8 @@ message ReqGetLocation{
 }
 message RspGetLocation{
    RspStatus status = 1;
-   string alt = 2;
-   string lat = 3;
+   double alt = 2;
+   double lat = 3;
 }
 
 message ReqKey{

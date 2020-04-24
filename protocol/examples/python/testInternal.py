@@ -8,9 +8,10 @@ def run():
     with grpc.insecure_channel('127.0.0.1:50051') as channel:
         stub = aurum_pb2_grpc.BootstrapStub(channel)
 
+        print(stub.getLocation(ReqGetLocation()).status)
         print(stub.sync(ReqEmpty()))
         print(stub.getDeviceTime(ReqGetDeviceTime(type='WALLCLOCK')))
-#        stub.killServer(aurum_pb2.ReqEmpty())
+        # stub.killServer(aurum_pb2.ReqEmpty())
 
 if __name__ == '__main__':
     logging.basicConfig()
