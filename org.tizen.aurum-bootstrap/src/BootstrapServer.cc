@@ -5,11 +5,11 @@
 
 #include <gio/gio.h>
 #include <grpcpp/grpcpp.h>
-#include "aurum.grpc.pb.h"
+#include <aurum.grpc.pb.h>
 
 #include "AurumServiceImpl.h"
 #include "config.h"
-#include "loguru.hpp"
+#include <loguru.hpp>
 
 using namespace grpc;
 
@@ -67,6 +67,10 @@ void service_app_control(app_control_h app_control, void *data)
 
 int main(int argc, char **argv)
 {
+#ifdef TIZEN_GCOV
+    setenv("GCOV_PREFIX", "/tmp/", 1);
+#endif
+
     service_app_lifecycle_callback_s event_callback;
     app_event_handler_h handlers[5] = {NULL, };
     ServiceContext ctx = {0,};

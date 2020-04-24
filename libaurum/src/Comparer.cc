@@ -1,6 +1,6 @@
 #include "Comparer.h"
 
-#include "loguru.hpp"
+#include <loguru.hpp>
 
 Comparer::Comparer(const UiDevice *device, const std::shared_ptr<UiSelector> selector,
                    const bool &earlyReturn)

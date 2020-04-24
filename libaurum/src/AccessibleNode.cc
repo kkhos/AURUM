@@ -2,7 +2,7 @@
 #include <string.h>
 #include <iostream>
 
-#include "loguru.hpp"
+#include <loguru.hpp>
 #include "config.h"
 
 std::map<AtspiAccessible *, AccessibleNode *> AccessibleNode::mNodeMap{};

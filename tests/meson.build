@@ -7,15 +7,16 @@ test_inc = [
 ]
 
 test_deps = [
-    dependency('gtest', main:true),
+    dependency('gmock', main:true),
     libaurum,
 ]
 
-test_bin = executable('ua_test', test_src,
+test_bin = executable('gtest_aurum', test_src,
                     include_directories: test_inc,
                     dependencies: test_deps,
                     pie:true,
+                    install:get_option('tizen_gcov'),
             )
 
-test('ua test', test_bin)
+test('gtest_aurum', test_bin)
 

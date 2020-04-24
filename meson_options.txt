@@ -3,6 +3,7 @@ option('tizen',
   value: false,
   description: 'enable tizen specific dependancy'
 )
+
 option('tzapp_path',
   type: 'string',
   value: '/usr/apps/',
@@ -12,4 +13,10 @@ option('tzpackage_path',
   type: 'string',
   value: '/usr/share/packages/',
   description: 'installation path for registering tizen service app'
+)
+
+option('tizen_gcov',
+  type: 'boolean',
+  value: false,
+  description: 'enable tizen specific gcov configuration'
 )

@@ -5,7 +5,7 @@
 
 #include "ISearchable.h"
 #include "UiObject.h"
-#include "loguru.hpp"
+#include <loguru.hpp>
 
 Waiter::Waiter() : Waiter(nullptr) {}
 

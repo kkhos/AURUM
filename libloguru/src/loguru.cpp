@@ -18,7 +18,7 @@
 #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
 #endif
 
-#include "loguru.hpp"
+#include <loguru.hpp>
 
 #ifndef LOGURU_HAS_BEEN_IMPLEMENTED
 #define LOGURU_HAS_BEEN_IMPLEMENTED

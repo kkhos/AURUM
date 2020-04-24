@@ -3,7 +3,7 @@
 
 #include <grpcpp/grpcpp.h>
 #include "Commands/Command.h"
-#include "aurum.grpc.pb.h"
+#include <aurum.grpc.pb.h>
 
 class aurumServiceImpl final : public aurum::Bootstrap::Service {
 public:
