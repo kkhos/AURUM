@@ -242,8 +242,11 @@ def scrollToTest(stub):
     return False
 
 def getDeviceTimeTest(stub):
-    print('getDeviceTime command not implemented')
-    return False
+    response1 = stub.getDeviceTime(ReqGetDeviceTime(type='WALLCLOCK'))
+    response2 = stub.getDeviceTime(ReqGetDeviceTime(type='WALLCLOCK'))
+
+    print(response1, response2)
+    return response2.timeStampUTC > response1.timeStampUTC;
 
 def getLocationTest(stub):
     print('getLocation command not implemented')
@@ -279,6 +282,8 @@ def run():
     with grpc.insecure_channel('127.0.0.1:50051') as channel:
         stub = BootstrapStub(channel)
 
+        runTest(stub, getDeviceTimeTest)
+
         runTest(stub, findElementTest)
         runTest(stub, getValueTest)
         runTest(stub, getSizeTest)
@@ -295,9 +300,9 @@ def run():
         runTestWithoutSetupAndTearDown(stub, closeAppTest)
         runTestWithoutSetupAndTearDown(stub, removeAppTest)
 
+
         runTest(stub, scrollToTest, alwaySucceed=True)
         runTest(stub, longClickTest, alwaySucceed=True)
-        runTest(stub, getDeviceTimeTest, alwaySucceed=True)
         runTest(stub, getLocationTest, alwaySucceed=True)
 
 if __name__ == '__main__':

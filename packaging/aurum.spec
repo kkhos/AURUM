@@ -26,6 +26,8 @@ BuildRequires: pkgconfig(capi-appfw-app-manager)
 BuildRequires: pkgconfig(capi-appfw-service-application)
 BuildRequires: pkgconfig(capi-system-device)
 BuildRequires: pkgconfig(libtzplatform-config)
+BuildRequires: pkgconfig(capi-system-system-settings)
+BuildRequires: pkgconfig(capi-base-utils-i18n)
 
 %if "%{?profile}" == "tv"
   %define __hash_signing 0

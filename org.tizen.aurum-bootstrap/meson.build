@@ -53,6 +53,8 @@ bootstrap_svr_dep += [
    dependency('capi-appfw-app-manager'),
    dependency('capi-appfw-package-manager'),
    dependency('capi-appfw-service-application'),
+   dependency('capi-system-system-settings'),
+   dependency('capi-base-utils-i18n'),
 ]
 endif
 

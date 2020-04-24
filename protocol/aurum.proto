@@ -309,9 +309,16 @@ message RspCloseApp{
 // ------------------------------------ //
 
 message ReqGetDeviceTime{
+   enum TimeType {
+      WALLCLOCK= 0;
+      SYSTEM = 1;
+   }
+   TimeType type = 1;
 }
 message RspGetDeviceTime{
    RspStatus status = 1;
+   int64 timestampUTC = 2;
+   string localeDatetime = 3;
 }
 
 message ReqGetLocation{

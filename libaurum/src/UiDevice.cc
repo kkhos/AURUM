@@ -155,3 +155,8 @@ bool UiDevice::takeScreenshot(std::string path, float scale, int quality)
 {
     return mDeviceImpl->takeScreenshot(path, scale, quality);
 }
+
+long long UiDevice::getSystemTime(TypeRequestType type)
+{
+    return mDeviceImpl->getSystemTime(type);
+}

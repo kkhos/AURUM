@@ -4,6 +4,11 @@
 
 #include <string>
 
+enum class TypeRequestType {
+    WALLCLOCK,
+    MONOTONIC,
+};
+
 class IDevice {
 public:
     virtual ~IDevice() {}
@@ -26,5 +31,6 @@ public:
     virtual bool pressKeyCode(std::string keycode) = 0;
 
     virtual bool takeScreenshot(std::string path, float scale, int quality) = 0;
+    virtual long long getSystemTime(TypeRequestType type) = 0;
 };
 #endif
