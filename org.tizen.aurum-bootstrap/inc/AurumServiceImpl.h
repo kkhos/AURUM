@@ -86,6 +86,9 @@ public:
     ::grpc::Status sendKey(::grpc::ServerContext *context,
                            const ::aurum::ReqKey *request,
                            ::aurum::RspKey *      response) override;
+    ::grpc::Status takeScreenshot(::grpc::ServerContext *context,
+                                  const ::aurum::ReqTakeScreenshot *request,
+                                  ::aurum::RspTakeScreenshot *      response) override;
 };
 
 #endif
