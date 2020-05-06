@@ -117,6 +117,11 @@ ninja \
         -e 's%^.*: warning: .*$%\x1b[30;43m&\x1b[m%'
 
 
+%if 0%{?gcov:1}
+  mkdir -p gcov-obj
+  find . -name '*.gcno' -exec cp '{}' gcov-obj ';'
+%endif
+
 %check
 
 ninja \
@@ -126,11 +131,6 @@ ninja \
     test 2>&1 | sed \
         -e 's%^.*: error: .*$%\x1b[37;41m&\x1b[m%' \
         -e 's%^.*: warning: .*$%\x1b[30;43m&\x1b[m%'
-
-%if 0%{?gcov:1}
-  mkdir -p gcov-obj
-  find . -name '*.gcno' -exec cp '{}' gcov-obj ';'
-%endif
 
 %install
 
