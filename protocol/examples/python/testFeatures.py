@@ -269,6 +269,14 @@ def getLocationTest(stub):
     if response.lat < 0: return False
     return True
 
+def takeScreenshotTest(stub):
+    responses = stub.takeScreenshot(ReqTakeScreenshot())
+    image = open("screenshot.png", "wb")
+    for response in responses:
+        image.write(response.image)
+    image.close()
+    return True;
+
 def defaultSetup(stub):
     if stub.getAppInfo(ReqGetAppInfo(packageName='com.samsung.ui-widget-sample')).isRunning:
         stub.closeApp(ReqCloseApp(packageName='com.samsung.ui-widget-sample'))
@@ -310,6 +318,7 @@ def run():
         runTest(stub, touchTest)
         runTest(stub, sendKeyTest)
         runTest(stub, setValueClearTest)
+        runTest(stub, takeScreenshotTest)
         runTestWithoutSetupAndTearDown(stub, installAppTest)
         runTestWithoutSetupAndTearDown(stub, launchAppTest)
         runTestWithoutSetupAndTearDown(stub, getAppInfoTest)

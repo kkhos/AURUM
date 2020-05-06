@@ -10,6 +10,10 @@
 #include <time.h>
 #include <Ecore.h>
 
+#include <tdm_helper.h>
+#include <tbm_surface.h>
+#include <system_info.h>
+
 TizenImpl::TizenImpl()
 : mFakeTouchHandle{0}, mFakeKeyboardHandle{0}, mFakeWheelHandle{0}, isTimerStarted{false}, mTouchSeq{}
 {
@@ -277,7 +281,27 @@ bool TizenImpl::releaseKeyCode(std::string keycode)
 
 bool TizenImpl::takeScreenshot(std::string path, float scale, int quality)
 {
-    return false;
+    efl_util_screenshot_h screenshot = NULL;
+    tbm_surface_h tbm_surface = NULL;
+
+    int width, height;
+    system_info_get_platform_int("http://tizen.org/feature/screen.width", &width);
+    system_info_get_platform_int("http://tizen.org/feature/screen.height", &height);
+
+    screenshot = efl_util_screenshot_initialize(width, height);
+
+    if (screenshot) {
+        tbm_surface = efl_util_screenshot_take_tbm_surface(screenshot);
+        if (tbm_surface) {
+            char path_cstr[PATH_MAX];
+            strcpy(path_cstr, path.c_str());
+            tdm_helper_dump_buffer(tbm_surface, path_cstr);
+            sync();
+        }
+        efl_util_screenshot_deinitialize(screenshot);
+    }
+
+    return true;
 }
 
 class Clock {
