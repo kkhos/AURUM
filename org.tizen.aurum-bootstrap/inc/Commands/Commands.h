@@ -31,4 +31,5 @@
 #include "Commands/GetLocationCommand.h"
 #include "Commands/SendKeyCommand.h"
 
+#include "Commands/TakeScreenshotCommand.h"
 #endif

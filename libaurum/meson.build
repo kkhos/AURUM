@@ -25,6 +25,8 @@ libaurum_src +=[
 endif
 
 libaurum_dep = [
+  dependency('capi-system-info'),
+  dependency('libtdm'),
   dependency('atspi-2'),
   dependency('gio-2.0'),
   dependency('threads'),

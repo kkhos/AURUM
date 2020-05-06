@@ -30,6 +30,7 @@ service Bootstrap {
    rpc getDeviceTime(ReqGetDeviceTime) returns (RspGetDeviceTime) {}
    rpc getLocation(ReqGetLocation) returns (RspGetLocation) {}
    rpc sendKey(ReqKey) returns (RspKey) {}
+   rpc takeScreenshot(ReqTakeScreenshot) returns (stream RspTakeScreenshot) {}
 }
 
 // ------------------------------------ //
@@ -355,6 +356,12 @@ message ReqKey{
 }
 message RspKey{
    RspStatus status = 1;
+}
+
+message ReqTakeScreenshot{
+}
+message RspTakeScreenshot{
+   bytes image = 1;
 }
 
 // ------------------------------------ //

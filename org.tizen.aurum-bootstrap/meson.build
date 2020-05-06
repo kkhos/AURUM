@@ -35,6 +35,7 @@ bootstrap_svr_src += [
    files('src/Commands/TouchUpCommand.cc'),
    files('src/Commands/SyncCommand.cc'),
    files('src/Commands/KillServerCommand.cc'),
+   files('src/Commands/TakeScreenshotCommand.cc'),
    files('src/Commands/Command.cc'),
    files('src/Commands/PreCommand.cc'),
    files('src/Commands/PostCommand.cc'),
