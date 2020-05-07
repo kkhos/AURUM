@@ -18,7 +18,7 @@ PreCommand::PreCommand(Command *cmd) : mCommand{cmd} {}
     {
         LOG_SCOPE_F(INFO, "PreCommand --------------- ");
 
-        bool isDisplayOn = DISPLAY_STATE_SCREEN_OFF != (display_state_e)((int)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
+        bool isDisplayOn = DISPLAY_STATE_SCREEN_OFF != (display_state_e)((long)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
             display_state_e state;
             if(device_display_get_state(&state) == DEVICE_ERROR_NONE) {
                 return (void*)(state);
