@@ -12,6 +12,8 @@ private:
     Command *mCommand;
     PreCommand();
 
+    static const int INTV_TURNON_MARGIN = 5000;
+
 public:
     PreCommand(Command *cmd);
     ::grpc::Status execute() override;

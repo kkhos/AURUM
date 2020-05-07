@@ -25,4 +25,5 @@
 		<privilege>http://tizen.org/privilege/display</privilege>
 	</privileges>
 	<feature name="http://tizen.org/feature/network.ethernet">true</feature>
+	<feature name="http://tizen.org/feature/display.state">true</feature>
 </manifest>
