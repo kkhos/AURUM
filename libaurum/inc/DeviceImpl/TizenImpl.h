@@ -23,6 +23,9 @@ public:
     bool touchMove(const int x, const int y) override;
     bool touchUp(const int x, const int y) override;
 
+    bool wheelUp(int amount, const int durationMs) override;
+    bool wheelDown(int amount, const int durationMs) override;
+
     bool pressBack() override;
     bool pressHome() override;
     bool pressMenu() override;
@@ -39,6 +42,7 @@ protected:
 private:
     efl_util_inputgen_h mFakeTouchHandle;
     efl_util_inputgen_h mFakeKeyboardHandle;
+    efl_util_inputgen_h mFakeWheelHandle;
     static const unsigned int INTV_CLICK = 5;
     static const unsigned int INTV_KEYPRESS = 10;
 };
