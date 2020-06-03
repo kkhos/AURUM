@@ -16,7 +16,7 @@ public:
     virtual bool click(const int x, const int y) = 0;
     virtual bool click(const int x, const int y, const unsigned int intv) = 0;
     virtual bool drag(const int sx, const int sy, const int ex, const int ey,
-                      const int steps) = 0;
+                      const int steps, const int durationMs) = 0;
 
     virtual bool touchDown(const int x, const int y) = 0;
     virtual bool touchMove(const int x, const int y) = 0;

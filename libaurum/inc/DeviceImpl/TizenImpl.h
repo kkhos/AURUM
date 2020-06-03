@@ -17,7 +17,7 @@ public:
     bool click(const int x, const int y, const unsigned int intv) override;
 
     bool drag(const int sx, const int sy, const int ex, const int ey,
-              const int steps) override;
+              const int steps, const int durationMs) override;
 
     bool touchDown(const int x, const int y) override;
     bool touchMove(const int x, const int y) override;
