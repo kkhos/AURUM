@@ -18,7 +18,7 @@ FlickCommand::FlickCommand(const ::aurum::ReqFlick *request,
     int                   durationMs = mRequest->durationms();
 
     UiDevice *device = UiDevice::getInstance(DeviceType::DEFAULT);
-    device->drag(startPoint.x(), startPoint.y(), endPoint.x(), endPoint.y(), durationMs);
+    device->drag(startPoint.x(), startPoint.y(), endPoint.x(), endPoint.y(), durationMs/15, durationMs);
     mResponse->set_status(::aurum::RspStatus::OK);
 
     return grpc::Status::OK;

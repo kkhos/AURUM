@@ -109,22 +109,23 @@ bool TizenImpl::touchUp(const int x, const int y)
 }
 
 bool TizenImpl::drag(const int sx, const int sy, const int ex, const int ey,
-                         const int duration)
+                         const int steps, const int durationMs)
 {
-    int i, j, dirX, dirY, stepX, stepY;
-    int dur;
+    int i, j, stepX, stepY;
+    int dur, _steps;
 
-    // TODO fixed fps implementation
-    if (duration < 10) dur = 10;
-    else dur = duration;
+    if (steps <= 0) _steps = 1;
+    else _steps = steps;
 
-    dirX = sx > ex ? -1 : 1;
-    dirY = sy > ey ? -1 : 1;
+    dur = durationMs / _steps;
+    dur = dur - 3;
 
-    stepX = (ex - sx)/20;
-    stepY = (ey - sy)/20;
+    if (dur < 10) dur = 10;
 
-    LOG_SCOPE_F(INFO, "flicking (%d, %d) -> (%d, %d) for (%d ms)", sx, sy, ex, ey, duration);
+    stepX = (ex - sx)/_steps;
+    stepY = (ey - sy)/_steps;
+
+    LOG_SCOPE_F(INFO, "flicking (%d, %d) -> (%d, %d) for (%d ms)", sx, sy, ex, ey, durationMs);
 
     auto args1 = std::make_tuple(this, sx, sy);
     ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
@@ -152,11 +153,10 @@ bool TizenImpl::drag(const int sx, const int sy, const int ex, const int ey,
             return NULL;
         }, (void*)(&args));
 
-        usleep(dur * 1000);
-        LOG_F(INFO, "sleep ms %d", dur);
         i += stepX;
         j += stepY;
-    } while(i*dirX <= ex && j*dirY <= ey);
+        usleep(dur * 1000);
+    } while((sx<ex?sx:ex) <= i && i <= (sx<ex?ex:sx) && (sy<ey?sy:ey) <= j && j <= (sy<ey?ey:sy));
 
     auto args2 = std::make_tuple(this, ex, ey);
     ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
