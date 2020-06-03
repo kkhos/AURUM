@@ -31,6 +31,9 @@ public:
     bool touchMove(const int x, const int y) override;
     bool touchUp(const int x, const int y) override;
 
+    bool wheelUp(int amount, const int durationMs) override;
+    bool wheelDown(int amount, const int durationMs) override;
+
     bool pressBack() override;
     bool pressHome() override;
     bool pressMenu() override;

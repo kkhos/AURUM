@@ -18,6 +18,7 @@ TizenImpl::TizenImpl()
         obj->mFakeTouchHandle = efl_util_input_initialize_generator(EFL_UTIL_INPUT_DEVTYPE_TOUCHSCREEN);
         obj->mFakeKeyboardHandle =
             efl_util_input_initialize_generator(EFL_UTIL_INPUT_DEVTYPE_KEYBOARD);
+        obj->mFakeWheelHandle = efl_util_input_initialize_generator(EFL_UTIL_INPUT_DEVTYPE_POINTER);
         return NULL;
     }, this);
 }
@@ -28,6 +29,7 @@ TizenImpl::~TizenImpl()
         TizenImpl *obj = static_cast<TizenImpl*>(data);
         efl_util_input_deinitialize_generator(obj->mFakeTouchHandle);
         efl_util_input_deinitialize_generator(obj->mFakeKeyboardHandle);
+        efl_util_input_deinitialize_generator(obj->mFakeWheelHandle);
         return NULL;
     }, this);
 }
@@ -104,6 +106,40 @@ bool TizenImpl::touchUp(const int x, const int y)
 
         return NULL;
     }, (void*)(&args));
+
+    return true;
+}
+
+bool TizenImpl::wheelUp(int amount, const int durationMs)
+{
+    LOG_F(INFO, "wheel up %d for %d", amount, durationMs);
+    auto args = std::make_tuple(this);
+    for (int i = 0; i < amount; i++){
+        ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
+                TizenImpl *obj;
+                std::tie(obj) = *static_cast<std::tuple<TizenImpl*>*>(data);
+                efl_util_input_generate_wheel(obj->mFakeWheelHandle, EFL_UTIL_INPUT_POINTER_WHEEL_HORZ, 1);
+            return NULL;
+        }, (void*)(&args));
+        usleep(durationMs*1000/amount);
+    }
+
+    return true;
+}
+
+bool TizenImpl::wheelDown(int amount, const int durationMs)
+{
+     LOG_F(INFO, "wheel down %d for %d", amount, durationMs);
+    auto args = std::make_tuple(this);
+    for (int i = 0; i < amount; i++){
+        ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
+                TizenImpl *obj;
+                std::tie(obj) = *static_cast<std::tuple<TizenImpl*>*>(data);
+                efl_util_input_generate_wheel(obj->mFakeWheelHandle, EFL_UTIL_INPUT_POINTER_WHEEL_HORZ, -1);
+            return NULL;
+        }, (void*)(&args));
+        usleep(durationMs*1000/amount);
+    }
 
     return true;
 }
