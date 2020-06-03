@@ -2,13 +2,15 @@
 
 #include <iostream>
 #include <set>
+#include <regex>
 
 #include <loguru.hpp>
 
 bool PartialMatch::checkCriteria(const std::string *textA, const std::string textB)
 {
     if (!textA) return false;
-    return textA->compare(textB);
+    std::regex re(*textA);
+    return !std::regex_match(textB, re);
 }
 
 bool PartialMatch::checkCriteria(const bool *boolA, const bool boolB)
