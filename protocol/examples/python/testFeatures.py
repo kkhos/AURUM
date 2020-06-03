@@ -33,7 +33,7 @@ def setValueClearTest(stub):
 
     for tryCnt in range(10):
         stub.flick(ReqFlick(startPoint=Point(x=160, y=350), endPoint=Point(x=160, y=10), durationMs=500))
-        response = stub.findElement(ReqFindElement(textField='Entry/Editfield, Entry/Text Input'))
+        response = stub.findElement(ReqFindElement(textField='Entry/Editfield.*'))
         if len(response.elements) <= 0: continue
         targetObj = response.elements[0].elementId
         response = stub.getSize(ReqGetSize(elementId=targetObj))
@@ -171,7 +171,7 @@ def flickTest(stub):
     for tryCnt in range(10):
         print('Flick to bottom to find "Spinner" item @ tries:', tryCnt)
         stub.flick(ReqFlick(startPoint=Point(x=160, y=350), endPoint=Point(x=160, y=10), durationMs=10))
-        response = stub.findElement(ReqFindElement(textField='Slider'))
+        response = stub.findElement(ReqFindElement(textField='Spinner.*'))
         time.sleep(0.5)
         print(response)
         if len(response.elements) > 0: return True
