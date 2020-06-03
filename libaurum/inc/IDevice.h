@@ -22,6 +22,9 @@ public:
     virtual bool touchMove(const int x, const int y) = 0;
     virtual bool touchUp(const int x, const int y) = 0;
 
+    virtual bool wheelUp(int amount, const int durationMs) = 0;
+    virtual bool wheelDown(int amount, const int durationMs) = 0;
+
     virtual bool pressBack() = 0;
     virtual bool pressHome() = 0;
     virtual bool pressMenu() = 0;
