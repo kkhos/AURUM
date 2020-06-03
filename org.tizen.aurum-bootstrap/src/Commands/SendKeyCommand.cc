@@ -27,6 +27,10 @@ SendKeyCommand::SendKeyCommand(const ::aurum::ReqKey* request,
         mDevice->pressVolDown();
     else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_POWER)
         mDevice->pressPower();
+    else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_WHEELUP)
+        mDevice->wheelUp(1,167);
+    else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_WHEELDOWN)
+        mDevice->wheelDown(1,167);
     else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_KEY) {
         ; // TODO
     }

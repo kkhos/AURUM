@@ -339,6 +339,8 @@ message ReqKey{
       POWER = 5;
       KEY = 6;
       XF86 = 7;
+      WHEELUP = 8;
+      WHEELDOWN = 9;
    }
    enum KeyActionType{
       PRESS = 0;

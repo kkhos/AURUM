@@ -134,6 +134,20 @@ bool UiDevice::touchUp(const int x, const int y)
     return result;
 }
 
+bool UiDevice::wheelUp(int amount, const int durationMs)
+{
+    bool result =  mDeviceImpl->wheelUp(amount, durationMs);
+    waitForIdle();
+    return result;
+}
+
+bool UiDevice::wheelDown(int amount, const int durationMs)
+{
+    bool result =  mDeviceImpl->wheelDown(amount, durationMs);
+    waitForIdle();
+    return result;
+}
+
 bool UiDevice::pressBack()
 {
     bool result =  mDeviceImpl->pressBack();
