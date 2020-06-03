@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include <utility>
 #include <vector>
+#include <chrono>
+#include <thread>
 
 UiDevice::UiDevice() : UiDevice(DeviceType::DEFAULT, nullptr) {}
 
@@ -84,71 +86,101 @@ std::unique_ptr<UiObject> UiDevice::waitFor(
 {
     return mWaiter->waitFor(condition);
 }
+bool UiDevice::waitForIdle() const
+{
+    std::this_thread::sleep_for(std::chrono::milliseconds{167});
+    return true;
+}
 
 bool UiDevice::click(const int x, const int y)
 {
-    return mDeviceImpl->click(x, y);
+    bool result =  mDeviceImpl->click(x, y);
+    waitForIdle();
+    return result;
 }
 
 bool UiDevice::click(const int x, const int y, const unsigned int intv)
 {
-    return mDeviceImpl->click(x, y, intv);
+    bool result = mDeviceImpl->click(x, y, intv);
+    waitForIdle();
+    return result;
 }
 
 bool UiDevice::drag(const int sx, const int sy, const int ex, const int ey,
-                    const int steps)
+                    const int steps, const int durationMs)
 {
-    return mDeviceImpl->drag(sx, sy, ex, ey, steps);
+    bool result =  mDeviceImpl->drag(sx, sy, ex, ey, steps, durationMs);
+    waitForIdle();
+    return result;
 }
 
 bool UiDevice::touchDown(const int x, const int y)
 {
-    return mDeviceImpl->touchDown(x, y);
+    bool result =  mDeviceImpl->touchDown(x, y);
+
+    return result;
 }
 
 bool UiDevice::touchMove(const int x, const int y)
 {
-    return mDeviceImpl->touchMove(x, y);
+    bool result =  mDeviceImpl->touchMove(x, y);
+    return result;
 }
 
 bool UiDevice::touchUp(const int x, const int y)
 {
-    return mDeviceImpl->touchUp(x, y);
+    bool result =  mDeviceImpl->touchUp(x, y);
+    waitForIdle();
+    return result;
 }
 
 bool UiDevice::pressBack()
 {
-    return mDeviceImpl->pressBack();
+    bool result =  mDeviceImpl->pressBack();
+    waitForIdle();
+    return result;
 }
 
 bool UiDevice::pressHome()
 {
-    return mDeviceImpl->pressHome();
+    bool result =  mDeviceImpl->pressHome();
+    waitForIdle();
+    return result;
 }
 
 bool UiDevice::pressMenu()
 {
-    return mDeviceImpl->pressMenu();
+    bool result =  mDeviceImpl->pressMenu();
+    waitForIdle();
+    return result;
 }
 
 bool UiDevice::pressVolUp()
 {
-    return mDeviceImpl->pressVolUp();
+    bool result =  mDeviceImpl->pressVolUp();
+    waitForIdle();
+    return result;
 }
 
 bool UiDevice::pressVolDown()
 {
-    return mDeviceImpl->pressVolDown();
+    bool result =  mDeviceImpl->pressVolDown();
+    waitForIdle();
+    return result;
 }
 
 bool UiDevice::pressPower()
 {
-    return mDeviceImpl->pressPower();
+    bool result =  mDeviceImpl->pressPower();
+    waitForIdle();
+    return result;
 }
 
 bool UiDevice::pressKeyCode(std::string keycode)
 {
-    return mDeviceImpl->pressKeyCode(keycode);
+    bool result =  mDeviceImpl->pressKeyCode(keycode);
+    waitForIdle();
+    return result;
 }
 
 bool UiDevice::takeScreenshot(std::string path, float scale, int quality)

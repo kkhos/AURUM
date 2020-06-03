@@ -60,7 +60,7 @@ public:
 
 private:
     std::vector<std::unique_ptr<AccessibleNode>> getWindowRoot() const;
-
+    bool waitForIdle() const;
 private:
     UiDevice();
     UiDevice(DeviceType type, IDevice *impl);
