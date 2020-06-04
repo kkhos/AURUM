@@ -32,7 +32,7 @@ def setValueClearTest(stub):
         return True
 
     for tryCnt in range(10):
-        stub.flick(ReqFlick(startPoint=Point(x=160, y=350), endPoint=Point(x=160, y=10), durationMs=100))
+        stub.flick(ReqFlick(startPoint=Point(x=160, y=350), endPoint=Point(x=160, y=10), durationMs=500))
         response = stub.findElement(ReqFindElement(textField='Entry/Editfield, Entry/Text Input'))
         if len(response.elements) <= 0: continue
         targetObj = response.elements[0].elementId
@@ -42,12 +42,13 @@ def setValueClearTest(stub):
             break
 
     for tryCnt in range(10):
-        stub.flick(ReqFlick(startPoint=Point(x=160, y=350), endPoint=Point(x=160, y=10), durationMs=100))
+        stub.flick(ReqFlick(startPoint=Point(x=160, y=350), endPoint=Point(x=160, y=10), durationMs=500))
         response = stub.findElement(ReqFindElement(textField='Editable'))
         if len(response.elements) <= 0: continue
         targetObj = response.elements[0].elementId
         response = stub.getSize(ReqGetSize(elementId=targetObj))
-        if inScreen(response.size):
+        isShowing = stub.getAttribute(ReqGetAttribute(elementId=targetObj, attribute='SHOWING')).boolValue
+        if inScreen(response.size) or isShowing:
             stub.click(ReqClick(type='ELEMENTID', elementId=targetObj))
             break
 
@@ -234,10 +235,18 @@ def closeAppTest(stub):
     return stub.getAppInfo(ReqGetAppInfo(packageName='org.example.uicomponents')).isRunning != True
 
 def sendKeyTest(stub):
-    response = stub.sendKey(ReqKey(type='HOME', actionType='STROKE'))
+    response = stub.sendKey(ReqKey(type='POWER', actionType='STROKE'))
+    time.sleep(3)
+    response = stub.sendKey(ReqKey(type='POWER', actionType='STROKE'))
     time.sleep(3)
     response = stub.sendKey(ReqKey(type='BACK', actionType='STROKE'))
     time.sleep(5)
+    response = stub.sendKey(ReqKey(type='WHEELUP', actionType='STROKE'))
+    time.sleep(0.3)
+    response = stub.sendKey(ReqKey(type='WHEELUP', actionType='STROKE'))
+    time.sleep(0.3)
+    response = stub.sendKey(ReqKey(type='WHEELDOWN', actionType='STROKE'))
+    time.sleep(0.3)
     return True
 
 def scrollToTest(stub):
@@ -298,7 +307,6 @@ def run():
         runTest(stub, touchTest)
         runTest(stub, sendKeyTest)
         runTest(stub, setValueClearTest)
-
         runTestWithoutSetupAndTearDown(stub, installAppTest)
         runTestWithoutSetupAndTearDown(stub, launchAppTest)
         runTestWithoutSetupAndTearDown(stub, getAppInfoTest)
