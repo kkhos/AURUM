@@ -170,9 +170,9 @@ def flickTest(stub):
 
     for tryCnt in range(10):
         print('Flick to bottom to find "Spinner" item @ tries:', tryCnt)
-        stub.flick(ReqFlick(startPoint=Point(x=160, y=350), endPoint=Point(x=160, y=10), durationMs=10))
+        stub.flick(ReqFlick(startPoint=Point(x=160, y=359), endPoint=Point(x=160, y=1), durationMs=350))
         response = stub.findElement(ReqFindElement(textField='Spinner.*'))
-        time.sleep(0.5)
+        time.sleep(0.01)
         print(response)
         if len(response.elements) > 0: return True
 

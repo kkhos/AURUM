@@ -40,11 +40,22 @@ protected:
     bool pressKeyCode(std::string keycode, unsigned int intv);
 
 private:
+    void startTimer(void);
+    int stopTimer(void);
+
+private:
     efl_util_inputgen_h mFakeTouchHandle;
     efl_util_inputgen_h mFakeKeyboardHandle;
     efl_util_inputgen_h mFakeWheelHandle;
     static const unsigned int INTV_CLICK = 5;
     static const unsigned int INTV_KEYPRESS = 10;
+    static const unsigned int INTV_MINIMUM_DRAG_MS = 25;
+    static const unsigned int INTV_MINIMUM_USLEEP = 1000;
+    static const unsigned int MINIMUM_DURATION_DRAG = 100;
+    static const unsigned int MSEC_PER_SEC = 1000;
+
+    struct timespec t0;
+    bool isTimerStarted;
 };
 
 #endif

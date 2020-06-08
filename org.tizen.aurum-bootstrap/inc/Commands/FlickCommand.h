@@ -12,6 +12,7 @@ class FlickCommand : public Command {
 private:
     const ::aurum::ReqFlick* mRequest;
     ::aurum::RspFlick*       mResponse;
+    const unsigned int MINIMUM_TOUCHEVENT_INTV_MS = 25;
 
 public:
     FlickCommand(const ::aurum::ReqFlick* request, ::aurum::RspFlick* response);
