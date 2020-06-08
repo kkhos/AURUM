@@ -11,7 +11,7 @@
 #include <Ecore.h>
 
 TizenImpl::TizenImpl()
-: mFakeTouchHandle{0}, mFakeKeyboardHandle{0}, mFakeWheelHandle{0}
+: mFakeTouchHandle{0}, mFakeKeyboardHandle{0}, mFakeWheelHandle{0}, isTimerStarted{false}
 {
     LOG_SCOPE_F(INFO, "device implementation init");
     ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
@@ -42,28 +42,17 @@ bool TizenImpl::click(const int x, const int y)
 
 bool TizenImpl::click(const int x, const int y, const unsigned int intv)
 {
-    LOG_SCOPE_F(INFO, "click at (%d, %d)", x, y);
-    auto args = std::make_tuple(this, x, y, intv);
-    ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
-        TizenImpl *obj;
-        int x, y;
-        unsigned int intv;
-        std::tie(obj, x, y, intv) = *static_cast<std::tuple<TizenImpl*, int, int, unsigned int>*>(data);
+    touchDown(x, y);
+    usleep(intv * MSEC_PER_SEC);
+    touchUp(x, y);
 
-        efl_util_input_generate_touch(obj->mFakeTouchHandle, 0,
-                                    EFL_UTIL_INPUT_TOUCH_BEGIN, x, y);
-        usleep(intv*10000);
-        efl_util_input_generate_touch(obj->mFakeTouchHandle, 0, EFL_UTIL_INPUT_TOUCH_END,
-                                    x, y);
-        return NULL;
-    }, (void*)(&args));
     return true;
 }
 
 
 bool TizenImpl::touchDown(const int x, const int y)
 {
-    LOG_F(INFO, "%d %d", x, y);
+    LOG_F(INFO, "touch down %d %d", x, y);
     auto args = std::make_tuple(this, x, y);
     ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
         TizenImpl *obj;
@@ -79,7 +68,7 @@ bool TizenImpl::touchDown(const int x, const int y)
 
 bool TizenImpl::touchMove(const int x, const int y)
 {
-    LOG_F(INFO, "%d %d", x, y);
+    LOG_F(INFO, "touch move %d %d", x, y);
     auto args = std::make_tuple(this, x, y);
     ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
         TizenImpl *obj;
@@ -104,10 +93,8 @@ bool TizenImpl::touchUp(const int x, const int y)
         std::tie(obj, x, y) = *static_cast<std::tuple<TizenImpl*, int, int>*>(data);
         efl_util_input_generate_touch(obj->mFakeTouchHandle, 0, EFL_UTIL_INPUT_TOUCH_END,
                                   x, y);
-
         return NULL;
     }, (void*)(&args));
-
     return true;
 }
 
@@ -122,7 +109,7 @@ bool TizenImpl::wheelUp(int amount, const int durationMs)
                 efl_util_input_generate_wheel(obj->mFakeWheelHandle, EFL_UTIL_INPUT_POINTER_WHEEL_HORZ, 1);
             return NULL;
         }, (void*)(&args));
-        usleep(durationMs*1000/amount);
+        usleep(durationMs*MSEC_PER_SEC/amount);
     }
 
     return true;
@@ -139,74 +126,60 @@ bool TizenImpl::wheelDown(int amount, const int durationMs)
                 efl_util_input_generate_wheel(obj->mFakeWheelHandle, EFL_UTIL_INPUT_POINTER_WHEEL_HORZ, -1);
             return NULL;
         }, (void*)(&args));
-        usleep(durationMs*1000/amount);
+        usleep(durationMs*MSEC_PER_SEC/amount);
     }
 
     return true;
+}
+void TizenImpl::startTimer(void)
+{
+    isTimerStarted = true;
+    clock_gettime(CLOCK_MONOTONIC, &tStart);
+}
+
+int TizenImpl::stopTimer(void)
+{
+    struct timespec tEnd;
+    if (!isTimerStarted) return 0;
+    isTimerStarted = false;
+    clock_gettime(CLOCK_MONOTONIC, &tEnd);
+    return ((tEnd.tv_sec + tEnd.tv_nsec/1000000000.0) - (tStart.tv_sec + tStart.tv_nsec/1000000000.0)) * 1000000;
 }
 
 bool TizenImpl::drag(const int sx, const int sy, const int ex, const int ey,
                          const int steps, const int durationMs)
 {
-    int i, j, stepX, stepY;
-    int dur, _steps;
+    int i, j;
+    int _durationUs, _steps, _stepUs;
+    int dur;
+    int consumptionUs;
 
     if (steps <= 0) _steps = 1;
     else _steps = steps;
 
-    dur = durationMs / _steps;
-    dur = dur - 3;
+    if (durationMs < MINIMUM_DURATION_DRAG) _durationUs = INTV_MINIMUM_DRAG_MS * MSEC_PER_SEC;
+    else _durationUs = durationMs * MSEC_PER_SEC;
 
-    if (dur < 10) dur = 10;
+    _stepUs = _durationUs / (_steps +1);
 
-    stepX = (ex - sx)/_steps;
-    stepY = (ey - sy)/_steps;
-
+    if (_stepUs < (INTV_MINIMUM_DRAG_MS * MSEC_PER_SEC)) {
+        _steps = (int)(_durationUs / (INTV_MINIMUM_DRAG_MS * MSEC_PER_SEC)) - 1;
+        _stepUs  = (INTV_MINIMUM_DRAG_MS * MSEC_PER_SEC);
+    }
     LOG_SCOPE_F(INFO, "flicking (%d, %d) -> (%d, %d) for (%d ms)", sx, sy, ex, ey, durationMs);
+    startTimer();
+    touchDown(sx, sy);
+    consumptionUs = stopTimer();
 
-    auto args1 = std::make_tuple(this, sx, sy);
-    ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
-        TizenImpl *obj;
-        int i, j;
-        std::tie(obj, i, j) = *static_cast<std::tuple<TizenImpl*, int, int>*>(data);
-        efl_util_input_generate_touch(obj->mFakeTouchHandle, 0,
-                                        EFL_UTIL_INPUT_TOUCH_BEGIN, i, j);
-        LOG_F(INFO, "flick begin (%d, %d)", i, j);
-        return NULL;
-    }, (void*)(&args1));
-
-    i = sx, j = sy;
-    do {
-        std::tuple<TizenImpl*, int, int> args;
-        args = std::make_tuple(this, i, j);
-        ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
-            TizenImpl *obj;
-            int i, j;
-            std::tie(obj, i, j) = *static_cast<std::tuple<TizenImpl*, int, int>*>(data);
-            LOG_F(INFO, "flick move (%d, %d)", i, j);
-
-            efl_util_input_generate_touch(obj->mFakeTouchHandle, 0,
-                                            EFL_UTIL_INPUT_TOUCH_UPDATE, i, j);
-            return NULL;
-        }, (void*)(&args));
-
-        i += stepX;
-        j += stepY;
-        usleep(dur * 1000);
-    } while((sx<ex?sx:ex) <= i && i <= (sx<ex?ex:sx) && (sy<ey?sy:ey) <= j && j <= (sy<ey?ey:sy));
-
-    auto args2 = std::make_tuple(this, ex, ey);
-    ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
-        TizenImpl *obj;
-        int i, j;
-        std::tie(obj, i, j) = *static_cast<std::tuple<TizenImpl*, int, int>*>(data);
-        efl_util_input_generate_touch(obj->mFakeTouchHandle, 0, EFL_UTIL_INPUT_TOUCH_END,
-                                        i, j);
-        LOG_SCOPE_F(INFO, "flick end: (%d, %d)", i, j);
-        return NULL;
-    }, (void*)(&args2));
-
-    ecore_main_loop_thread_safe_call_sync([](void *data)->void*{return NULL;}, NULL);
+    for ( int s = 1; s <= _steps + 1; s++) {
+        usleep((_stepUs - consumptionUs)>INTV_MINIMUM_USLEEP?(_stepUs - consumptionUs):INTV_MINIMUM_USLEEP);
+        startTimer();
+        touchMove(sx + (ex - sx) * s / (steps + 1), sy + (ey - sy) * s / (steps + 1));
+        consumptionUs = stopTimer();
+    }
+    usleep((_stepUs - consumptionUs)>INTV_MINIMUM_USLEEP?(_stepUs - consumptionUs):INTV_MINIMUM_USLEEP);
+    touchMove(ex, ey);
+    touchUp(ex, ey);
 
     return true;
 }
