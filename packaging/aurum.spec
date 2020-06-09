@@ -8,6 +8,7 @@ Source:         %{name}-%{version}.tar.gz
 Source1001:     %{name}.manifest
 
 BuildRequires:  meson
+BuildRequires:  doxygen
 BuildRequires:  pkgconfig(grpc)
 BuildRequires:  pkgconfig(grpc++)
 
@@ -64,6 +65,15 @@ Requires: libgrpc
 
 %description bootstrap
 gRPC Server
+
+%package docs
+Summary: documentation
+License: Apache-2.0
+Requires: %{name} = %{version}-%{release}
+Requires: libgrpc
+
+%description docs
+documentations for aurum
 
 %if 0%{?gcov:1}
 %package gcov
@@ -181,6 +191,12 @@ echo "signing %{TZ_SYS_RO_APP}/org.tizen.aurum-bootstrap"
 %license COPYING
 %{TZ_SYS_RO_PACKAGES}/org.tizen.aurum-bootstrap.xml
 %{TZ_SYS_RO_APP}/org.tizen.aurum-bootstrap/*
+
+%files docs
+%manifest %{name}.manifest
+%defattr(-,root,root)
+%license COPYING
+%{_datadir}/doc/aurum/
 
 %if 0%{?gcov:1}
 %files gcov
