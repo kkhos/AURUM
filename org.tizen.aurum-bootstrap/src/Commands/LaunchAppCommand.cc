@@ -34,6 +34,7 @@ LaunchAppCommand::LaunchAppCommand(const ::aurum::ReqLaunchApp* request,
     if (ret) {
         LOG_SCOPE_F(INFO, "Launch Failed(2/3) Err Code : %ull", ret);
         mResponse->set_status(::aurum::RspStatus::ERROR);
+        app_control_destroy(appControl);
         return grpc::Status::OK;
     }
 
@@ -41,8 +42,11 @@ LaunchAppCommand::LaunchAppCommand(const ::aurum::ReqLaunchApp* request,
     if (ret) {
         LOG_SCOPE_F(INFO, "Launch Failed(3/3) Err Code : %ull", ret);
         mResponse->set_status(::aurum::RspStatus::ERROR);
+        app_control_destroy(appControl);
         return grpc::Status::OK;
     }
+
+    app_control_destroy(appControl);
 #endif
     return grpc::Status::OK;
 }
