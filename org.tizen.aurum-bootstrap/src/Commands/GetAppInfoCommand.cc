@@ -36,6 +36,7 @@ GetAppInfoCommand::GetAppInfoCommand(const ::aurum::ReqGetAppInfo* request,
                 mResponse->set_isinstalled(true);
             }
         }
+        package_info_destroy(package_info);
     }
 
     if (!app_manager_get_app_context(packageName.c_str(), &app_context)) {
