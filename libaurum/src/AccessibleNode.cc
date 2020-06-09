@@ -70,7 +70,11 @@ AccessibleNode::AccessibleNode(AtspiAccessible *node)
                     static_cast<int>(AccessibleNodeInterface::TABLECELL);
             else
                 LOG_F(WARNING, "Not Supported interface found %s", iface);
+
+            g_free(iface);
         }
+
+        g_array_free(ifaces, FALSE);
     }
     this->refresh();
 }
@@ -117,6 +121,7 @@ void AccessibleNode::refresh() const
     }
 
     if (states) g_array_free(states, 0);
+    g_object_unref(st);
 }
 
 int AccessibleNode::getChildCount() const
