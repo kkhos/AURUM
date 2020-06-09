@@ -41,7 +41,10 @@ findActiveNode(AtspiAccessible *node, int depth,
     if (iShowingNode(node)) {
         g_object_ref(node);
         char *name = atspi_accessible_get_name(node, NULL);
-        LOG_SCOPE_F(INFO, "%s", name);
+        if (name) {
+            LOG_SCOPE_F(INFO, "%s", name);
+            free(name);
+        }
         ret.push_back(node);
         return ret;
     }
