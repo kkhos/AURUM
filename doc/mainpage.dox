@@ -1,0 +1,22 @@
+
+/**
+  * @mainpage Aurum Protocol
+  * @section main_intro Introduction
+  * this is quick introduction
+  * @li @ref libaurum
+  * @li @ref protocol
+  * @li @ref aurum-bootstrap
+  * @section main_architecture Overall Architecture
+  * this is breif overall architecture
+  * @section main_tutorial Tutorial
+  * this shows you how to use aurum
+  * @subsection main_tutorial_step1 Step1
+  * tutorial step 1
+  * @subsection main_tutorial_step2 Step2
+  * tutorial step 2
+  * @subsection main_tutorial_step3 Step3
+  * tutorial step 3
+  * @subsection main_tutorial_step4 Step4
+  * tutorial step 4
+  */
+

@@ -32,7 +32,7 @@ DOXYFILE_ENCODING      = UTF-8
 # title of most generated pages and in a few other places.
 # The default value is: My Project.
 
-PROJECT_NAME           = "The Vast Comedian Project"
+PROJECT_NAME           = "Aurum"
 
 # The PROJECT_NUMBER tag can be used to enter a project or revision number. This
 # could be handy for archiving the generated documentation or if some version
@@ -44,7 +44,7 @@ PROJECT_NUMBER         = @VERSION@
 # for a project that appears at the top of each page and should give viewer a
 # quick idea about the purpose of the project. Keep the description short.
 
-PROJECT_BRIEF          = Comedy generator
+PROJECT_BRIEF          =
 
 # With the PROJECT_LOGO tag one can specify a logo or an icon that is included
 # in the documentation. The maximum height of the logo should not exceed 55
@@ -790,7 +790,13 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = "@TOP_SRCDIR@/libaurum/inc" "@TOP_SRCDIR@/libaurum/src" "@TOP_SRCDIR@/org.tizen.aurum-bootstrap/inc" "@TOP_SRCDIR@/org.tizen.aurum-bootstrap/src" "@TOP_SRCDIR@/protocol"
+INPUT                  = "@TOP_SRCDIR@/libaurum/" \
+                         "@TOP_SRCDIR@/libaurum/inc" \
+                         "@TOP_SRCDIR@/libaurum/src" \
+                         "@TOP_SRCDIR@/protocol" \
+                         "@TOP_SRCDIR@/org.tizen.aurum-bootstrap/aurum-bootstrap.dox" \
+                         "@TOP_SRCDIR@/doc/mainpage.dox"
+
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -819,13 +825,14 @@ FILE_PATTERNS          = *.c \
                          *.cc \
                          *.h \
                          *.hh \
+                         *.dox \
                          *.proto
 
 # The RECURSIVE tag can be used to specify whether or not subdirectories should
 # be searched for input files as well.
 # The default value is: NO.
 
-RECURSIVE              = NO
+RECURSIVE              = YES
 
 # The EXCLUDE tag can be used to specify files and/or directories that should be
 # excluded from the INPUT source files. This way you can easily exclude a
@@ -1420,7 +1427,7 @@ DISABLE_INDEX          = NO
 # The default value is: NO.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-GENERATE_TREEVIEW      = NO
+GENERATE_TREEVIEW      = YES
 
 # The ENUM_VALUES_PER_LINE tag can be used to set the number of enum values that
 # doxygen will group on one line in the generated HTML documentation.
