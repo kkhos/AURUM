@@ -7,7 +7,10 @@
 #ifdef GBS_BUILD
 #include <efl_util.h>
 #endif
-
+/**
+ * @brief TizenImpl Class
+ * @since_tizen 5.5
+ */
 class TizenImpl : public IDevice {
 public:
     TizenImpl();

@@ -1,32 +1,30 @@
 syntax = "proto3";
 package aurum;
 
+/**
+  * @page protocol Protocol
+  * Here is a page with some descriptions about protocol explained
+  */
 service Bootstrap {
    rpc sync(ReqEmpty) returns (RspEmpty) {}
    rpc killServer(ReqEmpty) returns (RspEmpty) {}
-
    rpc findElement(ReqFindElement) returns (RspFindElement) {}
-
    rpc getValue(ReqGetValue) returns (RspGetValue) {}
    rpc setValue(ReqSetValue) returns (RspSetValue) {}
    rpc getSize(ReqGetSize) returns (RspGetSize) {}
    rpc clear(ReqClear) returns (RspClear) {}
    rpc getAttribute(ReqGetAttribute) returns (RspGetAttribute) {}
-
    rpc click(ReqClick) returns (RspClick) {}
    rpc longClick(ReqClick) returns (RspClick) {}
    rpc flick(ReqFlick) returns (RspFlick) {}
-
    rpc touchDown(ReqTouchDown) returns (RspTouchDown) {}
    rpc touchMove(ReqTouchMove) returns (RspTouchMove) {}
    rpc touchUp(ReqTouchUp) returns (RspTouchUp) {}
-
    rpc installApp(stream ReqInstallApp) returns (RspInstallApp) {}
    rpc removeApp(ReqRemoveApp) returns (RspRemoveApp) {}
    rpc getAppInfo(ReqGetAppInfo) returns (RspGetAppInfo) {}
    rpc launchApp(ReqLaunchApp) returns (RspLaunchApp) {}
    rpc closeApp(ReqCloseApp) returns (RspCloseApp) {}
-
    rpc getDeviceTime(ReqGetDeviceTime) returns (RspGetDeviceTime) {}
    rpc getLocation(ReqGetLocation) returns (RspGetLocation) {}
    rpc sendKey(ReqKey) returns (RspKey) {}
