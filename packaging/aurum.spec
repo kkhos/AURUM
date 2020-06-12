@@ -1,5 +1,5 @@
 Name:           aurum
-Version:        0.1.0
+Version:        0.1.1
 Release:        0
 License:        Apache-2.0
 Summary:        Automation framework for Ui testing
