@@ -1,5 +1,5 @@
 project('aurum', ['cpp'],
-  version: '0.0.1',
+  version: '0.1.1',
   default_options : ['buildtype=debugoptimized', 'cpp_std=c++17'],
   meson_version : '>=0.47'
 )
