@@ -5,69 +5,278 @@
 #include <string>
 #include <vector>
 #include <memory>
-
+/**
+ * @brief UiSelector class
+ * @since_tizen 5.5
+ */
 class UiSelector {
 public:
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     UiSelector();
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     UiSelector(UiSelector &selector);
 
     // UiSelector(const UiSelector &src);
     //        UiSelector &operator= (const UiSelector& src);
 
 public:
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     UiSelector *id(std::string text);
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     UiSelector *text(std::string text);
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     UiSelector *pkg(std::string text);
 
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     UiSelector *type(std::string text);
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     UiSelector *style(std::string text);
 
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     UiSelector *depth(int depth);
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     UiSelector *depth(int minDepth, int maxDepth);
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     UiSelector *minDepth(int depth);
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     UiSelector *maxDepth(int depth);
 
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     UiSelector *isChecked(bool cond);
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     UiSelector *isCheckable(bool cond);
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     UiSelector *isClickable(bool cond);
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     UiSelector *isEnabled(bool cond);
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     UiSelector *isFocused(bool cond);
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     UiSelector *isFocusable(bool cond);
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     UiSelector *isScrollable(bool cond);
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     UiSelector *isSelected(bool cond);
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     UiSelector *isShowing(bool cond);
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     UiSelector *isActive(bool cond);
 
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     UiSelector *res(std::string text);
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     UiSelector *desc(std::string text);
 
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     UiSelector *hasChild(std::shared_ptr<UiSelector> child);
 
 public:
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     std::unique_ptr<std::string> mId;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     std::unique_ptr<std::string> mText;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     std::unique_ptr<std::string> mPkg;
 
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     std::unique_ptr<std::string> mType;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     std::unique_ptr<std::string> mStyle;
 
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     std::unique_ptr<int> mMinDepth;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     std::unique_ptr<int> mMaxDepth;
 
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     std::unique_ptr<bool> mIschecked;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     std::unique_ptr<bool> mIscheckable;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     std::unique_ptr<bool> mIsclickable;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     std::unique_ptr<bool> mIsenabled;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     std::unique_ptr<bool> mIsfocused;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     std::unique_ptr<bool> mIsfocusable;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     std::unique_ptr<bool> mIsscrollable;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     std::unique_ptr<bool> mIsselected;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     std::unique_ptr<bool> mIsshowing;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     std::unique_ptr<bool> mIsactive;
 
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     std::unique_ptr<std::string> mRes;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     std::unique_ptr<std::string> mDesc;
 
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     std::vector<std::shared_ptr<UiSelector>> mChild;
 };
 
