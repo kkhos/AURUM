@@ -94,7 +94,7 @@ public:
 
     switch (type) {
     case ::aurum::ReqGetDeviceTime_TimeType::ReqGetDeviceTime_TimeType_WALLCLOCK:
-        utcStampMs = obj->getSystemTime(TypeRequestType::WALLCLOCK);
+        utcStampMs = obj->getSystemTime(TimeRequestType::WALLCLOCK);
         mResponse->set_localedatetime(
             TizenLocaleTimeConverter::convert(utcStampMs, "EEE, MMM d, yyyy 'at' HH:mm:ss zzz").c_str()
         );
@@ -103,7 +103,7 @@ public:
 
     case ::aurum::ReqGetDeviceTime_TimeType::ReqGetDeviceTime_TimeType_SYSTEM:
     default:
-        utcStampMs = obj->getSystemTime(TypeRequestType::MONOTONIC);
+        utcStampMs = obj->getSystemTime(TimeRequestType::MONOTONIC);
         mResponse->set_timestamputc(utcStampMs);
         break;
     }

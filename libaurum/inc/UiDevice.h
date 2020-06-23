@@ -80,43 +80,43 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    bool pressBack() override;
+    bool pressBack(KeyRequestType type) override;
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    bool pressHome() override;
+    bool pressHome(KeyRequestType type) override;
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    bool pressMenu() override;
+    bool pressMenu(KeyRequestType type) override;
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    bool pressVolUp() override;
+    bool pressVolUp(KeyRequestType type) override;
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    bool pressVolDown() override;
+    bool pressVolDown(KeyRequestType type) override;
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    bool pressPower() override;
+    bool pressPower(KeyRequestType type) override;
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    bool pressKeyCode(std::string keycode) override;
+    bool pressKeyCode(std::string keycode, KeyRequestType type) override;
 
     /**
      * @brief TBD
@@ -128,7 +128,7 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    long long getSystemTime(TypeRequestType type) override;
+    long long getSystemTime(TimeRequestType type) override;
 
 public:
 
