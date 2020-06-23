@@ -11,7 +11,7 @@
 #include <Ecore.h>
 
 TizenImpl::TizenImpl()
-: mFakeTouchHandle{0}, mFakeKeyboardHandle{0}, mFakeWheelHandle{0}, isTimerStarted{false}
+: mFakeTouchHandle{0}, mFakeKeyboardHandle{0}, mFakeWheelHandle{0}, isTimerStarted{false}, mTouchSeq{0}
 {
     LOG_SCOPE_F(INFO, "device implementation init");
     ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
@@ -50,52 +50,62 @@ bool TizenImpl::click(const int x, const int y, const unsigned int intv)
 }
 
 
-bool TizenImpl::touchDown(const int x, const int y)
+int TizenImpl::touchDown(const int x, const int y)
 {
-    LOG_F(INFO, "touch down %d %d", x, y);
-    auto args = std::make_tuple(this, x, y);
-    ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
-        TizenImpl *obj;
-        int x, y;
-        std::tie(obj, x, y) = *static_cast<std::tuple<TizenImpl*, int, int>*>(data);
-        efl_util_input_generate_touch(obj->mFakeTouchHandle, 0, EFL_UTIL_INPUT_TOUCH_BEGIN,
-                                  x, y);
+    //    touch seq 가 caller로 넘어가야 함
+    int seq = getTouchSeqNumber();
+    LOG_F(INFO, "touch down %d %d , seq:%d", x, y, seq);
+    if (seq >= 0) {
+        auto args = std::make_tuple(this, x, y, seq);
+        ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
+            TizenImpl *obj;
+            int x, y, seq;
+            std::tie(obj, x, y, seq) = *static_cast<std::tuple<TizenImpl*, int, int, int>*>(data);
+            efl_util_input_generate_touch(obj->mFakeTouchHandle, seq, EFL_UTIL_INPUT_TOUCH_BEGIN,
+                                    x, y);
 
-        return NULL;
-    }, (void*)(&args));
-    return true;
+            return NULL;
+        }, (void*)(&args));
+    }
+    return seq;
 }
 
-bool TizenImpl::touchMove(const int x, const int y)
+bool TizenImpl::touchMove(const int x, const int y, const int seq)
 {
-    LOG_F(INFO, "touch move %d %d", x, y);
-    auto args = std::make_tuple(this, x, y);
-    ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
-        TizenImpl *obj;
-        int x, y;
-        std::tie(obj, x, y) = *static_cast<std::tuple<TizenImpl*, int, int>*>(data);
+    LOG_F(INFO, "touch move %d %d, seq:%d", x, y, seq);
+    if (seq >= 0) {
+        auto args = std::make_tuple(this, x, y, seq);
+        ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
+            TizenImpl *obj;
+            int x, y, seq;
+            std::tie(obj, x, y, seq) = *static_cast<std::tuple<TizenImpl*, int, int, int>*>(data);
 
-        efl_util_input_generate_touch(obj->mFakeTouchHandle, 0, EFL_UTIL_INPUT_TOUCH_UPDATE,
-                                  x, y);
+            efl_util_input_generate_touch(obj->mFakeTouchHandle, seq, EFL_UTIL_INPUT_TOUCH_UPDATE,
+                                    x, y);
 
-        return NULL;
-    }, (void*)(&args));
-    return true;
+            return NULL;
+        }, (void*)(&args));
+        return true;
+    }
+    return false;
 }
 
-bool TizenImpl::touchUp(const int x, const int y)
+bool TizenImpl::touchUp(const int x, const int y, const int seq)
 {
-    LOG_F(INFO, "touch up %d %d", x, y);
-    auto args = std::make_tuple(this, x, y);
-    ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
-        TizenImpl *obj;
-        int x, y;
-        std::tie(obj, x, y) = *static_cast<std::tuple<TizenImpl*, int, int>*>(data);
-        efl_util_input_generate_touch(obj->mFakeTouchHandle, 0, EFL_UTIL_INPUT_TOUCH_END,
-                                  x, y);
-        return NULL;
-    }, (void*)(&args));
-    return true;
+    LOG_F(INFO, "touch up %d %d, seq:%d", x, y, seq);
+    if (seq >= 0) {
+        auto args = std::make_tuple(this, x, y, seq);
+        ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
+            TizenImpl *obj;
+            int x, y, seq;
+            std::tie(obj, x, y, seq) = *static_cast<std::tuple<TizenImpl*, int, int, int>*>(data);
+            efl_util_input_generate_touch(obj->mFakeTouchHandle, seq, EFL_UTIL_INPUT_TOUCH_END,
+                                    x, y);
+            return NULL;
+        }, (void*)(&args));
+        return true;
+    }
+    return false;
 }
 
 bool TizenImpl::wheelUp(int amount, const int durationMs)
@@ -313,4 +323,9 @@ long long TizenImpl::getSystemTime(TimeRequestType type)
 
     return clock->getTime();
 
+}
+
+int TizenImpl::getTouchSeqNumber()
+{
+    return 0;
 }

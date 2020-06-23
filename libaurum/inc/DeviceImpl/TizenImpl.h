@@ -22,9 +22,9 @@ public:
     bool drag(const int sx, const int sy, const int ex, const int ey,
               const int steps, const int durationMs) override;
 
-    bool touchDown(const int x, const int y) override;
-    bool touchMove(const int x, const int y) override;
-    bool touchUp(const int x, const int y) override;
+    int touchDown(const int x, const int y) override;
+    bool touchMove(const int x, const int y, const int seq) override;
+    bool touchUp(const int x, const int y, const int seq) override;
 
     bool wheelUp(int amount, const int durationMs) override;
     bool wheelDown(int amount, const int durationMs) override;
@@ -43,6 +43,7 @@ protected:
     bool strokeKeyCode(std::string keycode, unsigned int intv);
     bool pressKeyCode(std::string keycode);
     bool releaseKeyCode(std::string keycode);
+    int getTouchSeqNumber();
 
 private:
     void startTimer(void);
@@ -63,6 +64,8 @@ private:
 
     struct timespec tStart;
     bool isTimerStarted;
+
+    unsigned int mTouchSeq;
 };
 
 #endif
