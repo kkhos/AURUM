@@ -59,19 +59,19 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    virtual bool touchDown(const int x, const int y) = 0;
+    virtual int touchDown(const int x, const int y) = 0;
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    virtual bool touchMove(const int x, const int y) = 0;
+    virtual bool touchMove(const int x, const int y, const int seq) = 0;
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    virtual bool touchUp(const int x, const int y) = 0;
+    virtual bool touchUp(const int x, const int y, const int seq) = 0;
 
     /**
      * @brief TBD

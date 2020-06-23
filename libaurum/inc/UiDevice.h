@@ -50,19 +50,19 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    bool touchDown(const int x, const int y) override;
+    int touchDown(const int x, const int y) override;
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    bool touchMove(const int x, const int y) override;
+    bool touchMove(const int x, const int y, const int seq) override;
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    bool touchUp(const int x, const int y) override;
+    bool touchUp(const int x, const int y, const int seq) override;
 
     /**
      * @brief TBD
