@@ -3,14 +3,27 @@
 #include "config.h"
 
 #include <string>
+
 /**
- * @brief TypeRequestType enum class
+ * @brief TimeRequestType enum class
  * @since_tizen 5.5
  */
-enum class TypeRequestType {
+enum class TimeRequestType {
     WALLCLOCK,
     MONOTONIC,
 };
+
+/**
+ * @brief KeyRequestType enum class
+ * @since_tizen 5.5
+ */
+enum class KeyRequestType {
+    STROKE,
+    LONG_STROKE,
+    PRESS,
+    RELEASE,
+};
+
 /**
  * @brief IDevice interface
  * @since_tizen 5.5
@@ -77,43 +90,43 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    virtual bool pressBack() = 0;
+    virtual bool pressBack(KeyRequestType type) = 0;
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    virtual bool pressHome() = 0;
+    virtual bool pressHome(KeyRequestType type) = 0;
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    virtual bool pressMenu() = 0;
+    virtual bool pressMenu(KeyRequestType type) = 0;
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    virtual bool pressVolUp() = 0;
+    virtual bool pressVolUp(KeyRequestType type) = 0;
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    virtual bool pressVolDown() = 0;
+    virtual bool pressVolDown(KeyRequestType type) = 0;
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    virtual bool pressPower() = 0;
+    virtual bool pressPower(KeyRequestType type) = 0;
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    virtual bool pressKeyCode(std::string keycode) = 0;
+    virtual bool pressKeyCode(std::string keycode, KeyRequestType type) = 0;
 
     /**
      * @brief TBD
@@ -125,6 +138,6 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    virtual long long getSystemTime(TypeRequestType type) = 0;
+    virtual long long getSystemTime(TimeRequestType type) = 0;
 };
 #endif

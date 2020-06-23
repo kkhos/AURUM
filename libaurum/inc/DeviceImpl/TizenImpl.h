@@ -29,18 +29,20 @@ public:
     bool wheelUp(int amount, const int durationMs) override;
     bool wheelDown(int amount, const int durationMs) override;
 
-    bool pressBack() override;
-    bool pressHome() override;
-    bool pressMenu() override;
-    bool pressVolUp() override;
-    bool pressVolDown() override;
-    bool pressPower() override;
-    bool pressKeyCode(std::string keycode) override;
+    bool pressBack(KeyRequestType type) override;
+    bool pressHome(KeyRequestType type) override;
+    bool pressMenu(KeyRequestType type) override;
+    bool pressVolUp(KeyRequestType type) override;
+    bool pressVolDown(KeyRequestType type) override;
+    bool pressPower(KeyRequestType type) override;
+    bool pressKeyCode(std::string keycode, KeyRequestType type) override;
     bool takeScreenshot(std::string path, float scale, int quality) override;
-    long long getSystemTime(TypeRequestType type) override;
+    long long getSystemTime(TimeRequestType type) override;
 
 protected:
-    bool pressKeyCode(std::string keycode, unsigned int intv);
+    bool strokeKeyCode(std::string keycode, unsigned int intv);
+    bool pressKeyCode(std::string keycode);
+    bool releaseKeyCode(std::string keycode);
 
 private:
     void startTimer(void);
@@ -51,7 +53,9 @@ private:
     efl_util_inputgen_h mFakeKeyboardHandle;
     efl_util_inputgen_h mFakeWheelHandle;
     static const unsigned int INTV_CLICK = 5;
-    static const unsigned int INTV_KEYPRESS = 10;
+    static const unsigned int INTV_SHORTSTROKE = 100;
+    static const unsigned int INTV_LONGSTROKE = 2000;
+
     static const unsigned int INTV_MINIMUM_DRAG_MS = 25;
     static const unsigned int INTV_MINIMUM_USLEEP = 1000;
     static const unsigned int MINIMUM_DURATION_DRAG = 100;

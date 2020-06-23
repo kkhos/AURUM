@@ -14,28 +14,27 @@ SendKeyCommand::SendKeyCommand(const ::aurum::ReqKey* request,
     LOG_SCOPE_F(INFO, "SendKey --------------- ");
     UiDevice* mDevice = UiDevice::getInstance(DeviceType::DEFAULT);
     ::aurum::ReqKey_KeyType type = mRequest->type();
+    ::aurum::ReqKey_KeyActionType action_type = mRequest->actiontype();
+    KeyRequestType actionType = static_cast<KeyRequestType>(action_type);
 
     if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_BACK)
-        mDevice->pressBack();
+        mDevice->pressBack(actionType);
     else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_HOME)
-        mDevice->pressHome();
+        mDevice->pressHome(actionType);
     else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_MENU)
-        mDevice->pressMenu();
+        mDevice->pressMenu(actionType);
     else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_VOLUP)
-        mDevice->pressVolUp();
+        mDevice->pressVolUp(actionType);
     else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_VOLDOWN)
-        mDevice->pressVolDown();
+        mDevice->pressVolDown(actionType);
     else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_POWER)
-        mDevice->pressPower();
+        mDevice->pressPower(actionType);
     else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_WHEELUP)
-        mDevice->wheelUp(1,167);
+        mDevice->wheelUp(1, 167);
     else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_WHEELDOWN)
-        mDevice->wheelDown(1,167);
-    else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_KEY) {
-        ; // TODO
-    }
+        mDevice->wheelDown(1, 167);
     else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_XF86) {
-        ; // TODO
+        mDevice->pressKeyCode(mRequest->xf86keycode(), actionType);
     }
     return grpc::Status::OK;
 }

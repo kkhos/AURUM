@@ -335,23 +335,23 @@ message ReqKey{
       VOLUP = 3;
       VOLDOWN = 4;
       POWER = 5;
-      KEY = 6;
+      //KEY = 6;
       XF86 = 7;
       WHEELUP = 8;
       WHEELDOWN = 9;
    }
    enum KeyActionType{
-      PRESS = 0;
-      RELEASE = 1;
-      STROKE = 2;
-      LONG_STROKE = 3;
+      STROKE = 0;
+      LONG_STROKE = 1;
+      PRESS = 2;
+      RELEASE = 3;
    }
    KeyType type = 1;
    KeyActionType actionType = 2;
-   oneof keys {
-      uint32 keyCode = 3;
-      string XF86keyCode = 4;
-   }
+   //oneof keys {
+      //uint32 keyCode = 3;
+   string XF86keyCode = 4;
+   //}
 }
 message RspKey{
    RspStatus status = 1;
