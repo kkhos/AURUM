@@ -1,6 +1,7 @@
 #include "AccessibleNode.h"
 #include <string.h>
 #include <iostream>
+#include <vector>
 
 #include <loguru.hpp>
 #include "config.h"
@@ -404,4 +405,53 @@ void AccessibleNode::setValue(std::string text) const
         atspi_editable_text_insert_text(iface, 0, text.c_str(), text.length(),
                                         NULL);
     }
+}
+
+std::vector<std::string> AccessibleNode::getActions() const
+{
+    std::vector<std::string> result{};
+    const char *name;
+    AtspiAction *action;
+
+    action = atspi_accessible_get_action_iface(mNode.get());
+    if (action) {
+        int a;
+        int n_actions = atspi_action_get_n_actions(action, NULL);
+
+        for (a = 0; a < n_actions; a++) {
+            char *action_name = atspi_action_get_action_name(action, a, NULL);
+            if (!action_name) continue;
+            result.push_back(std::string{action_name});
+            g_free(action_name);
+        }
+        g_object_unref(action);
+    }
+    return result;
+}
+
+bool AccessibleNode::doAction(std::string actionName) const
+{
+    const char *name;
+    AtspiAction *action;
+
+    action = atspi_accessible_get_action_iface(mNode.get());
+    if (action) {
+        int a;
+        int n_actions = atspi_action_get_n_actions(action, NULL);
+
+        for (a = 0; a < n_actions; a++) {
+            char *action_name = atspi_action_get_action_name(action, a, NULL);
+            if (!action_name) return false;
+
+            if (!strcmp(actionName.c_str(), action_name)) {
+                atspi_action_do_action(action, a, NULL);
+                g_free(action_name);
+                g_object_unref(action);
+                return true;
+            }
+            g_free(action_name);
+        }
+        g_object_unref(action);
+    }
+    return false;
 }

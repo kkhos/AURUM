@@ -349,6 +349,12 @@ public:
      */
     bool isActive() const;
 
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    std::vector<std::string> getActions() const;
+
 public:
     /**
      * @brief TBD
@@ -373,6 +379,12 @@ public:
      * @since_tizen 5.5
      */
     void setValue(std::string text) const;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    bool doAction(std::string action) const;
 
 private:
     /**
