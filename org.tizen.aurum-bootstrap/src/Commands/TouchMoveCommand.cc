@@ -12,6 +12,7 @@ TouchMoveCommand::TouchMoveCommand(const ::aurum::ReqTouchMove* request,
 {
     LOG_SCOPE_F(INFO, "TouchMove --------------- ");
     const aurum::Point& point = mRequest->coordination();
-    UiDevice::getInstance(DeviceType::DEFAULT)->touchMove(point.x(), point.y());
+    int seq = mRequest->seqid();
+    UiDevice::getInstance(DeviceType::DEFAULT)->touchMove(point.x(), point.y(), seq);
     return grpc::Status::OK;
 }

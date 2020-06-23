@@ -3,6 +3,7 @@
 #include "config.h"
 
 #include "IDevice.h"
+#include <set>
 
 #ifdef GBS_BUILD
 #include <efl_util.h>
@@ -22,9 +23,9 @@ public:
     bool drag(const int sx, const int sy, const int ex, const int ey,
               const int steps, const int durationMs) override;
 
-    bool touchDown(const int x, const int y) override;
-    bool touchMove(const int x, const int y) override;
-    bool touchUp(const int x, const int y) override;
+    int touchDown(const int x, const int y) override;
+    bool touchMove(const int x, const int y, const int seq) override;
+    bool touchUp(const int x, const int y, const int seq) override;
 
     bool wheelUp(int amount, const int durationMs) override;
     bool wheelDown(int amount, const int durationMs) override;
@@ -44,6 +45,9 @@ protected:
     bool pressKeyCode(std::string keycode);
     bool releaseKeyCode(std::string keycode);
 
+    int grabTouchSeqNumber();
+    bool releaseTouchSeqNumber(int seq);
+
 private:
     void startTimer(void);
     int stopTimer(void);
@@ -60,9 +64,12 @@ private:
     static const unsigned int INTV_MINIMUM_USLEEP = 1000;
     static const unsigned int MINIMUM_DURATION_DRAG = 100;
     static const unsigned int MSEC_PER_SEC = 1000;
+    static const unsigned int MAX_FINGER_NUMBER = 2;
 
     struct timespec tStart;
     bool isTimerStarted;
+
+    std::set<int> mTouchSeq;
 };
 
 #endif
