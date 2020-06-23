@@ -114,22 +114,21 @@ bool UiDevice::drag(const int sx, const int sy, const int ex, const int ey,
     return result;
 }
 
-bool UiDevice::touchDown(const int x, const int y)
+int UiDevice::touchDown(const int x, const int y)
 {
-    bool result =  mDeviceImpl->touchDown(x, y);
+    int seq =  mDeviceImpl->touchDown(x, y);
+    return seq;
+}
 
+bool UiDevice::touchMove(const int x, const int y, const int seq)
+{
+    bool result =  mDeviceImpl->touchMove(x, y, seq);
     return result;
 }
 
-bool UiDevice::touchMove(const int x, const int y)
+bool UiDevice::touchUp(const int x, const int y, const int seq)
 {
-    bool result =  mDeviceImpl->touchMove(x, y);
-    return result;
-}
-
-bool UiDevice::touchUp(const int x, const int y)
-{
-    bool result =  mDeviceImpl->touchUp(x, y);
+    bool result =  mDeviceImpl->touchUp(x, y, seq);
     waitForIdle();
     return result;
 }

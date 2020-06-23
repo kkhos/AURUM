@@ -4,10 +4,26 @@ import aurum_pb2_grpc
 import logging
 import grpc
 import time
+def touchTest(stub):
+    stub.touchUp(ReqTouchUp(coordination=Point(x=160,y=30), seqId=0))
+    stub.touchUp(ReqTouchUp(coordination=Point(x=160,y=30), seqId=1))
+    stub.touchUp(ReqTouchUp(coordination=Point(x=160,y=30), seqId=2))
+
+    res = stub.touchDown(ReqTouchDown(coordination=Point(x=160,y=330)))
+    print(res)
+    seq = res.seqId
+    print(seq)
+    for yy in range(330, 30, -10):
+        stub.touchMove(ReqTouchMove(coordination=Point(x=160,y=yy), seqId=seq))
+    stub.touchUp(ReqTouchUp(coordination=Point(x=160,y=30), seqId=seq))
+
+    return True
+
 
 def run():
     with grpc.insecure_channel('127.0.0.1:50051') as channel:
         stub = aurum_pb2_grpc.BootstrapStub(channel)
+        touchTest(stub)
 
 #        print(stub.getLocation(ReqGetLocation()).status)
 #        print(stub.sync(ReqEmpty()))
