@@ -244,6 +244,12 @@ void UiObject::longClick(const unsigned int intv) const
     const_cast<UiDevice *>(mDevice)->click(midPoint.x, midPoint.y, intv);
 }
 
+bool UiObject::DoAtspiActivate() const
+{
+    return mNode->doAction("activate");
+}
+
+
 const AccessibleNode *UiObject::getAccessibleNode() const
 {
     if (mNode == nullptr) throw;
