@@ -12,6 +12,7 @@ TouchUpCommand::TouchUpCommand(const ::aurum::ReqTouchUp* request,
 {
     LOG_SCOPE_F(INFO, "TouchUp --------------- ");
     const aurum::Point& point = mRequest->coordination();
-    UiDevice::getInstance(DeviceType::DEFAULT)->touchUp(point.x(), point.y());
+    int seq = mRequest->seqid();
+    UiDevice::getInstance(DeviceType::DEFAULT)->touchUp(point.x(), point.y(), seq);
     return grpc::Status::OK;
 }

@@ -179,10 +179,13 @@ def flickTest(stub):
     return False
 
 def touchTest(stub):
-    stub.touchDown(ReqTouchDown(coordination=Point(x=160,y=330)))
+    res = stub.touchDown(ReqTouchDown(coordination=Point(x=160,y=330)))
+    print(res)
+    seq = res.seqId
+    if seq < 0: return False
     for yy in range(330, 30, -10):
-        stub.touchMove(ReqTouchMove(coordination=Point(x=160,y=yy)))
-    stub.touchUp(ReqTouchUp(coordination=Point(x=160,y=30)))
+        stub.touchMove(ReqTouchMove(coordination=Point(x=160,y=yy), seqId=seq))
+    stub.touchUp(ReqTouchUp(coordination=Point(x=160,y=30), seqId=seq))
 
     return True
 
