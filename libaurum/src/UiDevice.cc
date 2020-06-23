@@ -148,51 +148,51 @@ bool UiDevice::wheelDown(int amount, const int durationMs)
     return result;
 }
 
-bool UiDevice::pressBack()
+bool UiDevice::pressBack(KeyRequestType type)
 {
-    bool result =  mDeviceImpl->pressBack();
+    bool result =  mDeviceImpl->pressBack(type);
     waitForIdle();
     return result;
 }
 
-bool UiDevice::pressHome()
+bool UiDevice::pressHome(KeyRequestType type)
 {
-    bool result =  mDeviceImpl->pressHome();
+    bool result =  mDeviceImpl->pressHome(type);
     waitForIdle();
     return result;
 }
 
-bool UiDevice::pressMenu()
+bool UiDevice::pressMenu(KeyRequestType type)
 {
-    bool result =  mDeviceImpl->pressMenu();
+    bool result =  mDeviceImpl->pressMenu(type);
     waitForIdle();
     return result;
 }
 
-bool UiDevice::pressVolUp()
+bool UiDevice::pressVolUp(KeyRequestType type)
 {
-    bool result =  mDeviceImpl->pressVolUp();
+    bool result =  mDeviceImpl->pressVolUp(type);
     waitForIdle();
     return result;
 }
 
-bool UiDevice::pressVolDown()
+bool UiDevice::pressVolDown(KeyRequestType type)
 {
-    bool result =  mDeviceImpl->pressVolDown();
+    bool result =  mDeviceImpl->pressVolDown(type);
     waitForIdle();
     return result;
 }
 
-bool UiDevice::pressPower()
+bool UiDevice::pressPower(KeyRequestType type)
 {
-    bool result =  mDeviceImpl->pressPower();
+    bool result =  mDeviceImpl->pressPower(type);
     waitForIdle();
     return result;
 }
 
-bool UiDevice::pressKeyCode(std::string keycode)
+bool UiDevice::pressKeyCode(std::string keycode, KeyRequestType type)
 {
-    bool result =  mDeviceImpl->pressKeyCode(keycode);
+    bool result =  mDeviceImpl->pressKeyCode(keycode, type);
     waitForIdle();
     return result;
 }
@@ -202,7 +202,7 @@ bool UiDevice::takeScreenshot(std::string path, float scale, int quality)
     return mDeviceImpl->takeScreenshot(path, scale, quality);
 }
 
-long long UiDevice::getSystemTime(TypeRequestType type)
+long long UiDevice::getSystemTime(TimeRequestType type)
 {
     return mDeviceImpl->getSystemTime(type);
 }

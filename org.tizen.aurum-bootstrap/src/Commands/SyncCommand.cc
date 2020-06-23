@@ -12,7 +12,7 @@ SyncCommand::SyncCommand(const ::aurum::ReqEmpty *request,
 ::grpc::Status SyncCommand::execute()
 {
     UiDevice *obj = UiDevice::getInstance(DeviceType::DEFAULT);
-    long long timeMs = obj->getSystemTime(TypeRequestType::WALLCLOCK);
+    long long timeMs = obj->getSystemTime(TimeRequestType::WALLCLOCK);
     LOG_SCOPE_F(INFO, "Sync Command @ %f", timeMs/1000.0);
     // do post-command
     return grpc::Status::OK;

@@ -184,42 +184,58 @@ bool TizenImpl::drag(const int sx, const int sy, const int ex, const int ey,
     return true;
 }
 
-bool TizenImpl::pressBack()
+bool TizenImpl::pressBack(KeyRequestType type)
 {
-    return pressKeyCode("XF86Back");
+    return pressKeyCode("XF86Back", type);
 }
 
-bool TizenImpl::pressHome()
+bool TizenImpl::pressHome(KeyRequestType type)
 {
-    return pressKeyCode("XF86Home");
+    return pressKeyCode("XF86Home", type);
 }
 
-bool TizenImpl::pressMenu()
+bool TizenImpl::pressMenu(KeyRequestType type)
 {
-    return pressKeyCode("XF86Menu");
+    return pressKeyCode("XF86Menu", type);
 }
 
-bool TizenImpl::pressVolUp()
+bool TizenImpl::pressVolUp(KeyRequestType type)
 {
-    return pressKeyCode("XF86AudioRaiseVolume");
+    return pressKeyCode("XF86AudioRaiseVolume", type);
 }
 
-bool TizenImpl::pressVolDown()
+bool TizenImpl::pressVolDown(KeyRequestType type)
 {
-    return pressKeyCode("XF86AudioLowerVolume");
+    return pressKeyCode("XF86AudioLowerVolume", type);
 }
 
-bool TizenImpl::pressPower()
+bool TizenImpl::pressPower(KeyRequestType type)
 {
-    return pressKeyCode("XF86PowerOff");
+    return pressKeyCode("XF86PowerOff", type);
+}
+
+bool TizenImpl::pressKeyCode(std::string keycode, KeyRequestType type)
+{
+    if (type == KeyRequestType::STROKE)
+        return strokeKeyCode(keycode, INTV_SHORTSTROKE);
+    else if (type == KeyRequestType::LONG_STROKE)
+        return strokeKeyCode(keycode, INTV_LONGSTROKE);
+    else if (type == KeyRequestType::PRESS)
+        return pressKeyCode(keycode);
+    else if (type == KeyRequestType::RELEASE)
+        return releaseKeyCode(keycode);
+    return false;
+}
+
+bool TizenImpl::strokeKeyCode(std::string keycode, unsigned int intv)
+{
+    pressKeyCode(keycode);
+    usleep(intv * 1000);
+    releaseKeyCode(keycode);
+    return true;
 }
 
 bool TizenImpl::pressKeyCode(std::string keycode)
-{
-    return pressKeyCode(keycode, INTV_KEYPRESS);
-}
-
-bool TizenImpl::pressKeyCode(std::string keycode, unsigned int intv)
 {
     auto args = std::make_tuple(this, keycode);
     ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
@@ -229,10 +245,13 @@ bool TizenImpl::pressKeyCode(std::string keycode, unsigned int intv)
         efl_util_input_generate_key(obj->mFakeKeyboardHandle, keycode.c_str(), 1);
         return NULL;
     }, (void*)(&args));
-
     ecore_main_loop_thread_safe_call_sync([](void *data)->void*{return NULL;}, NULL);
-    usleep(intv * 1000);
+    return true;
+}
 
+bool TizenImpl::releaseKeyCode(std::string keycode)
+{
+    auto args = std::make_tuple(this, keycode);
     ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
         TizenImpl *obj;
         std::string keycode;
@@ -240,7 +259,7 @@ bool TizenImpl::pressKeyCode(std::string keycode, unsigned int intv)
         efl_util_input_generate_key(obj->mFakeKeyboardHandle, keycode.c_str(), 0);
         return NULL;
     }, (void*)(&args));
-
+    ecore_main_loop_thread_safe_call_sync([](void *data)->void*{return NULL;}, NULL);
     return true;
 }
 
@@ -284,12 +303,12 @@ public:
     }
 };
 
-long long TizenImpl::getSystemTime(TypeRequestType type)
+long long TizenImpl::getSystemTime(TimeRequestType type)
 {
     std::unique_ptr<Clock> clock;
-    if (type == TypeRequestType::MONOTONIC)
+    if (type == TimeRequestType::MONOTONIC)
         clock = std::make_unique<MonotonicClock>();
-    else if (type == TypeRequestType::WALLCLOCK)
+    else if (type == TimeRequestType::WALLCLOCK)
         clock = std::make_unique<WallClock>();
 
     return clock->getTime();
