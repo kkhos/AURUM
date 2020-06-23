@@ -246,6 +246,12 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
+    bool DoAtspiActivate() const;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     void refresh() const;
 
 private:

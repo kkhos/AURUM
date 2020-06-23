@@ -34,6 +34,7 @@ std::unique_ptr<ClickCommand> ClickCommand::createCommand(const ::aurum::ReqClic
 {
     ObjectMapper* mObjMap = ObjectMapper::getInstance();
     UiObject* obj = mObjMap->getElement(mRequest->elementid());
+    LOG_SCOPE_F(INFO, "ClickElementCommand execute %p", obj);
 
     if (obj) {
         obj->click();
@@ -48,6 +49,7 @@ std::unique_ptr<ClickCommand> ClickCommand::createCommand(const ::aurum::ReqClic
 {
     UiDevice* obj = UiDevice::getInstance(DeviceType::DEFAULT);
     const ::aurum::Point& point = mRequest->coordination();
+    LOG_SCOPE_F(INFO, "ClickCoordCommand execute %p @ (%d, %d)", obj, point.x(), point.y());
     obj->click(point.x(), point.y());
     mResponse->set_status(::aurum::RspStatus::OK);
     return grpc::Status::OK;
@@ -55,5 +57,17 @@ std::unique_ptr<ClickCommand> ClickCommand::createCommand(const ::aurum::ReqClic
 
 ::grpc::Status ClickAtspiCommand::execute()
 {
-    return grpc::Status::CANCELLED;
+    ObjectMapper* mObjMap = ObjectMapper::getInstance();
+    UiObject* obj = mObjMap->getElement(mRequest->elementid());
+
+    LOG_SCOPE_F(INFO, "ClickAtspiCommand execute %p", obj);
+
+    if (obj) {
+        if (obj->DoAtspiActivate()) mResponse->set_status(::aurum::RspStatus::OK);
+        else mResponse->set_status(::aurum::RspStatus::ERROR);
+    } else {
+        mResponse->set_status(::aurum::RspStatus::ERROR);
+    }
+
+    return grpc::Status::OK;
 }
