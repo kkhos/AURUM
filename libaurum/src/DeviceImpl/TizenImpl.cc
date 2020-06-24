@@ -57,15 +57,19 @@ int TizenImpl::touchDown(const int x, const int y)
     LOG_F(INFO, "touch down %d %d , seq:%d", x, y, seq);
     if (seq >= 0) {
         auto args = std::make_tuple(this, x, y, seq);
-        ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
+        int result = (int)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
             TizenImpl *obj;
             int x, y, seq;
             std::tie(obj, x, y, seq) = *static_cast<std::tuple<TizenImpl*, int, int, int>*>(data);
-            efl_util_input_generate_touch(obj->mFakeTouchHandle, seq, EFL_UTIL_INPUT_TOUCH_BEGIN,
+            return (void*)efl_util_input_generate_touch(obj->mFakeTouchHandle, seq, EFL_UTIL_INPUT_TOUCH_BEGIN,
                                     x, y);
 
-            return NULL;
         }, (void*)(&args));
+
+        if (result != EFL_UTIL_ERROR_NONE) {
+            releaseTouchSeqNumber(seq);
+            return -1;
+        }
     }
     return seq;
 }
@@ -75,17 +79,16 @@ bool TizenImpl::touchMove(const int x, const int y, const int seq)
     LOG_F(INFO, "touch move %d %d, seq:%d", x, y, seq);
     if (seq >= 0) {
         auto args = std::make_tuple(this, x, y, seq);
-        ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
+        int result = (int)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
             TizenImpl *obj;
             int x, y, seq;
             std::tie(obj, x, y, seq) = *static_cast<std::tuple<TizenImpl*, int, int, int>*>(data);
 
-            efl_util_input_generate_touch(obj->mFakeTouchHandle, seq, EFL_UTIL_INPUT_TOUCH_UPDATE,
+            return (void*)efl_util_input_generate_touch(obj->mFakeTouchHandle, seq, EFL_UTIL_INPUT_TOUCH_UPDATE,
                                     x, y);
 
-            return NULL;
         }, (void*)(&args));
-        return true;
+        return result == EFL_UTIL_ERROR_NONE;
     }
     return false;
 }
@@ -95,15 +98,14 @@ bool TizenImpl::touchUp(const int x, const int y, const int seq)
     LOG_F(INFO, "touch up %d %d, seq:%d", x, y, seq);
     if (seq >= 0) {
         auto args = std::make_tuple(this, x, y, seq);
-        ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
+        int result = (int)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
             TizenImpl *obj;
             int x, y, seq;
             std::tie(obj, x, y, seq) = *static_cast<std::tuple<TizenImpl*, int, int, int>*>(data);
-            efl_util_input_generate_touch(obj->mFakeTouchHandle, seq, EFL_UTIL_INPUT_TOUCH_END,
+            return (void*)efl_util_input_generate_touch(obj->mFakeTouchHandle, seq, EFL_UTIL_INPUT_TOUCH_END,
                                     x, y);
-            return NULL;
         }, (void*)(&args));
-        return releaseTouchSeqNumber(seq);;
+        return releaseTouchSeqNumber(seq) && result == EFL_UTIL_ERROR_NONE;
     }
     return false;
 }
@@ -112,34 +114,35 @@ bool TizenImpl::wheelUp(int amount, const int durationMs)
 {
     LOG_F(INFO, "wheel up %d for %d", amount, durationMs);
     auto args = std::make_tuple(this);
+    int result;
     for (int i = 0; i < amount; i++){
-        ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
+        result = (int)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
                 TizenImpl *obj;
                 std::tie(obj) = *static_cast<std::tuple<TizenImpl*>*>(data);
-                efl_util_input_generate_wheel(obj->mFakeWheelHandle, EFL_UTIL_INPUT_POINTER_WHEEL_HORZ, 1);
-            return NULL;
+            return (void*)efl_util_input_generate_wheel(obj->mFakeWheelHandle, EFL_UTIL_INPUT_POINTER_WHEEL_HORZ, 1);
         }, (void*)(&args));
         usleep(durationMs*MSEC_PER_SEC/amount);
     }
 
-    return true;
+    return result == EFL_UTIL_ERROR_NONE;
 }
 
 bool TizenImpl::wheelDown(int amount, const int durationMs)
 {
     LOG_F(INFO, "wheel down %d for %d", amount, durationMs);
     auto args = std::make_tuple(this);
+    int result;
     for (int i = 0; i < amount; i++){
-        ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
+        result = (int)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
                 TizenImpl *obj;
                 std::tie(obj) = *static_cast<std::tuple<TizenImpl*>*>(data);
-                efl_util_input_generate_wheel(obj->mFakeWheelHandle, EFL_UTIL_INPUT_POINTER_WHEEL_HORZ, -1);
+                return (void*)efl_util_input_generate_wheel(obj->mFakeWheelHandle, EFL_UTIL_INPUT_POINTER_WHEEL_HORZ, -1);
             return NULL;
         }, (void*)(&args));
         usleep(durationMs*MSEC_PER_SEC/amount);
     }
 
-    return true;
+    return result == EFL_UTIL_ERROR_NONE;
 }
 void TizenImpl::startTimer(void)
 {
@@ -249,29 +252,27 @@ bool TizenImpl::strokeKeyCode(std::string keycode, unsigned int intv)
 bool TizenImpl::pressKeyCode(std::string keycode)
 {
     auto args = std::make_tuple(this, keycode);
-    ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
+    int result = (int)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
         TizenImpl *obj;
         std::string keycode;
         std::tie(obj, keycode) = *static_cast<std::tuple<TizenImpl*, std::string>*>(data);
-        efl_util_input_generate_key(obj->mFakeKeyboardHandle, keycode.c_str(), 1);
-        return NULL;
+        return (void*)efl_util_input_generate_key(obj->mFakeKeyboardHandle, keycode.c_str(), 1);
     }, (void*)(&args));
     ecore_main_loop_thread_safe_call_sync([](void *data)->void*{return NULL;}, NULL);
-    return true;
+    return result == EFL_UTIL_ERROR_NONE;
 }
 
 bool TizenImpl::releaseKeyCode(std::string keycode)
 {
     auto args = std::make_tuple(this, keycode);
-    ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
+    int result = (int)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
         TizenImpl *obj;
         std::string keycode;
         std::tie(obj, keycode) = *static_cast<std::tuple<TizenImpl*, std::string>*>(data);
-        efl_util_input_generate_key(obj->mFakeKeyboardHandle, keycode.c_str(), 0);
-        return NULL;
+        return (void*)efl_util_input_generate_key(obj->mFakeKeyboardHandle, keycode.c_str(), 0);
     }, (void*)(&args));
     ecore_main_loop_thread_safe_call_sync([](void *data)->void*{return NULL;}, NULL);
-    return true;
+    return result == EFL_UTIL_ERROR_NONE;
 }
 
 bool TizenImpl::takeScreenshot(std::string path, float scale, int quality)
