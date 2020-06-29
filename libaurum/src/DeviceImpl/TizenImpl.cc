@@ -57,7 +57,7 @@ int TizenImpl::touchDown(const int x, const int y)
     LOG_F(INFO, "touch down %d %d , seq:%d", x, y, seq);
     if (seq >= 0) {
         auto args = std::make_tuple(this, x, y, seq);
-        int result = (int)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
+        long result = (long)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
             TizenImpl *obj;
             int x, y, seq;
             std::tie(obj, x, y, seq) = *static_cast<std::tuple<TizenImpl*, int, int, int>*>(data);
@@ -79,7 +79,7 @@ bool TizenImpl::touchMove(const int x, const int y, const int seq)
     LOG_F(INFO, "touch move %d %d, seq:%d", x, y, seq);
     if (seq >= 0) {
         auto args = std::make_tuple(this, x, y, seq);
-        int result = (int)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
+        long result = (long)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
             TizenImpl *obj;
             int x, y, seq;
             std::tie(obj, x, y, seq) = *static_cast<std::tuple<TizenImpl*, int, int, int>*>(data);
@@ -98,7 +98,7 @@ bool TizenImpl::touchUp(const int x, const int y, const int seq)
     LOG_F(INFO, "touch up %d %d, seq:%d", x, y, seq);
     if (seq >= 0) {
         auto args = std::make_tuple(this, x, y, seq);
-        int result = (int)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
+        long result = (long)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
             TizenImpl *obj;
             int x, y, seq;
             std::tie(obj, x, y, seq) = *static_cast<std::tuple<TizenImpl*, int, int, int>*>(data);
@@ -114,9 +114,9 @@ bool TizenImpl::wheelUp(int amount, const int durationMs)
 {
     LOG_F(INFO, "wheel up %d for %d", amount, durationMs);
     auto args = std::make_tuple(this);
-    int result;
+    long result;
     for (int i = 0; i < amount; i++){
-        result = (int)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
+        result = (long)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
                 TizenImpl *obj;
                 std::tie(obj) = *static_cast<std::tuple<TizenImpl*>*>(data);
             return (void*)efl_util_input_generate_wheel(obj->mFakeWheelHandle, EFL_UTIL_INPUT_POINTER_WHEEL_HORZ, 1);
@@ -131,9 +131,9 @@ bool TizenImpl::wheelDown(int amount, const int durationMs)
 {
     LOG_F(INFO, "wheel down %d for %d", amount, durationMs);
     auto args = std::make_tuple(this);
-    int result;
+    long result;
     for (int i = 0; i < amount; i++){
-        result = (int)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
+        result = (long)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
                 TizenImpl *obj;
                 std::tie(obj) = *static_cast<std::tuple<TizenImpl*>*>(data);
                 return (void*)efl_util_input_generate_wheel(obj->mFakeWheelHandle, EFL_UTIL_INPUT_POINTER_WHEEL_HORZ, -1);
@@ -252,7 +252,7 @@ bool TizenImpl::strokeKeyCode(std::string keycode, unsigned int intv)
 bool TizenImpl::pressKeyCode(std::string keycode)
 {
     auto args = std::make_tuple(this, keycode);
-    int result = (int)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
+    long result = (long)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
         TizenImpl *obj;
         std::string keycode;
         std::tie(obj, keycode) = *static_cast<std::tuple<TizenImpl*, std::string>*>(data);
@@ -265,7 +265,7 @@ bool TizenImpl::pressKeyCode(std::string keycode)
 bool TizenImpl::releaseKeyCode(std::string keycode)
 {
     auto args = std::make_tuple(this, keycode);
-    int result = (int)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
+    long result = (long)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
         TizenImpl *obj;
         std::string keycode;
         std::tie(obj, keycode) = *static_cast<std::tuple<TizenImpl*, std::string>*>(data);
