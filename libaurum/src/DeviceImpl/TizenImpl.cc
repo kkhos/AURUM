@@ -114,7 +114,7 @@ bool TizenImpl::wheelUp(int amount, const int durationMs)
 {
     LOG_F(INFO, "wheel up %d for %d", amount, durationMs);
     auto args = std::make_tuple(this);
-    long result;
+    long result = -1;
     for (int i = 0; i < amount; i++){
         result = (long)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
                 TizenImpl *obj;
@@ -131,7 +131,7 @@ bool TizenImpl::wheelDown(int amount, const int durationMs)
 {
     LOG_F(INFO, "wheel down %d for %d", amount, durationMs);
     auto args = std::make_tuple(this);
-    long result;
+    long result = -1;
     for (int i = 0; i < amount; i++){
         result = (long)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
                 TizenImpl *obj;
