@@ -8,7 +8,6 @@ Source:         %{name}-%{version}.tar.gz
 Source1001:     %{name}.manifest
 
 BuildRequires:  meson
-BuildRequires:  doxygen
 BuildRequires:  pkgconfig(grpc)
 BuildRequires:  pkgconfig(grpc++)
 
@@ -29,6 +28,10 @@ BuildRequires: pkgconfig(capi-system-device)
 BuildRequires: pkgconfig(libtzplatform-config)
 BuildRequires: pkgconfig(capi-system-system-settings)
 BuildRequires: pkgconfig(capi-base-utils-i18n)
+
+%if 0%{?gendoc:1}
+BuildRequires:  doxygen
+%endif
 
 %if 0%{?gcov:1}
 BuildRequires:  lcov
@@ -66,6 +69,7 @@ Requires: libgrpc
 %description bootstrap
 gRPC Server
 
+%if 0%{?gendoc:1}
 %package docs
 Summary: documentation
 License: Apache-2.0
@@ -74,6 +78,7 @@ Requires: libgrpc
 
 %description docs
 documentations for aurum
+%endif
 
 %if 0%{?gcov:1}
 %package gcov
@@ -105,11 +110,17 @@ export LDFLAGS+=" -lgcov"
 %define TIZEN_GCOV false
 %endif
 
+%if 0%{?gendoc:1}
+%define TIZEN_GEN_DOC true
+%else
+%define TIZEN_GEN_DOC false
+%endif
 meson \
     --prefix /usr \
     --libdir %{_libdir} \
     -Dcpp_std=c++17 \
     -Dtizen=true \
+    -Denable_documentation=%{TIZEN_GEN_DOC} \
     -Dtizen_gcov=%{TIZEN_GCOV} \
     -Dtzapp_path=%{TZ_SYS_RO_APP} \
     -Dtzpackage_path=%{TZ_SYS_RO_PACKAGES} \
@@ -192,11 +203,13 @@ echo "signing %{TZ_SYS_RO_APP}/org.tizen.aurum-bootstrap"
 %{TZ_SYS_RO_PACKAGES}/org.tizen.aurum-bootstrap.xml
 %{TZ_SYS_RO_APP}/org.tizen.aurum-bootstrap/*
 
+%if 0%{?gendoc:1}
 %files docs
 %manifest %{name}.manifest
 %defattr(-,root,root)
 %license COPYING
 %{_datadir}/doc/aurum/
+%endif
 
 %if 0%{?gcov:1}
 %files gcov
@@ -205,4 +218,3 @@ echo "signing %{TZ_SYS_RO_APP}/org.tizen.aurum-bootstrap"
 %else
 %exclude %{_bindir}/gtest_aurum
 %endif
-

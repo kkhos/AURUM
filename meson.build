@@ -29,11 +29,6 @@ configure_file(
   configuration: config_h
 )
 
-doxygen = find_program('doxygen', required: false)
-if not doxygen.found()
-   error('doxygen not found')
-endif
-
 dconf = configuration_data()
 dconf.set('VERSION', meson.project_version())
 if find_program('dot', required : false).found()
@@ -42,4 +37,10 @@ else
    dconf.set('HAVE_DOT', 'NO')
 endif
 
-subdir('doc')
+if get_option('enable_documentation') == true
+  doxygen = find_program('doxygen', required: false)
+  if not doxygen.found()
+    error('doxygen not found')
+  endif
+  subdir('doc')
+endif
