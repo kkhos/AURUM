@@ -20,3 +20,9 @@ option('tizen_gcov',
   value: false,
   description: 'enable tizen specific gcov configuration'
 )
+
+option('enable_documentation',
+  type: 'boolean',
+  value: false,
+  description: 'enable generating documentation by using doxygen'
+)
