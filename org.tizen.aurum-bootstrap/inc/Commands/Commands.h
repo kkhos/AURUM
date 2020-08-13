@@ -32,4 +32,5 @@
 #include "Commands/SendKeyCommand.h"
 
 #include "Commands/TakeScreenshotCommand.h"
+#include "Commands/DumpObjectTreeCommand.h"
 #endif
