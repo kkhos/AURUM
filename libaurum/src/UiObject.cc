@@ -132,10 +132,7 @@ int UiObject::getChildCount() const
 
 std::vector<std::shared_ptr<UiObject>> UiObject::getChildren() const
 {
-    auto sel = std::make_shared<UiSelector>();
-    sel->depth(1);
-    sel->isShowing(true);
-    return this->findObjects(sel);
+    return this->findObjects(Sel::depth(1));
 }
 
 std::string UiObject::getApplicationPackage() const

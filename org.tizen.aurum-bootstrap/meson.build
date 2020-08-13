@@ -39,6 +39,7 @@ bootstrap_svr_src += [
    files('src/Commands/Command.cc'),
    files('src/Commands/PreCommand.cc'),
    files('src/Commands/PostCommand.cc'),
+   files('src/Commands/DumpObjectTreeCommand.cc'),
 ]
 
 bootstrap_svr_dep = [

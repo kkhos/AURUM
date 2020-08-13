@@ -29,6 +29,7 @@ service Bootstrap {
    rpc getLocation(ReqGetLocation) returns (RspGetLocation) {}
    rpc sendKey(ReqKey) returns (RspKey) {}
    rpc takeScreenshot(ReqTakeScreenshot) returns (stream RspTakeScreenshot) {}
+   rpc dumpObjectTree(ReqDumpObjectTree) returns (RspDumpObjectTree) {}
 }
 
 // ------------------------------------ //
@@ -48,6 +49,16 @@ enum ParamType {
 
 message Element {
    string elementId = 1;
+   repeated Element child = 2;
+   Rect geometry = 3;
+   string widget_type = 4;
+   string widget_style = 5;
+   string value = 6;
+   bool isShowing = 7;
+   bool isEnabled = 8;
+   bool isSelected = 9;
+   bool isChecked = 10;
+   bool isVisible = 11;
 }
 
 message Point {
@@ -369,4 +380,15 @@ message RspTakeScreenshot{
 message ReqEmpty {
 }
 message RspEmpty {
+}
+
+// ------------------------------------ //
+
+message ReqDumpObjectTree {
+   string elementId = 1;
+}
+
+message RspDumpObjectTree {
+   RspStatus status = 1;
+   repeated Element roots = 2;
 }

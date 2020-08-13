@@ -188,3 +188,11 @@ aurumServiceImpl::~aurumServiceImpl() {}
     std::unique_ptr<TakeScreenshotCommand> cmd = std::make_unique<TakeScreenshotCommand>(request, writer);
     return execute(cmd.get());
 }
+
+::grpc::Status aurumServiceImpl::dumpObjectTree(::grpc::ServerContext *context,
+                           const ::aurum::ReqDumpObjectTree *request,
+                           ::aurum::RspDumpObjectTree *      response)
+{
+    std::unique_ptr<DumpObjectTreeCommand> cmd = std::make_unique<DumpObjectTreeCommand>(request, response);
+    return execute(cmd.get());
+}
