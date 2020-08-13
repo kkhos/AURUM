@@ -15,13 +15,14 @@ FindElementCommand::FindElementCommand(const ::aurum::ReqFindElement* request,
 {
     mObjMap = ObjectMapper::getInstance();
 }
-ISearchable* FindElementCommand::getSearchableTop(void)
+std::shared_ptr<ISearchable> FindElementCommand::getSearchableTop(void)
 {
-    ISearchable* searchableObj = nullptr;
+    std::shared_ptr<ISearchable> searchableObj{nullptr};
 
-    if (mRequest->_automationid_case() != 0)
+    if (mRequest->_automationid_case() != 0) {
         searchableObj = mObjMap->getElement(mRequest->elementid());
-    if (!searchableObj) searchableObj = UiDevice::getInstance(DeviceType::DEFAULT);
+    }
+    if (!searchableObj) searchableObj = UiDevice::getInstance();
 
     return searchableObj;
 }
@@ -56,9 +57,9 @@ std::vector<std::shared_ptr<UiSelector>> FindElementCommand::getSelectors(void)
     auto searchableObj = getSearchableTop();
     auto selectors     = getSelectors();
 
-    std::vector<std::unique_ptr<UiObject>> founds = {};
+    std::vector<std::shared_ptr<UiObject>> founds = {};
 
-    for ( auto sel : selectors ) {
+    for ( auto &sel : selectors ) {
         auto ret = searchableObj->findObjects(sel);
         std::move(std::begin(ret), std::end(ret), std::back_inserter(founds));
     }

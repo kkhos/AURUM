@@ -27,8 +27,6 @@ void PartialMatch::debugPrint()
         LOG_F(INFO, "selector->pkg :%s", mSelector->mRes->c_str());
     if (mSelector->mText)
         LOG_F(INFO, "selector->pkg :%s", mSelector->mText->c_str());
-    if (mSelector->mDesc)
-        LOG_F(INFO, "selector->pkg :%s", mSelector->mDesc->c_str());
     if (mSelector->mType)
         LOG_F(INFO, "selector->pkg :%s", mSelector->mType->c_str());
     if (mSelector->mStyle)
@@ -36,12 +34,11 @@ void PartialMatch::debugPrint()
 }
 
 bool PartialMatch::checkCriteria(const std::shared_ptr<UiSelector> selector,
-                                 const AccessibleNode *node)
+                                 const std::shared_ptr<AccessibleNode> node)
 {
     if(checkCriteria(selector->mPkg.get(), node->getPkg())) return false;
     if(checkCriteria(selector->mRes.get(), node->getRes())) return false;
     if(checkCriteria(selector->mText.get(), node->getText())) return false;
-    if(checkCriteria(selector->mDesc.get(), node->getDesc())) return false;
     if(checkCriteria(selector->mType.get(), node->getType())) return false;
     if(checkCriteria(selector->mStyle.get(), node->getStyle())) return false;
     if(checkCriteria(selector->mStyle.get(), node->getStyle())) return false;
@@ -69,22 +66,29 @@ PartialMatch::PartialMatch(const std::shared_ptr<UiSelector> selector, const int
 {
 }
 
-std::shared_ptr<PartialMatch> PartialMatch::accept(const AccessibleNode *node,
+std::shared_ptr<PartialMatch> PartialMatch::accept(const std::shared_ptr<AccessibleNode> node,
                                                    const std::shared_ptr<UiSelector> selector,
                                                    int index, int depth)
 {
     return PartialMatch::accept(node, selector, index, depth, depth);
 }
 
-std::shared_ptr<PartialMatch> PartialMatch::accept(const AccessibleNode *node,
+std::shared_ptr<PartialMatch> PartialMatch::accept(const std::shared_ptr<AccessibleNode> node,
                                                    const std::shared_ptr<UiSelector> selector,
                                                    int index, int absoluteDepth,
                                                    int relativeDepth)
 {
+    LOG_SCOPE_F(INFO, "accept checking i:%d a:%d r:%d / %d < %d < %d", index, absoluteDepth, relativeDepth, selector->mMinDepth?*(selector->mMinDepth):-1, relativeDepth, selector->mMaxDepth?*(selector->mMaxDepth):9999999);
     PartialMatch *match = nullptr;
 
+    if ((selector->mMinDepth && (relativeDepth < *(selector->mMinDepth))) ||
+        (selector->mMaxDepth && (relativeDepth > *(selector->mMaxDepth)))) {
+        LOG_F(INFO, "depth limit overflow %d < %d < %d", selector->mMinDepth?*(selector->mMinDepth):-1, relativeDepth, selector->mMaxDepth?*(selector->mMaxDepth):9999999);
+        return std::shared_ptr<PartialMatch>(nullptr);
+    }
+
     if (PartialMatch::checkCriteria(selector, node)) {
-        LOG_SCOPE_F(INFO, "New Match found %p %d", selector, absoluteDepth);
+        LOG_F(INFO, "New Match found %p %d", selector, absoluteDepth);
         match = new PartialMatch(selector, absoluteDepth);
     }
 
@@ -92,10 +96,10 @@ std::shared_ptr<PartialMatch> PartialMatch::accept(const AccessibleNode *node,
 }
 
 void PartialMatch::update(
-    const AccessibleNode *node, int index, int depth,
+    const std::shared_ptr<AccessibleNode> node, int index, int depth,
     std::list<std::shared_ptr<PartialMatch>> &partialMatches)
 {
-    for (auto childSelector : mSelector->mChild) {
+    for (auto &childSelector : mSelector->mChild) {
         auto match = PartialMatch::accept(node, childSelector, index, depth,
                                           depth - mDepth);
         if (match) {
@@ -108,13 +112,13 @@ void PartialMatch::update(
 bool PartialMatch::finalizeMatch()
 {
     std::set<std::shared_ptr<UiSelector>> matches;
-    for (auto match : mPartialMatches) {
+    for (auto &match : mPartialMatches) {
         if (match->finalizeMatch()) {
             matches.insert(match->mSelector);
         }
     }
 
-    for (auto sel : mSelector->mChild) {
+    for (auto &sel : mSelector->mChild) {
         if (!matches.count(sel)) return false;
     }
     return true;

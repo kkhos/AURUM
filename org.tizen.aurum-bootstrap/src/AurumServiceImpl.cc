@@ -181,10 +181,9 @@ aurumServiceImpl::~aurumServiceImpl() {}
     std::unique_ptr<SendKeyCommand> cmd = std::make_unique<SendKeyCommand>(request, response);
     return execute(cmd.get());
 }
-::grpc::Status aurumServiceImpl::takeScreenshot(
-    ::grpc::ServerContext* context,
-    const ::aurum::ReqTakeScreenshot*                  request,
-    ::grpc::ServerWriter< ::aurum::RspTakeScreenshot>* writer)
+::grpc::Status aurumServiceImpl::takeScreenshot(::grpc::ServerContext* context,
+                                                const ::aurum::ReqTakeScreenshot* request,
+                                                ::grpc::ServerWriter< ::aurum::RspTakeScreenshot>* writer)
 {
     std::unique_ptr<TakeScreenshotCommand> cmd = std::make_unique<TakeScreenshotCommand>(request, writer);
     return execute(cmd.get());

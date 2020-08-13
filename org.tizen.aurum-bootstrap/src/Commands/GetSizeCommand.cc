@@ -13,15 +13,14 @@ GetSizeCommand::GetSizeCommand(const ::aurum::ReqGetSize* request,
 {
     LOG_SCOPE_F(INFO, "GetSize --------------- ");
     ObjectMapper *mObjMap = ObjectMapper::getInstance();
-    UiObject* obj = mObjMap->getElement(mRequest->elementid());
+    std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
     if (obj) {
         const Rect<int> &size = obj->getBoundingBox();
-        ::aurum::Rect rect;
-        rect.set_x(size.mTopLeft.x);
-        rect.set_y(size.mTopLeft.y);
-        rect.set_width(size.width());
-        rect.set_height(size.height());
-        mResponse->mutable_size()->CopyFrom(rect);
+        ::aurum::Rect *rect = mResponse->mutable_size();
+        rect->set_x(size.mTopLeft.x);
+        rect->set_y(size.mTopLeft.y);
+        rect->set_width(size.width());
+        rect->set_height(size.height());
     }
 
     return grpc::Status::OK;

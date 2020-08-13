@@ -1,18 +1,24 @@
 #include "UiDevice.h"
 #include "AccessibleWatcher.h"
 #include "Comparer.h"
-#include "DeviceImpl/TizenImpl.h"
+
+#ifdef TIZEN
+#include "TizenDeviceImpl.h"
+#endif
+#include "MockDeviceImpl.h"
 
 #include <unistd.h>
 #include <utility>
 #include <vector>
 #include <chrono>
 #include <thread>
+#include <algorithm>
+#include <iostream>
 
-UiDevice::UiDevice() : UiDevice(DeviceType::DEFAULT, nullptr) {}
+UiDevice::UiDevice() : UiDevice(nullptr) {}
 
-UiDevice::UiDevice(DeviceType type, IDevice *impl)
-    : mType(type), mDeviceImpl(impl), mWaiter(new Waiter{this})
+UiDevice::UiDevice(IDevice *impl)
+    : mDeviceImpl(impl), mWaiter(new Waiter{this})
 {
 }
 
@@ -22,55 +28,77 @@ UiDevice::~UiDevice()
     delete mWaiter;
 }
 
-UiDevice *UiDevice::getInstance(DeviceType type)
+std::shared_ptr<UiDevice> UiDevice::getInstance(IDevice *deviceImpl)
 {
-    static UiDevice *device = nullptr;
+    static std::shared_ptr<UiDevice> device{nullptr};
+
+    if (deviceImpl) {
+        device.reset(new UiDevice(deviceImpl));
+    } else {
+        if (device) return device;
+        else {
 #ifdef TIZEN
-    if (!device) device = new UiDevice(type, new TizenImpl());
+            device.reset(new UiDevice(new TizenDeviceImpl()));
+#else
+            device.reset(new UiDevice(new MockDeviceImpl()));
 #endif
+        }
+    }
+
     return device;
 }
 
-std::vector<std::unique_ptr<AccessibleNode>> UiDevice::getWindowRoot() const
+std::vector<std::shared_ptr<AccessibleNode>> UiDevice::getWindowRoot() const
 {
-    return AccessibleWatcher::getInstance()->getTopNode();
+    std::vector<std::shared_ptr<AccessibleNode>> ret{};
+
+    auto apps = AccessibleWatcher::getInstance()->getActiveApplications();
+    for (auto &app : apps){
+        auto activeWindows = app->getActiveWindows();
+        std::transform(activeWindows.begin(), activeWindows.end(), std::back_inserter(ret),
+            [&](std::shared_ptr<AccessibleWindow> window){
+                return window->getNode();
+            }
+        );
+    }
+    return ret;
 }
 
 bool UiDevice::hasObject(const std::shared_ptr<UiSelector> selector) const
 {
-    auto root = getWindowRoot();
-    for (auto it = root.begin(); it != root.end(); ++it) {
-        std::unique_ptr<AccessibleNode> node =
-            Comparer::findObject(this, selector, (*it).get());
-        if (node != nullptr) return true;
+    auto rootNodes = getWindowRoot();
+    for (const auto &node : rootNodes) {
+        const std::shared_ptr<AccessibleNode> foundNode =
+            Comparer::findObject(getInstance(), selector, node);
+        if (foundNode) return true;
     }
 
     return false;
 }
 
-std::unique_ptr<UiObject> UiDevice::findObject(const std::shared_ptr<UiSelector> selector) const
+std::shared_ptr<UiObject> UiDevice::findObject(const std::shared_ptr<UiSelector> selector) const
 {
-    auto root = getWindowRoot();
-    for (auto it = root.begin(); it != root.end(); ++it) {
-        std::unique_ptr<AccessibleNode> node =
-            Comparer::findObject(this, selector, (*it).get());
-        if (node)
-            return std::make_unique<UiObject>(this, selector, std::move(node));
+    auto rootNodes = getWindowRoot();
+    for (const auto &node : rootNodes) {
+        const std::shared_ptr<AccessibleNode> foundNode =
+            Comparer::findObject(getInstance(), selector, node);
+        if (foundNode)
+            return std::make_shared<UiObject>(getInstance(), selector, foundNode);
     }
-    return std::unique_ptr<UiObject>{nullptr};
+    return std::shared_ptr<UiObject>{nullptr};
 }
 
-std::vector<std::unique_ptr<UiObject>> UiDevice::findObjects(
+
+std::vector<std::shared_ptr<UiObject>> UiDevice::findObjects(
     const std::shared_ptr<UiSelector> selector) const
 {
-    std::vector<std::unique_ptr<UiObject>> ret{};
-    auto root = getWindowRoot();
-    for (auto it = root.begin(); it != root.end(); ++it) {
-        std::vector<std::unique_ptr<AccessibleNode>>          nodes =
-            Comparer::findObjects(this, selector, (*it).get());
-
+    std::vector<std::shared_ptr<UiObject>> ret{};
+    auto rootNodes = getWindowRoot();
+    for (const auto &window : rootNodes) {
+        std::vector<std::shared_ptr<AccessibleNode>> nodes =
+            Comparer::findObjects(getInstance(), selector, window);
         for (auto &node : nodes)
-            ret.push_back(std::make_unique<UiObject>(this, selector, std::move(node)));
+            ret.push_back(std::make_shared<UiObject>(getInstance(), selector, node));
     }
     return ret;
 }
@@ -80,8 +108,8 @@ bool UiDevice::waitFor(
     return mWaiter->waitFor(condition);
 }
 
-std::unique_ptr<UiObject> UiDevice::waitFor(
-    const std::function<std::unique_ptr<UiObject>(const ISearchable *)>
+std::shared_ptr<UiObject> UiDevice::waitFor(
+    const std::function<std::shared_ptr<UiObject>(const ISearchable *)>
         condition) const
 {
     return mWaiter->waitFor(condition);

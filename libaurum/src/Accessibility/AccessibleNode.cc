@@ -1,0 +1,156 @@
+#include "AccessibleNode.h"
+#include <string.h>
+#include <iostream>
+#include <vector>
+
+#include <loguru.hpp>
+#include "config.h"
+
+
+AccessibleNode::~AccessibleNode()
+{
+}
+
+AccessibleNode::AccessibleNode()
+    : mText{""}, mPkg{""}, mRole{""}, mRes{""}, mType{""}, mStyle{""},
+      mBoundingBox{0,0,0,0}, mSupportingIfaces(0), mFeatureProperty(0)
+{
+}
+
+void AccessibleNode::print(int depth, int maxDepth)
+{
+    if (maxDepth <= 0 || depth > maxDepth) return;
+
+    this->print(depth);
+    auto children = this->getChildren();
+    for ( auto &child : children ) {
+        if (child) child->print(depth +1, maxDepth);
+    }
+}
+
+void AccessibleNode::print(int d)
+{
+    this->refresh();
+    LOG_F(INFO, "%s - %p(%s)  /  pkg:%s, text:%s",
+          std::string(d, ' ').c_str(), getRawHandler(), getText().c_str(),
+          getPkg().c_str(), getText().c_str());
+}
+
+bool AccessibleNode::isSupporting(AccessibleNodeInterface thisIface) const
+{
+    return (mSupportingIfaces & static_cast<int>(thisIface)) != 0;
+}
+
+bool AccessibleNode::hasFeatureProperty(NodeFeatureProperties prop) const
+{
+    return (mFeatureProperty & static_cast<int>(prop)) != 0;
+}
+
+void AccessibleNode::setFeatureProperty(NodeFeatureProperties prop, bool has)
+{
+    if (has)
+        mFeatureProperty |= static_cast<int>(prop);
+    else
+        mFeatureProperty &= ~static_cast<int>(prop);
+}
+
+
+std::string AccessibleNode::getText() const
+{
+    return mText;
+}
+
+std::string AccessibleNode::getPkg() const
+{
+    return mPkg;
+}
+
+std::string AccessibleNode::getRes() const
+{
+    return mRes;
+}
+
+std::string AccessibleNode::getRole() const
+{
+    return mRole;
+}
+
+std::string AccessibleNode::getType() const
+{
+    return mType;
+}
+
+std::string AccessibleNode::getStyle() const
+{
+    return mStyle;
+}
+
+Rect<int> AccessibleNode::getBoundingBox() const
+{
+    return mBoundingBox;
+}
+
+bool AccessibleNode::isCheckable() const
+{
+    return hasFeatureProperty(NodeFeatureProperties::CHECKABLE);
+}
+
+bool AccessibleNode::isChecked() const
+{
+    return hasFeatureProperty(NodeFeatureProperties::CHECKED);
+}
+
+bool AccessibleNode::isClickable() const
+{
+    return hasFeatureProperty(NodeFeatureProperties::CLICKABLE);
+}
+
+bool AccessibleNode::isEnabled() const
+{
+    return hasFeatureProperty(NodeFeatureProperties::ENABLED);
+}
+
+bool AccessibleNode::isFocusable() const
+{
+    return hasFeatureProperty(NodeFeatureProperties::FOCUSABLE);
+}
+
+bool AccessibleNode::isFocused() const
+{
+    return hasFeatureProperty(NodeFeatureProperties::FOCUSED);
+}
+
+bool AccessibleNode::isLongClickable() const
+{
+    return hasFeatureProperty(NodeFeatureProperties::LONGCLICKABLE);
+}
+
+bool AccessibleNode::isScrollable() const
+{
+    return hasFeatureProperty(NodeFeatureProperties::SCROLLABLE);
+}
+
+bool AccessibleNode::isSelectable() const
+{
+    return hasFeatureProperty(NodeFeatureProperties::SELECTABLE);
+}
+
+bool AccessibleNode::isSelected() const
+{
+    return hasFeatureProperty(NodeFeatureProperties::SELECTED);
+}
+
+bool AccessibleNode::isVisible() const
+{
+    return hasFeatureProperty(NodeFeatureProperties::VISIBLE);
+}
+
+bool AccessibleNode::isShowing() const
+{
+    return hasFeatureProperty(NodeFeatureProperties::SHOWING);
+}
+
+bool AccessibleNode::isActive() const
+{
+    return hasFeatureProperty(NodeFeatureProperties::ACTIVE);
+}

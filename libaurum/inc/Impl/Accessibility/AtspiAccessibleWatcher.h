@@ -1,23 +1,17 @@
-#ifndef ACCESSIBLE_H
-#define ACCESSIBLE_H
+#pragma once
+#include "AccessibleNode.h"
+#include "AccessibleWatcher.h"
 
 #include <atspi/atspi.h>
-#include "AccessibleNode.h"
-#include "AccessibleUtils.h"
-
-#include <list>
-#include <map>
-#include <memory>
-#include <vector>
-#include <set>
-
-
 #include <gio/gio.h>
+
 #include <mutex>
 #include <shared_mutex>
-#include "config.h"
-
-
+#include <memory>
+#include <list>
+#include <vector>
+#include <set>
+#include <map>
 
 /**
  * @brief WindowActivateInfoType enum class
@@ -46,147 +40,146 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    virtual void onWindowActivated(AtspiAccessible *      node,
-                                   WindowActivateInfoType type) = 0;
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
-    virtual void onWindowDeactivated(AtspiAccessible *node) = 0;
+    virtual void onWindowActivated(AtspiAccessible* node, WindowActivateInfoType type) = 0;
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    virtual void onWindowCreated(AtspiAccessible *node) = 0;
+    virtual void onWindowDeactivated(AtspiAccessible* node) = 0;
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    virtual void onWindowDestroyed(AtspiAccessible *node) = 0;
+    virtual void onWindowCreated(AtspiAccessible* node) = 0;
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    virtual void onVisibilityChanged(AtspiAccessible *node,
-                                     bool             visible) = 0;
+    virtual void onWindowDestroyed(AtspiAccessible* node) = 0;
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    virtual void onObjectDefunct(AtspiAccessible *node) = 0;
+    virtual void onVisibilityChanged(AtspiAccessible* node, bool visible) = 0;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    virtual void onObjectDefunct(AtspiAccessible* node) = 0;
 };
 
-/**
- * @brief AccessibleWatcher class
- * @since_tizen 5.5
- */
-class AccessibleWatcher : public IAtspiEvents {
-private:
 
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
-    AccessibleWatcher();
+class AtspiAccessibleWatcher : public AccessibleWatcher, public IAtspiEvents {
+public:
+    AtspiAccessibleWatcher();
+    virtual ~AtspiAccessibleWatcher();
 
 public:
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    static const AccessibleWatcher *getInstance();
-        /**
+    virtual int getApplicationCount(void) const override;
+
+    /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    virtual ~AccessibleWatcher();
+    virtual std::shared_ptr<AccessibleApplication> getApplicationAt(int index) const override;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    virtual std::vector<std::shared_ptr<AccessibleApplication>> getApplications(void) const override;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    //std::shared_ptr<AccessibleNode> getRootNode() const override;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    //std::vector<std::shared_ptr<AccessibleNode>> getTopNode() const override;
+
 
 public:
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
-    std::unique_ptr<AccessibleNode> getRootNode() const;
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
-    std::vector<std::unique_ptr<AccessibleNode>> getTopNode() const;
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
-
-    void onWindowActivated(AtspiAccessible *      node,
-                                   WindowActivateInfoType type) override;
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
-    void onWindowDeactivated(AtspiAccessible *node) override;
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
-
-    void onWindowCreated(AtspiAccessible *node) override;
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
-    void onWindowDestroyed(AtspiAccessible *node) override;
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
-
-    void onVisibilityChanged(AtspiAccessible *node,
-                                     bool             visible) override;
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
-    void onObjectDefunct(AtspiAccessible *node) override;
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
-
-    void printDbgInformation() const;
-
-private:
-    void        clearWindowList() const;
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
     static void onAtspiWindowEvent(AtspiEvent *event, void *user_data);
+
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
+    void onWindowActivated(AtspiAccessible* node, WindowActivateInfoType type) override;
 
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    void onWindowDeactivated(AtspiAccessible* node) override;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    void onWindowCreated(AtspiAccessible* node) override;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    void onWindowDestroyed(AtspiAccessible* node) override;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    void onVisibilityChanged(AtspiAccessible* node, bool visible) override;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    void onObjectDefunct(AtspiAccessible* node) override;
+
+private:
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     bool removeFromActivatedList(AtspiAccessible *node);
+
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
     bool addToActivatedList(AtspiAccessible *node);
+
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
     bool removeFromWindowSet(AtspiAccessible *node);
+
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
     bool addToWindowSet(AtspiAccessible *node);
 
+    void print_debug();
 
 private:
     /**
@@ -197,32 +190,28 @@ private:
     /**
      * @brief TBD
      */
-    mutable std::list<AtspiAccessible *>          mActivatedWindowList;
-
-    /**
-     * @brief TBD
-     */
-    mutable std::list<AtspiAccessible *>          mActivatedApplicationList;
-
-    /**
-     * @brief TBD
-     */
-    mutable std::set<AtspiAccessible *>           mWindowSet;;
-
-    /**
-     * @brief TBD
-     */
     GDBusProxy *                                  mDbusProxy;
 
     /**
      * @brief TBD
      */
-    std::map<AtspiAccessible *, AccessibleNode *> mAccessibleNode;
+    std::mutex                            mLock;
 
     /**
      * @brief TBD
      */
-    mutable std::mutex                            mLock;
-};
+    std::list<AtspiAccessible *>          mActivatedWindowList;
 
-#endif
+    /**
+     * @brief TBD
+     */
+    std::list<AtspiAccessible *>          mActivatedApplicationList;
+
+    /**
+     * @brief TBD
+     */
+    std::set<AtspiAccessible *>            mWindowSet;
+
+    std::map<AtspiAccessible *, AtspiAccessible *> mWindowAppMap;
+
+};

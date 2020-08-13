@@ -271,12 +271,6 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    std::unique_ptr<std::string> mDesc;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::vector<std::shared_ptr<UiSelector>> mChild;
 };
 

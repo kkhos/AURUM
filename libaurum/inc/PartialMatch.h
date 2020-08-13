@@ -31,7 +31,7 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    void update(const AccessibleNode *node, int index, int depth,
+    void update(const std::shared_ptr<AccessibleNode> node, int index, int depth,
                 std::list<std::shared_ptr<PartialMatch>> &partialMatches);
 
     /**
@@ -47,7 +47,7 @@ public:
     void debugPrint();
 
 public:
-    static std::shared_ptr<PartialMatch> accept(const AccessibleNode *node,
+    static std::shared_ptr<PartialMatch> accept(const std::shared_ptr<AccessibleNode> node,
                                                 const std::shared_ptr<UiSelector> selector,
                                                 int index, int depth);
 
@@ -55,7 +55,7 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    static std::shared_ptr<PartialMatch> accept(const AccessibleNode *node,
+    static std::shared_ptr<PartialMatch> accept(const std::shared_ptr<AccessibleNode> node,
                                                 const std::shared_ptr<UiSelector> selector,
                                                 int index, int absoluteDepth,
                                                 int relativeDepth);
@@ -66,7 +66,7 @@ public:
      */
 private:
     static bool checkCriteria(const std::shared_ptr<UiSelector> selector,
-                              const AccessibleNode *node);
+                              const std::shared_ptr<AccessibleNode> node);
 
     /**
      * @brief TBD

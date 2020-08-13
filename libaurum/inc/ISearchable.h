@@ -31,14 +31,14 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    virtual std::unique_ptr<UiObject> findObject(
+    virtual std::shared_ptr<UiObject> findObject(
         const std::shared_ptr<UiSelector> selector) const = 0;
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    virtual std::vector<std::unique_ptr<UiObject>> findObjects(
+    virtual std::vector<std::shared_ptr<UiObject>> findObjects(
         const std::shared_ptr<UiSelector> selector) const = 0;
 };
 

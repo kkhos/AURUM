@@ -53,7 +53,7 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    static std::function<std::unique_ptr<UiObject>(const ISearchable *)>
+    static std::function<std::shared_ptr<UiObject>(const ISearchable *)>
                                                  findObject(const std::shared_ptr<UiSelector> selector);
 
     /**

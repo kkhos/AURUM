@@ -12,7 +12,7 @@ SendKeyCommand::SendKeyCommand(const ::aurum::ReqKey* request,
 ::grpc::Status SendKeyCommand::execute()
 {
     LOG_SCOPE_F(INFO, "SendKey --------------- ");
-    UiDevice* mDevice = UiDevice::getInstance(DeviceType::DEFAULT);
+    std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();
     ::aurum::ReqKey_KeyType type = mRequest->type();
     ::aurum::ReqKey_KeyActionType action_type = mRequest->actiontype();
     KeyRequestType actionType = static_cast<KeyRequestType>(action_type);

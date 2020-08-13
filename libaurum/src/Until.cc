@@ -8,17 +8,17 @@ std::function<bool(const ISearchable *)> Until::hasObject(
 {
     return [=](const ISearchable *searchable) -> bool {
         LOG_SCOPE_F(INFO, "sel:%p, search:%p", selector, searchable);
-        std::unique_ptr<UiObject> obj = searchable->findObject(selector);
+        std::shared_ptr<UiObject> obj = searchable->findObject(selector);
         return obj.get() != nullptr;
     };
 }
 
-std::function<std::unique_ptr<UiObject>(const ISearchable *)> Until::findObject(
+std::function<std::shared_ptr<UiObject>(const ISearchable *)> Until::findObject(
     const std::shared_ptr<UiSelector> selector)
 {
-    return [=](const ISearchable *searchable) -> std::unique_ptr<UiObject> {
+    return [=](const ISearchable *searchable) -> std::shared_ptr<UiObject> {
         LOG_SCOPE_F(INFO, "sel:%p, search:%p", selector, searchable);
-        std::unique_ptr<UiObject> obj = searchable->findObject(selector);
+        std::shared_ptr<UiObject> obj = searchable->findObject(selector);
         return obj;
     };
 }

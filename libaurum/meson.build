@@ -1,32 +1,17 @@
 libaurum_inc = [
   include_directories('./inc'),
+  include_directories('./inc/Accessibility'),
+  include_directories('./inc/Impl'),
+  include_directories('./inc/Impl/Accessibility'),
+  include_directories('./inc/Misc'),
   root_inc,
   loguru_inc,
 ]
 
-libaurum_src = [
-  files('src/Sel.cc'),
-  files('src/UiDevice.cc'),
-  files('src/UiObject.cc'),
-  files('src/UiSelector.cc'),
-  files('src/AccessibleWatcher.cc'),
-  files('src/AccessibleNode.cc'),
-  files('src/AccessibleUtils.cc'),
-  files('src/Comparer.cc'),
-  files('src/Until.cc'),
-  files('src/Waiter.cc'),
-  files('src/PartialMatch.cc'),
-]
-
-if get_option('tizen') == true
-libaurum_src +=[
-  files('src/DeviceImpl/TizenImpl.cc'),
-]
-endif
+libaurum_src = []
+subdir('src')
 
 libaurum_dep = [
-  dependency('capi-system-info'),
-  dependency('libtdm'),
   dependency('atspi-2'),
   dependency('gio-2.0'),
   dependency('threads'),
@@ -38,6 +23,7 @@ if get_option('tizen') == true
     dependency('capi-system-info'),
     dependency('capi-ui-efl-util'),
     dependency('elementary'),
+    dependency('libtdm'),
   ]
 endif
 

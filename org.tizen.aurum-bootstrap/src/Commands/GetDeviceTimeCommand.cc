@@ -88,7 +88,7 @@ public:
 {
     LOG_SCOPE_F(INFO, "GetDeviceTime --------------- ");
 
-    UiDevice* obj = UiDevice::getInstance(DeviceType::DEFAULT);
+    std::shared_ptr<UiDevice> obj = UiDevice::getInstance();
     ::aurum::ReqGetDeviceTime_TimeType type = mRequest->type();
     long long                          utcStampMs;
 
