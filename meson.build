@@ -21,7 +21,9 @@ root_inc = include_directories('./')
 subdir('protocol')
 subdir('libloguru')
 subdir('libaurum')
-subdir('org.tizen.aurum-bootstrap')
+if get_option('tizen') == true
+  subdir('org.tizen.aurum-bootstrap')
+endif
 subdir('tests')
 
 configure_file(
