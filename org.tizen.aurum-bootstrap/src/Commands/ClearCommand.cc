@@ -9,7 +9,7 @@ ClearCommand::ClearCommand(const ::aurum::ReqClear* request,
 {
 }
 
-bool ClearCommand::hasHintText(UiObject *obj)
+bool ClearCommand::hasHintText(std::shared_ptr<UiObject> obj)
 {
     if (!obj) return false;
 
@@ -27,7 +27,7 @@ bool ClearCommand::hasHintText(UiObject *obj)
 {
     LOG_SCOPE_F(INFO, "Clear --------------- ");
     ObjectMapper* mObjMap = ObjectMapper::getInstance();
-    UiObject*     obj = mObjMap->getElement(mRequest->elementid());
+    std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
 
     if (obj) {
         obj->setText("");

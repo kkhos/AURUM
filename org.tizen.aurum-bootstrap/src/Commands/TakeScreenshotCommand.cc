@@ -16,7 +16,7 @@ TakeScreenshotCommand::TakeScreenshotCommand(
     LOG_SCOPE_F(INFO, "TakeScreenshot --------------- ");
 
     std::string path = "/tmp/screenshot.png";
-    UiDevice* mDevice = UiDevice::getInstance(DeviceType::DEFAULT);
+    std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();
     mDevice->takeScreenshot(path, 1.0, 1);
 
     std::ifstream ifs(path, std::ifstream::binary);

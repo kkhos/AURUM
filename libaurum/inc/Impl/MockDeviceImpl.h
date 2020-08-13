@@ -1,21 +1,13 @@
-#ifndef DEVICE_GENERAL_H
-#define DEVICE_GENERAL_H
+#pragma once
 #include "config.h"
-
 #include "IDevice.h"
+
 #include <set>
 
-#ifdef GBS_BUILD
-#include <efl_util.h>
-#endif
-/**
- * @brief TizenImpl Class
- * @since_tizen 5.5
- */
-class TizenImpl : public IDevice {
+class MockDeviceImpl : public IDevice {
 public:
-    TizenImpl();
-    ~TizenImpl();
+    MockDeviceImpl();
+    ~MockDeviceImpl();
 
     bool click(const int x, const int y) override;
     bool click(const int x, const int y, const unsigned int intv) override;
@@ -53,9 +45,6 @@ private:
     int stopTimer(void);
 
 private:
-    efl_util_inputgen_h mFakeTouchHandle;
-    efl_util_inputgen_h mFakeKeyboardHandle;
-    efl_util_inputgen_h mFakeWheelHandle;
     static const unsigned int INTV_CLICK = 5;
     static const unsigned int INTV_SHORTSTROKE = 100;
     static const unsigned int INTV_LONGSTROKE = 2000;
@@ -71,5 +60,3 @@ private:
 
     std::set<int> mTouchSeq;
 };
-
-#endif

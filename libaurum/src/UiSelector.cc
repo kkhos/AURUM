@@ -24,12 +24,6 @@ UiSelector *UiSelector::id(std::string text)
     return this;
 }
 
-UiSelector *UiSelector::desc(std::string text)
-{
-    this->mDesc = std::make_unique<std::string>(text);
-    return this;
-}
-
 UiSelector *UiSelector::text(std::string text)
 {
     this->mText = std::make_unique<std::string>(text);

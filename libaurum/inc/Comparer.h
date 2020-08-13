@@ -22,7 +22,7 @@ private:
      * @brief TBD
      * @since_tizen 5.5
      */
-    Comparer(const UiDevice *device, const std::shared_ptr<UiSelector> selector,
+    Comparer(const std::shared_ptr<UiDevice> device, const std::shared_ptr<UiSelector> selector,
              const bool &earlyReturn);
 
     /**
@@ -36,31 +36,31 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    static std::unique_ptr<AccessibleNode>             findObject(const UiDevice *      device,
+    static std::shared_ptr<AccessibleNode>             findObject(const std::shared_ptr<UiDevice> device,
                                                     const std::shared_ptr<UiSelector> selector,
-                                                    const AccessibleNode *root);
+                                                    const std::shared_ptr<AccessibleNode> root);
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    static std::vector<std::unique_ptr<AccessibleNode>> findObjects(
-        const UiDevice *device, const std::shared_ptr<UiSelector> selector,
-        const AccessibleNode *root);
+    static std::vector<std::shared_ptr<AccessibleNode>> findObjects(
+        const std::shared_ptr<UiDevice> device, const std::shared_ptr<UiSelector> selector,
+        const std::shared_ptr<AccessibleNode> root);
 
 private:
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    std::vector<std::unique_ptr<AccessibleNode>> findObjects(const AccessibleNode *root);
+    std::vector<std::shared_ptr<AccessibleNode>> findObjects(const std::shared_ptr<AccessibleNode> root);
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    std::vector<std::unique_ptr<AccessibleNode>> findObjects(
-        const AccessibleNode *root, const int &index, const int &depth,
+    std::vector<std::shared_ptr<AccessibleNode>> findObjects(
+        const std::shared_ptr<AccessibleNode> root, const int &index, const int &depth,
         std::list<std::shared_ptr<PartialMatch>> &partialMatches);
 
 private:
@@ -68,16 +68,16 @@ private:
      * @brief TBD
      * @since_tizen 5.5
      */
-    std::unique_ptr<PartialMatch> accept(const AccessibleNode *node,
+   /* std::unique_ptr<PartialMatch> accept(const AccessibleNode *node,
                                          const std::shared_ptr<UiSelector> selector,
                                          const int &index, const int &depth,
                                          const int &relDepth);
-
+*/
 private:
     /**
      * @brief TBD
      */
-    const UiDevice *mDevice;
+    const std::shared_ptr<UiDevice> mDevice;
 
     /**
      * @brief TBD

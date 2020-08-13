@@ -76,7 +76,6 @@ public:
     ::grpc::Status touchMove(::grpc::ServerContext *      context,
                              const ::aurum::ReqTouchMove *request,
                              ::aurum::RspTouchMove *      response) override;
-
     ::grpc::Status getDeviceTime(::grpc::ServerContext *          context,
                                  const ::aurum::ReqGetDeviceTime *request,
                                  ::aurum::RspGetDeviceTime *response) override;
@@ -86,10 +85,14 @@ public:
     ::grpc::Status sendKey(::grpc::ServerContext *context,
                            const ::aurum::ReqKey *request,
                            ::aurum::RspKey *      response) override;
-    ::grpc::Status takeScreenshot(
-        ::grpc::ServerContext *context,
-        const ::aurum::ReqTakeScreenshot *                 request,
-        ::grpc::ServerWriter< ::aurum::RspTakeScreenshot>* writer) override;
+
+    ::grpc::Status takeScreenshot(::grpc::ServerContext *context,
+                            const ::aurum::ReqTakeScreenshot *                 request,
+                            ::grpc::ServerWriter< ::aurum::RspTakeScreenshot>* writer) override;
+
+    ::grpc::Status dumpObjectTree(::grpc::ServerContext *context,
+                            const ::aurum::ReqDumpObjectTree *request,
+                            ::aurum::RspDumpObjectTree *      response) override;
 };
 
 #endif

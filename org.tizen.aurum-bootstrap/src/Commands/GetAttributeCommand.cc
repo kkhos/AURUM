@@ -52,7 +52,7 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
 
 ::grpc::Status GetVisibleAttributeCommand::execute()
 {
-    UiObject* obj = mObjMap->getElement(mRequest->elementid());
+    std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
     if (!obj) {
         mResponse->set_boolvalue(false);
         mResponse->set_status(aurum::RspStatus::ERROR);
@@ -65,7 +65,7 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
 
 ::grpc::Status GetFocusedAttributeCommand::execute()
 {
-    UiObject* obj = mObjMap->getElement(mRequest->elementid());
+    std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
     if (!obj) {
         mResponse->set_boolvalue(false);
         mResponse->set_status(aurum::RspStatus::ERROR);
@@ -78,7 +78,7 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
 
 ::grpc::Status GetFocusableAttributeCommand::execute()
 {
-    UiObject* obj = mObjMap->getElement(mRequest->elementid());
+    std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
     if (!obj) {
         mResponse->set_boolvalue(false);
         mResponse->set_status(aurum::RspStatus::ERROR);
@@ -91,7 +91,7 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
 
 ::grpc::Status GetCheckableAttributeCommand::execute()
 {
-    UiObject* obj = mObjMap->getElement(mRequest->elementid());
+    std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
     if (!obj) {
         mResponse->set_boolvalue(false);
         mResponse->set_status(aurum::RspStatus::ERROR);
@@ -104,7 +104,7 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
 
 ::grpc::Status GetCheckedAttributeCommand::execute()
 {
-    UiObject* obj = mObjMap->getElement(mRequest->elementid());
+    std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
     if (!obj) {
         mResponse->set_boolvalue(false);
         mResponse->set_status(aurum::RspStatus::ERROR);
@@ -117,7 +117,7 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
 
 ::grpc::Status GetEnabledAttributeCommand::execute()
 {
-    UiObject* obj = mObjMap->getElement(mRequest->elementid());
+    std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
     if (!obj) {
         mResponse->set_boolvalue(false);
         mResponse->set_status(aurum::RspStatus::ERROR);
@@ -130,7 +130,7 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
 
 ::grpc::Status GetClickableAttributeCommand::execute()
 {
-    UiObject* obj = mObjMap->getElement(mRequest->elementid());
+    std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
     if (!obj) {
         mResponse->set_boolvalue(false);
         mResponse->set_status(aurum::RspStatus::ERROR);
@@ -143,7 +143,7 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
 
 ::grpc::Status GetScrollableAttributeCommand::execute()
 {
-    UiObject* obj = mObjMap->getElement(mRequest->elementid());
+    std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
     if (!obj) {
         mResponse->set_boolvalue(false);
         mResponse->set_status(aurum::RspStatus::ERROR);
@@ -156,7 +156,7 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
 
 ::grpc::Status GetSelectableAttributeCommand::execute()
 {
-    UiObject* obj = mObjMap->getElement(mRequest->elementid());
+    std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
     if (!obj) {
         mResponse->set_boolvalue(false);
         mResponse->set_status(aurum::RspStatus::ERROR);
@@ -169,7 +169,7 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
 
 ::grpc::Status GetSelectedAttributeCommand::execute()
 {
-    UiObject* obj = mObjMap->getElement(mRequest->elementid());
+    std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
     if (!obj) {
         mResponse->set_boolvalue(false);
         mResponse->set_status(aurum::RspStatus::ERROR);
@@ -183,7 +183,7 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
 
 ::grpc::Status GetShowingAttributeCommand::execute()
 {
-    UiObject* obj = mObjMap->getElement(mRequest->elementid());
+    std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
     if (!obj) {
         mResponse->set_boolvalue(false);
         mResponse->set_status(aurum::RspStatus::ERROR);
@@ -198,7 +198,7 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
 
 ::grpc::Status GetActiveAttributeCommand::execute()
 {
-    UiObject* obj = mObjMap->getElement(mRequest->elementid());
+    std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
     if (!obj) {
         mResponse->set_boolvalue(false);
         mResponse->set_status(aurum::RspStatus::ERROR);

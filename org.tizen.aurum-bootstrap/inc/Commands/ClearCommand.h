@@ -18,7 +18,7 @@ public:
     ::grpc::Status execute() override;
 
 protected:
-    bool hasHintText(UiObject *obj);
+    bool hasHintText(std::shared_ptr<UiObject> obj);
 };
 
 #endif

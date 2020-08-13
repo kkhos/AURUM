@@ -13,14 +13,7 @@
 
 #include <functional>
 #include <string>
-/**
- * @brief DeviceType enum class
- * @since_tizen 5.5
- */
-enum class DeviceType {
-    DEFAULT,
-    NUM_DEVICETYPE,
-};
+
 /**
  * @brief UiDevice class
  * @since_tizen 5.5
@@ -142,14 +135,14 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    std::unique_ptr<UiObject> findObject(
+    std::shared_ptr<UiObject> findObject(
         const std::shared_ptr<UiSelector> selector) const override;
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    std::vector<std::unique_ptr<UiObject>> findObjects(
+    std::vector<std::shared_ptr<UiObject>> findObjects(
         const std::shared_ptr<UiSelector> selector) const override;
 
     /**
@@ -163,29 +156,28 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    std::unique_ptr<UiObject> waitFor(
-        const std::function<std::unique_ptr<UiObject>(const ISearchable *)>
+    std::shared_ptr<UiObject> waitFor(
+        const std::function<std::shared_ptr<UiObject>(const ISearchable *)>
             condition) const;
-
 public:
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    static UiDevice *getInstance(DeviceType type);
+    static std::shared_ptr<UiDevice> getInstance(IDevice *deviceImpl = nullptr);
 
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    std::vector<std::shared_ptr<AccessibleNode>> getWindowRoot() const;
 private:
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    std::vector<std::unique_ptr<AccessibleNode>> getWindowRoot() const;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     bool waitForIdle() const;
+
 private:
     /**
      * @brief TBD
@@ -197,8 +189,9 @@ private:
      * @brief TBD
      * @since_tizen 5.5
      */
-    UiDevice(DeviceType type, IDevice *impl);
+    UiDevice(IDevice *impl);
 
+public:
     /**
      * @brief TBD
      * @since_tizen 5.5
@@ -206,10 +199,6 @@ private:
     virtual ~UiDevice();
 
 private:
-    /**
-     * @brief TBD
-     */
-    DeviceType    mType;
     /**
      * @brief TBD
      */

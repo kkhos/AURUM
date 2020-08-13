@@ -7,6 +7,8 @@
 
 #include <loguru.hpp>
 
+#include <chrono>
+#include <thread>
 UiObject::UiObject() : UiObject(nullptr, nullptr, nullptr) {}
 
 UiObject::~UiObject()
@@ -14,17 +16,17 @@ UiObject::~UiObject()
     if (mWaiter) delete mWaiter;
 }
 
-UiObject::UiObject(const UiDevice *device, const std::shared_ptr<UiSelector> selector,
+UiObject::UiObject(const std::shared_ptr<UiDevice> device, const std::shared_ptr<UiSelector> selector,
                    const AccessibleNode *node)
     : mDevice(device),
       mSelector(selector),
-      mNode(std::unique_ptr<AccessibleNode>(const_cast<AccessibleNode*>(node))),
+      mNode(std::shared_ptr<AccessibleNode>(const_cast<AccessibleNode*>(node))),
       mWaiter(new Waiter{this, this})
 {
 }
 
-UiObject::UiObject(const UiDevice *device, const std::shared_ptr<UiSelector> selector,
-                   std::unique_ptr<AccessibleNode> node)
+UiObject::UiObject(const std::shared_ptr<UiDevice> device, const std::shared_ptr<UiSelector> selector,
+                   std::shared_ptr<AccessibleNode> node)
     : mDevice(device),
       mSelector(selector),
       mNode(std::move(node)),
@@ -61,7 +63,7 @@ std::shared_ptr<UiSelector> UiObject::getSelector()
 
 bool UiObject::hasObject(const std::shared_ptr<UiSelector> selector) const
 {
-    std::unique_ptr<AccessibleNode> node =
+    std::shared_ptr<AccessibleNode> node =
         Comparer::findObject(mDevice, selector, getAccessibleNode());
     if (node != nullptr) {
         // todo : what is this node.recycle()
@@ -70,20 +72,31 @@ bool UiObject::hasObject(const std::shared_ptr<UiSelector> selector) const
     return false;
 }
 
-std::unique_ptr<UiObject> UiObject::findObject(const std::shared_ptr<UiSelector> selector) const
+std::shared_ptr<UiObject> UiObject::findObject(const std::shared_ptr<UiSelector> selector) const
 {
-    std::unique_ptr<AccessibleNode> node =
+    std::shared_ptr<AccessibleNode> node =
         Comparer::findObject(mDevice, selector, getAccessibleNode());
     if (node)
-        return std::make_unique<UiObject>(mDevice, selector, std::move(node));
+        return std::make_shared<UiObject>(mDevice, selector, std::move(node));
     else
-        return std::unique_ptr<UiObject>{nullptr};
+        return std::shared_ptr<UiObject>{nullptr};
 }
 
-std::vector<std::unique_ptr<UiObject>> UiObject::findObjects(
+std::vector<std::shared_ptr<UiObject>> UiObject::findObjects(
     const std::shared_ptr<UiSelector> selector) const
 {
-    return std::vector<std::unique_ptr<UiObject>>{};
+    LOG_SCOPE_F(INFO, "findObjects");
+    std::vector<std::shared_ptr<UiObject>> result{};
+    auto nodes = Comparer::findObjects(mDevice, selector, getAccessibleNode());
+    LOG_SCOPE_F(INFO, "size : %d", nodes.size());
+    for ( auto& node : nodes) {
+        if (!node) {
+            LOG_F(INFO, "skipped(node == nullptr)");
+            continue;
+        }
+        result.push_back(std::make_shared<UiObject>(mDevice, selector, std::move(node)));
+    }
+    return result;
 }
 
 bool UiObject::waitFor(
@@ -92,8 +105,8 @@ bool UiObject::waitFor(
     return mWaiter->waitFor(condition);
 }
 
-std::unique_ptr<UiObject> UiObject::waitFor(
-    const std::function<std::unique_ptr<UiObject>(const ISearchable *)>
+std::shared_ptr<UiObject> UiObject::waitFor(
+    const std::function<std::shared_ptr<UiObject>(const ISearchable *)>
         condition) const
 {
     return mWaiter->waitFor(condition);
@@ -102,13 +115,12 @@ std::unique_ptr<UiObject> UiObject::waitFor(
 bool UiObject::waitFor(
     const std::function<bool(const UiObject *)> condition) const
 {
-    LOG_F(INFO, "asdf");
     return mWaiter->waitFor(condition);
 }
 
 UiObject *UiObject::getParent() const
 {
-    std::unique_ptr<AccessibleNode> node = getAccessibleNode()->getParent();
+    std::shared_ptr<AccessibleNode> node = getAccessibleNode()->getParent();
     if (!node) return nullptr;
     return new UiObject(mDevice, mSelector, std::move(node));
 }
@@ -118,14 +130,12 @@ int UiObject::getChildCount() const
     return getAccessibleNode()->getChildCount();
 }
 
-std::vector<std::unique_ptr<UiObject>> UiObject::getChildren() const
+std::vector<std::shared_ptr<UiObject>> UiObject::getChildren() const
 {
-    return findObjects(Sel::depth(1));
-}
-
-std::string UiObject::getContentDescription() const
-{
-    return getAccessibleNode()->getDesc();
+    auto sel = std::make_shared<UiSelector>();
+    sel->depth(1);
+    sel->isShowing(true);
+    return this->findObjects(sel);
 }
 
 std::string UiObject::getApplicationPackage() const
@@ -138,9 +148,24 @@ std::string UiObject::getResourceName() const
     return getAccessibleNode()->getRes();
 }
 
+std::string UiObject::getElementType() const
+{
+    return getAccessibleNode()->getType();
+}
+
+std::string UiObject::getElementStyle() const
+{
+    return getAccessibleNode()->getStyle();
+}
+
 std::string UiObject::getText() const
 {
     return getAccessibleNode()->getText();
+}
+
+std::string UiObject::getRole() const
+{
+    return getAccessibleNode()->getRole();
 }
 
 void UiObject::setText(std::string text)
@@ -229,9 +254,8 @@ void UiObject::click() const
     LOG_SCOPE_F(INFO, "click on obj %p", this);
     mNode->refresh();
     const Rect<int> rect = mNode->getBoundingBox();
-    std::cout << rect.mTopLeft.x << ", " << rect.mTopLeft.y << std::endl;
     const Point2D<int> midPoint = rect.midPoint();
-    const_cast<UiDevice *>(mDevice)->click(midPoint.x, midPoint.y);
+    mDevice->click(midPoint.x, midPoint.y);
 }
 
 void UiObject::longClick(const unsigned int intv) const
@@ -239,9 +263,8 @@ void UiObject::longClick(const unsigned int intv) const
     LOG_SCOPE_F(INFO, "click on obj %p", this);
     mNode->refresh();
     const Rect<int> rect = mNode->getBoundingBox();
-    std::cout << rect.mTopLeft.x << ", " << rect.mTopLeft.y << std::endl;
     const Point2D<int> midPoint = rect.midPoint();
-    const_cast<UiDevice *>(mDevice)->click(midPoint.x, midPoint.y, intv);
+    mDevice->click(midPoint.x, midPoint.y, intv);
 }
 
 bool UiObject::DoAtspiActivate() const
@@ -250,13 +273,11 @@ bool UiObject::DoAtspiActivate() const
 }
 
 
-const AccessibleNode *UiObject::getAccessibleNode() const
+std::shared_ptr<AccessibleNode> UiObject::getAccessibleNode() const
 {
     if (mNode == nullptr) throw;
-
     // TODO : wait for animation and refresh current node
     // mDevice->waitForIdle();
-    // mNode->refresh();
-
-    return mNode.get();
+    mNode->refresh();
+    return mNode;
 }

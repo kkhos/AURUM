@@ -21,15 +21,15 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    UiObject(const UiDevice *device, const std::shared_ptr<UiSelector> selector,
+    UiObject(const std::shared_ptr<UiDevice> device, const std::shared_ptr<UiSelector> selector,
              const AccessibleNode *node);
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    UiObject(const UiDevice *device, const std::shared_ptr<UiSelector> selector,
-             std::unique_ptr<AccessibleNode> node);
+    UiObject(const std::shared_ptr<UiDevice> device, const std::shared_ptr<UiSelector> selector,
+             std::shared_ptr<AccessibleNode> node);
 //    UiObject(const UiObject &src);  // copy constroctur
 
     /**
@@ -66,14 +66,14 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    std::unique_ptr<UiObject> findObject(
+    std::shared_ptr<UiObject> findObject(
         const std::shared_ptr<UiSelector> selector) const override;
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    std::vector<std::unique_ptr<UiObject>> findObjects(
+    std::vector<std::shared_ptr<UiObject>> findObjects(
         const std::shared_ptr<UiSelector> selector) const override;
 
     /**
@@ -87,8 +87,8 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    std::unique_ptr<UiObject> waitFor(
-        const std::function<std::unique_ptr<UiObject>(const ISearchable *)>
+    std::shared_ptr<UiObject> waitFor(
+        const std::function<std::shared_ptr<UiObject>(const ISearchable *)>
             condition) const;
 
     /**
@@ -114,13 +114,7 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    std::vector<std::unique_ptr<UiObject>> getChildren() const;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
-    std::string getContentDescription() const;
+    std::vector<std::shared_ptr<UiObject>> getChildren() const;
 
     /**
      * @brief TBD
@@ -138,13 +132,31 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
+    std::string getElementType() const;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    std::string getElementStyle() const;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     std::string getText() const;
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    void        setText(std::string text);
+    std::string getRole() const;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    void setText(std::string text);
 
     /**
      * @brief TBD
@@ -254,18 +266,17 @@ public:
      */
     void refresh() const;
 
-private:
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    const AccessibleNode *getAccessibleNode() const;
+    std::shared_ptr<AccessibleNode> getAccessibleNode() const;
 
 private:
     /**
      * @brief TBD
      */
-    const UiDevice *      mDevice;
+    std::shared_ptr<UiDevice> mDevice;
 
     /**
      * @brief TBD
@@ -275,13 +286,12 @@ private:
     /**
      * @brief TBD
      */
-    std::unique_ptr<AccessibleNode> mNode;
+    std::shared_ptr<AccessibleNode> mNode;
 
     /**
      * @brief TBD
      */
     const Waiter *        mWaiter;
-    //std::unique_ptr<AccessibleNode> mNode_src;
 
     /**
      * @brief TBD

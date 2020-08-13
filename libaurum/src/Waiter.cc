@@ -22,8 +22,8 @@ Waiter::Waiter(const ISearchable *searchableObject, const UiObject *uiObject)
 template bool Waiter::waitFor(
     const std::function<bool(const ISearchable *)> condition) const;
 
-template std::unique_ptr<UiObject> Waiter::waitFor(
-    const std::function<std::unique_ptr<UiObject>(const ISearchable *)>
+template std::shared_ptr<UiObject> Waiter::waitFor(
+    const std::function<std::shared_ptr<UiObject>(const ISearchable *)>
         condition) const;
 
 template bool Waiter::waitFor(

@@ -1,10 +1,8 @@
-#ifndef ACCESSIBLE_UTILS_H
-#define ACCESSIBLE_UTILS_H
-
-#include <atspi/atspi.h>
+#pragma once
+//#include <atspi/atspi.h>
 #include <gio/gio.h>
-#include <string.h>
 
+#include <string.h>
 #include <memory>
 
 #include "config.h"
@@ -80,6 +78,35 @@ unique_ptr_gobj<T> make_gobj_ref_unique(T *ptr)
  * @brief TBD
  * @since_tizen 5.5
  */
-char *state_to_char(AtspiStateType state);
+template <class T>
+std::shared_ptr<T> make_gobj_shared(T *ptr)
+{
+    return std::shared_ptr<T>(ptr, [](T *ptr){ if(ptr) g_object_unref(ptr); });
+}
 
-#endif
+/**
+ * @brief TBD
+ * @since_tizen 5.5
+ */
+template <class T>
+std::shared_ptr<T> make_garray_shared(T *ptr)
+{
+    return std::shared_ptr<T>(ptr,  [](T *ptr){ if(ptr) g_array_free(ptr, 1); });
+}
+
+/**
+ * @brief TBD
+ * @since_tizen 5.5
+ */
+template <class T>
+std::shared_ptr<T> make_gobj_ref_shared(T *ptr)
+{
+    g_object_ref(ptr);
+    return std::shared_ptr<T>(ptr,  [](T *ptr){ if(ptr) g_object_unref(ptr); });
+}
+
+/**
+ * @brief TBD
+ * @since_tizen 5.5
+ */
+//char *state_to_char(AtspiStateType state);

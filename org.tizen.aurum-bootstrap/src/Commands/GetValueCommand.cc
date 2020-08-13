@@ -13,7 +13,7 @@ GetValueCommand::GetValueCommand(const ::aurum::ReqGetValue* request,
 {
     LOG_SCOPE_F(INFO, "GetValue --------------- ");
     ObjectMapper* mObjMap = ObjectMapper::getInstance();
-    UiObject*     obj = mObjMap->getElement(mRequest->elementid());
+    std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
 
     if (obj) {
         std::string text = obj->getText();
