@@ -95,7 +95,6 @@ def getAttributeTest(stub):
             ['SELECTED', False],
             ['SELECTABLE',True],
             ['SHOWING', True],
-            ['ACTIVE', True],
     ]
     isFailed = False
     for el in response.elements:
@@ -120,7 +119,6 @@ def getAttributeTest(stub):
             ['SELECTED',    False],
             ['SELECTABLE',  True],
             ['SHOWING',     False],
-            ['ACTIVE',      False],
     ]
     isFailed = False
     for el in response.elements:
