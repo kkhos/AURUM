@@ -12,6 +12,7 @@
 #include <stdio.h>
 
 MockDeviceImpl::MockDeviceImpl()
+:tStart{}, isTimerStarted{false}, mTouchSeq{}
 {
     printf("mockdevice ctor\n");printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
 }
