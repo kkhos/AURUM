@@ -284,21 +284,25 @@ bool TizenDeviceImpl::takeScreenshot(std::string path, float scale, int quality)
     efl_util_screenshot_h screenshot = NULL;
     tbm_surface_h tbm_surface = NULL;
 
-    int width, height;
-    system_info_get_platform_int("http://tizen.org/feature/screen.width", &width);
-    system_info_get_platform_int("http://tizen.org/feature/screen.height", &height);
+    int width = 0, height = 0;
+    if (system_info_get_platform_int("http://tizen.org/feature/screen.width", &width) ||
+        system_info_get_platform_int("http://tizen.org/feature/screen.height", &height))
+        return false;
 
     screenshot = efl_util_screenshot_initialize(width, height);
 
     if (screenshot) {
         tbm_surface = efl_util_screenshot_take_tbm_surface(screenshot);
         if (tbm_surface) {
-            char path_cstr[PATH_MAX];
-            strcpy(path_cstr, path.c_str());
-            tdm_helper_dump_buffer(tbm_surface, path_cstr);
+            tdm_helper_dump_buffer(tbm_surface, path.c_str());
             sync();
+        } else {
+            efl_util_screenshot_deinitialize(screenshot);
+            return false;
         }
         efl_util_screenshot_deinitialize(screenshot);
+    } else {
+        return false;
     }
 
     return true;
