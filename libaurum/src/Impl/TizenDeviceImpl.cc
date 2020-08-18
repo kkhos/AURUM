@@ -15,7 +15,7 @@
 #include <system_info.h>
 
 TizenDeviceImpl::TizenDeviceImpl()
-: mFakeTouchHandle{0}, mFakeKeyboardHandle{0}, mFakeWheelHandle{0}, isTimerStarted{false}, mTouchSeq{}
+: mFakeTouchHandle{0}, mFakeKeyboardHandle{0}, mFakeWheelHandle{0}, tStart{}, isTimerStarted{false}, mTouchSeq{}
 {
     LOG_SCOPE_F(INFO, "device implementation init");
     ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
