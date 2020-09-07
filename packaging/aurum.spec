@@ -142,9 +142,7 @@ ninja \
     -C gbsbuild \
     -j %(echo "`/usr/bin/getconf _NPROCESSORS_ONLN`") \
     -v \
-    test 2>&1 | sed \
-        -e 's%^.*: error: .*$%\x1b[37;41m&\x1b[m%' \
-        -e 's%^.*: warning: .*$%\x1b[30;43m&\x1b[m%'
+    test 2>&1
 
 %if 0%{?gcov:1}
   mkdir -p gcov-obj
@@ -214,7 +212,7 @@ echo "signing %{TZ_SYS_RO_APP}/org.tizen.aurum-bootstrap"
 %if 0%{?gcov:1}
 %files gcov
 %{_datadir}/gcov/obj/*
-%{_bindir}/gtest_aurum
+%{_bindir}/test_*
 %else
-%exclude %{_bindir}/gtest_aurum
+%exclude %{_bindir}/test_*
 %endif
