@@ -10,11 +10,21 @@
 #include <vector>
 
 class UiDevice;
+
+class Node : public std::enable_shared_from_this<Node> {
+public:
+    Node(std::shared_ptr<UiObject> node, std::vector<std::shared_ptr<Node>> children)
+    :mNode{node}, mChildren{children}{}
+
+    std::shared_ptr<UiObject> mNode;
+    std::vector<std::shared_ptr<Node>> mChildren;
+};
+
 /**
  * @brief UiObject class
  * @since_tizen 5.5
  */
-class UiObject : public ISearchable {
+class UiObject : public ISearchable , public std::enable_shared_from_this<UiObject> {
 public:
     /**
      * @brief TBD
@@ -119,13 +129,25 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
+    std::shared_ptr<Node> getDescendant();
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     std::string getApplicationPackage() const;
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    std::string getResourceName() const;
+    std::string getId() const;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    std::string getAutomationId() const;
 
     /**
      * @brief TBD

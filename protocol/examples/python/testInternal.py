@@ -26,7 +26,7 @@ global img
 
 def traverse(node, canvas, depth):
     print('traverse', depth)
-    print('size:',node.geometry)
+    print('size:',node.geometry, node)
 
     #//canvas.pack()
     rect = canvas.create_rectangle(node.geometry.x, node.geometry.y, node.geometry.x+node.geometry.width, node.geometry.y+node.geometry.height,  outline='red')

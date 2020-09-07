@@ -98,19 +98,6 @@ public:
      */
     virtual std::vector<std::shared_ptr<AccessibleApplication>> getApplications(void) const override;
 
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
-    //std::shared_ptr<AccessibleNode> getRootNode() const override;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
-    //std::vector<std::shared_ptr<AccessibleNode>> getTopNode() const override;
-
-
 public:
     /**
      * @brief TBD
@@ -212,6 +199,9 @@ private:
      */
     std::set<AtspiAccessible *>            mWindowSet;
 
+    /**
+     * @brief TBD
+     */
     std::map<AtspiAccessible *, AtspiAccessible *> mWindowAppMap;
 
 };

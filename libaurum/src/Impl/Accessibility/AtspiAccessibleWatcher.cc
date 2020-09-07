@@ -18,17 +18,16 @@ static bool iShowingNode(AtspiAccessible *node)
 
     LOG_SCOPE_F(INFO, "isShowing %s", name);
     auto stateSet = atspi_accessible_get_state_set(node);
-    auto states = atspi_state_set_get_states(stateSet);
 
     if (atspi_state_set_contains(stateSet, ATSPI_STATE_ACTIVE)
         && atspi_state_set_contains(stateSet, ATSPI_STATE_SHOWING)) {
         LOG_F(INFO, "active and showing %p %s", node, name);
         free(name);
-        // TODO : free states and stateSet
+        g_object_unref(stateSet);
         return true;
     }
     free(name);
-    // TODO : free states and stateSet
+    g_object_unref(stateSet);
     return false;
 }
 
@@ -191,7 +190,6 @@ void AtspiAccessibleWatcher::print_debug()
         LOG_F(INFO, "child:%p", acc);
     });
     LOG_F(INFO, "------------------------------");
-
 }
 
 void AtspiAccessibleWatcher::onWindowActivated(AtspiAccessible *node,
@@ -275,6 +273,60 @@ std::vector<std::shared_ptr<AccessibleApplication>> AtspiAccessibleWatcher::getA
     return ret;
 }
 
+bool AtspiAccessibleWatcher::removeFromActivatedList(AtspiAccessible *node)
+{
+    LOG_SCOPE_F(INFO,"remove from activelist node %p", node);
+    mActivatedWindowList.remove_if([&](auto &n) { return n == node; });
+
+    AtspiAccessible *app = atspi_accessible_get_application(node, NULL);
+    LOG_F(INFO, "node:%p, app:%p", node, app);
+    if (app) {
+        mActivatedApplicationList.remove_if([&](auto &n) { return n == app; });
+        g_object_unref(app);
+    }
+    return true;
+}
+
+bool AtspiAccessibleWatcher::addToActivatedList(AtspiAccessible *node)
+{
+    LOG_SCOPE_F(INFO,"add to activelist node %p", node);
+    mActivatedWindowList.remove_if([&](auto &n) { return n == node; });
+    mActivatedWindowList.push_front(node);
+
+    auto iter = mWindowSet.find(node);
+    if ( iter == mWindowSet.end()) mWindowSet.insert(node);
+
+    AtspiAccessible *app = atspi_accessible_get_application(node, NULL);
+    LOG_F(INFO, "node:%p, app:%p", node, app);
+    if (app) {
+        mActivatedApplicationList.remove_if([&](auto &n) { if(n == app) { g_object_unref(app); return true;} else return false; });
+        mActivatedApplicationList.push_front(app);
+    }
+
+    return true;
+}
+
+bool AtspiAccessibleWatcher::removeFromWindowSet(AtspiAccessible *node)
+{
+    removeFromActivatedList(node);
+    auto iter = mWindowSet.find(node);
+    if ( iter != mWindowSet.end()){
+        mWindowSet.erase(node);
+        return true;
+    }
+    return false;
+}
+
+bool AtspiAccessibleWatcher::addToWindowSet(AtspiAccessible *node)
+{
+    auto iter = mWindowSet.find(node);
+    if ( iter == mWindowSet.end()){
+        mWindowSet.insert(node);
+        return true;
+    }
+    return false;
+}
+
 /*
 std::shared_ptr<AccessibleNode> AtspiAccessibleWatcher::getRootNode() const
 {
@@ -350,57 +402,3 @@ void AtspiAccessibleWatcher::clearWindowList()
     mWindowSet.clear();
 }
 */
-
-bool AtspiAccessibleWatcher::removeFromActivatedList(AtspiAccessible *node)
-{
-    LOG_SCOPE_F(INFO,"remove from activelist node %p", node);
-    mActivatedWindowList.remove_if([&](auto &n) { return n == node; });
-
-    AtspiAccessible *app = atspi_accessible_get_application(node, NULL);
-    LOG_F(INFO, "node:%p, app:%p", node, app);
-    if (app) {
-        mActivatedApplicationList.remove_if([&](auto &n) { return n == app; });
-        g_object_unref(app);
-    }
-    return true;
-}
-
-bool AtspiAccessibleWatcher::addToActivatedList(AtspiAccessible *node)
-{
-    LOG_SCOPE_F(INFO,"add to activelist node %p", node);
-    mActivatedWindowList.remove_if([&](auto &n) { return n == node; });
-    mActivatedWindowList.push_front(node);
-
-    auto iter = mWindowSet.find(node);
-    if ( iter == mWindowSet.end()) mWindowSet.insert(node);
-
-    AtspiAccessible *app = atspi_accessible_get_application(node, NULL);
-    LOG_F(INFO, "node:%p, app:%p", node, app);
-    if (app) {
-        mActivatedApplicationList.remove_if([&](auto &n) { if(n == app) { g_object_unref(app); return true;} else return false; });
-        mActivatedApplicationList.push_front(app);
-    }
-
-    return true;
-}
-
-bool AtspiAccessibleWatcher::removeFromWindowSet(AtspiAccessible *node)
-{
-    removeFromActivatedList(node);
-    auto iter = mWindowSet.find(node);
-    if ( iter != mWindowSet.end()){
-        mWindowSet.erase(node);
-        return true;
-    }
-    return false;
-}
-
-bool AtspiAccessibleWatcher::addToWindowSet(AtspiAccessible *node)
-{
-    auto iter = mWindowSet.find(node);
-    if ( iter == mWindowSet.end()){
-        mWindowSet.insert(node);
-        return true;
-    }
-    return false;
-}

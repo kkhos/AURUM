@@ -73,13 +73,13 @@ TEST_F(UaTest, FindElement)
     MockAccessibleWatcher *mockWatcher = dynamic_cast<MockAccessibleWatcher*>(const_cast<AccessibleWatcher*>(watcher));
     ASSERT_NE(mockWatcher, nullptr);
 
-    std::shared_ptr<MockAccessibleNode> appNode = std::make_shared<MockAccessibleNode>(nullptr, "text", "pkg", "application", "res","type","style", Rect<int>{0,0,100,200}, 0, 0);
+    std::shared_ptr<MockAccessibleNode> appNode = std::make_shared<MockAccessibleNode>(nullptr, "text", "pkg", "application", "res","type","style", "id1", Rect<int>{0,0,100,200}, 0, 0);
     ASSERT_NE(appNode, nullptr);
     std::shared_ptr<MockAccessibleApplication> app = std::make_shared<MockAccessibleApplication>(appNode);
     ASSERT_NE(app, nullptr);
     mockWatcher->addApplication(app);
 
-    std::shared_ptr<MockAccessibleNode> winNode = std::make_shared<MockAccessibleNode>(nullptr, "text", "pkg", "window", "res","type","style", Rect<int>{0,0,100,200}, 0, 0);
+    std::shared_ptr<MockAccessibleNode> winNode = std::make_shared<MockAccessibleNode>(nullptr, "text", "pkg", "window", "res","type","style", "id1",Rect<int>{0,0,100,200}, 0, 0);
     ASSERT_NE(winNode, nullptr);
 
     std::shared_ptr<MockAccessibleWindow> win = std::make_shared<MockAccessibleWindow>(app, winNode);
@@ -90,11 +90,11 @@ TEST_F(UaTest, FindElement)
     winNode->setFeatureProperty(10);
     app->addWindow(win);
 
-    std::shared_ptr<MockAccessibleNode> node = std::make_shared<MockAccessibleNode>(nullptr, "test", "pkg", "TeSt1234!@#$", "res","type","style", Rect<int>{0,0,100,200}, 0, 0);
+    std::shared_ptr<MockAccessibleNode> node = std::make_shared<MockAccessibleNode>(nullptr, "test", "pkg", "TeSt1234!@#$", "res","type","style", "id1",Rect<int>{0,0,100,200}, 0, 0);
     ASSERT_NE(node, nullptr);
     winNode->addChild(node);
 
-    node = std::make_shared<MockAccessibleNode>(nullptr, "test", "pkg", "TeSt1234!@#$", "res","type","style", Rect<int>{0,0,100,200}, 0, 0);
+    node = std::make_shared<MockAccessibleNode>(nullptr, "test", "pkg", "TeSt1234!@#$", "res","type","style", "id1",Rect<int>{0,0,100,200}, 0, 0);
     ASSERT_NE(node, nullptr);
     winNode->addChild(node);
 

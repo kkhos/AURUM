@@ -1,54 +1,49 @@
 #include "MockAccessibleNode.h"
 
 #include <algorithm>
+#include <iostream>
 
-MockAccessibleNode::MockAccessibleNode(std::shared_ptr<AccessibleNode> parent, std::string text, std::string pkg, std::string role, std::string res, std::string type, std::string style, Rect<int> boundingBox, int supportingIfaces,int featureProperty)
-: mParentNode(parent), mChildrenList{}, mActionSet{}
+MockAccessibleNode::MockAccessibleNode(std::shared_ptr<MockAccessibleNode> parent, std::string text, std::string pkg, std::string role, std::string res, std::string type, std::string style,std::string automationId,  Rect<int> boundingBox, int supportingIfaces,int featureProperty)
+: mParentNode(parent), mChildrenList{}, mActionSet{}, mLock{}
 {
-    printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
-    setProperties(text,pkg,role,res,type,style,boundingBox, supportingIfaces, featureProperty);
+    setProperties(text,pkg,role,res,type,style,automationId, boundingBox, supportingIfaces, featureProperty);
 }
 
 MockAccessibleNode::~MockAccessibleNode()
 {
-    printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
 }
 
 int MockAccessibleNode::getChildCount() const
 {
-    printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
     return mChildrenList.size();
 }
 
 std::shared_ptr<AccessibleNode> MockAccessibleNode::getChildAt(int index) const
 {
-    printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
     return mChildrenList.at(index);
 }
 std::vector<std::shared_ptr<AccessibleNode>> MockAccessibleNode::getChildren() const
 {
-    printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
     return mChildrenList;
 }
 
 std::shared_ptr<AccessibleNode> MockAccessibleNode::getParent() const
 {
-    printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
     return mParentNode;
 }
 
 void* MockAccessibleNode::getRawHandler(void) const
 {
-    printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
     return (void*)0;
 }
 
-void MockAccessibleNode::setProperties(std::string text,std::string pkg,std::string role,std::string res,std::string type,std::string style,Rect<int> boundingBox,int supportingIfaces,int featureProperty)
+void MockAccessibleNode::setProperties(std::string text,std::string pkg,std::string role,std::string id,std::string type,std::string style,std::string automationId, Rect<int> boundingBox,int supportingIfaces,int featureProperty)
 {
     mText = text;
     mPkg = pkg;
     mRole = role;
-    mRes = res;
+    mId = id;
+    mAutomationId = automationId;
     mType = type;
     mStyle = style;
     mBoundingBox = boundingBox;
@@ -58,12 +53,10 @@ void MockAccessibleNode::setProperties(std::string text,std::string pkg,std::str
 
 void MockAccessibleNode::refresh()
 {
-    printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
 }
 
 std::vector<std::string> MockAccessibleNode::getActions() const
 {
-    printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
     std::vector<std::string> ret{};
     std::transform(mActionSet.begin(), mActionSet.end(), std::back_inserter(ret), [](auto action){
         return action;
@@ -73,20 +66,17 @@ std::vector<std::string> MockAccessibleNode::getActions() const
 
 bool MockAccessibleNode::doAction(std::string action)
 {
-    printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
     if (mActionSet.find(action) != mActionSet.end()) return true;
     return false;
 }
 
 void MockAccessibleNode::setValue(std::string text)
 {
-    printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
     mText = text;
 }
 
 void MockAccessibleNode::setFeatureProperty(int type)
 {
-    printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
     switch(type) {
         case 1:
             setFeatureProperty(NodeFeatureProperties::CHECKED, true);
@@ -131,6 +121,15 @@ void MockAccessibleNode::setFeatureProperty(int type)
 void MockAccessibleNode::addChild(std::shared_ptr<AccessibleNode> child)
 {
     mChildrenList.push_back(child);
+}
+
+std::shared_ptr<MockAccessibleNode> MockAccessibleNode::addChild(std::string text, std::string pkg, std::string role, std::string res, std::string type, std::string style, std::string automationId, Rect<int> geometry, int ifaces, int properties)
+{
+    std::unique_lock<std::mutex> lock(mLock);
+
+    auto node = std::make_shared<MockAccessibleNode>(shared_from_this(), text, pkg, role, res, type, style, automationId, geometry, ifaces, properties);
+    this->addChild(node);
+    return node;
 }
 
 void MockAccessibleNode::clearChildren(void)

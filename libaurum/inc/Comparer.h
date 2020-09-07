@@ -65,16 +65,6 @@ private:
 private:
     /**
      * @brief TBD
-     * @since_tizen 5.5
-     */
-   /* std::unique_ptr<PartialMatch> accept(const AccessibleNode *node,
-                                         const std::shared_ptr<UiSelector> selector,
-                                         const int &index, const int &depth,
-                                         const int &relDepth);
-*/
-private:
-    /**
-     * @brief TBD
      */
     const std::shared_ptr<UiDevice> mDevice;
 

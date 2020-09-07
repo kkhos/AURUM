@@ -30,7 +30,7 @@ std::shared_ptr<AccessibleApplication> AccessibleWindow::getApplication(void)
     return mApp;
 }
 
-std::shared_ptr<AccessibleNode> AccessibleWindow::getNode(void)
+std::shared_ptr<AccessibleNode> AccessibleWindow::getAccessibleNode(void)
 {
     return mNode;
 }

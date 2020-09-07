@@ -85,11 +85,5 @@ private:
      * @brief TBD
      * @since_tizen 5.5
      */
-    //static std::map<AtspiAccessible *, AccessibleNode *> mNodeMap;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     AtspiAccessible* mNode;
 };

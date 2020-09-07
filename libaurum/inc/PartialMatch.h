@@ -78,6 +78,12 @@ private:
      * @brief TBD
      * @since_tizen 5.5
      */
+    static bool checkCriteria(const std::string *textA, const std::string textB, const bool *match);
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     static bool checkCriteria(const bool *boolA, const bool boolB);
 
 private:

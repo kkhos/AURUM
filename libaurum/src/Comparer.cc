@@ -14,8 +14,7 @@ std::shared_ptr<AccessibleNode> Comparer::findObject(const std::shared_ptr<UiDev
                                      const std::shared_ptr<UiSelector> selector,
                                      const std::shared_ptr<AccessibleNode> root)
 {
-    Comparer                      comparer(device, selector, true);
-    std::vector<std::shared_ptr<AccessibleNode>> ret = comparer.findObjects(root);
+    std::vector<std::shared_ptr<AccessibleNode>> ret = findObjects(device, selector, root);
     if (ret.size() > 0)
         return std::move(ret[0]);
     else
@@ -26,9 +25,20 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(const std::sh
                                                     const std::shared_ptr<UiSelector> selector,
                                                     const std::shared_ptr<AccessibleNode> root)
 {
-    Comparer                      comparer(device, selector, false);
-    std::vector<std::shared_ptr<AccessibleNode>> ret = comparer.findObjects(root);
-    return ret;
+    Comparer comparer(device, selector, false);
+
+    if (selector->mParent) {
+        auto ret = Comparer::findObjects(device, selector->mParent, root);
+        std::vector<std::shared_ptr<AccessibleNode>> merged{};
+
+        for (const auto &node : ret) {
+            auto tmp = comparer.findObjects(node);
+            std::move(std::begin(tmp), std::end(tmp), std::back_inserter(merged));
+        }
+        return merged;
+    }
+
+    return comparer.findObjects(root);
 }
 
 std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(const std::shared_ptr<AccessibleNode> root)

@@ -12,7 +12,7 @@ AccessibleNode::~AccessibleNode()
 }
 
 AccessibleNode::AccessibleNode()
-    : mText{""}, mPkg{""}, mRole{""}, mRes{""}, mType{""}, mStyle{""},
+    : mText{""}, mPkg{""}, mRole{""}, mId{""}, mType{""}, mStyle{""},
       mBoundingBox{0,0,0,0}, mSupportingIfaces(0), mFeatureProperty(0)
 {
 }
@@ -65,9 +65,14 @@ std::string AccessibleNode::getPkg() const
     return mPkg;
 }
 
-std::string AccessibleNode::getRes() const
+std::string AccessibleNode::getId() const
 {
-    return mRes;
+    return mId;
+}
+
+std::string AccessibleNode::getAutomationId() const
+{
+    return mAutomationId;
 }
 
 std::string AccessibleNode::getRole() const
