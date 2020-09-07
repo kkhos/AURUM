@@ -1,5 +1,4 @@
-#ifndef IDEVICE_H
-#define IDEVICE_H
+#pragma once
 #include "config.h"
 
 #include <string>
@@ -140,4 +139,3 @@ public:
      */
     virtual long long getSystemTime(TimeRequestType type) = 0;
 };
-#endif

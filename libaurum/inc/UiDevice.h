@@ -1,5 +1,4 @@
-#ifndef UIDEVICE_H
-#define UIDEVICE_H
+#pragma once
 #include "config.h"
 
 #include "UiObject.h"
@@ -208,5 +207,3 @@ private:
      */
     const Waiter *mWaiter;
 };
-
-#endif

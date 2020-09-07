@@ -1,5 +1,4 @@
-#ifndef SEND_KEY_COMMAND_H
-#define SEND_KEY_COMMAND_H
+#pragma once
 
 #include <gio/gio.h>
 #include <grpcpp/grpcpp.h>
@@ -17,5 +16,3 @@ public:
     SendKeyCommand(const ::aurum::ReqKey* request, ::aurum::RspKey* response);
     ::grpc::Status execute() override;
 };
-
-#endif

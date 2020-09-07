@@ -1,5 +1,4 @@
-#ifndef COMMANDS_H
-#define COMMANDS_H
+#pragma once
 
 #include "Commands/KillServerCommand.h"
 #include "Commands/SyncCommand.h"
@@ -33,4 +32,3 @@
 
 #include "Commands/TakeScreenshotCommand.h"
 #include "Commands/DumpObjectTreeCommand.h"
-#endif

@@ -1,5 +1,4 @@
-#ifndef UNTIL_H
-#define UNTIL_H
+#pragma once
 
 #include <functional>
 #include "ISearchable.h"
@@ -63,6 +62,3 @@ public:
     static std::function<bool(const UiObject *)> checkable(
         const bool isCheckable);
 };
-#endif
-
-// Until::hasObject(Sel::text("text").get())

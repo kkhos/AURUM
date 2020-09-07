@@ -1,5 +1,4 @@
-#ifndef KILL_SERVER_COMMAND_H
-#define KILL_SERVER_COMMAND_H
+#pragma once
 
 #include <gio/gio.h>
 #include <grpcpp/grpcpp.h>
@@ -19,5 +18,3 @@ public:
     ;
     ::grpc::Status execute() override;
 };
-
-#endif

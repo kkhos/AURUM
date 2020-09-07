@@ -1,5 +1,4 @@
-#ifndef ACCESSIBLE_H
-#define ACCESSIBLE_H
+#pragma once
 
 
 #include "AccessibleApplication.h"
@@ -59,5 +58,3 @@ public:
      */
     virtual std::vector<std::shared_ptr<AccessibleApplication>> getActiveApplications(void) const;
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef DEVICE_GENERAL_H
-#define DEVICE_GENERAL_H
+#pragma once
 #include "config.h"
 
 #include "IDevice.h"
@@ -71,5 +70,3 @@ private:
 
     std::set<int> mTouchSeq;
 };
-
-#endif

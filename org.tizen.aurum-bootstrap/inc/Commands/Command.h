@@ -1,5 +1,4 @@
-#ifndef COMMAND_H
-#define COMMAND_H
+#pragma once
 
 #include <gio/gio.h>
 #include <grpcpp/grpcpp.h>
@@ -15,5 +14,3 @@ public:
     virtual ::grpc::Status executePost();
     virtual ::grpc::Status executePre();
 };
-
-#endif

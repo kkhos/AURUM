@@ -1,5 +1,4 @@
-#ifndef LONG_CLICK_COMMAND_H
-#define LONG_CLICK_COMMAND_H
+#pragma once
 
 #include <gio/gio.h>
 #include <grpcpp/grpcpp.h>
@@ -20,5 +19,3 @@ public:
 private:
     const static unsigned int LOGNCLICK_INTERVAL = 50;
 };
-
-#endif

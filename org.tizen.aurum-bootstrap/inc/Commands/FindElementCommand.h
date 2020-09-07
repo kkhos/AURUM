@@ -1,5 +1,4 @@
-#ifndef FIND_ELEMENT_COMMAND_H
-#define FIND_ELEMENT_COMMAND_H
+#pragma once
 
 #include <gio/gio.h>
 #include <grpcpp/grpcpp.h>
@@ -24,4 +23,3 @@ protected:
     virtual std::shared_ptr<ISearchable> getSearchableTop(void);
     virtual std::vector<std::shared_ptr<UiSelector>> getSelectors(void);
 };
-#endif

@@ -1,5 +1,4 @@
-#ifndef PARTIAL_MATCH_H
-#define PARTIAL_MATCH_H
+#pragma once
 
 #include <list>
 #include <memory>
@@ -97,5 +96,3 @@ private:
      */
     std::list<std::shared_ptr<PartialMatch>> mPartialMatches;
 };
-
-#endif

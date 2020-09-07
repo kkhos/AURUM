@@ -1,5 +1,4 @@
-#ifndef UI_SELECTOR_H
-#define UI_SELECTOR_H
+#pragma once
 #include "config.h"
 
 #include <string>
@@ -273,5 +272,3 @@ public:
      */
     std::vector<std::shared_ptr<UiSelector>> mChild;
 };
-
-#endif
