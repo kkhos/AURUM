@@ -1,5 +1,11 @@
 test_src = [
-    files('ua_test.cpp'),
+    ['test_misc', files('Test_Misc.cc')],
+    ['test_sel', files('Test_Sel.cc')],
+    ['test_uidevice', files('Test_UiDevice.cc')],
+    ['test_uiobject', files('Test_UiObject.cc')],
+    ['test_uiselector', files('Test_UiSelector.cc')],
+    ['test_until', files('Test_Until.cc')],
+    ['test_wait', files('Test_Wait.cc')],
 ]
 
 test_inc = [
@@ -11,12 +17,13 @@ test_deps = [
     libaurum,
 ]
 
-test_bin = executable('gtest_aurum', test_src,
+foreach atest : test_src
+    test_bin = executable(atest[0], atest[1],
                     include_directories: test_inc,
                     dependencies: test_deps,
                     pie:true,
                     install:get_option('tizen_gcov'),
             )
 
-test('gtest_aurum', test_bin)
-
+    test(atest[0], test_bin)
+endforeach
