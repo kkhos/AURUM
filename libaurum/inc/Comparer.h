@@ -1,5 +1,4 @@
-#ifndef COMPARER_H
-#define COMPARER_H
+#pragma once
 #include "config.h"
 
 #include "AccessibleNode.h"
@@ -89,5 +88,3 @@ private:
      */
     bool              mEarlyReturn;
 };
-
-#endif

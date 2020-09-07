@@ -1,5 +1,4 @@
-#ifndef UI_OBJECT_H
-#define UI_OBJECT_H
+#pragma once
 #include "config.h"
 
 #include "AccessibleNode.h"
@@ -298,5 +297,3 @@ private:
      */
     static const unsigned int LOGNCLICK_INTERVAL = 50;
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef SYNC_COMMAND_H
-#define SYNC_COMMAND_H
+#pragma once
 
 #include <gio/gio.h>
 #include <grpcpp/grpcpp.h>
@@ -17,5 +16,3 @@ public:
     SyncCommand(const ::aurum::ReqEmpty* request, ::aurum::RspEmpty* response);
     ::grpc::Status execute() override;
 };
-
-#endif

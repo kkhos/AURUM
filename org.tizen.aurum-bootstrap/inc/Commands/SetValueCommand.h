@@ -1,5 +1,4 @@
-#ifndef SET_VALUE_COMMAND_H
-#define SET_VALUE_COMMAND_H
+#pragma once
 
 #include <gio/gio.h>
 #include <grpcpp/grpcpp.h>
@@ -18,5 +17,3 @@ public:
                     ::aurum::RspSetValue*       response);
     ::grpc::Status execute() override;
 };
-
-#endif

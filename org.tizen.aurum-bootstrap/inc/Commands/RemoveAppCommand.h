@@ -1,5 +1,4 @@
-#ifndef REMOVE_APP_COMMAND_H
-#define REMOVE_APP_COMMAND_H
+#pragma once
 
 #include <gio/gio.h>
 #include <grpcpp/grpcpp.h>
@@ -20,5 +19,3 @@ public:
     ::grpc::Status execute() override;
     ::grpc::Status executePost() override;
 };
-
-#endif

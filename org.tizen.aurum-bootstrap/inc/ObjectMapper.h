@@ -1,5 +1,4 @@
-#ifndef OBJECT_MAPPER_H
-#define OBJECT_MAPPER_H
+#pragma once
 
 #include <map>
 #include <string>
@@ -28,5 +27,3 @@ public:
     bool removeElement(const std::string key);
     bool removeElement(std::shared_ptr<UiObject> object);
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef ACCESSIBLE_NODE_H
-#define ACCESSIBLE_NODE_H
+#pragma once
 
 #include <map>
 #include <memory>
@@ -336,5 +335,3 @@ protected:
     int mFeatureProperty;
 
 };
-
-#endif

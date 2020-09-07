@@ -1,5 +1,4 @@
-#ifndef GET_DEVICE_TIME_COMMAND_H
-#define GET_DEVICE_TIME_COMMAND_H
+#pragma once
 
 #include <gio/gio.h>
 #include <grpcpp/grpcpp.h>
@@ -19,5 +18,3 @@ public:
     ;
     ::grpc::Status execute() override;
 };
-
-#endif

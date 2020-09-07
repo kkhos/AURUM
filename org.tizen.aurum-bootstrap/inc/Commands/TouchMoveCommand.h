@@ -1,5 +1,4 @@
-#ifndef TOUCH_MOVE_COMMAND_H
-#define TOUCH_MOVE_COMMAND_H
+#pragma once
 
 #include <gio/gio.h>
 #include <grpcpp/grpcpp.h>
@@ -18,5 +17,3 @@ public:
                      ::aurum::RspTouchMove*       response);
     ::grpc::Status execute() override;
 };
-
-#endif

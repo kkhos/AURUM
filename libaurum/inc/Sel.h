@@ -1,5 +1,4 @@
-#ifndef SEL_H
-#define SEL_H
+#pragma once
 #include "config.h"
 
 #include <memory>
@@ -36,5 +35,3 @@ public:
      */
     static std::shared_ptr<UiSelector> depth(int depth);
 };
-
-#endif

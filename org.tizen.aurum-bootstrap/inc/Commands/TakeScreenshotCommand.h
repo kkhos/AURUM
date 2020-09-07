@@ -1,5 +1,4 @@
-#ifndef TAKE_SCREENSHOT_COMMAND_H
-#define TAKE_SCREENSHOT_COMMAND_H
+#pragma once
 
 #include <gio/gio.h>
 #include <grpcpp/grpcpp.h>
@@ -18,5 +17,3 @@ public:
                           ::grpc::ServerWriter< ::aurum::RspTakeScreenshot>* writer);
     ::grpc::Status execute() override;
 };
-
-#endif

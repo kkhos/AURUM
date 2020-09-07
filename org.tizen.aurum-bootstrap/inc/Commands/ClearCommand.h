@@ -1,5 +1,4 @@
-#ifndef CLEAR_COMMAND_H
-#define CLEAR_COMMAND_H
+#pragma once
 
 #include <gio/gio.h>
 #include <grpcpp/grpcpp.h>
@@ -20,5 +19,3 @@ public:
 protected:
     bool hasHintText(std::shared_ptr<UiObject> obj);
 };
-
-#endif
