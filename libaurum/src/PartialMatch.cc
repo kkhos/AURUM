@@ -6,11 +6,20 @@
 
 #include <loguru.hpp>
 
+bool PartialMatch::checkCriteria(const std::string *textA, const std::string textB, const bool *match)
+{
+    if (!textA || !match) return false;
+    std::regex re(*textA);
+    bool rst = !(!!std::regex_match(textB, re) == (*match));
+
+    LOG_F(INFO, "WKWK# %d %s %s=> %d\n", *match, textA->c_str(), textB.c_str(), rst);
+    return rst;
+}
+
 bool PartialMatch::checkCriteria(const std::string *textA, const std::string textB)
 {
-    if (!textA) return false;
-    std::regex re(*textA);
-    return !std::regex_match(textB, re);
+    bool match = true;
+    return checkCriteria(textA, textB, &match);
 }
 
 bool PartialMatch::checkCriteria(const bool *boolA, const bool boolB)
@@ -23,26 +32,26 @@ void PartialMatch::debugPrint()
 {
     if (mSelector->mPkg)
         LOG_F(INFO, "selector->pkg :%s", mSelector->mPkg->c_str());
-    if (mSelector->mRes)
-        LOG_F(INFO, "selector->pkg :%s", mSelector->mRes->c_str());
+    if (mSelector->mId)
+        LOG_F(INFO, "selector->id :%s", mSelector->mId->c_str());
     if (mSelector->mText)
-        LOG_F(INFO, "selector->pkg :%s", mSelector->mText->c_str());
+        LOG_F(INFO, "selector->text :%s", mSelector->mText->c_str());
     if (mSelector->mType)
-        LOG_F(INFO, "selector->pkg :%s", mSelector->mType->c_str());
+        LOG_F(INFO, "selector->type :%s", mSelector->mType->c_str());
     if (mSelector->mStyle)
-        LOG_F(INFO, "selector->pkg :%s", mSelector->mStyle->c_str());
+        LOG_F(INFO, "selector->style :%s", mSelector->mStyle->c_str());
 }
 
 bool PartialMatch::checkCriteria(const std::shared_ptr<UiSelector> selector,
                                  const std::shared_ptr<AccessibleNode> node)
 {
-    if(checkCriteria(selector->mPkg.get(), node->getPkg())) return false;
-    if(checkCriteria(selector->mRes.get(), node->getRes())) return false;
-    if(checkCriteria(selector->mText.get(), node->getText())) return false;
-    if(checkCriteria(selector->mType.get(), node->getType())) return false;
-    if(checkCriteria(selector->mStyle.get(), node->getStyle())) return false;
-    if(checkCriteria(selector->mStyle.get(), node->getStyle())) return false;
-
+    if(checkCriteria(selector->mText.get(), node->getText(), selector->mMatchText.get())) return false;
+    if(checkCriteria(selector->mId.get(), node->getId(), selector->mMatchId.get())) return false;
+    if(checkCriteria(selector->mAutomationId.get(), node->getAutomationId(), selector->mMatchAutomationId.get())) return false;
+    if(checkCriteria(selector->mType.get(), node->getType(), selector->mMatchType.get())) return false;
+    if(checkCriteria(selector->mStyle.get(), node->getStyle(), selector->mMatchStyle.get())) return false;
+    if(checkCriteria(selector->mPkg.get(), node->getPkg(), selector->mMatchPkg.get())) return false;
+    if(checkCriteria(selector->mRole.get(), node->getRole(), selector->mMatchRole.get())) return false;
     if(checkCriteria(selector->mIschecked.get(), node->isChecked())) return false;
     if(checkCriteria(selector->mIscheckable.get(), node->isCheckable())) return false;
     if(checkCriteria(selector->mIsclickable.get(), node->isClickable())) return false;
@@ -53,6 +62,8 @@ bool PartialMatch::checkCriteria(const std::shared_ptr<UiSelector> selector,
     if(checkCriteria(selector->mIsselected.get(), node->isSelected())) return false;
     if(checkCriteria(selector->mIsshowing.get(), node->isShowing())) return false;
     if(checkCriteria(selector->mIsactive.get(), node->isActive())) return false;
+    if(checkCriteria(selector->mIsvisible.get(), node->isVisible())) return false;
+    if(checkCriteria(selector->mIsselectable.get(), node->isSelectable())) return false;
 
     return true;
 }

@@ -15,6 +15,7 @@
 #include <algorithm>
 #include <iostream>
 
+#include <loguru.hpp>
 UiDevice::UiDevice() : UiDevice(nullptr) {}
 
 UiDevice::UiDevice(IDevice *impl)
@@ -57,7 +58,7 @@ std::vector<std::shared_ptr<AccessibleNode>> UiDevice::getWindowRoot() const
         auto activeWindows = app->getActiveWindows();
         std::transform(activeWindows.begin(), activeWindows.end(), std::back_inserter(ret),
             [&](std::shared_ptr<AccessibleWindow> window){
-                return window->getNode();
+                return window->getAccessibleNode();
             }
         );
     }
@@ -85,6 +86,7 @@ std::shared_ptr<UiObject> UiDevice::findObject(const std::shared_ptr<UiSelector>
         if (foundNode)
             return std::make_shared<UiObject>(getInstance(), selector, foundNode);
     }
+    LOG_F(INFO, "object not found");
     return std::shared_ptr<UiObject>{nullptr};
 }
 

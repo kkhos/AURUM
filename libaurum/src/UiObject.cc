@@ -135,14 +135,30 @@ std::vector<std::shared_ptr<UiObject>> UiObject::getChildren() const
     return this->findObjects(Sel::depth(1));
 }
 
+std::shared_ptr<Node> UiObject::getDescendant()
+{
+    std::vector<std::shared_ptr<Node>> nodeChildren{};
+
+    auto children = getChildren();
+    for (auto &&child : children) {
+        nodeChildren.push_back(child->getDescendant());
+    }
+    return std::make_shared<Node>(shared_from_this(), nodeChildren);
+}
+
 std::string UiObject::getApplicationPackage() const
 {
     return getAccessibleNode()->getPkg();
 }
 
-std::string UiObject::getResourceName() const
+std::string UiObject::getId() const
 {
-    return getAccessibleNode()->getRes();
+    return getAccessibleNode()->getId();
+}
+
+std::string UiObject::getAutomationId() const
+{
+    return getAccessibleNode()->getAutomationId();
 }
 
 std::string UiObject::getElementType() const

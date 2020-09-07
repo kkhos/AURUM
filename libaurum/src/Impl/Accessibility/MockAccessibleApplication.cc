@@ -22,30 +22,7 @@ std::vector<std::shared_ptr<AccessibleWindow>> MockAccessibleApplication::getWin
     printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
     return mWindowList;
 }
-/*
-std::vector<std::shared_ptr<AccessibleWindow>> MockAccessibleApplication::getActiveWindows(void)
-{
-    printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
 
-    std::vector<std::shared_ptr<AccessibleWindow>> ret{};
-
-    auto children = getWindows();
-
-    children.erase(std::remove_if(children.begin(), children.end(), [](auto child){
-                        return !(child->isActive()); // && child->isShowing() && child->isVisible());
-                    }), children.end());
-
-    LOG_SCOPE_F(INFO, "getActiveWindows app(%s) for %p, size:%d", getPackageName().c_str(), getAccessibleNode()->getRawHandler(), children.size());
-
-    // std::transform(children.begin(), children.end(), std::back_inserter(ret),
-    //     [&](std::shared_ptr<AccessibleNode> child) {
-    //         return std::make_shared<MockAccessibleWindow>(this->shared_from_this(), child);
-    //     }
-    // );
-
-    return ret;
-}
-*/
 std::string MockAccessibleApplication::getPackageName(void)
 {
     printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
@@ -55,11 +32,19 @@ std::string MockAccessibleApplication::getPackageName(void)
 void MockAccessibleApplication::addWindow(std::shared_ptr<AccessibleWindow> window)
 {
     mWindowList.push_back(window);
-    // auto node = getAccessibleNode();
-    // auto node2 = dynamic_cast<std::shared_ptr<MockAccessibleNode>>(node);
-    // node2->addChild(window->getNode());
 }
 void MockAccessibleApplication::clearWindows(void)
 {
     mWindowList.clear();
 }
+
+#include <iostream>
+
+std::shared_ptr<MockAccessibleWindow> MockAccessibleApplication::addWindow(std::string title, std::string widget, Rect<int> geometry, int properties)
+{
+    auto node = std::make_shared<MockAccessibleNode>(nullptr, title, title, "window", "res",widget,"style", "", geometry, 0, properties);
+    auto win = std::make_shared<MockAccessibleWindow>(shared_from_this(), node);
+    this->addWindow(win);
+    return win;
+}
+

@@ -117,11 +117,11 @@ void AtspiAccessibleNode::refresh()
 #ifdef TIZEN
     gchar *uID = atspi_accessible_get_unique_id(mNode, NULL);
     if (uID) {
-        mRes = uID;
+        mId = uID;
         g_free(uID);
     }
 #else
-    mRes = std::string{"N/A"};
+    mId = std::string{"N/A"};
 #endif
 
     gchar *name = atspi_accessible_get_name(mNode, NULL);
@@ -132,21 +132,23 @@ void AtspiAccessibleNode::refresh()
     GHashTable *attributes = atspi_accessible_get_attributes(mNode, NULL);
     char *t = (char*)g_hash_table_lookup(attributes, "type");
     char *s = (char*)g_hash_table_lookup(attributes, "style");
+    char *a = (char*)g_hash_table_lookup(attributes, "automationId");
 
     if (t) mType =  std::string(t);
     if (s) mStyle = std::string(s);
+    if (a) mAutomationId = std::string(a);
 
     free(t);
     free(s);
+    free(a);
 
     g_hash_table_unref(attributes);
 
     AtspiStateSet *st = atspi_accessible_get_state_set(mNode);
     GArray *states = atspi_state_set_get_states(st);
 
-    char *state_name = NULL;
     AtspiStateType stat;
-    for (int i = 0; states && (i < states->len); ++i) {
+    for (unsigned int i = 0; states && (i < states->len); ++i) {
         stat = g_array_index(states, AtspiStateType, i);
         setFeatureProperty(stat);
     }
@@ -171,7 +173,6 @@ void AtspiAccessibleNode::refresh()
 std::vector<std::string> AtspiAccessibleNode::getActions() const
 {
     std::vector<std::string> result{};
-    const char *name;
     AtspiAction *action;
 
     action = atspi_accessible_get_action_iface(mNode);
@@ -192,7 +193,6 @@ std::vector<std::string> AtspiAccessibleNode::getActions() const
 
 bool AtspiAccessibleNode::doAction(std::string actionName)
 {
-    const char *name;
     AtspiAction *action;
 
     action = atspi_accessible_get_action_iface(mNode);
@@ -305,6 +305,7 @@ void AtspiAccessibleNode::setFeatureProperty(AtspiStateType type)
         case ATSPI_STATE_HAS_POPUP:
         case ATSPI_STATE_READ_ONLY:
         case ATSPI_STATE_LAST_DEFINED:
+        default:
         break;
     }
 }

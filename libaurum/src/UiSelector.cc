@@ -1,8 +1,16 @@
 #include "UiSelector.h"
 #include <string>
 
+
+
+
 UiSelector::UiSelector()
-    : mChild{}
+: mId{}, mAutomationId{}, mRole{}, mText{}, mPkg{}, mType{}, mStyle{},
+  mMatchId{}, mMatchAutomationId{}, mMatchRole{}, mMatchText{}, mMatchPkg{}, mMatchType{}, mMatchStyle{},
+  mMinDepth{}, mMaxDepth{}, mIschecked{}, mIscheckable{}, mIsclickable{},
+  mIsenabled{}, mIsfocused{}, mIsfocusable{}, mIsscrollable{}, mIsselected{},
+  mIsshowing{}, mIsactive{}, mIsvisible{}, mIsselectable{},
+  mChild{}, mParent{}
 {
 }
 /*
@@ -18,39 +26,53 @@ UiSelector& UiSelector::operator= (const UiSelector& src)
     return *this;
 }
 */
-UiSelector *UiSelector::id(std::string text)
-{
-    this->mId = std::make_unique<std::string>(text);
-    return this;
-}
 
-UiSelector *UiSelector::text(std::string text)
+UiSelector *UiSelector::text(std::string text, bool match)
 {
     this->mText = std::make_unique<std::string>(text);
+    this->mMatchText = std::make_unique<bool>(match);
     return this;
 }
 
-UiSelector *UiSelector::pkg(std::string text)
+UiSelector *UiSelector::pkg(std::string text, bool match)
 {
     this->mPkg = std::make_unique<std::string>(text);
+    this->mMatchPkg = std::make_unique<bool>(match);
     return this;
 }
 
-UiSelector *UiSelector::res(std::string text)
+UiSelector *UiSelector::id(std::string text, bool match)
 {
-    this->mRes = std::make_unique<std::string>(text);
+    this->mId = std::make_unique<std::string>(text);
+    this->mMatchId = std::make_unique<bool>(match);
     return this;
 }
 
-UiSelector *UiSelector::type(std::string text)
+UiSelector *UiSelector::automationid(std::string text, bool match)
+{
+    this->mAutomationId = std::make_unique<std::string>(text);
+    this->mMatchAutomationId = std::make_unique<bool>(match);
+    return this;
+}
+
+UiSelector *UiSelector::role(std::string text, bool match)
+{
+    this->mRole = std::make_unique<std::string>(text);
+    this->mMatchRole = std::make_unique<bool>(match);
+    return this;
+}
+
+UiSelector *UiSelector::type(std::string text, bool match)
 {
     this->mType = std::make_unique<std::string>(text);
+    this->mMatchType = std::make_unique<bool>(match);
     return this;
 }
 
-UiSelector *UiSelector::style(std::string text)
+UiSelector *UiSelector::style(std::string text, bool match)
 {
     this->mStyle = std::make_unique<std::string>(text);
+    this->mMatchStyle = std::make_unique<bool>(match);
     return this;
 }
 
@@ -140,8 +162,26 @@ UiSelector *UiSelector::isActive(bool cond)
     return this;
 }
 
+UiSelector *UiSelector::isVisible(bool cond)
+{
+    this->mIsvisible = std::make_unique<bool>(cond);
+    return this;
+}
+
+UiSelector *UiSelector::isSelectable(bool cond)
+{
+    this->mIsselectable = std::make_unique<bool>(cond);
+    return this;
+}
+
 UiSelector *UiSelector::hasChild(std::shared_ptr<UiSelector> child)
 {
     mChild.push_back(child);
+    return this;
+}
+
+UiSelector *UiSelector::fromParent(std::shared_ptr<UiSelector> parent)
+{
+    mParent = parent;
     return this;
 }

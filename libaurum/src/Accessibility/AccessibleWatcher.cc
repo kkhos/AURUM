@@ -36,7 +36,6 @@ void AccessibleWatcher::printDbgInformation() const
 
 const AccessibleWatcher *AccessibleWatcher::getInstance(AccessibleWatcher *watcherImpl)
 {
-    printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
     static AccessibleWatcher *mInstance = nullptr;
     if (watcherImpl) {
         delete mInstance;
@@ -52,7 +51,6 @@ const AccessibleWatcher *AccessibleWatcher::getInstance(AccessibleWatcher *watch
 #endif
         }
     }
-    printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
     return mInstance;
 }
 

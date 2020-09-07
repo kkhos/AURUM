@@ -18,17 +18,16 @@ static bool iShowingNode(AtspiAccessible *node)
 
     LOG_SCOPE_F(INFO, "isShowing %s", name);
     auto stateSet = atspi_accessible_get_state_set(node);
-    auto states = atspi_state_set_get_states(stateSet);
 
     if (atspi_state_set_contains(stateSet, ATSPI_STATE_ACTIVE)
         && atspi_state_set_contains(stateSet, ATSPI_STATE_SHOWING)) {
         LOG_F(INFO, "active and showing %p %s", node, name);
         free(name);
-        // TODO : free states and stateSet
+        g_object_unref(stateSet);
         return true;
     }
     free(name);
-    // TODO : free states and stateSet
+    g_object_unref(stateSet);
     return false;
 }
 
@@ -78,7 +77,6 @@ AtspiAccessibleWatcher::AtspiAccessibleWatcher()
 
     listener =
         atspi_event_listener_new(AtspiAccessibleWatcher::onAtspiWindowEvent, this, NULL);
-    LOG_SCOPE_F(INFO, "WKWK init this:%p", this);
 
     atspi_event_listener_register(listener, "window:create", NULL);
     atspi_event_listener_register(listener, "window:destroy", NULL);

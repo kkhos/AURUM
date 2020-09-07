@@ -122,7 +122,13 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    std::string getRes() const;
+    std::string getId() const;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    std::string getAutomationId() const;
 
     /**
      * @brief TBD
@@ -307,7 +313,12 @@ protected:
     /**
      * @brief TBD
      */
-    std::string mRes;
+    std::string mId;
+
+    /**
+     * @brief TBD
+     */
+    std::string mAutomationId;
 
     /**
      * @brief TBD

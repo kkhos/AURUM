@@ -18,7 +18,7 @@ public:
     bool isActive();
 
     std::shared_ptr<AccessibleApplication> getApplication(void);
-    std::shared_ptr<AccessibleNode> getNode(void);
+    std::shared_ptr<AccessibleNode> getAccessibleNode(void);
 
 private:
     std::shared_ptr<AccessibleNode> mNode;

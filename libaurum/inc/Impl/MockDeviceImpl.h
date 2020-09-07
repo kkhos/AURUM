@@ -3,7 +3,22 @@
 #include "IDevice.h"
 
 #include <set>
+#include <list>
+#include <tuple>
+#include <vector>
+#include <map>
 
+enum class MockKeyType {
+    BACK,
+    HOME,
+    MENU,
+    VOLUP,
+    VOLDOWN,
+    POWER,
+    KEY
+};
+
+struct TouchData { int x; int y; long long stamp1; long long stamp2;};
 class MockDeviceImpl : public IDevice {
 public:
     MockDeviceImpl();
@@ -43,8 +58,10 @@ protected:
 private:
     void startTimer(void);
     int stopTimer(void);
+    long long timeStamp(void);
 
-private:
+
+public:
     static const unsigned int INTV_CLICK = 5;
     static const unsigned int INTV_SHORTSTROKE = 100;
     static const unsigned int INTV_LONGSTROKE = 2000;
@@ -59,4 +76,10 @@ private:
     bool isTimerStarted;
 
     std::set<int> mTouchSeq;
+
+public:
+    std::map<int, TouchData> mTouchRelease;
+    std::map<int, TouchData> mTouchDown;
+    std::vector<std::tuple<MockKeyType, KeyRequestType, std::string>> mKeyDevice;
+    int mWheelDevice;
 };

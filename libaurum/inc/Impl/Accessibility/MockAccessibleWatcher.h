@@ -2,6 +2,8 @@
 #include "AccessibleNode.h"
 #include "AccessibleWatcher.h"
 
+#include "MockAccessibleApplication.h"
+
 #include <mutex>
 #include <shared_mutex>
 #include <memory>
@@ -38,6 +40,7 @@ public:
 
 public:
     void addApplication(std::shared_ptr<AccessibleApplication> application);
+    std::shared_ptr<MockAccessibleApplication> addApplication(std::string pkgName, Rect<int> geometry, int ifaces, int properties);
 
 private:
     std::vector<std::shared_ptr<AccessibleApplication>> mApplicationList;

@@ -1,12 +1,13 @@
 #include "MockAccessibleNode.h"
 
 #include <algorithm>
+#include <iostream>
 
-MockAccessibleNode::MockAccessibleNode(std::shared_ptr<AccessibleNode> parent, std::string text, std::string pkg, std::string role, std::string res, std::string type, std::string style, Rect<int> boundingBox, int supportingIfaces,int featureProperty)
-: mParentNode(parent), mChildrenList{}, mActionSet{}
+MockAccessibleNode::MockAccessibleNode(std::shared_ptr<MockAccessibleNode> parent, std::string text, std::string pkg, std::string role, std::string res, std::string type, std::string style,std::string automationId,  Rect<int> boundingBox, int supportingIfaces,int featureProperty)
+: mParentNode(parent), mChildrenList{}, mActionSet{}, mLock{}
 {
     printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
-    setProperties(text,pkg,role,res,type,style,boundingBox, supportingIfaces, featureProperty);
+    setProperties(text,pkg,role,res,type,style,automationId, boundingBox, supportingIfaces, featureProperty);
 }
 
 MockAccessibleNode::~MockAccessibleNode()
@@ -43,12 +44,13 @@ void* MockAccessibleNode::getRawHandler(void) const
     return (void*)0;
 }
 
-void MockAccessibleNode::setProperties(std::string text,std::string pkg,std::string role,std::string res,std::string type,std::string style,Rect<int> boundingBox,int supportingIfaces,int featureProperty)
+void MockAccessibleNode::setProperties(std::string text,std::string pkg,std::string role,std::string id,std::string type,std::string style,std::string automationId, Rect<int> boundingBox,int supportingIfaces,int featureProperty)
 {
     mText = text;
     mPkg = pkg;
     mRole = role;
-    mRes = res;
+    mId = id;
+    mAutomationId = automationId;
     mType = type;
     mStyle = style;
     mBoundingBox = boundingBox;
@@ -128,9 +130,20 @@ void MockAccessibleNode::setFeatureProperty(int type)
     }
 }
 
+#include <iostream>
+
 void MockAccessibleNode::addChild(std::shared_ptr<AccessibleNode> child)
 {
     mChildrenList.push_back(child);
+}
+
+std::shared_ptr<MockAccessibleNode> MockAccessibleNode::addChild(std::string text, std::string pkg, std::string role, std::string res, std::string type, std::string style, std::string automationId, Rect<int> geometry, int ifaces, int properties)
+{
+    std::unique_lock<std::mutex> lock(mLock);
+
+    auto node = std::make_shared<MockAccessibleNode>(shared_from_this(), text, pkg, role, res, type, style, automationId, geometry, ifaces, properties);
+    this->addChild(node);
+    return node;
 }
 
 void MockAccessibleNode::clearChildren(void)

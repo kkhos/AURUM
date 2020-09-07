@@ -29,31 +29,43 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    UiSelector *id(std::string text);
+    UiSelector *id(std::string text, bool match = true);
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    UiSelector *text(std::string text);
+    UiSelector *automationid(std::string text, bool match = true);
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    UiSelector *pkg(std::string text);
+    UiSelector *text(std::string text, bool match = true);
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    UiSelector *type(std::string text);
+    UiSelector *pkg(std::string text, bool match = true);
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    UiSelector *style(std::string text);
+    UiSelector *role(std::string text, bool match = true);
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    UiSelector *type(std::string text, bool match = true);
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    UiSelector *style(std::string text, bool match = true);
 
     /**
      * @brief TBD
@@ -143,13 +155,13 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    UiSelector *res(std::string text);
+    UiSelector *isVisible(bool cond);
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    UiSelector *desc(std::string text);
+    UiSelector *isSelectable(bool cond);
 
     /**
      * @brief TBD
@@ -157,12 +169,30 @@ public:
      */
     UiSelector *hasChild(std::shared_ptr<UiSelector> child);
 
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    UiSelector *fromParent(std::shared_ptr<UiSelector> parent);
+
 public:
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
     std::unique_ptr<std::string> mId;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    std::unique_ptr<std::string> mAutomationId;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    std::unique_ptr<std::string> mRole;
 
     /**
      * @brief TBD
@@ -187,6 +217,48 @@ public:
      * @since_tizen 5.5
      */
     std::unique_ptr<std::string> mStyle;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    std::unique_ptr<bool> mMatchId;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    std::unique_ptr<bool> mMatchAutomationId;
+
+        /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    std::unique_ptr<bool> mMatchRole;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    std::unique_ptr<bool> mMatchText;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    std::unique_ptr<bool> mMatchPkg;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    std::unique_ptr<bool> mMatchType;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    std::unique_ptr<bool> mMatchStyle;
 
     /**
      * @brief TBD
@@ -264,11 +336,23 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    std::unique_ptr<std::string> mRes;
+    std::unique_ptr<bool> mIsvisible;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    std::unique_ptr<bool> mIsselectable;
 
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
     std::vector<std::shared_ptr<UiSelector>> mChild;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    std::shared_ptr<UiSelector> mParent;
 };

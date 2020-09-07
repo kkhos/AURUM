@@ -11,7 +11,5 @@ public:
 
 public:
     std::vector<std::shared_ptr<AccessibleWindow>> getWindows(void) override;
-    //std::vector<std::shared_ptr<AccessibleWindow>> getActiveWindows(void) override;
     std::string getPackageName(void) override;
-
 };

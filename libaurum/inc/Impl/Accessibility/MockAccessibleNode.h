@@ -1,15 +1,16 @@
 #pragma once
 #include "AccessibleNode.h"
 
+#include <mutex>
 #include <set>
 
-class MockAccessibleNode : public AccessibleNode {
+class MockAccessibleNode : public AccessibleNode, public std::enable_shared_from_this<MockAccessibleNode> {
 public:
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    MockAccessibleNode(std::shared_ptr<AccessibleNode> parent, std::string text,std::string pkg,std::string role, std::string res,std::string type,std::string style,Rect<int> boundingBox,int supportingIfaces,int featureProperty);
+    MockAccessibleNode(std::shared_ptr<MockAccessibleNode> parent, std::string text,std::string pkg,std::string role, std::string id, std::string type,std::string style, std::string automationId, Rect<int> boundingBox,int supportingIfaces,int featureProperty);
 
     /**
      * @brief TBD
@@ -87,17 +88,18 @@ public:
      * @since_tizen 5.5
      */
     void addChild(std::shared_ptr<AccessibleNode> child);
+    std::shared_ptr<MockAccessibleNode> addChild(std::string text, std::string pkg, std::string role, std::string res, std::string type, std::string style,std::string automationId,  Rect<int> geometry, int ifaces, int properties);
     void clearChildren(void);
     void addAction(std::string action);
     void clearActions(void);
-    void setProperties(std::string text,std::string pkg, std::string role, std::string res, std::string type, std::string style, Rect<int> boundingBox, int supportingIfaces, int featureProperty);
+    void setProperties(std::string text,std::string pkg, std::string role, std::string res, std::string type, std::string style,std::string automationId,  Rect<int> boundingBox, int supportingIfaces, int featureProperty);
 
 private:
 
     std::shared_ptr<AccessibleNode> mParentNode;
     std::vector<std::shared_ptr<AccessibleNode>> mChildrenList;
     std::set<std::string> mActionSet;
-
+std::mutex                            mLock;
 };
 
 
