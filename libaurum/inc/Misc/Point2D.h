@@ -35,6 +35,24 @@ public:
 
     /**
      * @brief TBD
+     * @since_tizen 5.5
+     */
+    inline bool operator==(const Point2D<T>& rhs)
+    {
+        return this->x == rhs.x && this->y == rhs.y;
+    }
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    inline bool operator!=(const Point2D<T>& rhs)
+    {
+        return !(*this == rhs);
+    }
+
+    /**
+     * @brief TBD
      */
     T x;
 

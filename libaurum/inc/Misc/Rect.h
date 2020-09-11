@@ -67,6 +67,23 @@ public:
 
     /**
      * @brief TBD
+     * @since_tizen 5.5
+     */
+    inline bool operator==(const Rect<T>& rhs)
+    {
+        return this->mTopLeft == rhs.mTopLeft && this->mBottomRight == rhs.mBottomRight;
+    }
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    inline bool operator!=(const Rect<T>& rhs){
+        return !(*this == rhs);
+    }
+
+    /**
+     * @brief TBD
      */
     Point2D<T> mTopLeft;
 
