@@ -77,7 +77,6 @@ AtspiAccessibleWatcher::AtspiAccessibleWatcher()
 
     listener =
         atspi_event_listener_new(AtspiAccessibleWatcher::onAtspiWindowEvent, this, NULL);
-    LOG_SCOPE_F(INFO, "WKWK init this:%p", this);
 
     atspi_event_listener_register(listener, "window:create", NULL);
     atspi_event_listener_register(listener, "window:destroy", NULL);
