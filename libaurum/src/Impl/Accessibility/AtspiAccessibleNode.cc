@@ -9,57 +9,61 @@
 AtspiAccessibleNode::AtspiAccessibleNode(AtspiAccessible *node)
 : mNode{node}
 {
-  GArray *ifaces = atspi_accessible_get_interfaces(mNode);
-    if (ifaces) {
-        for (unsigned int i = 0; i < ifaces->len; i++) {
-            char *iface = g_array_index(ifaces, char *, i);
-            if (!strcmp(iface, "Action"))
-                mSupportingIfaces |=
-                    static_cast<int>(AccessibleNodeInterface::ACTION);
-            else if (!strcmp(iface, "Collection"))
-                mSupportingIfaces |=
-                    static_cast<int>(AccessibleNodeInterface::COLLECTION);
-            else if (!strcmp(iface, "Component"))
-                mSupportingIfaces |=
-                    static_cast<int>(AccessibleNodeInterface::COMPONENT);
-            else if (!strcmp(iface, "Document"))
-                mSupportingIfaces |=
-                    static_cast<int>(AccessibleNodeInterface::DOCUMENT);
-            else if (!strcmp(iface, "EditableText"))
-                mSupportingIfaces |=
-                    static_cast<int>(AccessibleNodeInterface::EDITABLETEXT);
-            else if (!strcmp(iface, "Hypertext"))
-                mSupportingIfaces |=
-                    static_cast<int>(AccessibleNodeInterface::HYPERTEXT);
-            else if (!strcmp(iface, "Image"))
-                mSupportingIfaces |=
-                    static_cast<int>(AccessibleNodeInterface::IMAGE);
-            else if (!strcmp(iface, "Selection"))
-                mSupportingIfaces |=
-                    static_cast<int>(AccessibleNodeInterface::SELECTION);
-            else if (!strcmp(iface, "Text"))
-                mSupportingIfaces |=
-                    static_cast<int>(AccessibleNodeInterface::TEXT);
-            else if (!strcmp(iface, "Value"))
-                mSupportingIfaces |=
-                    static_cast<int>(AccessibleNodeInterface::VALUE);
-            else if (!strcmp(iface, "Accessible"))
-                mSupportingIfaces |=
-                    static_cast<int>(AccessibleNodeInterface::ACCESSIBLE);
-            else if (!strcmp(iface, "Table"))
-                mSupportingIfaces |=
-                    static_cast<int>(AccessibleNodeInterface::TABLE);
-            else if (!strcmp(iface, "TableCell"))
-                mSupportingIfaces |=
-                    static_cast<int>(AccessibleNodeInterface::TABLECELL);
-            else
-                LOG_F(WARNING, "Not Supported interface found %s", iface);
+  if (mNode) {
+    GArray *ifaces = atspi_accessible_get_interfaces(mNode);
+        if (ifaces) {
+            for (unsigned int i = 0; i < ifaces->len; i++) {
+                char *iface = g_array_index(ifaces, char *, i);
+                if (!strcmp(iface, "Action"))
+                    mSupportingIfaces |=
+                        static_cast<int>(AccessibleNodeInterface::ACTION);
+                else if (!strcmp(iface, "Collection"))
+                    mSupportingIfaces |=
+                        static_cast<int>(AccessibleNodeInterface::COLLECTION);
+                else if (!strcmp(iface, "Component"))
+                    mSupportingIfaces |=
+                        static_cast<int>(AccessibleNodeInterface::COMPONENT);
+                else if (!strcmp(iface, "Document"))
+                    mSupportingIfaces |=
+                        static_cast<int>(AccessibleNodeInterface::DOCUMENT);
+                else if (!strcmp(iface, "EditableText"))
+                    mSupportingIfaces |=
+                        static_cast<int>(AccessibleNodeInterface::EDITABLETEXT);
+                else if (!strcmp(iface, "Hypertext"))
+                    mSupportingIfaces |=
+                        static_cast<int>(AccessibleNodeInterface::HYPERTEXT);
+                else if (!strcmp(iface, "Image"))
+                    mSupportingIfaces |=
+                        static_cast<int>(AccessibleNodeInterface::IMAGE);
+                else if (!strcmp(iface, "Selection"))
+                    mSupportingIfaces |=
+                        static_cast<int>(AccessibleNodeInterface::SELECTION);
+                else if (!strcmp(iface, "Text"))
+                    mSupportingIfaces |=
+                        static_cast<int>(AccessibleNodeInterface::TEXT);
+                else if (!strcmp(iface, "Value"))
+                    mSupportingIfaces |=
+                        static_cast<int>(AccessibleNodeInterface::VALUE);
+                else if (!strcmp(iface, "Accessible"))
+                    mSupportingIfaces |=
+                        static_cast<int>(AccessibleNodeInterface::ACCESSIBLE);
+                else if (!strcmp(iface, "Table"))
+                    mSupportingIfaces |=
+                        static_cast<int>(AccessibleNodeInterface::TABLE);
+                else if (!strcmp(iface, "TableCell"))
+                    mSupportingIfaces |=
+                        static_cast<int>(AccessibleNodeInterface::TABLECELL);
+                else
+                    LOG_F(WARNING, "Not Supported interface found %s", iface);
 
-            g_free(iface);
+                g_free(iface);
+            }
+            g_array_free(ifaces, FALSE);
         }
-        g_array_free(ifaces, FALSE);
+        this->refresh();
+    } else {
+        LOG_F(INFO, "AtspiAccessibleNode Ctor : mNode is null");
     }
-    this->refresh();
 }
 
 AtspiAccessibleNode::~AtspiAccessibleNode()
@@ -69,6 +73,7 @@ AtspiAccessibleNode::~AtspiAccessibleNode()
 
 int AtspiAccessibleNode::getChildCount() const
 {
+    if (!isValid()) return 0;
     int count = atspi_accessible_get_child_count(mNode, NULL);
     if (count <= 0) return 0;
     return count;
@@ -76,6 +81,7 @@ int AtspiAccessibleNode::getChildCount() const
 
 std::shared_ptr<AccessibleNode> AtspiAccessibleNode::getChildAt(int index) const
 {
+    if (!isValid()) std::make_shared<AtspiAccessibleNode>(nullptr);
     LOG_SCOPE_F(INFO, "getChild @ %d from node(%p)", index, mNode);
     AtspiAccessible *rawChild = atspi_accessible_get_child_at_index(mNode, index, NULL);
     return std::make_shared<AtspiAccessibleNode>(rawChild);
@@ -94,11 +100,26 @@ std::vector<std::shared_ptr<AccessibleNode>> AtspiAccessibleNode::getChildren() 
 
 std::shared_ptr<AccessibleNode> AtspiAccessibleNode::getParent() const
 {
+    if (!isValid()) std::make_shared<AtspiAccessibleNode>(nullptr);
     AtspiAccessible *rawParent = atspi_accessible_get_parent(mNode, NULL);
     return std::make_shared<AtspiAccessibleNode>(rawParent);
 /*  auto node = AccessibleNode::get(parent);
     if (parent) g_object_unref(parent);
     return node; */
+}
+bool AtspiAccessibleNode::isValid() const
+{
+    if (!mNode) return false;
+
+    AtspiStateSet *st = atspi_accessible_get_state_set(mNode);
+    if (!st) return false;
+    if (atspi_state_set_contains(st, ATSPI_STATE_INVALID) ||
+        atspi_state_set_contains(st, ATSPI_STATE_DEFUNCT)) {
+        g_object_unref(st);
+        return false;
+    }
+    g_object_unref(st);
+    return true;
 }
 
 
@@ -109,64 +130,71 @@ void* AtspiAccessibleNode::getRawHandler(void) const
 
 void AtspiAccessibleNode::refresh()
 {
-    gchar *rolename = atspi_accessible_get_role_name(mNode, NULL);
-    if (rolename) {
-        mRole = rolename;
-        g_free(rolename);
-    }
-#ifdef TIZEN
-    gchar *uID = atspi_accessible_get_unique_id(mNode, NULL);
-    if (uID) {
-        mId = uID;
-        g_free(uID);
-    }
-#else
-    mId = std::string{"N/A"};
-#endif
-
-    gchar *name = atspi_accessible_get_name(mNode, NULL);
-    mText = name;
-    mPkg = name;
-    g_free(name);
-
-    GHashTable *attributes = atspi_accessible_get_attributes(mNode, NULL);
-    char *t = (char*)g_hash_table_lookup(attributes, "type");
-    char *s = (char*)g_hash_table_lookup(attributes, "style");
-    char *a = (char*)g_hash_table_lookup(attributes, "automationId");
-
-    if (t) mType =  std::string(t);
-    if (s) mStyle = std::string(s);
-    if (a) mAutomationId = std::string(a);
-
-    free(t);
-    free(s);
-    free(a);
-
-    g_hash_table_unref(attributes);
-
-    AtspiStateSet *st = atspi_accessible_get_state_set(mNode);
-    GArray *states = atspi_state_set_get_states(st);
-
-    AtspiStateType stat;
-    for (unsigned int i = 0; states && (i < states->len); ++i) {
-        stat = g_array_index(states, AtspiStateType, i);
-        setFeatureProperty(stat);
-    }
-
-    if (states) g_array_free(states, 0);
-    g_object_unref(st);
-
-    AtspiComponent *component = atspi_accessible_get_component_iface(mNode);
-    if (component) {
-        AtspiRect *extent = atspi_component_get_extents(
-            component, ATSPI_COORD_TYPE_SCREEN, NULL);
-        if (extent) {
-            mBoundingBox =
-                Rect<int>{extent->x, extent->y, extent->x + extent->width,
-                          extent->y + extent->height};
-            g_free(extent);
+    if (isValid()) {
+        gchar *rolename = atspi_accessible_get_role_name(mNode, NULL);
+        if (rolename) {
+            mRole = rolename;
+            g_free(rolename);
         }
-        g_object_unref(component);
+    #ifdef TIZEN
+        gchar *uID = atspi_accessible_get_unique_id(mNode, NULL);
+        if (uID) {
+            mId = uID;
+            g_free(uID);
+        }
+    #else
+        mId = std::string{"N/A"};
+    #endif
+
+        gchar *name = atspi_accessible_get_name(mNode, NULL);
+        mText = name;
+        mPkg = name;
+        g_free(name);
+
+        GHashTable *attributes = atspi_accessible_get_attributes(mNode, NULL);
+        if (attributes) {
+            char *t = (char*)g_hash_table_lookup(attributes, "type");
+            char *s = (char*)g_hash_table_lookup(attributes, "style");
+            char *a = (char*)g_hash_table_lookup(attributes, "automationId");
+
+            if (t) mType =  std::string(t);
+            if (s) mStyle = std::string(s);
+            if (a) mAutomationId = std::string(a);
+
+            free(t);
+            free(s);
+            free(a);
+
+            g_hash_table_unref(attributes);
+        }
+
+        AtspiStateSet *st = atspi_accessible_get_state_set(mNode);
+        if (st) {
+            GArray *states = atspi_state_set_get_states(st);
+            if (states) {
+                AtspiStateType stat;
+                for (unsigned int i = 0; states && (i < states->len); ++i) {
+                    stat = g_array_index(states, AtspiStateType, i);
+                    setFeatureProperty(stat);
+                }
+                g_array_free(states, 0);
+            }
+            g_object_unref(st);
+        }
+        AtspiComponent *component = atspi_accessible_get_component_iface(mNode);
+        if (component) {
+            AtspiRect *extent = atspi_component_get_extents(
+                component, ATSPI_COORD_TYPE_SCREEN, NULL);
+            if (extent) {
+                mBoundingBox =
+                    Rect<int>{extent->x, extent->y, extent->x + extent->width,
+                            extent->y + extent->height};
+                g_free(extent);
+            }
+            g_object_unref(component);
+        }
+    } else {
+        setFeatureProperty(ATSPI_STATE_INVALID);
     }
 }
 
@@ -174,6 +202,7 @@ std::vector<std::string> AtspiAccessibleNode::getActions() const
 {
     std::vector<std::string> result{};
     AtspiAction *action;
+    if (!isValid()) return result;
 
     action = atspi_accessible_get_action_iface(mNode);
     if (action) {
@@ -194,7 +223,7 @@ std::vector<std::string> AtspiAccessibleNode::getActions() const
 bool AtspiAccessibleNode::doAction(std::string actionName)
 {
     AtspiAction *action;
-
+    if (!isValid()) return false;
     action = atspi_accessible_get_action_iface(mNode);
     if (action) {
         int a;
@@ -219,6 +248,8 @@ bool AtspiAccessibleNode::doAction(std::string actionName)
 
 void AtspiAccessibleNode::setValue(std::string text)
 {
+    if (!isValid()) return;
+
     AtspiEditableText *iface = atspi_accessible_get_editable_text(mNode);
     LOG_F(INFO,"set Value iface:%p obj:%p text:%s", iface, mNode, text.c_str() );
     if (iface) {
