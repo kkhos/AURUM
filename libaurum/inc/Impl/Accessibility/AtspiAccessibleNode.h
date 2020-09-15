@@ -41,6 +41,12 @@ public:
      */
     std::shared_ptr<AccessibleNode> getParent() const override;
 
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    bool isValid() const;
+
 public:
     /**
      * @brief TBD
