@@ -144,6 +144,8 @@ ninja \
     -v \
     test 2>&1
 
+cat ./gbsbuild/meson-logs/testlog.txt
+
 %if 0%{?gcov:1}
   mkdir -p gcov-obj
   find . -name '*.gcno' -exec cp '{}' gcov-obj ';'
