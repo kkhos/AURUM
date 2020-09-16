@@ -137,14 +137,9 @@ ninja \
         -e 's%^.*: error: .*$%\x1b[37;41m&\x1b[m%' \
         -e 's%^.*: warning: .*$%\x1b[30;43m&\x1b[m%'
 
-
-ninja \
+meson test \
     -C gbsbuild \
-    -j %(echo "`/usr/bin/getconf _NPROCESSORS_ONLN`") \
-    -v \
-    test 2>&1
-
-cat ./gbsbuild/meson-logs/testlog.txt
+    -v
 
 %if 0%{?gcov:1}
   mkdir -p gcov-obj
