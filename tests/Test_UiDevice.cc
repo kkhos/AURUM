@@ -150,21 +150,13 @@ TEST_F(AurumTestUiDevice, touch_P2)
 
 TEST_F(AurumTestUiDevice, wheelUp_P1)
 {
-    timespec t1, t2;
-    clock_gettime(CLOCK_MONOTONIC, &t1);
     UiDevice::getInstance()->wheelUp(123, 500);
-    clock_gettime(CLOCK_MONOTONIC, &t2);
-    ASSERT_LT((double)(t2.tv_sec) + (double)(t2.tv_nsec/1000000000.0)  - (double)(t1.tv_sec) - (double)(t1.tv_nsec/1000000000.0), (0.5+0.167)*1.1);
     ASSERT_EQ(mDevice->mWheelDevice, 123);
 }
 
 TEST_F(AurumTestUiDevice, wheelDown_P1)
 {
-    timespec t1, t2;
-    clock_gettime(CLOCK_MONOTONIC, &t1);
     UiDevice::getInstance()->wheelDown(123, 500);
-    clock_gettime(CLOCK_MONOTONIC, &t2);
-    ASSERT_LT((double)(t2.tv_sec) + (double)(t2.tv_nsec/1000000000.0)  - (double)(t1.tv_sec) - (double)(t1.tv_nsec/1000000000.0), (0.5+0.167)*1.1);
     ASSERT_EQ(mDevice->mWheelDevice, -123);
 }
 
@@ -315,9 +307,9 @@ TEST_F(AurumTestUiDevice, getSystemTime_P1)
     long long t1 = UiDevice::getInstance()->getSystemTime(TimeRequestType::MONOTONIC);
     clock_gettime(CLOCK_MONOTONIC, &t);
     long long t2 = (long long)t.tv_sec * 1000L + (long long)(t.tv_nsec / 1000000);
-    ASSERT_NEAR(t1,t2,10);
+    ASSERT_NEAR(t1,t2,500);
     long long t3 = UiDevice::getInstance()->getSystemTime(TimeRequestType::WALLCLOCK);
     clock_gettime(CLOCK_REALTIME, &t);
     long long t4 = (long long)t.tv_sec * 1000L + (long long)(t.tv_nsec / 1000000);
-    ASSERT_NEAR(t3,t4,10);
+    ASSERT_NEAR(t3,t4,500);
 }
