@@ -21,31 +21,7 @@
 
 class AurumTestSel : public ::testing::Test {
     public:
-        AurumTestSel(){
-        /*
-                 App1
-                   Win1
-                      Node1
-                        Node2
-                        Node3
-                        Node4
-                        Node5
-                           Node6
-                      Node7
-                        Node8
-                           Node9
-                              Node10
-                   Win2
-                     Node11
-                 App2
-                   Win3
-                      Node12
-                      Node13
-                        Node14
-                        Node15
-                          Node16
-            */
-
+        AurumTestSel() : mDevice{nullptr}, mWatcher{nullptr}, mApps{}, mWins{}, mNodes{}{
         }
     protected:
         void SetUp() override {
