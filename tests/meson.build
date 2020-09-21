@@ -4,8 +4,6 @@ test_src = [
     ['test_uidevice', files('Test_UiDevice.cc')],
     ['test_uiobject', files('Test_UiObject.cc')],
     ['test_uiselector', files('Test_UiSelector.cc')],
-    ['test_until', files('Test_Until.cc')],
-    ['test_wait', files('Test_Wait.cc')],
 ]
 
 test_inc = [
