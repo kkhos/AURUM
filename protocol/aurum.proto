@@ -50,15 +50,30 @@ enum ParamType {
 message Element {
    string elementId = 1;
    repeated Element child = 2;
+
    Rect geometry = 3;
+
    string widget_type = 4;
    string widget_style = 5;
-   string value = 6;
-   bool isShowing = 7;
-   bool isEnabled = 8;
-   bool isSelected = 9;
-   bool isChecked = 10;
-   bool isVisible = 11;
+
+   string text = 6;
+   string id = 7;
+   string automationId = 8;
+   string package = 9;
+   string role = 10;
+
+   bool isChecked = 11;
+   bool isCheckable = 12;
+   bool isClickable = 13;
+   bool isEnabled = 14;
+   bool isFocused = 15;
+   bool isFocusable = 16;
+   bool isScrollable = 17;
+   bool isSelected = 18;
+   bool isShowing = 19;
+   bool isActive = 20;
+   bool isVisible = 21;
+   bool isSelectable = 22;
 }
 
 message Point {

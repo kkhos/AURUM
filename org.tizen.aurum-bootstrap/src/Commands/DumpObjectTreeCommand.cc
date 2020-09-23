@@ -17,40 +17,50 @@ DumpObjectTreeCommand::DumpObjectTreeCommand(const ::aurum::ReqDumpObjectTree* r
     mObjMap = ObjectMapper::getInstance();
 }
 
-void populateElement(::aurum::Element *el, std::shared_ptr<UiObject> obj)
+void DumpObjectTreeCommand::traverse(::aurum::Element *root, std::shared_ptr<Node> node, int depth)
 {
-}
+    if (!node->mNode) return;
+    std::string key{};
+    std::shared_ptr<UiObject> obj = node->mNode;
 
-void DumpObjectTreeCommand::traverse(::aurum::Element *el, std::string key, int depth)
-{
-    LOG_SCOPE_F(INFO, "traverse depth:%d el:%p key:%s", depth, el, key.c_str());
+    key = mObjMap->getElement(obj);
+    if (key.length() <= 0)
+        key = mObjMap->addElement(obj);
 
-    auto obj = mObjMap->getElement(key);
-    auto children = obj->getChildren();
+    root->set_elementid(key);
 
-    ::aurum::Rect *rect = el->mutable_geometry();
+    ::aurum::Rect *rect = root->mutable_geometry();
     const Rect<int> &size = obj->getBoundingBox();
     rect->set_x(size.mTopLeft.x);
     rect->set_y(size.mTopLeft.y);
     rect->set_width(size.width());
     rect->set_height(size.height());
 
-    el->set_widget_type(obj->getElementType());
-    el->set_widget_style(obj->getElementStyle());
-    el->set_value(obj->getText());
+    root->set_widget_type(obj->getElementType());
+    root->set_widget_style(obj->getElementStyle());
 
-    el->set_isshowing(obj->isShowing());
-    el->set_isvisible(obj->isVisible());
-    el->set_isenabled(obj->isEnabled());
-    el->set_isselected(obj->isSelected());
-    el->set_ischecked(obj->isChecked());
+    root->set_text(obj->getText());
+    root->set_id(obj->getId());
+    root->set_automationid(obj->getAutomationId());
+    root->set_package(obj->getApplicationPackage());
+    root->set_role(obj->getRole());
 
-    for (auto&& child : children) {
-        if (!(child->isShowing() && child->isVisible())) continue;
-        ::aurum::Element *childEl = el->add_child();
-        std::string key2 = mObjMap->addElement(std::move(child));
-        childEl->set_elementid(key2);
-        traverse(childEl, key2, depth+1);
+    root->set_ischecked(obj->isChecked());
+    root->set_ischeckable(obj->isCheckable());
+    root->set_isclickable(obj->isClickable());
+    root->set_isenabled(obj->isEnabled());
+    root->set_isfocused(obj->isFocused());
+    root->set_isfocusable(obj->isFocusable());
+    root->set_isscrollable(obj->isScrollable());
+    root->set_isselected(obj->isSelected());
+    root->set_isshowing(obj->isShowing());
+    root->set_isactive(obj->isActive());
+    root->set_isvisible(obj->isVisible());
+    root->set_isselectable(obj->isSelectable());
+
+    for( auto && childNode : node->mChildren) {
+        ::aurum::Element* child = root->add_child();
+        traverse(child, childNode, depth+1);
     }
 }
 
@@ -59,11 +69,12 @@ void DumpObjectTreeCommand::traverse(::aurum::Element *el, std::string key, int 
     LOG_SCOPE_F(INFO, "DumpObjectTree --------------- ");
     LOG_F(INFO, "elementid : %s", mRequest->elementid().c_str());
     if (mRequest->elementid().length()) {
+        auto obj = mObjMap->getElement(mRequest->elementid());
+        if (!obj) return grpc::Status::OK;;
+
+        auto node = obj->getDescendant();
         ::aurum::Element* root = mResponse->add_roots();
-        root->set_elementid(mRequest->elementid());
-        traverse(root, mRequest->elementid(), 0);
-    } else {
-        ;
+        traverse(root, node, 0);
     }
     return grpc::Status::OK;
 }

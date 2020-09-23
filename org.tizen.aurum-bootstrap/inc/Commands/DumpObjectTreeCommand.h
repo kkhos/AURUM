@@ -3,6 +3,8 @@
 #include <grpcpp/grpcpp.h>
 #include "Commands/Command.h"
 #include "ObjectMapper.h"
+#include "UiObject.h"
+
 #include <aurum.grpc.pb.h>
 #include "config.h"
 
@@ -18,6 +20,7 @@ public:
     DumpObjectTreeCommand(const ::aurum::ReqDumpObjectTree* request,
                        ::aurum::RspDumpObjectTree*       response);
     ::grpc::Status execute() override;
-protected:
-    void traverse(::aurum::Element *el, std::string key, int depth);
+
+private:
+    void traverse(::aurum::Element *root, std::shared_ptr<Node> node, int depth);
 };
