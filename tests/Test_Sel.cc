@@ -22,6 +22,7 @@
 class AurumTestSel : public ::testing::Test {
     public:
         AurumTestSel() : mDevice{nullptr}, mWatcher{nullptr}, mApps{}, mWins{}, mNodes{}{
+            //loguru::g_stderr_verbosity = loguru::Verbosity_9;
         }
     protected:
         void SetUp() override {
@@ -92,121 +93,4 @@ TEST_F(AurumTestSel, depth_P1)
        sum += founds.size();
     }
     ASSERT_EQ(sum, 7);
-}
-
-TEST_F(AurumTestSel, Selector_Advanced_P1)
-{
-    auto sel = std::make_shared<UiSelector>();
-    sel->text("win1");
-
-    auto found = UiDevice::getInstance()->findObject(sel);
-    ASSERT_EQ(found->getElementType(), "Elm_Win");
-    auto children = found->getChildren();
-    ASSERT_EQ(children.size(), 4);
-
-    auto childSel = std::make_shared<UiSelector>();
-    childSel->text("node5");
-    childSel->depth(2);
-    sel->hasChild(childSel);
-    found = UiDevice::getInstance()->findObject(sel);
-
-    ASSERT_NE(found, nullptr);
-}
-
-
-TEST_F(AurumTestSel, Selector_Advanced_P2)
-{
-    auto sel = std::make_shared<UiSelector>();
-    sel->text("win1");
-
-    auto found = UiDevice::getInstance()->findObject(sel);
-    ASSERT_EQ(found->getElementType(), "Elm_Win");
-    auto children = found->getChildren();
-    ASSERT_EQ(children.size(), 4);
-
-    auto childSel1 = std::make_shared<UiSelector>();
-    childSel1->isShowing(true);
-    childSel1->isActive(true);
-
-    auto childSel2 = std::make_shared<UiSelector>();
-    childSel2->isShowing(true);
-    childSel2->isEnabled(true);
-
-    sel->hasChild(childSel1);
-    sel->hasChild(childSel2);
-    found = UiDevice::getInstance()->findObject(sel);
-
-    ASSERT_NE(found, nullptr);
-    ASSERT_EQ(found->getText(), "win1");
-}
-
-TEST_F(AurumTestSel, Selector_Parent_P1)
-{
-    auto selpp = std::make_shared<UiSelector>();
-    selpp->text("win1");
-
-    auto selp = std::make_shared<UiSelector>();
-    selp->text("node4", true)->fromParent(selpp);
-
-    auto sel = std::make_shared<UiSelector>();
-    sel->text("node5")->fromParent(selp);
-
-    auto found = UiDevice::getInstance()->findObject(sel);
-    ASSERT_NE(found, nullptr);
-    ASSERT_EQ(found->getText(), "node5");
-}
-
-TEST_F(AurumTestSel, Selector_Parent_N2)
-{
-    auto selpp = std::make_shared<UiSelector>();
-    selpp->text("win1", false)->role("window");
-
-    auto selp = std::make_shared<UiSelector>();
-    selp->text("node4")->fromParent(selpp);
-
-    auto sel = std::make_shared<UiSelector>();
-    sel->text("node5")->fromParent(selp);
-
-    auto found = UiDevice::getInstance()->findObject(sel);
-    ASSERT_EQ(found, nullptr);
-
-    found = UiDevice::getInstance()->findObject(selpp);
-    ASSERT_NE(found, nullptr);
-    ASSERT_EQ(found->getText(), "win2");
-
-}
-
-TEST_F(AurumTestSel, Selector_Parent_N1)
-{
-    auto selpp = std::make_shared<UiSelector>();
-    selpp->text("win2");
-
-    auto selp = std::make_shared<UiSelector>();
-    selp->text("node4")->fromParent(selpp);
-
-    auto sel = std::make_shared<UiSelector>();
-    sel->text("node5")->fromParent(selp);
-
-    auto found = UiDevice::getInstance()->findObject(sel);
-    ASSERT_EQ(found, nullptr);
-}
-
-TEST_F(AurumTestSel, Selector_Advanced_N1)
-{
-    auto sel = std::make_shared<UiSelector>();
-    sel->text("win1");
-
-    auto found = UiDevice::getInstance()->findObject(sel);
-    ASSERT_EQ(found->getElementType(), "Elm_Win");
-    auto children = found->getChildren();
-    ASSERT_EQ(children.size(), 4);
-
-    auto childSel = std::make_shared<UiSelector>();
-    childSel->isShowing(true);
-    childSel->isActive(true);
-    childSel->isCheckable(true);
-    sel->hasChild(childSel);
-    found = UiDevice::getInstance()->findObject(sel);
-
-    ASSERT_EQ(found, nullptr);
 }

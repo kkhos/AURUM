@@ -22,6 +22,7 @@
 class AurumTestUiSelector : public ::testing::Test {
     public:
         AurumTestUiSelector(): mDevice{nullptr}, mWatcher{nullptr}, mApps{}, mWins{}, mNodes{}{
+            //loguru::g_stderr_verbosity = loguru::Verbosity_9;
         }
     protected:
         void SetUp() override {

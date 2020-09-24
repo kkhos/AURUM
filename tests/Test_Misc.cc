@@ -22,9 +22,6 @@
 class AurumTestMisc : public ::testing::Test {
     public:
         AurumTestMisc(){
-            /*const char *logPath = "/tmp/ua.log";
-            loguru::g_preamble = false;
-            loguru::add_file(logPath, loguru::Append, loguru::Verbosity_MAX);*/
         }
     protected:
         void SetUp() override {
