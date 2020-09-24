@@ -32,6 +32,7 @@ template bool Waiter::waitFor(
 template <typename R>
 R Waiter::waitFor(const std::function<R(const ISearchable *)> condition) const
 {
+    LOG_SCOPE_F(INFO, "Waiter::waitFor %p", condition);
     // startTime = currentTime();
     std::chrono::system_clock::time_point start =
         std::chrono::system_clock::now();
@@ -50,13 +51,11 @@ R Waiter::waitFor(const std::function<R(const ISearchable *)> condition) const
 template <typename R>
 R Waiter::waitFor(const std::function<R(const UiObject *)> condition) const
 {
-    LOG_F(INFO, "1");
+    LOG_SCOPE_F(INFO, "Waiter::waitFor %p", condition);
     if (mUiObject) {
-        LOG_F(INFO, "2");
         std::chrono::system_clock::time_point start =
             std::chrono::system_clock::now();
         R result = condition(mUiObject);
-        LOG_F(INFO, "3 : %d", result);
         while (!result) {
             if ((std::chrono::system_clock::now() - start) >
                 std::chrono::milliseconds{WAIT_TIMEOUT_MS})
@@ -64,7 +63,6 @@ R Waiter::waitFor(const std::function<R(const UiObject *)> condition) const
             std::this_thread::sleep_for(
                 std::chrono::milliseconds{WAIT_INTERVAL_MS});
             result = condition(mUiObject);
-            LOG_F(INFO, "4 : %d", result);
         }
         return result;
     }

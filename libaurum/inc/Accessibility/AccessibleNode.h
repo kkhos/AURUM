@@ -73,6 +73,12 @@ public:  // Constructor & Destructor
      */
     virtual ~AccessibleNode();
 
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    std::string description();
+
 public:
     /**
      * @brief TBD

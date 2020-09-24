@@ -85,13 +85,11 @@ std::shared_ptr<UiObject> UiObject::findObject(const std::shared_ptr<UiSelector>
 std::vector<std::shared_ptr<UiObject>> UiObject::findObjects(
     const std::shared_ptr<UiSelector> selector) const
 {
-    LOG_SCOPE_F(INFO, "findObjects");
     std::vector<std::shared_ptr<UiObject>> result{};
     auto nodes = Comparer::findObjects(mDevice, selector, getAccessibleNode());
-    LOG_SCOPE_F(INFO, "size : %d", nodes.size());
     for ( auto& node : nodes) {
         if (!node) {
-            LOG_F(INFO, "skipped(node == nullptr)");
+            LOG_F(INFO, "Skipped! (node == nullptr)");
             continue;
         }
         result.push_back(std::make_shared<UiObject>(mDevice, selector, std::move(node)));
@@ -140,7 +138,8 @@ std::shared_ptr<UiObject> UiObject::getChildAt(int index) const {
 
 std::vector<std::shared_ptr<UiObject>> UiObject::getChildren() const
 {
-    return this->findObjects(Sel::depth(1));
+    auto sel = Sel::depth(1);
+    return this->findObjects(sel);
 }
 
 std::shared_ptr<Node> UiObject::getDescendant()
@@ -272,7 +271,6 @@ const Rect<int> UiObject::getBoundingBox() const
 
 void UiObject::click() const
 {
-    LOG_SCOPE_F(INFO, "click on obj %p", this);
     mNode->refresh();
     const Rect<int> rect = mNode->getBoundingBox();
     const Point2D<int> midPoint = rect.midPoint();
@@ -281,7 +279,6 @@ void UiObject::click() const
 
 void UiObject::longClick(const unsigned int intv) const
 {
-    LOG_SCOPE_F(INFO, "click on obj %p", this);
     mNode->refresh();
     const Rect<int> rect = mNode->getBoundingBox();
     const Point2D<int> midPoint = rect.midPoint();

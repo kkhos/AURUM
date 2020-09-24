@@ -15,6 +15,7 @@ public:
      * @since_tizen 5.5
      */
     UiSelector();
+
     /**
      * @brief TBD
      * @since_tizen 5.5
@@ -23,6 +24,12 @@ public:
 
     // UiSelector(const UiSelector &src);
     //        UiSelector &operator= (const UiSelector& src);
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    std::string description();
 
 public:
     /**

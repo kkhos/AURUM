@@ -32,7 +32,5 @@ std::vector<std::shared_ptr<AccessibleWindow>> AccessibleApplication::getActiveW
                         return !(child->isActive() && child->isShowing()); // && child->isShowing() && child->isVisible());
                     }), children.end());
 
-    LOG_SCOPE_F(INFO, "getActiveWindows app(%s) for %p, size:%d", getPackageName().c_str(), getAccessibleNode()->getRawHandler(), children.size());
-
     return children;
 }

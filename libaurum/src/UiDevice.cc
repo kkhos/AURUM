@@ -86,7 +86,6 @@ std::shared_ptr<UiObject> UiDevice::findObject(const std::shared_ptr<UiSelector>
         if (foundNode)
             return std::make_shared<UiObject>(getInstance(), selector, foundNode);
     }
-    LOG_F(INFO, "object not found");
     return std::shared_ptr<UiObject>{nullptr};
 }
 

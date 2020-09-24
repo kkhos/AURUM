@@ -1,8 +1,6 @@
 #include "UiSelector.h"
 #include <string>
-
-
-
+#include <sstream>
 
 UiSelector::UiSelector()
 : mId{}, mAutomationId{}, mRole{}, mText{}, mPkg{}, mType{}, mStyle{},
@@ -13,6 +11,53 @@ UiSelector::UiSelector()
   mChild{}, mParent{}
 {
 }
+
+std::string UiSelector::description()
+{
+    std::stringstream ss{};
+    ss << "{";
+    if(this->mId) ss << "\"mId\":\"" << *this->mId << "\", ";
+    if(this->mAutomationId) ss << "\"mAutomationId\":\"" << *this->mAutomationId << "\", ";
+    if(this->mRole) ss << "\"mRole\":\"" << *this->mRole << "\", ";
+    if(this->mText) ss << "\"mText\":\"" << *this->mText << "\", ";
+    if(this->mPkg) ss << "\"mPkg\":\"" << *this->mPkg << "\", ";
+    if(this->mType) ss << "\"mType\":\"" << *this->mType << "\", ";
+    if(this->mStyle) ss << "\"mStyle\":\"" << *this->mStyle << "\", ";
+    if(this->mMatchId) ss << "\"mMatchId\":\"" << ((*this->mMatchId)?"true":"false") << "\", ";
+    if(this->mMatchAutomationId) ss << "\"mMatchAutomationId\":\"" << ((*this->mMatchAutomationId)?"true":"false") << "\", ";
+    if(this->mMatchRole) ss << "\"mMatchRole\":\"" << ((*this->mMatchRole)?"true":"false") << "\", ";
+    if(this->mMatchText) ss << "\"mMatchText\":\"" << ((*this->mMatchText)?"true":"false") << "\", ";
+    if(this->mMatchPkg) ss << "\"mMatchPkg\":\"" << ((*this->mMatchPkg)?"true":"false") << "\", ";
+    if(this->mMatchType) ss << "\"mMatchType\":\"" << ((*this->mMatchType)?"true":"false") << "\", ";
+    if(this->mMatchStyle) ss << "\"mMatchStyle\":\"" << ((*this->mMatchStyle)?"true":"false" )<< "\", ";
+    if(this->mMinDepth) ss << "\"mMinDepth\":\"" << *this->mMinDepth << "\", ";
+    if(this->mMaxDepth) ss << "\"mMaxDepth\":\"" << *this->mMaxDepth << "\", ";
+    if(this->mIschecked) ss << "\"mIschecked\":\"" << ((*this->mIschecked)?"true":"false") << "\", ";
+    if(this->mIscheckable) ss << "\"mIscheckable\":\"" << ((*this->mIscheckable)?"true":"false") << "\", ";
+    if(this->mIsclickable) ss << "\"mIsclickable\":\"" << ((*this->mIsclickable)?"true":"false") << "\", ";
+    if(this->mIsenabled) ss << "\"mIsenabled\":\"" << ((*this->mIsenabled)?"true":"false") << "\", ";
+    if(this->mIsfocused) ss << "\"mIsfocused\":\"" << ((*this->mIsfocused)?"true":"false") << "\", ";
+    if(this->mIsfocusable) ss << "\"mIsfocusable\":\"" << ((*this->mIsfocusable)?"true":"false") << "\", ";
+    if(this->mIsscrollable) ss << "\"mIsscrollable\":\"" << ((*this->mIsscrollable)?"true":"false") << "\", ";
+    if(this->mIsselected) ss << "\"mIsselected\":\"" << ((*this->mIsselected)?"true":"false") << "\", ";
+    if(this->mIsshowing) ss << "\"mIsshowing\":\"" << ((*this->mIsshowing)?"true":"false") << "\", ";
+    if(this->mIsactive) ss << "\"mIsactive\":\"" << ((*this->mIsactive)?"true":"false") << "\", ";
+    if(this->mIsvisible) ss << "\"mIsvisible\":\"" << ((*this->mIsvisible)?"true":"false") << "\", ";
+    if(this->mIsselectable) ss << "\"mIsselectable\":\"" << ((*this->mIsselectable)?"true":"false") << "\", ";
+    if(this->mParent) {
+        ss << "\"mParent\":" << this->mParent->description();
+    }
+    ss << "\"mChild\":[";
+    for ( auto child = mChild.begin(); child != mChild.end(); child++) {
+        ss << (*child)->description();
+        if (child+1 != mChild.end()) ss << ", " ;
+    }
+    ss << "]";
+
+    ss << "}";
+    return ss.str();
+}
+
 /*
 UiSelector::UiSelector(const UiSelector &src)
 {

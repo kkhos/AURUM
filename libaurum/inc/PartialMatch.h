@@ -43,7 +43,7 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    void debugPrint();
+    std::string debugPrint();
 
 public:
     static std::shared_ptr<PartialMatch> accept(const std::shared_ptr<AccessibleNode> node,

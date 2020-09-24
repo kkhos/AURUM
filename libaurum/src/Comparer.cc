@@ -14,7 +14,7 @@ std::shared_ptr<AccessibleNode> Comparer::findObject(const std::shared_ptr<UiDev
                                      const std::shared_ptr<UiSelector> selector,
                                      const std::shared_ptr<AccessibleNode> root)
 {
-    std::vector<std::shared_ptr<AccessibleNode>> ret = findObjects(device, selector, root);
+    std::vector<std::shared_ptr<AccessibleNode>> ret = findObjects(device, selector, root, true);
     if (ret.size() > 0)
         return std::move(ret[0]);
     else
@@ -24,9 +24,10 @@ std::shared_ptr<AccessibleNode> Comparer::findObject(const std::shared_ptr<UiDev
 std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(const std::shared_ptr<UiDevice> device,
                                                     const std::shared_ptr<UiSelector> selector,
                                                     const std::shared_ptr<AccessibleNode> root, bool earlyReturn)
-                                                    const std::shared_ptr<AccessibleNode> root)
 {
     Comparer comparer(device, selector, false);
+
+    LOG_SCOPE_F(INFO, "findObjects selector(%s) from (type:%s style:%s, role:%s, text:%d) earlyReturn:%d", selector->description().c_str(), root->getType().c_str(),  root->getStyle().c_str(),  root->getRole().c_str(),  root->getText().c_str(), earlyReturn);
 
     if (selector->mParent) {
         auto ret = Comparer::findObjects(device, selector->mParent, root);
@@ -46,6 +47,7 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(const std::sh
 {
     std::list<std::shared_ptr<PartialMatch>> partialList{};
     std::vector<std::shared_ptr<AccessibleNode>> ret = findObjects(root, 0, 0, partialList);
+    LOG_F(INFO, "%d object(s) found", ret.size());
     return ret;
 }
 
@@ -54,9 +56,9 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(
     std::list<std::shared_ptr<PartialMatch>> &partialMatches)
 {
     std::vector<std::shared_ptr<AccessibleNode>> ret;
-    root->refresh();
-    LOG_SCOPE_F(INFO, "findObjects %s, %s, %s / i:%d d:%d / p.matches:%d", root->getText().c_str(), root->getType().c_str(), root->getStyle().c_str(), index, depth, partialMatches.size());
+    //LOG_SCOPE_F(INFO, "findObjects idx:%d, depth:%d, partialMatches.size:%d", index, depth, partialMatches.size());
 
+    root->refresh();
     for (auto &match : partialMatches)
         match->update(root, index, depth, partialMatches);
 
@@ -77,11 +79,11 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(
             if (!ret.empty() && mEarlyReturn) return ret;
         }
     } else {
-        LOG_F(INFO, "no need to search children(maxDepth limit overflow, %d < %d < %d)", mSelector->mMinDepth?*(mSelector->mMinDepth):-1, depth, mSelector->mMaxDepth?*(mSelector->mMaxDepth):9999999);
+        LOG_F(INFO, "Abort searching! No need to search children(maxDepth limit overflow, %d < %d < %d)", mSelector->mMinDepth?*(mSelector->mMinDepth):-1, depth, mSelector->mMaxDepth?*(mSelector->mMaxDepth):9999999);
     }
 
     if (currentMatch && currentMatch->finalizeMatch()){
-        LOG_F(INFO, "child 3 %p(raw:%p)", root.get(), root->getRawHandler());
+        LOG_F(INFO, "Found matched = %s with criteria %s", root->description().c_str(), currentMatch->debugPrint().c_str());
         ret.push_back(root);
     }
 

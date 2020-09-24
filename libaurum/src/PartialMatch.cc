@@ -3,8 +3,10 @@
 #include <iostream>
 #include <set>
 #include <regex>
+#include <sstream>
 
 #include <loguru.hpp>
+
 
 bool PartialMatch::checkCriteria(const std::string *textA, const std::string textB, const bool *match)
 {
@@ -26,18 +28,9 @@ bool PartialMatch::checkCriteria(const bool *boolA, const bool boolB)
     return *boolA != boolB;
 }
 
-void PartialMatch::debugPrint()
+std::string PartialMatch::debugPrint()
 {
-    if (mSelector->mPkg)
-        LOG_F(INFO, "selector->pkg :%s", mSelector->mPkg->c_str());
-    if (mSelector->mId)
-        LOG_F(INFO, "selector->id :%s", mSelector->mId->c_str());
-    if (mSelector->mText)
-        LOG_F(INFO, "selector->text :%s", mSelector->mText->c_str());
-    if (mSelector->mType)
-        LOG_F(INFO, "selector->type :%s", mSelector->mType->c_str());
-    if (mSelector->mStyle)
-        LOG_F(INFO, "selector->style :%s", mSelector->mStyle->c_str());
+    return mSelector->description();
 }
 
 bool PartialMatch::checkCriteria(const std::shared_ptr<UiSelector> selector,
@@ -87,20 +80,15 @@ std::shared_ptr<PartialMatch> PartialMatch::accept(const std::shared_ptr<Accessi
                                                    int index, int absoluteDepth,
                                                    int relativeDepth)
 {
-    LOG_SCOPE_F(INFO, "accept checking i:%d a:%d r:%d / %d < %d < %d", index, absoluteDepth, relativeDepth, selector->mMinDepth?*(selector->mMinDepth):-1, relativeDepth, selector->mMaxDepth?*(selector->mMaxDepth):9999999);
+    //LOG_SCOPE_F(INFO, "PartialMatch::accept idx:%d abs:%d rel:%d / %d < %d < %d", index, absoluteDepth, relativeDepth, selector->mMinDepth?*(selector->mMinDepth):-1, relativeDepth, selector->mMaxDepth?*(selector->mMaxDepth):9999999);
     PartialMatch *match = nullptr;
 
     if ((selector->mMinDepth && (relativeDepth < *(selector->mMinDepth))) ||
         (selector->mMaxDepth && (relativeDepth > *(selector->mMaxDepth)))) {
-        LOG_F(INFO, "depth limit overflow %d < %d < %d", selector->mMinDepth?*(selector->mMinDepth):-1, relativeDepth, selector->mMaxDepth?*(selector->mMaxDepth):9999999);
         return std::shared_ptr<PartialMatch>(nullptr);
     }
-
-    if (PartialMatch::checkCriteria(selector, node)) {
-        LOG_F(INFO, "New Match found %p %d", selector, absoluteDepth);
+    if (PartialMatch::checkCriteria(selector, node))
         match = new PartialMatch(selector, absoluteDepth);
-    }
-
     return std::shared_ptr<PartialMatch>(match);
 }
 
