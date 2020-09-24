@@ -45,7 +45,7 @@ public:
      */
     static std::vector<std::shared_ptr<AccessibleNode>> findObjects(
         const std::shared_ptr<UiDevice> device, const std::shared_ptr<UiSelector> selector,
-        const std::shared_ptr<AccessibleNode> root);
+        const std::shared_ptr<AccessibleNode> root, bool earlyReturn = false);
 
 private:
     /**

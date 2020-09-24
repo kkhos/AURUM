@@ -23,6 +23,7 @@ std::shared_ptr<AccessibleNode> Comparer::findObject(const std::shared_ptr<UiDev
 
 std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(const std::shared_ptr<UiDevice> device,
                                                     const std::shared_ptr<UiSelector> selector,
+                                                    const std::shared_ptr<AccessibleNode> root, bool earlyReturn)
                                                     const std::shared_ptr<AccessibleNode> root)
 {
     Comparer comparer(device, selector, false);
