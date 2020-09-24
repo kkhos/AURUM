@@ -129,6 +129,12 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
+    std::shared_ptr<UiObject> getChildAt(int index) const;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     std::shared_ptr<Node> getDescendant();
 
     /**

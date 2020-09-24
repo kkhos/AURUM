@@ -130,6 +130,14 @@ int UiObject::getChildCount() const
     return getAccessibleNode()->getChildCount();
 }
 
+std::shared_ptr<UiObject> UiObject::getChildAt(int index) const {
+    auto childNode = getAccessibleNode()->getChildAt(index);
+    if (childNode) {
+        return std::make_shared<UiObject>(mDevice, mSelector, childNode);
+    }
+    return nullptr;
+}
+
 std::vector<std::shared_ptr<UiObject>> UiObject::getChildren() const
 {
     return this->findObjects(Sel::depth(1));
