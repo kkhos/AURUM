@@ -93,10 +93,11 @@ Ui Automation Library Aurum gcov objects
 %setup -q
 cp %{SOURCE1001} .
 
-export LDFLAGS+="-Wl,-z,noexecstack"
 
 %if "%{asan}" == "1"
 %restore_fcommon
+%else
+export LDFLAGS+="-Wl,-z,noexecstack"
 %endif
 
 
