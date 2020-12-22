@@ -55,13 +55,13 @@ private:
     efl_util_inputgen_h mFakeTouchHandle;
     efl_util_inputgen_h mFakeKeyboardHandle;
     efl_util_inputgen_h mFakeWheelHandle;
-    static const unsigned int INTV_CLICK = 5;
-    static const unsigned int INTV_SHORTSTROKE = 100;
-    static const unsigned int INTV_LONGSTROKE = 2000;
+    static const int INTV_CLICK = 5;
+    static const int INTV_SHORTSTROKE = 100;
+    static const int INTV_LONGSTROKE = 2000;
 
-    static const unsigned int INTV_MINIMUM_DRAG_MS = 25;
-    static const unsigned int INTV_MINIMUM_USLEEP = 1000;
-    static const unsigned int MINIMUM_DURATION_DRAG = 100;
+    static const int INTV_MINIMUM_DRAG_MS = 25;
+    static const int INTV_MINIMUM_USLEEP = 1000;
+    static const int MINIMUM_DURATION_DRAG = 100;
     static const unsigned int MSEC_PER_SEC = 1000;
     static const unsigned int MAX_FINGER_NUMBER = 2;
 
