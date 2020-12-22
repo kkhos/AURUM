@@ -12,7 +12,10 @@
 #include <algorithm>
 #include <loguru.hpp>
 
-
+AccessibleWatcher::AccessibleWatcher()
+:mSources{}, mLock{}
+{
+}
 
 AccessibleWatcher::~AccessibleWatcher()
 {
@@ -34,7 +37,7 @@ void AccessibleWatcher::printDbgInformation() const
 }
 */
 
-const AccessibleWatcher *AccessibleWatcher::getInstance(AccessibleWatcher *watcherImpl)
+AccessibleWatcher *AccessibleWatcher::getInstance(AccessibleWatcher *watcherImpl)
 {
     static AccessibleWatcher *mInstance = nullptr;
     if (watcherImpl) {
@@ -69,4 +72,31 @@ std::vector<std::shared_ptr<AccessibleApplication>> AccessibleWatcher::getActive
     LOG_F(INFO, "active apps size %d", apps.size());
 
     return apps;
+}
+
+void AccessibleWatcher::attach(std::shared_ptr<IEventConsumer> source)
+{
+    std::unique_lock<std::mutex> lock(mLock);
+    LOG_F(INFO, "source attached %p", source.get());
+    if (source) {
+        mSources.insert(source);
+    }
+}
+
+void AccessibleWatcher::detach(std::shared_ptr<IEventConsumer> source)
+{
+    std::unique_lock<std::mutex> lock(mLock);
+    LOG_F(INFO, "source detached %p", source.get());
+    if (source) {
+        auto iter = mSources.find(source);
+        if (iter != mSources.end()) mSources.erase(iter);
+    }
+}
+
+void AccessibleWatcher::notifyAll(int type, int type2, void *src)
+{
+    std::unique_lock<std::mutex> lock(mLock);
+    std::for_each(mSources.begin(), mSources.end(), [&](auto source){
+        source->notify(type, type2, src);
+    });
 }

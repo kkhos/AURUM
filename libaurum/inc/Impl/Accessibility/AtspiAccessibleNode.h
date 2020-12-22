@@ -45,7 +45,7 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    bool isValid() const;
+    bool isValid() const override;
 
 public:
     /**

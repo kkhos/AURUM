@@ -4,8 +4,11 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <mutex>
 
 #include "AccessibleUtils.h"
+#include "IEventConsumer.h"
+
 #include "Rect.h"
 #include "config.h"
 
@@ -66,7 +69,7 @@ public:
  * @brief AccessibleNode Class
  * @since_tizen 5.5
  */
-class AccessibleNode {
+class AccessibleNode : public std::enable_shared_from_this<AccessibleNode>, public IEventConsumer  {
 public:  // Constructor & Destructor
     /**
      * @brief TBD
@@ -104,6 +107,18 @@ public:
      * @since_tizen 5.5
      */
     virtual std::shared_ptr<AccessibleNode> getParent() const = 0;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    void notify(int type, int type2, void *src) override;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    void invalidate();
 
 public:
     /**
@@ -275,6 +290,12 @@ public:
      */
     virtual void setValue(std::string text) = 0;
 
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    virtual bool isValid() const;
+
 public:
     /**
      * @brief TBD
@@ -345,4 +366,14 @@ protected:
      */
     int mFeatureProperty;
 
+private:
+    /**
+     * @brief TBD
+     */
+    bool mValid;
+
+    /**
+     * @brief TBD
+     */
+    mutable std::mutex mLock;
 };

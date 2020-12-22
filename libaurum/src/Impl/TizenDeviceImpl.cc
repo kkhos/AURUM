@@ -46,6 +46,8 @@ bool TizenDeviceImpl::click(const int x, const int y)
 
 bool TizenDeviceImpl::click(const int x, const int y, const unsigned int intv)
 {
+    LOG_SCOPE_F(INFO, "click %d %d , intv:%d", x, y, intv);
+
     int seq = touchDown(x, y);
     if (seq < 0) return false;
     usleep(intv * MSEC_PER_SEC);
@@ -58,7 +60,7 @@ bool TizenDeviceImpl::click(const int x, const int y, const unsigned int intv)
 int TizenDeviceImpl::touchDown(const int x, const int y)
 {
     int seq = grabTouchSeqNumber();
-    LOG_F(INFO, "touch down %d %d , seq:%d", x, y, seq);
+    LOG_SCOPE_F(INFO, "touch down %d %d , seq:%d", x, y, seq);
     if (seq >= 0) {
         auto args = std::make_tuple(this, x, y, seq);
         long result = (long)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
@@ -80,7 +82,7 @@ int TizenDeviceImpl::touchDown(const int x, const int y)
 
 bool TizenDeviceImpl::touchMove(const int x, const int y, const int seq)
 {
-    LOG_F(INFO, "touch move %d %d, seq:%d", x, y, seq);
+    LOG_SCOPE_F(INFO, "touch move %d %d, seq:%d", x, y, seq);
     if (seq >= 0) {
         auto args = std::make_tuple(this, x, y, seq);
         long result = (long)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
@@ -99,7 +101,7 @@ bool TizenDeviceImpl::touchMove(const int x, const int y, const int seq)
 
 bool TizenDeviceImpl::touchUp(const int x, const int y, const int seq)
 {
-    LOG_F(INFO, "touch up %d %d, seq:%d", x, y, seq);
+    LOG_SCOPE_F(INFO, "touch up %d %d, seq:%d", x, y, seq);
     if (seq >= 0) {
         auto args = std::make_tuple(this, x, y, seq);
         long result = (long)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
@@ -116,7 +118,7 @@ bool TizenDeviceImpl::touchUp(const int x, const int y, const int seq)
 
 bool TizenDeviceImpl::wheelUp(int amount, const int durationMs)
 {
-    LOG_F(INFO, "wheel up %d for %d", amount, durationMs);
+    LOG_SCOPE_F(INFO, "wheel up %d for %d", amount, durationMs);
     auto args = std::make_tuple(this);
     long result = -1;
     for (int i = 0; i < amount; i++){
@@ -133,7 +135,7 @@ bool TizenDeviceImpl::wheelUp(int amount, const int durationMs)
 
 bool TizenDeviceImpl::wheelDown(int amount, const int durationMs)
 {
-    LOG_F(INFO, "wheel down %d for %d", amount, durationMs);
+    LOG_SCOPE_F(INFO, "wheel down %d for %d", amount, durationMs);
     auto args = std::make_tuple(this);
     long result = -1;
     for (int i = 0; i < amount; i++){

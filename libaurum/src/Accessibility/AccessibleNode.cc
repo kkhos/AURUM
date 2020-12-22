@@ -13,8 +13,32 @@ AccessibleNode::~AccessibleNode()
 
 AccessibleNode::AccessibleNode()
     : mText{""}, mPkg{""}, mRole{""}, mId{""}, mType{""}, mStyle{""},
-      mBoundingBox{0,0,0,0}, mSupportingIfaces(0), mFeatureProperty(0)
+      mBoundingBox{0,0,0,0}, mSupportingIfaces(0), mFeatureProperty(0), mValid{true}, mLock{}
 {
+}
+
+void AccessibleNode::notify(int type, int type2, void *src)
+{
+    LOG_SCOPE_F(INFO, "notified for obj(%p) t1:%d t2:%d src:%p",this, type, type2, src);
+    void *handler = getRawHandler();
+
+    if ((EventType)type == EventType::Object && (ObjectEventType)type2 == ObjectEventType::ObjectStateDefunct) {
+        if (handler == src) invalidate();
+    }
+}
+
+void AccessibleNode::invalidate()
+{
+    std::unique_lock<std::mutex> lock(mLock);
+    LOG_F(INFO, "object %p is now invalid", this);
+    mValid = false;
+}
+
+bool AccessibleNode::isValid() const
+{
+    std::unique_lock<std::mutex> lock(mLock);
+    if (!getRawHandler() || !mValid) return false;
+    return true;
 }
 
 void AccessibleNode::print(int depth, int maxDepth)

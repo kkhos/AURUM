@@ -291,6 +291,12 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
+    bool isValid() const;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
     std::shared_ptr<AccessibleNode> getAccessibleNode() const;
 
 private:

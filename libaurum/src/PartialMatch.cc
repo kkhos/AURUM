@@ -11,8 +11,6 @@ bool PartialMatch::checkCriteria(const std::string *textA, const std::string tex
     if (!textA || !match) return false;
     std::regex re(*textA);
     bool rst = !(!!std::regex_match(textB, re) == (*match));
-
-    LOG_F(INFO, "WKWK# %d %s %s=> %d\n", *match, textA->c_str(), textB.c_str(), rst);
     return rst;
 }
 
