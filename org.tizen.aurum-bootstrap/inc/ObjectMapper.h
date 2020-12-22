@@ -26,4 +26,6 @@ public:
 
     bool removeElement(const std::string key);
     bool removeElement(std::shared_ptr<UiObject> object);
+
+    void cleanUp();
 };

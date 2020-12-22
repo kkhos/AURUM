@@ -21,6 +21,7 @@ aurumServiceImpl::aurumServiceImpl()
     std::unique_ptr<PreCommand>  proxyPreCmd  = std::make_unique<PreCommand>(cmd);
     std::unique_ptr<PostCommand> proxyPostCmd = std::make_unique<PostCommand>(proxyPreCmd.get());
     ::grpc::Status rst = proxyPostCmd->execute();
+    ObjectMapper::getInstance()->cleanUp();
     return rst;
 }
 
