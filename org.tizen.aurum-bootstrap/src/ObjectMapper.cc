@@ -1,6 +1,8 @@
 #include "ObjectMapper.h"
 #include <memory>
 #include <loguru.hpp>
+#include <algorithm>
+#include <sstream>
 
 ObjectMapper::ObjectMapper() : mObjectMap{}, mObjectMapReverse{}, mObjCounter{0} {}
 
@@ -50,6 +52,7 @@ std::string ObjectMapper::getElement(std::shared_ptr<UiObject> object)
 
 bool ObjectMapper::removeElement(const std::string key)
 {
+    LOG_SCOPE_F(INFO, "removeElement for key(%s)", key.c_str());
     std::shared_ptr<UiObject> obj = getElement(key);
     if (obj) {
         if (mObjectMap.erase(key) && mObjectMapReverse.erase(obj))
@@ -60,7 +63,49 @@ bool ObjectMapper::removeElement(const std::string key)
 
 bool ObjectMapper::removeElement(std::shared_ptr<UiObject> object)
 {
+    LOG_SCOPE_F(INFO, "removeElement for object(%p)", object.get());
     std::string key = getElement(object);
     if (key.empty()) return false;
     return removeElement(key);
 }
+
+void ObjectMapper::cleanUp()
+{
+    std::stringstream ss{};
+
+    LOG_SCOPE_F(INFO, "clean up object map");
+        ss << "mObjectMap: ";
+    for(auto iter = mObjectMap.begin(); iter != mObjectMap.end(); ) {
+        if (!iter->second->isValid()) {
+            iter = mObjectMap.erase(iter);
+        } else {
+            ss << "(" << iter->first << "," << iter->second.get() << ") ";
+            ++iter;
+        }
+    }
+    ss << std::endl;
+    ss << "mObjectMapReverse: ";
+    for(auto iter = mObjectMapReverse.begin(); iter != mObjectMapReverse.end(); ) {
+        if (!iter->first->isValid()) {
+            iter = mObjectMapReverse.erase(iter);
+        } else {
+            ss << "(" << iter->first.get() << "," << iter->second << ") ";
+            ++iter;
+        }
+    }
+    ss << std::endl;
+    LOG_F(INFO, "%s", ss.str().c_str());
+}
+
+//    std::remove_if(mObjectMapReverse.begin(), mObjectMapReverse.end(), [](auto& pair){return !pair.first->isValid();});
+    //auto iter = std::find_if(mObjectMap.begin(), mObjectMap.end(), [](const std::pair<std::string, std::shared_ptr<UiObject>>& pair)->bool{
+        //return !pair.second->isValid();
+    //});
+/*
+    while ( iter != mObjectMap.end()) {
+        removeElement(iter->second);
+        iter = std::find_if(std::next(iter), mObjectMap.end(), [](const std::pair<std::string, std::shared_ptr<UiObject>>& pair)->bool{
+            return !pair.second->isValid();
+        });
+    }
+    */
