@@ -1,4 +1,5 @@
 #include "AtspiAccessibleNode.h"
+#include "AccessibleWatcher.h"
 
 #include <gio/gio.h>
 
@@ -9,8 +10,12 @@
 AtspiAccessibleNode::AtspiAccessibleNode(AtspiAccessible *node)
 : mNode{node}
 {
-  if (mNode) {
-    GArray *ifaces = atspi_accessible_get_interfaces(mNode);
+    const auto trickDontRemove = std::shared_ptr<AtspiAccessibleNode>( this, [](AtspiAccessibleNode*){} );
+    auto watcher = AccessibleWatcher::getInstance();
+    watcher->attach(shared_from_this());
+
+    if (mNode) {
+        GArray *ifaces = atspi_accessible_get_interfaces(mNode);
         if (ifaces) {
             for (unsigned int i = 0; i < ifaces->len; i++) {
                 char *iface = g_array_index(ifaces, char *, i);
@@ -68,6 +73,8 @@ AtspiAccessibleNode::AtspiAccessibleNode(AtspiAccessible *node)
 
 AtspiAccessibleNode::~AtspiAccessibleNode()
 {
+    auto watcher = AccessibleWatcher::getInstance();
+    watcher->detach(shared_from_this());
     if(mNode) g_object_unref(mNode);
 }
 
@@ -81,7 +88,7 @@ int AtspiAccessibleNode::getChildCount() const
 
 std::shared_ptr<AccessibleNode> AtspiAccessibleNode::getChildAt(int index) const
 {
-    if (!isValid()) std::make_shared<AtspiAccessibleNode>(nullptr);
+    if (!isValid()) return std::make_shared<AtspiAccessibleNode>(nullptr);
     LOG_SCOPE_F(INFO, "getChild @ %d from node(%p)", index, mNode);
     AtspiAccessible *rawChild = atspi_accessible_get_child_at_index(mNode, index, NULL);
     return std::make_shared<AtspiAccessibleNode>(rawChild);
@@ -109,7 +116,7 @@ std::shared_ptr<AccessibleNode> AtspiAccessibleNode::getParent() const
 }
 bool AtspiAccessibleNode::isValid() const
 {
-    if (!mNode) return false;
+    if(!AccessibleNode::isValid())  return false;
 
     AtspiStateSet *st = atspi_accessible_get_state_set(mNode);
     if (!st) return false;

@@ -5,7 +5,6 @@
 #include <atspi/atspi.h>
 #include <gio/gio.h>
 
-#include <mutex>
 #include <shared_mutex>
 #include <memory>
 #include <list>
@@ -103,7 +102,7 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    static void onAtspiWindowEvent(AtspiEvent *event, void *user_data);
+    static void onAtspiEvents(AtspiEvent *event, void *user_data);
 
     /**
      * @brief TBD
@@ -178,11 +177,6 @@ private:
      * @brief TBD
      */
     GDBusProxy *                                  mDbusProxy;
-
-    /**
-     * @brief TBD
-     */
-    std::mutex                            mLock;
 
     /**
      * @brief TBD

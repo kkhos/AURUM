@@ -60,9 +60,4 @@ private:
      * @brief TBD
      */
     std::vector<std::shared_ptr<AccessibleApplication>> mApplicationList;
-
-    /**
-     * @brief TBD
-     */
-    std::mutex                            mLock;
 };

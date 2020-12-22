@@ -263,6 +263,11 @@ void UiObject::refresh() const
     mNode->refresh();
 }
 
+bool UiObject::isValid() const
+{
+    return mNode->isValid();
+}
+
 const Rect<int> UiObject::getBoundingBox() const
 {
     mNode->refresh();

@@ -4,22 +4,28 @@
 #include "AccessibleApplication.h"
 #include "AccessibleWindow.h"
 #include "AccessibleNode.h"
-
 #include "AccessibleUtils.h"
+#include "IEventSource.h"
 
 #include <memory>
 #include <vector>
-
+#include <set>
+#include <mutex>
 
 #include "config.h"
-
 
 /**
  * @brief AccessibleWatcher class
  * @since_tizen 5.5
  */
-class AccessibleWatcher {
+class AccessibleWatcher : public IEventSource {
 public:
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    AccessibleWatcher();
+
     /**
      * @brief TBD
      * @since_tizen 5.5
@@ -30,7 +36,7 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    static const AccessibleWatcher *getInstance(AccessibleWatcher *watcherImpl = nullptr);
+    static AccessibleWatcher *getInstance(AccessibleWatcher *watcherImpl = nullptr);
 
 public:
     /**
@@ -57,4 +63,33 @@ public:
      * @since_tizen 5.5
      */
     virtual std::vector<std::shared_ptr<AccessibleApplication>> getActiveApplications(void) const;
+public:
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    void attach(std::shared_ptr<IEventConsumer> source) override;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    void detach(std::shared_ptr<IEventConsumer> source) override;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    void notifyAll(int type, int type2, void *src) override;
+
+private:
+    /**
+     * @brief TBD
+     */
+    std::set<std::shared_ptr<IEventConsumer>> mSources;
+
+    /**
+     * @brief TBD
+     */
+    std::mutex mLock;
 };

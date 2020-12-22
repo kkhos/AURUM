@@ -4,13 +4,13 @@
 #include <mutex>
 #include <set>
 
-class MockAccessibleNode : public AccessibleNode, public std::enable_shared_from_this<MockAccessibleNode> {
+class MockAccessibleNode : public AccessibleNode {
 public:
     /**
      * @brief TBD
      * @since_tizen 5.5
      */
-    MockAccessibleNode(std::shared_ptr<MockAccessibleNode> parent, std::string text,std::string pkg,std::string role, std::string id, std::string type,std::string style, std::string automationId, Rect<int> boundingBox,int supportingIfaces,int featureProperty);
+    MockAccessibleNode(std::shared_ptr<AccessibleNode> parent, std::string text,std::string pkg,std::string role, std::string id, std::string type,std::string style, std::string automationId, Rect<int> boundingBox,int supportingIfaces,int featureProperty);
 
     /**
      * @brief TBD

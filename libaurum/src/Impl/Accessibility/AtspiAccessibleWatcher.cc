@@ -68,7 +68,7 @@ findActiveNode(AtspiAccessible *node, int depth,
 }
 
 AtspiAccessibleWatcher::AtspiAccessibleWatcher()
-: mDbusProxy{nullptr}, mLock{}
+: mDbusProxy{nullptr}
 {
     GVariant *enabled_variant = nullptr, *result = nullptr;
     GError *  error = nullptr;
@@ -76,12 +76,9 @@ AtspiAccessibleWatcher::AtspiAccessibleWatcher()
     atspi_init();
 
     listener =
-        atspi_event_listener_new(AtspiAccessibleWatcher::onAtspiWindowEvent, this, NULL);
+        atspi_event_listener_new(AtspiAccessibleWatcher::onAtspiEvents, this, NULL);
 
-    atspi_event_listener_register(listener, "window:create", NULL);
-    atspi_event_listener_register(listener, "window:destroy", NULL);
-    atspi_event_listener_register(listener, "window:activate", NULL);
-    atspi_event_listener_register(listener, "window:deactivate", NULL);
+    atspi_event_listener_register(listener, "window:", NULL);
     atspi_event_listener_register(listener, "object:", NULL);
 
     mDbusProxy = g_dbus_proxy_new_for_bus_sync(
@@ -124,7 +121,7 @@ AtspiAccessibleWatcher::~AtspiAccessibleWatcher()
 }
 
 
-void AtspiAccessibleWatcher::onAtspiWindowEvent(AtspiEvent *event, void *user_data)
+void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *user_data)
 {
     char *name = NULL, *pname = NULL;
     AtspiAccessibleWatcher *instance = (AtspiAccessibleWatcher *)user_data;
@@ -135,18 +132,12 @@ void AtspiAccessibleWatcher::onAtspiWindowEvent(AtspiEvent *event, void *user_da
         return;
     }
 
-
-    AtspiAccessible *parent = atspi_accessible_get_parent(event->source, NULL);
-
     name = atspi_accessible_get_name(event->source, NULL);
+    AtspiAccessible *parent = atspi_accessible_get_parent(event->source, NULL);
     if (parent) {
         pname = atspi_accessible_get_name(parent, NULL);
         g_object_unref(parent);
     }
-
-     LOG_SCOPE_F(INFO, "event:%s, src:%p(%s), p:%p(%s), d1:%p d2:%p instance:%p",
-                 event->type, event->source, name, parent, pname, event->detail1,
-                 event->detail2, instance);
 
     if (!strcmp(event->type, "window:activate")) {
         instance->onWindowActivated(
@@ -194,43 +185,38 @@ void AtspiAccessibleWatcher::print_debug()
 void AtspiAccessibleWatcher::onWindowActivated(AtspiAccessible *node,
                             WindowActivateInfoType type)
 {
-    //std::unique_lock<std::mutex> lock(mLock);
     LOG_SCOPE_F(INFO, "onWindowActivated obj:%p", node);
-    //addToActivatedList((node));
-    return;
+    notifyAll((int)EventType::Window, (int)WindowEventType::WindowActivated, node);
 }
 
 void AtspiAccessibleWatcher::onWindowDeactivated(AtspiAccessible *node)
 {
-    std::unique_lock<std::mutex> lock(mLock);
     LOG_SCOPE_F(INFO, "onWindowDeactivated obj:%p", node);
-    //removeFromActivatedList(node);
+    notifyAll((int)EventType::Window, (int)WindowEventType::WindowDeactivated, node);
 }
 
 void AtspiAccessibleWatcher::onWindowCreated(AtspiAccessible *node)
 {
-    std::unique_lock<std::mutex> lock(mLock);
     LOG_SCOPE_F(INFO, "onWindowCreated obj:%p", node);
-    //addToWindowSet(node);
+    notifyAll((int)EventType::Window, (int)WindowEventType::WindowCreated, node);
 }
 
 void AtspiAccessibleWatcher::onWindowDestroyed(AtspiAccessible *node)
 {
-    std::unique_lock<std::mutex> lock(mLock);
     LOG_SCOPE_F(INFO, "onWindowDestroyed obj:%p vis:%d", node);
-    //removeFromWindowSet(node);
+    notifyAll((int)EventType::Window, (int)WindowEventType::WindowDestroyed, node);
 }
 
 void AtspiAccessibleWatcher::onVisibilityChanged(AtspiAccessible *node, bool visible)
 {
-    std::unique_lock<std::mutex> lock(mLock);
-    LOG_SCOPE_F(INFO, "onVisibilityChanged obj:%p vis:%d", node, visible);
+    LOG_SCOPE_F(INFO, "onVisibilityChanged obj:%p", node);
+    notifyAll((int)EventType::Object, (int)ObjectEventType::ObjectStateVisible, node);
 }
 
 void AtspiAccessibleWatcher::onObjectDefunct(AtspiAccessible *node)
 {
-    std::unique_lock<std::mutex> lock(mLock);
     LOG_SCOPE_F(INFO, "onObjectDefunct obj:%p", node);
+    notifyAll((int)EventType::Object, (int)ObjectEventType::ObjectStateDefunct, node);
 }
 
 
@@ -325,79 +311,3 @@ bool AtspiAccessibleWatcher::addToWindowSet(AtspiAccessible *node)
     }
     return false;
 }
-
-/*
-std::shared_ptr<AccessibleNode> AtspiAccessibleWatcher::getRootNode() const
-{
-    auto node = atspi_get_desktop(0);
-    auto aNode = std::make_shared<AccessibleNode>(node);
-    return accNode;
-}
-
-std::vector<std::shared_ptr<AccessibleNode>> AtspiAccessibleWatcher::getTopNode() const
-{
-    AtspiAccessible *topNode = nullptr, *activeNode = nullptr;
-    std::vector<std::shared_ptr<AccessibleNode>> ret;
-
-    {
-        std::unique_lock<std::mutex> lock(mLock);
-        if (!mActivatedWindowList.empty()) {
-            topNode = mActivatedWindowList.front();
-            std::list<AtspiAccessible *>::const_iterator iterator;
-            for (iterator = mActivatedWindowList.begin(); iterator != mActivatedWindowList.end(); ++iterator){
-                if (*iterator && iShowingNode(*iterator)) {
-                    AtspiAccessible *child = atspi_accessible_get_application(*iterator, NULL);
-                    if (child) {
-                        auto tmpNode = make_gobj_unique(child);
-                        auto node =  AccessibleNode::get(tmpNode.get());
-                        if (tmpNode.get()) g_object_unref(tmpNode.get());
-                        ret.push_back((node));
-                    }
-                }
-            }
-            return ret;
-        }
-    }
-
-    LOG_F(INFO, "Mo activated window node or Invisible acticated window / topNdoe(%p)", topNode);
-    LOG_F(INFO, "Trying fallback logic");
-
-    auto rootNode = make_gobj_unique(atspi_get_desktop(0));
-
-    if (rootNode) {
-        std::vector<AtspiAccessible*> activeNodes = findActiveNode(rootNode.get(), 0, 2);
-        if (!activeNodes.empty()) {
-            std::set<AtspiAccessible*> appset{};
-            for (auto iterator = activeNodes.begin(); iterator != activeNodes.end(); ++iterator){
-                //auto tmpNode = make_gobj_unique(atspi_accessible_get_application(*iterator, NULL));
-                auto app = atspi_accessible_get_application(*iterator, NULL);
-                appset.insert(app);
-            }
-            for (auto iterator = appset.begin(); iterator != appset.end(); ++iterator){
-                auto node = AccessibleNode::get(*iterator);
-                g_object_unref(*iterator);
-                LOG_F(INFO, "app has showing window found %p %s %s", node.get(), node->getText().c_str(), node->getPkg().c_str());
-                ret.push_back((node));
-            }
-        } else {
-            auto node = AccessibleNode::get(rootNode.get());
-            if (rootNode.get()) g_object_unref(rootNode.get());
-            ret.push_back((node));
-        }
-    }
-    return ret;
-}
-*/
-/*
-void AtspiAccessibleWatcher::clearWindowList()
-{
-    std::unique_lock<std::mutex> lock(mLock);
-
-    std::for_each(mActivatedWindowSet.begin(), mActivatedWindowSet.end(), [](auto window){
-        g_object_unref(window);
-    });
-    mActivatedWindowSet.clear();
-
-    mWindowSet.clear();
-}
-*/
