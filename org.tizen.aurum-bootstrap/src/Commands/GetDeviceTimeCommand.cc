@@ -8,6 +8,8 @@
 #include "UiDevice.h"
 #include <string>
 
+#define BUFSIZE 64
+
 GetDeviceTimeCommand::GetDeviceTimeCommand(
     const ::aurum::ReqGetDeviceTime* request,
     ::aurum::RspGetDeviceTime*       response)
@@ -26,11 +28,11 @@ public:
         i18n_udatepg_h pattern_generator = NULL;
         i18n_udate_format_h formatter = NULL;
 
-        i18n_uchar timezone_i18[64] = {0,};
-        i18n_uchar pattern_i18[64]= {0,};
-        i18n_uchar best_pattern_i18[64]= {0,};
-        i18n_uchar result_i18[64]= {0,};
-        char result[64]= {0,};
+        i18n_uchar timezone_i18[BUFSIZE+1] = {0,};
+        i18n_uchar pattern_i18[BUFSIZE+1]= {0,};
+        i18n_uchar best_pattern_i18[BUFSIZE+1]= {0,};
+        i18n_uchar result_i18[BUFSIZE+1]= {0,};
+        char result[BUFSIZE+1]= {0,};
 
         int pattern_len, best_pattern_len, result_i18n_len;
 
@@ -55,7 +57,7 @@ public:
 
         i18n_udatepg_get_best_pattern(pattern_generator,
                                       pattern_i18, pattern_len,
-                                      best_pattern_i18, 64, &best_pattern_len);
+                                      best_pattern_i18, BUFSIZE, &best_pattern_len);
 
         i18n_ustring_copy_ua_n(timezone_i18, timezone, strlen(timezone));
 
@@ -72,8 +74,8 @@ public:
 
         if (formatter) {
             i18n_udate date = timestamp;
-            i18n_udate_format_date(formatter, date, result_i18, 64, NULL, &result_i18n_len);
-            i18n_ustring_copy_au_n(result , result_i18, 64);
+            i18n_udate_format_date(formatter, date, result_i18, BUFSIZE, NULL, &result_i18n_len);
+            i18n_ustring_copy_au_n(result , result_i18, BUFSIZE);
             i18n_udate_destroy(formatter);
             return std::string{result};
         }
