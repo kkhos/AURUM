@@ -79,5 +79,13 @@ int main(int argc, char **argv)
     event_callback.terminate = service_app_terminate;
     event_callback.app_control = service_app_control;
 
-    return service_app_main(argc, argv, &event_callback, &ctx);
+    int result = -1;
+
+    try {
+       result = service_app_main(argc, argv, &event_callback, &ctx);
+    } catch (const std::exception& e) {
+       LOG_F(INFO, "service_app_main exception: %s", e.what());
+    }
+
+    return result;
 }
