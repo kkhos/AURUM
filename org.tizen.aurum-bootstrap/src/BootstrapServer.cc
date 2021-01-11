@@ -2,6 +2,7 @@
 #include <glib.h>
 
 #include <service_app.h>
+#include <privacy_privilege_manager.h>
 
 #include <gio/gio.h>
 #include <grpcpp/grpcpp.h>
@@ -10,6 +11,9 @@
 #include "AurumServiceImpl.h"
 #include "config.h"
 #include <loguru.hpp>
+
+#define PRIV_MEDIASTORAGE "http://tizen.org/privilege/mediastorage"
+#define PRIV_LOCATION "http://tizen.org/privilege/location"
 
 using namespace grpc;
 
@@ -37,10 +41,68 @@ _grpc_thread_func (gpointer data)
     return NULL;
 }
 
-bool service_app_create(void *data)
+static void
+reponse_cb(ppm_call_cause_e cause, ppm_request_result_e result,
+                                      const char *privilege, void *user_data)
+{
+    if (cause == PRIVACY_PRIVILEGE_MANAGER_CALL_CAUSE_ERROR) {
+        LOG_F(INFO, "PPM Error PRIVACY_PRIVILEGE_MANAGER_CALL_CAUSE_ERROR");
+        return;
+    }
+
+    switch (result) {
+        case PRIVACY_PRIVILEGE_MANAGER_REQUEST_RESULT_ALLOW_FOREVER:
+            LOG_F(INFO, "priv:%s PRIVACY_PRIVILEGE_MANAGER_REQUEST_RESULT_ALLOW_FOREVER", privilege);
+            break;
+        case PRIVACY_PRIVILEGE_MANAGER_REQUEST_RESULT_DENY_FOREVER:
+            LOG_F(INFO, "priv:%s PRIVACY_PRIVILEGE_MANAGER_REQUEST_RESULT_ALLOW_FOREVER", privilege);
+            break;
+        case PRIVACY_PRIVILEGE_MANAGER_REQUEST_RESULT_DENY_ONCE:
+            LOG_F(INFO, "priv:%s PRIVACY_PRIVILEGE_MANAGER_REQUEST_RESULT_ALLOW_FOREVER", privilege);
+            break;
+        default:
+            LOG_F(INFO, "priv:%s default", privilege);
+            break;
+    }
+}
+
+static void
+check_permission(char *path_privilege)
+{
+    ppm_check_result_e result;
+    int ret;
+    LOG_F(INFO, "path_privilege = %s",path_privilege);
+    ret = ppm_check_permission(path_privilege, &result);
+
+    if (ret == PRIVACY_PRIVILEGE_MANAGER_ERROR_NONE) {
+        switch (result) {
+            case PRIVACY_PRIVILEGE_MANAGER_CHECK_RESULT_ALLOW:
+                break;
+
+            case PRIVACY_PRIVILEGE_MANAGER_CHECK_RESULT_DENY:
+                LOG_F(INFO, "PRIVACY_PRIVILEGE_MANAGER_CHECK_RESULT_DENY");
+                ;
+                break;
+
+            case PRIVACY_PRIVILEGE_MANAGER_CHECK_RESULT_ASK:
+                LOG_F(INFO, "PRIVACY_PRIVILEGE_MANAGER_CHECK_RESULT_ASK");
+                ppm_request_permission(path_privilege, reponse_cb, NULL);
+                break;
+
+            default:
+                break;
+        }
+    } else {
+        LOG_F(INFO, "Error to check permission[0x%x]", ret);
+    }
+}
+
+
+static bool _service_app_create(void *data)
 {
     ServiceContext *ctx = (ServiceContext*)data;
     const char *logPath = "/tmp/ua.log";
+
 
     loguru::g_preamble = false;
     loguru::add_file(logPath, loguru::Append, loguru::Verbosity_MAX);
@@ -49,10 +111,13 @@ bool service_app_create(void *data)
     ctx->loop = g_main_loop_new ( NULL , FALSE );
     ctx->thread = g_thread_new("grpc_thread", _grpc_thread_func, ctx);
 
+    check_permission(PRIV_LOCATION);
+    check_permission(PRIV_MEDIASTORAGE);
+
     return true;
 }
 
-void service_app_terminate(void *data)
+static void _service_app_terminate(void *data)
 {
     ServiceContext *ctx = (ServiceContext*)data;
     ctx->server->Shutdown();
@@ -60,7 +125,7 @@ void service_app_terminate(void *data)
     g_thread_join(ctx->thread);
 }
 
-void service_app_control(app_control_h app_control, void *data)
+static void _service_app_control(app_control_h app_control, void *data)
 {
     ServiceContext *ctx = (ServiceContext*)data;
 }
@@ -75,9 +140,9 @@ int main(int argc, char **argv)
     app_event_handler_h handlers[5] = {NULL, };
     ServiceContext ctx = {0,};
 
-    event_callback.create = service_app_create;
-    event_callback.terminate = service_app_terminate;
-    event_callback.app_control = service_app_control;
+    event_callback.create = _service_app_create;
+    event_callback.terminate = _service_app_terminate;
+    event_callback.app_control = _service_app_control;
 
     int result = -1;
 
