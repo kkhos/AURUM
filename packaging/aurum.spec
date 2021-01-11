@@ -28,6 +28,7 @@ BuildRequires: pkgconfig(capi-system-device)
 BuildRequires: pkgconfig(libtzplatform-config)
 BuildRequires: pkgconfig(capi-system-system-settings)
 BuildRequires: pkgconfig(capi-base-utils-i18n)
+BuildRequires: pkgconfig(capi-privacy-privilege-manager)
 
 %if 0%{?gendoc:1}
 BuildRequires:  doxygen
