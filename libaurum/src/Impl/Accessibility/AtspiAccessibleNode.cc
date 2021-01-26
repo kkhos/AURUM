@@ -1,5 +1,6 @@
 #include "AtspiAccessibleNode.h"
 #include "AccessibleWatcher.h"
+#include "AtspiWrapper.h"
 
 #include <gio/gio.h>
 
@@ -15,7 +16,8 @@ AtspiAccessibleNode::AtspiAccessibleNode(AtspiAccessible *node)
     watcher->attach(shared_from_this());
 
     if (mNode) {
-        GArray *ifaces = atspi_accessible_get_interfaces(mNode);
+        /*
+        GArray *ifaces = AtspiWrapper::Atspi_accessible_get_interfaces(mNode);
         if (ifaces) {
             for (unsigned int i = 0; i < ifaces->len; i++) {
                 char *iface = g_array_index(ifaces, char *, i);
@@ -64,7 +66,8 @@ AtspiAccessibleNode::AtspiAccessibleNode(AtspiAccessible *node)
                 g_free(iface);
             }
             g_array_free(ifaces, FALSE);
-        }
+        }*/
+
         this->refresh();
     } else {
         LOG_F(INFO, "AtspiAccessibleNode Ctor : mNode is null");
@@ -80,17 +83,27 @@ AtspiAccessibleNode::~AtspiAccessibleNode()
 
 int AtspiAccessibleNode::getChildCount() const
 {
-    if (!isValid()) return 0;
-    int count = atspi_accessible_get_child_count(mNode, NULL);
+    AtspiWrapper::lock();
+    if (!isValid()) {
+        AtspiWrapper::unlock();
+        return 0;
+    }
+    int count = AtspiWrapper::Atspi_accessible_get_child_count(mNode, NULL);
+    AtspiWrapper::unlock();
     if (count <= 0) return 0;
     return count;
 }
 
 std::shared_ptr<AccessibleNode> AtspiAccessibleNode::getChildAt(int index) const
 {
-    if (!isValid()) return std::make_shared<AtspiAccessibleNode>(nullptr);
+    AtspiWrapper::lock();
+    if (!isValid()) {
+        AtspiWrapper::unlock();
+        return std::make_shared<AtspiAccessibleNode>(nullptr);
+    }
     LOG_SCOPE_F(INFO, "getChild @ %d from node(%p)", index, mNode);
-    AtspiAccessible *rawChild = atspi_accessible_get_child_at_index(mNode, index, NULL);
+    AtspiAccessible *rawChild = AtspiWrapper::Atspi_accessible_get_child_at_index(mNode, index, NULL);
+    AtspiWrapper::unlock();
     return std::make_shared<AtspiAccessibleNode>(rawChild);
 }
 
@@ -107,8 +120,13 @@ std::vector<std::shared_ptr<AccessibleNode>> AtspiAccessibleNode::getChildren() 
 
 std::shared_ptr<AccessibleNode> AtspiAccessibleNode::getParent() const
 {
-    if (!isValid()) std::make_shared<AtspiAccessibleNode>(nullptr);
-    AtspiAccessible *rawParent = atspi_accessible_get_parent(mNode, NULL);
+    AtspiWrapper::lock();
+    if (!isValid()) {
+        AtspiWrapper::unlock();
+        return std::make_shared<AtspiAccessibleNode>(nullptr);
+    }
+    AtspiAccessible *rawParent = AtspiWrapper::Atspi_accessible_get_parent(mNode, NULL);
+    AtspiWrapper::unlock();
     return std::make_shared<AtspiAccessibleNode>(rawParent);
 /*  auto node = AccessibleNode::get(parent);
     if (parent) g_object_unref(parent);
@@ -118,10 +136,10 @@ bool AtspiAccessibleNode::isValid() const
 {
     if(!AccessibleNode::isValid())  return false;
 
-    AtspiStateSet *st = atspi_accessible_get_state_set(mNode);
+    AtspiStateSet *st = AtspiWrapper::Atspi_accessible_get_state_set(mNode);
     if (!st) return false;
-    if (atspi_state_set_contains(st, ATSPI_STATE_INVALID) ||
-        atspi_state_set_contains(st, ATSPI_STATE_DEFUNCT)) {
+    if (AtspiWrapper::Atspi_state_set_contains(st, ATSPI_STATE_INVALID) ||
+        AtspiWrapper::Atspi_state_set_contains(st, ATSPI_STATE_DEFUNCT)) {
         g_object_unref(st);
         return false;
     }
@@ -137,14 +155,15 @@ void* AtspiAccessibleNode::getRawHandler(void) const
 
 void AtspiAccessibleNode::refresh()
 {
+    AtspiWrapper::lock();
     if (isValid()) {
-        gchar *rolename = atspi_accessible_get_role_name(mNode, NULL);
+        gchar *rolename = AtspiWrapper::Atspi_accessible_get_role_name(mNode, NULL);
         if (rolename) {
             mRole = rolename;
             g_free(rolename);
         }
     #ifdef TIZEN
-        gchar *uID = atspi_accessible_get_unique_id(mNode, NULL);
+        gchar *uID = AtspiWrapper::Atspi_accessible_get_unique_id(mNode, NULL);
         if (uID) {
             mId = uID;
             g_free(uID);
@@ -153,12 +172,12 @@ void AtspiAccessibleNode::refresh()
         mId = std::string{"N/A"};
     #endif
 
-        gchar *name = atspi_accessible_get_name(mNode, NULL);
+        gchar *name = AtspiWrapper::Atspi_accessible_get_name(mNode, NULL);
         mText = name;
         mPkg = name;
         g_free(name);
 
-        GHashTable *attributes = atspi_accessible_get_attributes(mNode, NULL);
+        GHashTable *attributes = AtspiWrapper::Atspi_accessible_get_attributes(mNode, NULL);
         if (attributes) {
             char *t = (char*)g_hash_table_lookup(attributes, "type");
             char *s = (char*)g_hash_table_lookup(attributes, "style");
@@ -172,25 +191,26 @@ void AtspiAccessibleNode::refresh()
             free(s);
             free(a);
 
+            LOG_F(INFO, "table unref %p", attributes);
             g_hash_table_unref(attributes);
         }
 
-        AtspiStateSet *st = atspi_accessible_get_state_set(mNode);
+        AtspiStateSet *st = AtspiWrapper::Atspi_accessible_get_state_set(mNode);
         if (st) {
-            GArray *states = atspi_state_set_get_states(st);
+            GArray *states = AtspiWrapper::Atspi_state_set_get_states(st);
             if (states) {
                 AtspiStateType stat;
                 for (unsigned int i = 0; states && (i < states->len); ++i) {
                     stat = g_array_index(states, AtspiStateType, i);
                     setFeatureProperty(stat);
                 }
-                g_array_free(states, 0);
+                g_array_free(states, 1);
             }
             g_object_unref(st);
         }
-        AtspiComponent *component = atspi_accessible_get_component_iface(mNode);
+        AtspiComponent *component = AtspiWrapper::Atspi_accessible_get_component_iface(mNode);
         if (component) {
-            AtspiRect *extent = atspi_component_get_extents(
+            AtspiRect *extent = AtspiWrapper::Atspi_component_get_extents(
                 component, ATSPI_COORD_TYPE_SCREEN, NULL);
             if (extent) {
                 mBoundingBox =
@@ -203,68 +223,93 @@ void AtspiAccessibleNode::refresh()
     } else {
         setFeatureProperty(ATSPI_STATE_INVALID);
     }
+    AtspiWrapper::unlock();
 }
 
 std::vector<std::string> AtspiAccessibleNode::getActions() const
 {
+    AtspiWrapper::lock();
+
     std::vector<std::string> result{};
     AtspiAction *action;
-    if (!isValid()) return result;
+    if (!isValid()) {
+        AtspiWrapper::unlock();
+        return result;
+    }
 
-    action = atspi_accessible_get_action_iface(mNode);
+    action = AtspiWrapper::Atspi_accessible_get_action_iface(mNode);
     if (action) {
         int a;
-        int n_actions = atspi_action_get_n_actions(action, NULL);
+        int n_actions = AtspiWrapper::Atspi_action_get_n_actions(action, NULL);
 
         for (a = 0; a < n_actions; a++) {
-            char *action_name = atspi_action_get_action_name(action, a, NULL);
+            char *action_name = AtspiWrapper::Atspi_action_get_action_name(action, a, NULL);
             if (!action_name) continue;
             result.push_back(std::string{action_name});
             g_free(action_name);
         }
         g_object_unref(action);
     }
+
+    AtspiWrapper::unlock();
+
     return result;
 }
 
 bool AtspiAccessibleNode::doAction(std::string actionName)
 {
+    AtspiWrapper::lock();
     AtspiAction *action;
-    if (!isValid()) return false;
-    action = atspi_accessible_get_action_iface(mNode);
+
+    if (!isValid()) {
+        AtspiWrapper::unlock();
+        return false;
+    }
+
+    action = AtspiWrapper::Atspi_accessible_get_action_iface(mNode);
     if (action) {
         int a;
-        int n_actions = atspi_action_get_n_actions(action, NULL);
+        int n_actions = AtspiWrapper::Atspi_action_get_n_actions(action, NULL);
 
         for (a = 0; a < n_actions; a++) {
-            char *action_name = atspi_action_get_action_name(action, a, NULL);
-            if (!action_name) return false;
+            char *action_name = AtspiWrapper::Atspi_action_get_action_name(action, a, NULL);
+            if (!action_name) {
+                AtspiWrapper::unlock();
+                 return false;
+            }
 
             if (!strcmp(actionName.c_str(), action_name)) {
-                atspi_action_do_action(action, a, NULL);
+                AtspiWrapper::Atspi_action_do_action(action, a, NULL);
                 g_free(action_name);
                 g_object_unref(action);
+                AtspiWrapper::unlock();
                 return true;
             }
             g_free(action_name);
         }
         g_object_unref(action);
     }
+    AtspiWrapper::unlock();
     return false;
 }
 
 void AtspiAccessibleNode::setValue(std::string text)
 {
-    if (!isValid()) return;
+    AtspiWrapper::lock();
+    if (!isValid()){
+        AtspiWrapper::unlock();
+        return;
+    }
 
-    AtspiEditableText *iface = atspi_accessible_get_editable_text(mNode);
+    AtspiEditableText *iface = AtspiWrapper::Atspi_accessible_get_editable_text(mNode);
     LOG_F(INFO,"set Value iface:%p obj:%p text:%s", iface, mNode, text.c_str() );
     if (iface) {
         int len = getText().length();
-        atspi_editable_text_delete_text(iface, 0, len, NULL);
-        atspi_editable_text_insert_text(iface, 0, text.c_str(), text.length(),
+        AtspiWrapper::Atspi_editable_text_delete_text(iface, 0, len, NULL);
+        AtspiWrapper::Atspi_editable_text_insert_text(iface, 0, text.c_str(), text.length(),
                                         NULL);
     }
+    AtspiWrapper::unlock();
 }
 
 void AtspiAccessibleNode::setFeatureProperty(AtspiStateType type)
