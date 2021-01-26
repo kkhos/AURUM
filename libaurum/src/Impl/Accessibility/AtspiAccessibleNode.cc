@@ -187,11 +187,6 @@ void AtspiAccessibleNode::refresh()
             if (s) mStyle = std::string(s);
             if (a) mAutomationId = std::string(a);
 
-            free(t);
-            free(s);
-            free(a);
-
-            LOG_F(INFO, "table unref %p", attributes);
             g_hash_table_unref(attributes);
         }
 
