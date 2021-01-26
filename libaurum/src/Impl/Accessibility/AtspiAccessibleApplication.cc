@@ -1,5 +1,7 @@
 #include "AtspiAccessibleApplication.h"
 #include "AtspiAccessibleWindow.h"
+#include "AtspiWrapper.h"
+
 #include <algorithm>
 #include <vector>
 

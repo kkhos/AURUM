@@ -3,6 +3,7 @@
         files('AtspiAccessibleWindow.cc'),
         files('AtspiAccessibleNode.cc'),
         files('AtspiAccessibleWatcher.cc'),
+        files('AtspiWrapper.cc'),
     ]
 
     libaurum_src += [

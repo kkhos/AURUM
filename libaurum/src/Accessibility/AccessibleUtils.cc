@@ -103,7 +103,7 @@ char* state_to_char(AtspiStateType state)
 static void _print_stateset_debug( AtspiStateSet *stateSet)
 {
    if (!stateSet) return;
-   GArray *states = atspi_state_set_get_states(stateSet);
+   GArray *states = AtspiWrapper::Atspi_state_set_get_states(stateSet);
    if (!states) return;
 
    char *state_name = NULL;
