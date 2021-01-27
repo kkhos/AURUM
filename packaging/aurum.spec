@@ -30,6 +30,9 @@ BuildRequires: pkgconfig(capi-system-system-settings)
 BuildRequires: pkgconfig(capi-base-utils-i18n)
 BuildRequires: pkgconfig(capi-privacy-privilege-manager)
 
+BuildRequires: dotnet-build-tools
+BuildRequires: csapi-tizenfx-nuget
+
 %if 0%{?gendoc:1}
 BuildRequires:  doxygen
 %endif
@@ -89,6 +92,21 @@ Group:      Graphics & UI Framework/Testing
 Ui Automation Library Aurum gcov objects
 %endif
 
+%package sharp
+Summary: AurumSharp library
+
+%description sharp
+AurumSharp library
+
+%package sharp-ref
+Summary: A managed part (.dll) of AurumSharp library for developer
+BuildArch: noarch
+AutoReqProv: no
+
+%description sharp-ref
+A managed part (.dll) of AurumSharp library for developer
+
+%dotnet_import_sub_packages
 
 %prep
 %setup -q
@@ -148,6 +166,9 @@ meson test \
     -C gbsbuild \
     -v
 
+%dotnet_build AurumSharp
+%dotnet_pack AurumSharp
+
 %install
 
 %if 0%{?__hash_signing}
@@ -165,6 +186,8 @@ ninja -C gbsbuild install
 mkdir -p %{buildroot}%{_datadir}/gcov/obj
 install -m 0644 gcov-obj/* %{buildroot}%{_datadir}/gcov/obj
 %endif
+
+%dotnet_install AurumSharp
 
 %post
 sbin/ldconfig
@@ -215,3 +238,12 @@ echo "signing %{TZ_SYS_RO_APP}/org.tizen.aurum-bootstrap"
 %else
 %exclude %{_bindir}/test_*
 %endif
+
+%files sharp
+%manifest %{name}.manifest
+%license COPYING
+%attr(644,root,root) %{dotnet_assembly_files}
+
+%files sharp-ref
+%manifest %{name}.manifest
+/nuget/*.nupkg
