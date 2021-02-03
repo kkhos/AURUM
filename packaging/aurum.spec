@@ -10,6 +10,9 @@ Source1001:     %{name}.manifest
 BuildRequires:  meson
 BuildRequires:  pkgconfig(grpc)
 BuildRequires:  pkgconfig(grpc++)
+BuildRequires:  pkgconfig(re2)
+BuildRequires:  pkgconfig(libcares)
+BuildRequires:  pkgconfig(protobuf)
 
 Requires:       at-spi2-core
 BuildRequires:  at-spi2-core-devel
