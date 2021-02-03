@@ -7,6 +7,11 @@ Group:          UI Framework
 Source:         %{name}-%{version}.tar.gz
 Source1001:     %{name}.manifest
 
+BuildRequires:  cmake
+BuildRequires:  pkgconfig(re2)
+BuildRequires:  pkgconfig(libcares)
+BuildRequires:  pkgconfig(protobuf)
+
 BuildRequires:  meson
 BuildRequires:  pkgconfig(grpc)
 BuildRequires:  pkgconfig(grpc++)
