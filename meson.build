@@ -4,6 +4,9 @@ project('aurum', ['cpp'],
   meson_version : '>=0.47'
 )
 
+dir_prefix    = get_option('prefix')
+dir_include   = join_paths(dir_prefix, get_option('includedir'))
+
 config_h = configuration_data()
 if get_option('tizen') == true
   config_h.set10('GBS_BUILD', true)
@@ -28,7 +31,8 @@ subdir('tests')
 
 configure_file(
   output: 'config.h',
-  configuration: config_h
+  configuration: config_h,
+  install_dir: dir_include
 )
 
 dconf = configuration_data()
