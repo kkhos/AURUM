@@ -25,7 +25,7 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(const std::sh
                                                     const std::shared_ptr<UiSelector> selector,
                                                     const std::shared_ptr<AccessibleNode> root, bool earlyReturn)
 {
-    Comparer comparer(device, selector, false);
+    Comparer comparer(device, selector, earlyReturn);
 
     LOG_SCOPE_F(INFO, "findObjects selector(%s) from (type:%s style:%s, role:%s, text:%d) earlyReturn:%d", selector->description().c_str(), root->getType().c_str(),  root->getStyle().c_str(),  root->getRole().c_str(),  root->getText().c_str(), earlyReturn);
 
