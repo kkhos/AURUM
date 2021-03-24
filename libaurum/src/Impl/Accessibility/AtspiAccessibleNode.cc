@@ -180,6 +180,7 @@ void AtspiAccessibleNode::refresh()
         GHashTable *attributes = AtspiWrapper::Atspi_accessible_get_attributes(mNode, NULL);
         if (attributes) {
             char *t = (char*)g_hash_table_lookup(attributes, "type");
+			if (!t) t = (char*)g_hash_table_lookup(attributes, "t");
             char *s = (char*)g_hash_table_lookup(attributes, "style");
             char *a = (char*)g_hash_table_lookup(attributes, "automationId");
 
