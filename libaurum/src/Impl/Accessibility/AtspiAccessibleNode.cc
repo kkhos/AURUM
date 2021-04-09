@@ -174,7 +174,9 @@ void AtspiAccessibleNode::refresh()
 
         gchar *name = AtspiWrapper::Atspi_accessible_get_name(mNode, NULL);
         mText = name;
-        mPkg = name;
+        AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(mNode, NULL);
+        gchar *pkg = AtspiWrapper::Atspi_accessible_get_name(app, NULL);
+        mPkg = pkg;
         g_free(name);
 
         GHashTable *attributes = AtspiWrapper::Atspi_accessible_get_attributes(mNode, NULL);
@@ -388,3 +390,4 @@ void AtspiAccessibleNode::setFeatureProperty(AtspiStateType type)
         break;
     }
 }
+
