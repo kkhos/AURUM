@@ -173,9 +173,20 @@ void AtspiAccessibleNode::refresh()
     #endif
 
         gchar *name = AtspiWrapper::Atspi_accessible_get_name(mNode, NULL);
-        mText = name;
-        mPkg = name;
-        g_free(name);
+        if (name) {
+            mText = name;
+            g_free(name);
+        }
+        
+        AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(mNode, NULL);
+        if (app) {
+            gchar *pkg = AtspiWrapper::Atspi_accessible_get_name(app, NULL);
+            if (pkg) {
+                mPkg = pkg;
+                g_free(pkg);
+            }
+            g_object_unref(app);
+        }
 
         GHashTable *attributes = AtspiWrapper::Atspi_accessible_get_attributes(mNode, NULL);
         if (attributes) {
