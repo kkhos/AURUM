@@ -42,6 +42,12 @@ public:
      */
     virtual std::vector<std::shared_ptr<AccessibleApplication>> getApplications(void) const override;
 
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout) override;
+
 public:
     /**
      * @brief TBD

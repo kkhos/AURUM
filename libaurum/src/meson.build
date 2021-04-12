@@ -8,7 +8,9 @@ libaurum_src += [
   files('Until.cc'),
   files('Waiter.cc'),
   files('PartialMatch.cc'),
+  files('A11yEvent.cc'),
 ]
 
 subdir('Accessibility')
 subdir('Impl')
+subdir('Runnable')

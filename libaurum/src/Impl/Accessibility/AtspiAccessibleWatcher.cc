@@ -5,10 +5,14 @@
 #include "AtspiAccessibleNode.h"
 #include "AtspiWrapper.h"
 #include <algorithm>
+#include <chrono>
+#include <thread>
+#include <iostream>
 
 #include <loguru.hpp>
 
-AtspiEventListener *AtspiAccessibleWatcher::listener = nullptr;
+std::vector<std::shared_ptr<A11yEventInfo>> AtspiAccessibleWatcher::mEventQueue;
+GThread *AtspiAccessibleWatcher::mEventThread = nullptr;
 
 static bool iShowingNode(AtspiAccessible *node)
 {
@@ -40,7 +44,6 @@ findActiveNode(AtspiAccessible *node, int depth,
     std::vector<AtspiAccessible *> ret{};
 
     if (iShowingNode(node)) {
-        g_object_ref(node);
         char *name = AtspiWrapper::Atspi_accessible_get_name(node, NULL);
         if (name) {
             LOG_SCOPE_F(INFO, "%s", name);
@@ -67,6 +70,27 @@ findActiveNode(AtspiAccessible *node, int depth,
     return ret;
 }
 
+static gpointer _event_thread_loop (gpointer data)
+{
+    LOG_F(INFO, "event thread start");
+    AtspiEventListener * listener =
+        atspi_event_listener_new(AtspiAccessibleWatcher::onAtspiEvents, NULL, NULL);
+
+    atspi_event_listener_register(listener, "window:", NULL);
+    atspi_event_listener_register(listener, "object:state-changed:focused", NULL);
+    atspi_event_listener_register(listener, "object:text-changed:insert", NULL);
+
+    atspi_event_main();
+end:
+    LOG_F(INFO, "event thread end");
+    atspi_event_listener_deregister(listener, "object:state-changed:focused", NULL);
+    atspi_event_listener_deregister(listener, "object:text-changed:insert", NULL);
+    atspi_event_listener_deregister(listener, "window:", NULL);
+
+    g_object_unref(listener);
+
+    return NULL;
+}
 AtspiAccessibleWatcher::AtspiAccessibleWatcher()
 : mDbusProxy{nullptr}
 {
@@ -75,11 +99,7 @@ AtspiAccessibleWatcher::AtspiAccessibleWatcher()
     atspi_set_main_context (g_main_context_default ());
     atspi_init();
 
-    listener =
-        atspi_event_listener_new(AtspiAccessibleWatcher::onAtspiEvents, this, NULL);
-
-    atspi_event_listener_register(listener, "window:", NULL);
-    atspi_event_listener_register(listener, "object:", NULL);
+    mEventThread = g_thread_new("AtspiEventThread", _event_thread_loop, nullptr);
 
     mDbusProxy = g_dbus_proxy_new_for_bus_sync(
         G_BUS_TYPE_SESSION, G_DBUS_PROXY_FLAGS_NONE,
@@ -93,7 +113,6 @@ AtspiAccessibleWatcher::AtspiAccessibleWatcher()
         g_variant_new("(ssv)", "org.a11y.Status", "IsEnabled", enabled_variant),
         G_DBUS_CALL_FLAGS_NONE, -1, NULL, &error);
 
-    g_variant_unref(enabled_variant);
     g_variant_unref(result);
 }
 
@@ -108,23 +127,38 @@ AtspiAccessibleWatcher::~AtspiAccessibleWatcher()
         g_variant_new("(ssv)", "org.a11y.Status", "IsEnabled", enabled_variant),
         G_DBUS_CALL_FLAGS_NONE, -1, NULL, &error);
 
-    atspi_event_listener_deregister(listener, "window:", NULL);
-    atspi_event_listener_deregister(listener, "object:", NULL);
-
-    g_object_unref(listener);
     g_object_unref(mDbusProxy);
-    g_variant_unref(enabled_variant);
     g_variant_unref(result);
 
     atspi_event_quit();
+    g_thread_join(mEventThread);
     atspi_exit();
 }
-
 
 void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *user_data)
 {
     AtspiWrapper::lock();
-    char *name = NULL, *pname = NULL;
+    if (!event->source)
+    {
+        AtspiWrapper::unlock();
+        return;
+    }
+    char *name = NULL, *pkg = NULL;
+    name = AtspiWrapper::Atspi_accessible_get_name(event->source, NULL);
+
+    AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(event->source, NULL);
+    if (app)
+    {
+        pkg = AtspiWrapper::Atspi_accessible_get_name(app, NULL);
+        g_object_unref(app);
+    }
+    else
+        pkg = strdup("");
+
+    mEventQueue.push_back(std::make_shared<A11yEventInfo>(std::string(event->type), std::string(name), std::string(pkg)));
+    if (name) free(name);
+    if (pkg) free(pkg);
+/*    char *name = NULL, *pname = NULL;
     AtspiAccessibleWatcher *instance = (AtspiAccessibleWatcher *)user_data;
 
     if (!event->source)
@@ -159,7 +193,7 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *user_data)
             static_cast<AtspiAccessible *>(event->source));
     }
     if (name) free(name);
-    if (pname) free(pname);
+    if (pname) free(pname);*/
     AtspiWrapper::unlock();
 }
 
@@ -266,6 +300,47 @@ std::vector<std::shared_ptr<AccessibleApplication>> AtspiAccessibleWatcher::getA
     g_object_unref(root);
     AtspiWrapper::unlock();
     return ret;
+}
+
+#define COMPARE(A, B) \
+    (B != A11yEvent::EVENT_NONE) && ((A & B) == B)
+
+bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout)
+{
+    AtspiWrapper::lock();
+    mEventQueue.clear();
+    AtspiWrapper::unlock();
+    if (cmd)
+        cmd->run();
+
+    std::chrono::system_clock::time_point start =
+        std::chrono::system_clock::now();
+	while (true)
+    {
+        std::vector<std::shared_ptr<A11yEventInfo>> localEvents;
+        AtspiWrapper::lock();
+        localEvents.assign(mEventQueue.begin(), mEventQueue.end());
+        mEventQueue.clear();
+        AtspiWrapper::unlock();
+
+		if (!localEvents.empty())
+		{
+            for (const auto &event : localEvents) {
+                if (COMPARE(type, event->getEvent()))
+				{
+                    LOG_F(INFO, "type %d == %d name %s pkg %s",static_cast<int>(type), static_cast<int>(event->getEvent()), event->getName().c_str(), event->getPkg().c_str()); 
+				    return true; 
+				}
+			}
+		}
+        if ((std::chrono::system_clock::now() - start) >
+            std::chrono::milliseconds{timeout})
+            break;
+        std::this_thread::sleep_for(
+            std::chrono::milliseconds{100});
+    }
+
+    return false;
 }
 
 bool AtspiAccessibleWatcher::removeFromActivatedList(AtspiAccessible *node)

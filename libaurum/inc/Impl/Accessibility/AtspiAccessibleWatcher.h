@@ -97,6 +97,12 @@ public:
      */
     virtual std::vector<std::shared_ptr<AccessibleApplication>> getApplications(void) const override;
 
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout) override;
+
 public:
     /**
      * @brief TBD
@@ -140,6 +146,11 @@ public:
      */
     void onObjectDefunct(AtspiAccessible* node) override;
 
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    static void onEventListener(AtspiEvent *event, void *user_data);
 private:
     /**
      * @brief TBD
@@ -167,12 +178,25 @@ private:
 
     void print_debug();
 
-private:
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    void addEventListener(AtspiEventListener *listener, A11yEvent type);
+
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    void removeEventListener(AtspiEventListener *listener, A11yEvent type);
+
+public:
     /**
      * @brief TBD
      */
-    static AtspiEventListener *                   listener;
+    static guint timeoutId;
 
+private:
     /**
      * @brief TBD
      */
@@ -198,4 +222,13 @@ private:
      */
     std::map<AtspiAccessible *, AtspiAccessible *> mWindowAppMap;
 
+    /**
+     * @brief TBD
+     */
+    static GThread *                                      mEventThread;
+
+    /**
+     * @brief TBD
+     */
+	static std::vector<std::shared_ptr<A11yEventInfo>>    mEventQueue;
 };
