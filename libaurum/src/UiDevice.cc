@@ -7,6 +7,8 @@
 #endif
 #include "MockDeviceImpl.h"
 
+#include "Runnables.h"
+
 #include <unistd.h>
 #include <utility>
 #include <vector>
@@ -119,6 +121,25 @@ bool UiDevice::waitForIdle() const
 {
     std::this_thread::sleep_for(std::chrono::milliseconds{167});
     return true;
+}
+
+bool UiDevice::waitForEvents(
+	const A11yEvent type, const double timeout) const
+{
+    return executeAndWaitForEvents(NULL, type, timeout);
+}
+
+bool UiDevice::executeAndWaitForEvents(
+	const Runnable *cmd, const A11yEvent type, const double timeout) const
+{
+    return AccessibleWatcher::getInstance()->executeAndWaitForEvents(cmd, type, timeout);
+}
+
+bool UiDevice::sendKeyAndWaitForEvents(
+	const std::string keycode, const A11yEvent type, const double timeout) const
+{
+    std::unique_ptr<SendKeyRunnable> cmd = std::make_unique<SendKeyRunnable>(keycode);
+    return executeAndWaitForEvents(cmd.get(), type, timeout);
 }
 
 bool UiDevice::click(const int x, const int y)

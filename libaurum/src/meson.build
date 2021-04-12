@@ -12,3 +12,4 @@ libaurum_src += [
 
 subdir('Accessibility')
 subdir('Impl')
+subdir('Runnable')

@@ -6,6 +6,8 @@
 #include "AccessibleNode.h"
 #include "AccessibleUtils.h"
 #include "IEventSource.h"
+#include "Runnable.h"
+#include "A11yEvent.h"
 
 #include <memory>
 #include <vector>
@@ -56,6 +58,12 @@ public:
      * @since_tizen 5.5
      */
     virtual std::vector<std::shared_ptr<AccessibleApplication>> getApplications(void) const = 0;
+
+    /**s
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const double timeout) = 0;
 
 public:
     /**

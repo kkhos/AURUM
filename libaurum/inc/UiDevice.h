@@ -10,6 +10,9 @@
 #include "AccessibleNode.h"
 #include "Waiter.h"
 
+#include "Runnable.h"
+#include "A11yEvent.h"
+
 #include <functional>
 #include <string>
 
@@ -158,6 +161,23 @@ public:
     std::shared_ptr<UiObject> waitFor(
         const std::function<std::shared_ptr<UiObject>(const ISearchable *)>
             condition) const;
+
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    bool waitForEvents(
+        const A11yEvent type, const double timeout) const;
+
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    bool sendKeyAndWaitForEvents(
+        const std::string keycode, const A11yEvent type, const double timeout) const;
+private:
+    bool executeAndWaitForEvents(
+        const Runnable *cmd, const A11yEvent type, const double timeout) const;
 public:
     /**
      * @brief TBD

@@ -9,6 +9,7 @@
 #include <loguru.hpp>
 
 AtspiEventListener *AtspiAccessibleWatcher::listener = nullptr;
+guint AtspiAccessibleWatcher::timeoutId = 0;
 
 static bool iShowingNode(AtspiAccessible *node)
 {
@@ -40,7 +41,6 @@ findActiveNode(AtspiAccessible *node, int depth,
     std::vector<AtspiAccessible *> ret{};
 
     if (iShowingNode(node)) {
-        g_object_ref(node);
         char *name = AtspiWrapper::Atspi_accessible_get_name(node, NULL);
         if (name) {
             LOG_SCOPE_F(INFO, "%s", name);
@@ -79,7 +79,7 @@ AtspiAccessibleWatcher::AtspiAccessibleWatcher()
         atspi_event_listener_new(AtspiAccessibleWatcher::onAtspiEvents, this, NULL);
 
     atspi_event_listener_register(listener, "window:", NULL);
-    atspi_event_listener_register(listener, "object:", NULL);
+    atspi_event_listener_register(listener, "object:state-changed:defunct", NULL);
 
     mDbusProxy = g_dbus_proxy_new_for_bus_sync(
         G_BUS_TYPE_SESSION, G_DBUS_PROXY_FLAGS_NONE,
@@ -108,18 +108,16 @@ AtspiAccessibleWatcher::~AtspiAccessibleWatcher()
         g_variant_new("(ssv)", "org.a11y.Status", "IsEnabled", enabled_variant),
         G_DBUS_CALL_FLAGS_NONE, -1, NULL, &error);
 
+    atspi_event_listener_deregister(listener, "object:state-changed:defunct", NULL);
     atspi_event_listener_deregister(listener, "window:", NULL);
-    atspi_event_listener_deregister(listener, "object:", NULL);
 
     g_object_unref(listener);
     g_object_unref(mDbusProxy);
     g_variant_unref(enabled_variant);
     g_variant_unref(result);
 
-    atspi_event_quit();
     atspi_exit();
 }
-
 
 void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *user_data)
 {
@@ -265,6 +263,99 @@ std::vector<std::shared_ptr<AccessibleApplication>> AtspiAccessibleWatcher::getA
     }
     g_object_unref(root);
     AtspiWrapper::unlock();
+    return ret;
+}
+
+void AtspiAccessibleWatcher::onEventListener(AtspiEvent *event, void *user_data)
+{
+    AtspiWrapper::lock();
+    char *name = NULL, *pname = NULL;
+//    AtspiAccessibleWatcher *instance = (AtspiAccessibleWatcher *)user_data;
+
+    if (!event->source)
+    {
+        LOG_F(INFO, "event->source is NULL. Skip event handling");
+        return;
+    }
+
+    name = AtspiWrapper::Atspi_accessible_get_name(event->source, NULL);
+    AtspiAccessible *parent = AtspiWrapper::Atspi_accessible_get_parent(event->source, NULL);
+    if (parent) {
+        pname = AtspiWrapper::Atspi_accessible_get_name(parent, NULL);
+        g_object_unref(parent);
+    }
+
+    LOG_F(INFO, "event: %s name %s pname %s",event->type, name, pname);
+    if (name) free(name);
+    if (pname) free(pname);
+
+	atspi_event_quit();
+    AtspiWrapper::unlock();
+}
+
+gint timeoutCb(gpointer data)
+{
+    LOG_F(INFO, "TIMEOUT");
+    AtspiAccessibleWatcher *instance = (AtspiAccessibleWatcher *)data;
+    instance->timeoutId = 0;
+    atspi_event_quit();
+    return FALSE;
+}
+
+#define COMPARE(A, B) \
+    (A & B) == B
+
+void AtspiAccessibleWatcher::addEventListener(AtspiEventListener *listener, A11yEvent type)
+{
+    if (COMPARE(type, A11yEvent::EVENT_WINDOW_CREATE))
+        atspi_event_listener_register(listener, "window:create", NULL);
+    if (COMPARE(type, A11yEvent::EVENT_WINDOW_ACTIVATE))
+        atspi_event_listener_register(listener, "window:activate", NULL);
+    if (COMPARE(type, A11yEvent::EVENT_WINDOW_DEACTIVATE))
+        atspi_event_listener_register(listener, "window:deactivate", NULL);
+    if (COMPARE(type, A11yEvent::EVENT_STATE_CHANGED_FOCUSED))
+        atspi_event_listener_register(listener, "object:state-changed:focused", NULL);
+}
+
+void AtspiAccessibleWatcher::removeEventListener(AtspiEventListener *listener, A11yEvent type)
+{
+    if (COMPARE(type, A11yEvent::EVENT_WINDOW_CREATE))
+        atspi_event_listener_deregister(listener, "window:create", NULL);
+    if (COMPARE(type, A11yEvent::EVENT_WINDOW_ACTIVATE))
+        atspi_event_listener_deregister(listener, "window:activate", NULL);
+    if (COMPARE(type, A11yEvent::EVENT_WINDOW_DEACTIVATE))
+        atspi_event_listener_deregister(listener, "window:deactivate", NULL);
+    if (COMPARE(type, A11yEvent::EVENT_STATE_CHANGED_FOCUSED))
+        atspi_event_listener_deregister(listener, "object:state-changed:focused", NULL);
+}
+
+bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const double timeout)
+{
+    bool ret = false;
+
+    AtspiEventListener *eventListener = nullptr;
+
+    eventListener =
+        atspi_event_listener_new(AtspiAccessibleWatcher::onEventListener, this, NULL);
+
+    addEventListener(eventListener, type);
+
+    if (cmd)
+        cmd->run();
+
+    timeoutId = g_timeout_add(timeout, timeoutCb, this);
+
+    atspi_event_main();
+
+    if (timeoutId) {
+        g_source_remove(timeoutId);
+        timeoutId = 0;
+        ret = true;
+    }
+
+    removeEventListener(eventListener, type);
+    g_object_unref(eventListener);
+
     return ret;
 }
 
