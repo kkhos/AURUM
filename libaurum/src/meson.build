@@ -8,6 +8,10 @@ libaurum_src += [
   files('Until.cc'),
   files('Waiter.cc'),
   files('PartialMatch.cc'),
+  files('AuDevice.cc'),
+  files('AuApp.cc'),
+  files('AuObject.cc'),
+  files('AuWindow.cc'),
 ]
 
 subdir('Accessibility')

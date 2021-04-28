@@ -18,6 +18,10 @@ libaurum_install_inc = [
   './inc/Accessibility/IEventSource.h',
   './inc/Misc/Point2D.h',
   './inc/Misc/Rect.h',
+  './inc/AuDevice.h',
+  './inc/AuApp.h',
+  './inc/AuObject.h',
+  './inc/AuWindow.h',
   './inc/Aurum.h',
 ]
 
@@ -45,6 +49,7 @@ if get_option('tizen') == true
   libaurum_dep += [
     dependency('capi-system-info'),
     dependency('capi-ui-efl-util'),
+    dependency('capi-appfw-app-control'),
     dependency('elementary'),
     dependency('libtdm'),
   ]
