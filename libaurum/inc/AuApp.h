@@ -26,9 +26,11 @@ namespace aurum
         public:
             AuApp(AccessibleWatcher *watcher);
             ~AuApp();
-            void SetName(std::string appName);
-            std::string GetName();
-            AuWindow* GetFocusedWindow();
+            //FIXME: hide this
+            void setName(std::string appName);
+            std::string getName();
+            AuWindow* getFocusedWindow();
+            std::vector<AuWindow *> getWindows();
 
         private:
             std::string mName;

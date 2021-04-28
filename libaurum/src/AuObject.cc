@@ -27,12 +27,90 @@ AuObject::~AuObject()
 {
 }
 
-void AuObject::SetName(std::string objectName)
+void AuObject::setName(std::string objectName)
 {
     this->mName = objectName;
 }
 
-std::string AuObject::GetName()
+std::string AuObject::getName()
 {
     return this->mName;
+}
+
+std::string AuObject::getText()
+{
+
+}
+
+void AuObject::setText(std::string text)
+{
+
+}
+
+std::string AuObject::getType()
+{
+    return nullptr;
+}
+
+AuObject* AuObject::getParent()
+{
+    return nullptr;
+}
+
+std::vector<AuObject *> AuObject::getChildren()
+{
+    std::vector<AuObject *> ret{};
+    return ret;
+}
+
+AuObject* AuObject::findObject()
+{
+    return nullptr;
+}
+
+std::vector<AuObject *> AuObject::findObjects()
+{
+    std::vector<AuObject *> ret{};
+    return ret;
+}
+
+Rect<int> AuObject::getGeometry()
+{
+    Rect<int> temp;
+    return temp;
+}
+
+bool AuObject::isClickable()
+{
+    return false;
+}
+
+bool AuObject::isFocusable()
+{
+    return false;
+}
+
+bool AuObject::isFocused()
+{
+    return false;
+}
+
+bool AuObject::isShowing()
+{
+    return false;
+}
+
+bool AuObject::isVisible()
+{
+    return false;
+}
+
+bool AuObject::click()
+{
+    return false;
+}
+
+void AuObject::longClick(const unsigned int intv)
+{
+
 }
