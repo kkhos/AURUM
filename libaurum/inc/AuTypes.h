@@ -14,37 +14,21 @@
  *  limitations under the License.
  *
  */
+#ifndef _AU_TYPES_H_
+#define _AU_TYPES_H_
 
-#include "../inc/Aurum.h";
-
-using namespace aurum;
-using namespace std;
-
-AuApp::AuApp(AccessibleWatcher *watcher)
+typedef enum
 {
-    mWatcher = watcher;
-}
-AuApp::~AuApp()
-{
-}
+    STROKE,
+    LONG_STROKE,
+    PRESS,
+    RELEASE,
+} KeyGenerateType;
 
-void AuApp::setName(std::string appName)
+typedef enum
 {
-    this->mName = appName;
-}
+    WALLCLOCK,
+    MONOTONIC,
+} TimeType;
 
-std::string AuApp::getName()
-{
-    return this->mName;
-}
-
-AuWindow* getFocusedWindow()
-{
-    return nullptr;
-}
-
-std::vector<AuWindow *> getWindows()
-{
-    std::vector<AuWindow *> ret{};
-    return ret;
-}
+#endif /* _AU_TYPES_H_ */

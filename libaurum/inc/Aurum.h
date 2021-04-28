@@ -50,6 +50,7 @@
 #include "Rect.h"
 //
 
+#include "AuTypes.h"
 #include "AuDevice.h"
 #include "AuApp.h"
 #include "AuObject.h"

@@ -30,7 +30,7 @@ AuDevice::~AuDevice()
 }
 
 //FIXME: Applaunched is not called...
-void AppLaunched(app_control_h request, app_control_h reply, app_control_result_e result, void *user_data)
+void appLaunched(app_control_h request, app_control_h reply, app_control_result_e result, void *user_data)
 {
     switch (result) {
     case APP_CONTROL_RESULT_SUCCEEDED:
@@ -48,7 +48,7 @@ void AppLaunched(app_control_h request, app_control_h reply, app_control_result_
     }
 }
 
-AuApp* AuDevice::LaunchApp(std::string appName)
+AuApp* AuDevice::launchApp(std::string appName)
 {
     app_control_h appControl;
     int           ret = -1;
@@ -66,7 +66,7 @@ AuApp* AuDevice::LaunchApp(std::string appName)
        return NULL;
     }
 
-    ret = app_control_send_launch_request(appControl, AppLaunched, NULL);
+    ret = app_control_send_launch_request(appControl, appLaunched, NULL);
 
     if (ret) {
        dlog_print(DLOG_ERROR, LOG_TAG, "Launch Failed(3/3)");
@@ -84,10 +84,66 @@ AuApp* AuDevice::LaunchApp(std::string appName)
         if (app->getPackageName().compare(appName))
         {
             AuApp *app = new AuApp(this->mWatcher);
-            app->SetName(appName);
+            app->setName(appName);
             return app;
         }
     }
 
+    return NULL;
+}
+
+std::vector<AuApp *> AuDevice::getApps()
+{
+    std::vector<AuApp *> ret{};
+    return ret;
+}
+
+bool AuDevice::click(const int x, const int y)
+{
+    return false;
+}
+
+bool AuDevice::click(const int x, const int y, const unsigned int intv)
+{
+    return false;
+}
+
+bool AuDevice::drag(const int sx, const int sy, const int ex, const int ey, const int steps, const int durationMs)
+{
+    return false;
+}
+
+int AuDevice::touchDown(const int x, const int y)
+{
+    return 0;
+}
+
+bool AuDevice::touchMove(const int x, const int y, const int seq)
+{
+    return false;
+}
+
+bool AuDevice::touchUp(const int x, const int y, const int seq)
+{
+    return false;
+}
+
+bool AuDevice::pressKeyCode(std::string keyCode, KeyRequestType type)
+{
+    return false;
+}
+
+bool AuDevice::takeScreenshot(std::string path, float scale, int quality)
+{
+    return false;
+}
+
+long long AuDevice::getSystemTime(TimeRequestType type)
+{
+    return 0;
+}
+
+std::string AuDevice::getSystemLocale()
+{
     return NULL;
 }

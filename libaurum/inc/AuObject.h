@@ -24,11 +24,28 @@ namespace aurum
         public:
             AuObject();
             ~AuObject();
-            void SetName(std::string objectName);
-            std::string GetName();
+            //FIXME: hide this
+            void setName(std::string objectName);
+            std::string getName();
+            std::string getText();
+            void setText(std::string text);
+            std::string getType();
+            AuObject* getParent();
+            std::vector<AuObject *> getChildren();
+            AuObject* findObject();
+            std::vector<AuObject *> findObjects();
+            Rect<int> getGeometry();
+            bool isClickable();
+            bool isFocusable();
+            bool isFocused();
+            bool isShowing();
+            bool isVisible();
+            bool click();
+            void longClick(const unsigned int intv = LOGNCLICK_INTERVAL);
 
         private:
             std::string mName;
+            static const unsigned int LOGNCLICK_INTERVAL = 50;
     };
 
 }  // namespace aurum

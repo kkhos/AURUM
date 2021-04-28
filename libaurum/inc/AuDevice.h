@@ -26,7 +26,18 @@ namespace aurum
         public:
             AuDevice();
             ~AuDevice();
-            AuApp* LaunchApp(std::string appName);
+            AuApp* launchApp(std::string appName);
+            std::vector<AuApp *> getApps();
+            bool click(const int x, const int y);
+            bool click(const int x, const int y, const unsigned int intv);
+            bool drag(const int sx, const int sy, const int ex, const int ey, const int steps, const int durationMs);
+            int touchDown(const int x, const int y);
+            bool touchMove(const int x, const int y, const int seq);
+            bool touchUp(const int x, const int y, const int seq);
+            bool pressKeyCode(std::string keyCode, KeyRequestType type);
+            bool takeScreenshot(std::string path, float scale, int quality);
+            long long getSystemTime(TimeRequestType type);
+            std::string getSystemLocale();
 
         private:
             AccessibleWatcher *mWatcher;
