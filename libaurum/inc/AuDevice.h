@@ -34,9 +34,9 @@ namespace aurum
             int touchDown(const int x, const int y);
             bool touchMove(const int x, const int y, const int seq);
             bool touchUp(const int x, const int y, const int seq);
-            bool pressKeyCode(std::string keyCode, KeyRequestType type);
+            bool pressKeyCode(std::string keyCode, KeyGenerateType type);
             bool takeScreenshot(std::string path, float scale, int quality);
-            long long getSystemTime(TimeRequestType type);
+            long long getSystemTime(TimeType type);
             std::string getSystemLocale();
 
         private:

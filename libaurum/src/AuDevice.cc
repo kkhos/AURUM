@@ -23,6 +23,7 @@ using namespace std;
 
 AuDevice::AuDevice()
 {
+    dlog_print(DLOG_INFO, LOG_TAG, "AuDevice Create");
     this->mWatcher = AccessibleWatcher::getInstance();
 }
 AuDevice::~AuDevice()
@@ -34,16 +35,16 @@ void appLaunched(app_control_h request, app_control_h reply, app_control_result_
 {
     switch (result) {
     case APP_CONTROL_RESULT_SUCCEEDED:
-        dlog_print(DLOG_ERROR, LOG_TAG, "APP_CONTROL_RESULT_SUCCEEDED");
+        dlog_print(DLOG_INFO, LOG_TAG, "APP_CONTROL_RESULT_SUCCEEDED");
         break;
     case APP_CONTROL_RESULT_FAILED:
-        dlog_print(DLOG_ERROR, LOG_TAG, "APP_CONTROL_RESULT_FAILED");
+        dlog_print(DLOG_INFO, LOG_TAG, "APP_CONTROL_RESULT_FAILED");
         break;
     case APP_CONTROL_RESULT_CANCELED:
-        dlog_print(DLOG_ERROR, LOG_TAG, "APP_CONTROL_RESULT_CANCELED");
+        dlog_print(DLOG_INFO, LOG_TAG, "APP_CONTROL_RESULT_CANCELED");
         break;
     default:
-        dlog_print(DLOG_ERROR, LOG_TAG, "unhandled value %d", result);
+        dlog_print(DLOG_INFO, LOG_TAG, "unhandled value %d", result);
         break;
     }
 }
@@ -128,7 +129,7 @@ bool AuDevice::touchUp(const int x, const int y, const int seq)
     return false;
 }
 
-bool AuDevice::pressKeyCode(std::string keyCode, KeyRequestType type)
+bool AuDevice::pressKeyCode(std::string keyCode, KeyGenerateType type)
 {
     return false;
 }
@@ -138,7 +139,7 @@ bool AuDevice::takeScreenshot(std::string path, float scale, int quality)
     return false;
 }
 
-long long AuDevice::getSystemTime(TimeRequestType type)
+long long AuDevice::getSystemTime(TimeType type)
 {
     return 0;
 }
