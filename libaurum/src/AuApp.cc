@@ -20,9 +20,10 @@
 using namespace aurum;
 using namespace std;
 
-AuApp::AuApp(AccessibleWatcher *watcher)
+AuApp::AuApp(AccessibleWatcher *watcher, AccessibleApplication *app)
 {
     mWatcher = watcher;
+    mApp = app;
 }
 AuApp::~AuApp()
 {
@@ -38,12 +39,21 @@ std::string AuApp::getName()
     return this->mName;
 }
 
-AuWindow* getFocusedWindow()
+AuWindow* AuApp::getFocusedWindow()
 {
+    auto activeWindows = this->mApp->getActiveWindows();
+    for (auto &window : activeWindows){
+        AuWindow *auWin = new AuWindow(this->mWatcher, window->getAccessibleNode().get());
+        auWin->setName(window->getAccessibleNode()->getText());
+        dlog_print(DLOG_INFO, LOG_TAG, " Get Focused Window %p %s", auWin, window->getAccessibleNode()->getText().c_str());
+        return auWin;
+        
+    }
+
     return nullptr;
 }
 
-std::vector<AuWindow *> getWindows()
+std::vector<AuWindow *> AuApp::getWindows()
 {
     std::vector<AuWindow *> ret{};
     return ret;

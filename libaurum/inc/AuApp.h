@@ -24,7 +24,7 @@ namespace aurum
     class AuApp
     {
         public:
-            AuApp(AccessibleWatcher *watcher);
+            AuApp(AccessibleWatcher *watcher, AccessibleApplication *app);
             ~AuApp();
             //FIXME: hide this
             void setName(std::string appName);
@@ -35,6 +35,7 @@ namespace aurum
         private:
             std::string mName;
             AccessibleWatcher *mWatcher;
+            AccessibleApplication *mApp;
             AuWindow* mFocusedWindow;
     };
 

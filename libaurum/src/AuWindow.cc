@@ -20,8 +20,10 @@
 using namespace aurum;
 using namespace std;
 
-AuWindow::AuWindow()
+AuWindow::AuWindow(AccessibleWatcher *watcher, AccessibleNode *window)
 {
+    this->mWacher = watcher;
+    this->mWindow = window;
 }
 AuWindow::~AuWindow()
 {

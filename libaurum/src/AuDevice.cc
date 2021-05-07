@@ -23,11 +23,12 @@ using namespace std;
 
 AuDevice::AuDevice()
 {
-    dlog_print(DLOG_INFO, LOG_TAG, "AuDevice Create");
+    dlog_print(DLOG_INFO, LOG_TAG, "AuDevice Constructor");
     this->mWatcher = AccessibleWatcher::getInstance();
 }
 AuDevice::~AuDevice()
 {
+    dlog_print(DLOG_INFO, LOG_TAG, "AuDevice Destructor");
 }
 
 //FIXME: Applaunched is not called...
@@ -51,6 +52,7 @@ void appLaunched(app_control_h request, app_control_h reply, app_control_result_
 
 AuApp* AuDevice::launchApp(std::string appName)
 {
+    dlog_print(DLOG_INFO, LOG_TAG, "launchApp Start : %s", appName.c_str());
     app_control_h appControl;
     int           ret = -1;
 
@@ -77,19 +79,21 @@ AuApp* AuDevice::launchApp(std::string appName)
 
     app_control_destroy(appControl);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds{2000});
+    std::this_thread::sleep_for(std::chrono::milliseconds{1000});
 
     //Create App instance
     auto apps = this->mWatcher->getActiveApplications();
     for (auto &app : apps){
         if (app->getPackageName().compare(appName))
         {
-            AuApp *app = new AuApp(this->mWatcher);
-            app->setName(appName);
-            return app;
+            AuApp *auApp = new AuApp(this->mWatcher, app.get());
+            auApp->setName(appName);
+            dlog_print(DLOG_INFO, LOG_TAG, "launchApp Success return AuApp(%p)", auApp);
+            return auApp;
         }
     }
 
+    dlog_print(DLOG_INFO, LOG_TAG, "launchApp fail");
     return NULL;
 }
 

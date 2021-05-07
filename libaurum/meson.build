@@ -18,6 +18,7 @@ libaurum_install_inc = [
   './inc/Accessibility/IEventSource.h',
   './inc/Misc/Point2D.h',
   './inc/Misc/Rect.h',
+  './inc/AuTypes.h',
   './inc/AuDevice.h',
   './inc/AuApp.h',
   './inc/AuObject.h',

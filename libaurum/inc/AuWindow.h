@@ -22,8 +22,12 @@ namespace aurum
     class AuWindow: public AuObject
     {
         public:
-            AuWindow();
+            AuWindow(AccessibleWatcher *watcher, AccessibleNode *window);
             ~AuWindow();
+
+        private:
+           AccessibleWatcher *mWacher;
+           AccessibleNode *mWindow;
     };
 
 }  // namespace aurum
