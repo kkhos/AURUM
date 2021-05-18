@@ -72,6 +72,7 @@ std::vector<std::shared_ptr<UiSelector>> FindElementCommand::getSelectors(void)
                   obj->getAutomationId().c_str(), key.c_str());
             ::aurum::Element* elm = mResponse->add_elements();
             elm->set_elementid(key);
+            elm->set_package(obj->getApplicationPackage());
         }
         mResponse->set_status(::aurum::RspStatus::OK);
     }
