@@ -7,7 +7,7 @@ std::function<bool(const ISearchable *)> Until::hasObject(
     const std::shared_ptr<UiSelector> selector)
 {
     return [=](const ISearchable *searchable) -> bool {
-        LOG_SCOPE_F(INFO, "Until::hasObject sel:%p, search:%p", selector, searchable);
+        LOG_SCOPE_F(INFO, "Until::hasObject search:%p", searchable);
         std::shared_ptr<UiObject> obj = searchable->findObject(selector);
         return obj.get() != nullptr;
     };
@@ -17,7 +17,7 @@ std::function<std::shared_ptr<UiObject>(const ISearchable *)> Until::findObject(
     const std::shared_ptr<UiSelector> selector)
 {
     return [=](const ISearchable *searchable) -> std::shared_ptr<UiObject> {
-        LOG_SCOPE_F(INFO, "Until::findObject sel:%p, search:%p", selector, searchable);
+        LOG_SCOPE_F(INFO, "Until::findObject search:%p", searchable);
         std::shared_ptr<UiObject> obj = searchable->findObject(selector);
         return obj;
     };
