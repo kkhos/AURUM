@@ -115,6 +115,7 @@ AtspiAccessibleWatcher::AtspiAccessibleWatcher()
 
     g_variant_unref(enabled_variant);
     g_variant_unref(result);
+    g_error_free(error);
 }
 
 AtspiAccessibleWatcher::~AtspiAccessibleWatcher()
@@ -131,6 +132,7 @@ AtspiAccessibleWatcher::~AtspiAccessibleWatcher()
     g_object_unref(mDbusProxy);
     g_variant_unref(enabled_variant);
     g_variant_unref(result);
+    g_error_free(error);
 
     atspi_event_quit();
     g_thread_join(mEventThread);
