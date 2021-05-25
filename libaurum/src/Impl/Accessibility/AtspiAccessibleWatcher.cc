@@ -81,7 +81,7 @@ static gpointer _event_thread_loop (gpointer data)
     atspi_event_listener_register(listener, "object:text-changed:insert", NULL);
 
     atspi_event_main();
-end:
+
     LOG_F(INFO, "event thread end");
     atspi_event_listener_deregister(listener, "object:state-changed:focused", NULL);
     atspi_event_listener_deregister(listener, "object:text-changed:insert", NULL);
@@ -241,7 +241,7 @@ void AtspiAccessibleWatcher::onWindowCreated(AtspiAccessible *node)
 
 void AtspiAccessibleWatcher::onWindowDestroyed(AtspiAccessible *node)
 {
-    LOG_SCOPE_F(INFO, "onWindowDestroyed obj:%p vis:%d", node);
+    LOG_SCOPE_F(INFO, "onWindowDestroyed obj:%p", node);
     notifyAll((int)EventType::Window, (int)WindowEventType::WindowDestroyed, node);
 }
 
