@@ -113,7 +113,9 @@ AtspiAccessibleWatcher::AtspiAccessibleWatcher()
         g_variant_new("(ssv)", "org.a11y.Status", "IsEnabled", enabled_variant),
         G_DBUS_CALL_FLAGS_NONE, -1, NULL, &error);
 
+    g_variant_unref(enabled_variant);
     g_variant_unref(result);
+	g_error_free(error);
 }
 
 AtspiAccessibleWatcher::~AtspiAccessibleWatcher()
@@ -128,7 +130,9 @@ AtspiAccessibleWatcher::~AtspiAccessibleWatcher()
         G_DBUS_CALL_FLAGS_NONE, -1, NULL, &error);
 
     g_object_unref(mDbusProxy);
+    g_variant_unref(enabled_variant);
     g_variant_unref(result);
+	g_error_free(error);
 
     atspi_event_quit();
     g_thread_join(mEventThread);
