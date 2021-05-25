@@ -43,9 +43,8 @@ bool MockDeviceImpl::click(const int x, const int y, const unsigned int intv)
 bool MockDeviceImpl::drag(const int sx, const int sy, const int ex, const int ey,
             const int steps, const int durationMs)
 {
-    int i, j;
-    int _durationUs, _steps, _stepUs;
-    int dur;
+    unsigned int _stepUs;
+    int _durationUs, _steps;
     int consumptionUs;
 
     if (steps <= 0) _steps = 1;

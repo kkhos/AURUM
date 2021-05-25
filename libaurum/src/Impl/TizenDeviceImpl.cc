@@ -171,9 +171,8 @@ int TizenDeviceImpl::stopTimer(void)
 bool TizenDeviceImpl::drag(const int sx, const int sy, const int ex, const int ey,
                          const int steps, const int durationMs)
 {
-    int i, j;
-    int _durationUs, _steps, _stepUs;
-    int dur;
+    unsigned int _stepUs;
+    int _durationUs, _steps;
     int consumptionUs;
 
     if (steps <= 0) _steps = 1;
@@ -362,7 +361,7 @@ long long TizenDeviceImpl::getSystemTime(TimeRequestType type)
 
 int TizenDeviceImpl::grabTouchSeqNumber()
 {
-    for (int i = 0 ; i < MAX_FINGER_NUMBER; i++) {
+    for (unsigned int i = 0 ; i < MAX_FINGER_NUMBER; i++) {
         if (mTouchSeq.count(i) == 0) {
             mTouchSeq.insert(i);
             return i;
