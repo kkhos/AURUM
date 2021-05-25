@@ -1053,7 +1053,7 @@ namespace loguru
 	std::string stacktrace_as_stdstring(int skip)
 	{
 		// From https://gist.github.com/fmela/591333
-		void* callstack[128];
+		void* callstack[128] = {0};
 		const auto max_frames = sizeof(callstack) / sizeof(callstack[0]);
 		int num_frames = backtrace(callstack, max_frames);
 		char** symbols = backtrace_symbols(callstack, num_frames);
