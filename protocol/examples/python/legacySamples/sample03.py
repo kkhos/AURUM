@@ -39,11 +39,6 @@ def touchup(stub, xx, yy):
    rsp = stub.touchUp(aurum_pb2.ReqTouchUp(coordination=aurum_pb2.Point(x=xx,y=yy)))
    print(rsp)
 
-def sync(stub):
-   rsp = stub.sync(aurum_pb2.ReqEmpty())
-   print(rsp)
-
-
 def new_memo(stub):
     touchdown(stub, 630,1140)
     time.sleep(0.1)

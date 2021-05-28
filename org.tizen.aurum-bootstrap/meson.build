@@ -33,7 +33,6 @@ bootstrap_svr_src += [
    files('src/Commands/TouchDownCommand.cc'),
    files('src/Commands/TouchMoveCommand.cc'),
    files('src/Commands/TouchUpCommand.cc'),
-   files('src/Commands/SyncCommand.cc'),
    files('src/Commands/KillServerCommand.cc'),
    files('src/Commands/TakeScreenshotCommand.cc'),
    files('src/Commands/Command.cc'),

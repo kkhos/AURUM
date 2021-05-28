@@ -1,8 +1,6 @@
 #pragma once
 
 #include "Commands/KillServerCommand.h"
-#include "Commands/SyncCommand.h"
-
 #include "Commands/FindElementCommand.h"
 
 #include "Commands/GetAttributeCommand.h"

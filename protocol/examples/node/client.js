@@ -10,8 +10,6 @@ function main() {
 
   var request = new messages.ReqFindElement();
 
-  client.sync(new messages.ReqEmpty(), function(err, res){console.log(res)});
-
   request.setStrategy(proto.aurum.ReqFindElement.RequestType.TEXT);
   request.setTextfield("DONE");
 

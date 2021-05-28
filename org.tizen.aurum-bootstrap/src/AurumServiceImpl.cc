@@ -26,13 +26,6 @@ aurumServiceImpl::aurumServiceImpl()
 }
 
 aurumServiceImpl::~aurumServiceImpl() {}
-::grpc::Status aurumServiceImpl::aurumServiceImpl::sync(
-    ::grpc::ServerContext* context, const ::aurum::ReqEmpty* request,
-    ::aurum::RspEmpty* response)
-{
-    std::unique_ptr<SyncCommand> cmd = std::make_unique<SyncCommand>(request, response);
-    return execute(cmd.get());
-}
 ::grpc::Status aurumServiceImpl::aurumServiceImpl::killServer(
     ::grpc::ServerContext* context, const ::aurum::ReqEmpty* request,
     ::aurum::RspEmpty* response)

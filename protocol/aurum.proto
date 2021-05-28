@@ -6,7 +6,6 @@ package aurum;
   * Here is a page with some descriptions about protocol explained
   */
 service Bootstrap {
-   rpc sync(ReqEmpty) returns (RspEmpty) {}
    rpc killServer(ReqEmpty) returns (RspEmpty) {}
    rpc findElement(ReqFindElement) returns (RspFindElement) {}
    rpc getValue(ReqGetValue) returns (RspGetValue) {}

@@ -13,9 +13,6 @@ protected:
     ::grpc::Status execute(Command *cmd);
 
 public:
-    ::grpc::Status sync(::grpc::ServerContext *  context,
-                        const ::aurum::ReqEmpty *request,
-                        ::aurum::RspEmpty *      response) override;
     ::grpc::Status killServer(::grpc::ServerContext *  context,
                               const ::aurum::ReqEmpty *request,
                               ::aurum::RspEmpty *      response) override;
