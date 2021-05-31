@@ -110,7 +110,6 @@ def set_text(stub, text):
     if foundId != None:
       clickById(stub, foundId)
 
-
 def run():
     with grpc.insecure_channel('127.0.0.1:50051') as channel:
         stub = aurum_pb2_grpc.BootstrapStub(channel)

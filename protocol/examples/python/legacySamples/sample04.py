@@ -111,7 +111,6 @@ def run():
         foundId = findElementByText(stub, 'Title')
         print(foundId)
         clear_text(stub, foundId)
-      
 
 #       foundId = findElementByText(stub, 'Photos')
 #       print(foundId)
@@ -121,14 +120,12 @@ def run():
 #           clickById(stub, foundId)
 
 #       time.sleep(1.35)
-        
+
 #       foundId = findElementByText(stub, 'STOP')
 #       print(foundId)
 #       if foundId != None:
 #           clickById(stub, foundId)
 
-
-    
 if __name__ == '__main__':
     logging.basicConfig()
     run()
