@@ -16,24 +16,17 @@ PreCommand::PreCommand(Command *cmd) : mCommand{cmd} {}
 ::grpc::Status PreCommand::execute()
 {
     {
-        LOG_SCOPE_F(INFO, "PreCommand --------------- ");
-
-        bool isDisplayOn = DISPLAY_STATE_SCREEN_OFF != (display_state_e)((long)ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
-            display_state_e state;
-            if(device_display_get_state(&state) == DEVICE_ERROR_NONE) {
-                return (void*)(state);
-            }
+       LOG_SCOPE_F(INFO, "PreCommand --------------- ");
+       display_state_e state;
+       if (device_display_get_state(&state) != DEVICE_ERROR_NONE) {
             LOG_F(INFO, "getting display state has failed");
-            return NULL;
-        }, NULL));
+       }
 
-        ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
-            if (device_power_wakeup(false) != DEVICE_ERROR_NONE) {
-                LOG_F(INFO, "turning on display has failed");
-                return NULL;
-            }
-            return NULL;
-        }, NULL);
+        bool isDisplayOn = DISPLAY_STATE_SCREEN_OFF != state;
+
+        if (device_power_wakeup(false) != DEVICE_ERROR_NONE) {
+             LOG_F(INFO, "turning on display has failed");
+        }
 
         if (!isDisplayOn)
             std::this_thread::sleep_for(std::chrono::milliseconds{INTV_TURNON_MARGIN});
