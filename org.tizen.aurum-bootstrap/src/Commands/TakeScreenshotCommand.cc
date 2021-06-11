@@ -21,7 +21,7 @@ TakeScreenshotCommand::TakeScreenshotCommand(
 
     std::ifstream ifs(path, std::ifstream::binary);
     ::aurum::RspTakeScreenshot rsp;
-    int size = 1024 * 1024;
+    int size = 1920 * 1080;
     char buf[size];
 
     while (!ifs.eof()) {
