@@ -72,6 +72,33 @@ std::vector<std::shared_ptr<UiSelector>> FindElementCommand::getSelectors(void)
                   obj->getAutomationId().c_str(), key.c_str());
             ::aurum::Element* elm = mResponse->add_elements();
             elm->set_elementid(key);
+            ::aurum::Rect *rect = elm->mutable_geometry();
+            const Rect<int> &size = obj->getBoundingBox();
+            rect->set_x(size.mTopLeft.x);
+            rect->set_y(size.mTopLeft.y);
+            rect->set_width(size.width());
+            rect->set_height(size.height());
+            elm->set_widget_type(obj->getElementType());
+            elm->set_widget_style(obj->getElementStyle());
+
+            elm->set_text(obj->getText());
+            elm->set_id(obj->getId());
+            elm->set_automationid(obj->getAutomationId());
+            elm->set_package(obj->getApplicationPackage());
+            elm->set_role(obj->getRole());
+
+            elm->set_ischecked(obj->isChecked());
+            elm->set_ischeckable(obj->isCheckable());
+            elm->set_isclickable(obj->isClickable());
+            elm->set_isenabled(obj->isEnabled());
+            elm->set_isfocused(obj->isFocused());
+            elm->set_isfocusable(obj->isFocusable());
+            elm->set_isscrollable(obj->isScrollable());
+            elm->set_isselected(obj->isSelected());
+            elm->set_isshowing(obj->isShowing());
+            elm->set_isactive(obj->isActive());
+            elm->set_isvisible(obj->isVisible());
+            elm->set_isselectable(obj->isSelectable());
         }
         mResponse->set_status(::aurum::RspStatus::OK);
     }
