@@ -192,6 +192,7 @@ void AtspiAccessibleNode::refresh()
         if (attributes) {
             char *t = (char*)g_hash_table_lookup(attributes, "type");
             if (!t) t = (char*)g_hash_table_lookup(attributes, "t");
+            if (!t) t = (char*)g_hash_table_lookup(attributes, "class");
             char *s = (char*)g_hash_table_lookup(attributes, "style");
             char *a = (char*)g_hash_table_lookup(attributes, "automationId");
 
