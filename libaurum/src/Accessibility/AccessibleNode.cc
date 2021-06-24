@@ -66,7 +66,6 @@ std::string AccessibleNode::description() {
 
 void AccessibleNode::notify(int type, int type2, void *src)
 {
-    LOG_SCOPE_F(INFO, "notified for obj(%p) t1:%d t2:%d src:%p",this, type, type2, src);
     void *handler = getRawHandler();
 
     if ((EventType)type == EventType::Object && (ObjectEventType)type2 == ObjectEventType::ObjectStateDefunct) {

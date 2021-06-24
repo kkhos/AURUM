@@ -74,17 +74,15 @@ static gpointer _event_thread_loop (gpointer data)
 {
     LOG_F(INFO, "event thread start");
     AtspiEventListener * listener =
-        atspi_event_listener_new(AtspiAccessibleWatcher::onAtspiEvents, NULL, NULL);
+        atspi_event_listener_new(AtspiAccessibleWatcher::onAtspiEvents, data, NULL);
 
     atspi_event_listener_register(listener, "window:", NULL);
-    atspi_event_listener_register(listener, "object:state-changed:focused", NULL);
-    atspi_event_listener_register(listener, "object:text-changed:insert", NULL);
+    atspi_event_listener_register(listener, "object:", NULL);
 
     atspi_event_main();
 
     LOG_F(INFO, "event thread end");
-    atspi_event_listener_deregister(listener, "object:state-changed:focused", NULL);
-    atspi_event_listener_deregister(listener, "object:text-changed:insert", NULL);
+    atspi_event_listener_deregister(listener, "object:", NULL);
     atspi_event_listener_deregister(listener, "window:", NULL);
 
     g_object_unref(listener);
@@ -99,7 +97,7 @@ AtspiAccessibleWatcher::AtspiAccessibleWatcher()
     atspi_set_main_context (g_main_context_default ());
     atspi_init();
 
-    mEventThread = g_thread_new("AtspiEventThread", _event_thread_loop, nullptr);
+    mEventThread = g_thread_new("AtspiEventThread", _event_thread_loop, this);
 
     mDbusProxy = g_dbus_proxy_new_for_bus_sync(
         G_BUS_TYPE_SESSION, G_DBUS_PROXY_FLAGS_NONE,
@@ -148,6 +146,7 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *user_data)
         return;
     }
     char *name = NULL, *pkg = NULL;
+    AtspiAccessibleWatcher *instance = (AtspiAccessibleWatcher *)user_data;
     name = AtspiWrapper::Atspi_accessible_get_name(event->source, NULL);
 
     AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(event->source, NULL);
@@ -160,6 +159,11 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *user_data)
         pkg = strdup("");
 
     mEventQueue.push_back(std::make_shared<A11yEventInfo>(std::string(event->type), std::string(name), std::string(pkg)));
+
+    if (!strcmp(event->type, "object:state-changed:defunct")) {
+         instance->onObjectDefunct(
+            static_cast<AtspiAccessible *>(event->source));
+    }
     if (name) free(name);
     if (pkg) free(pkg);
 /*    char *name = NULL, *pname = NULL;
@@ -256,7 +260,6 @@ void AtspiAccessibleWatcher::onObjectDefunct(AtspiAccessible *node)
     LOG_SCOPE_F(INFO, "onObjectDefunct obj:%p", node);
     notifyAll((int)EventType::Object, (int)ObjectEventType::ObjectStateDefunct, node);
 }
-
 
 int AtspiAccessibleWatcher::getApplicationCount(void) const
 {
