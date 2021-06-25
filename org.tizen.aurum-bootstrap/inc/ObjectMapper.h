@@ -8,7 +8,7 @@
 class ObjectMapper {
 private:
     std::map<std::string, std::shared_ptr<UiObject>> mObjectMap;
-    std::map<std::shared_ptr<UiObject>, std::string> mObjectMapReverse;
+    std::map<std::string, std::string> mObjectMapReverse;
     unsigned long long                               mObjCounter;
 
 private:
