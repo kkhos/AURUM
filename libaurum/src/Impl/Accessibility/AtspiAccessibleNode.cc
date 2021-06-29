@@ -156,6 +156,9 @@ void* AtspiAccessibleNode::getRawHandler(void) const
 void AtspiAccessibleNode::refresh()
 {
     AtspiWrapper::lock();
+
+    AtspiWrapper::Atspi_accessible_clear_cache(mNode);
+
     if (isValid()) {
         gchar *rolename = AtspiWrapper::Atspi_accessible_get_role_name(mNode, NULL);
         if (rolename) {
