@@ -157,7 +157,11 @@ message ReqFindElement {
       int32 maxDepth = 17;
    }
 
-   repeated ReqFindElement children = 18;
+   oneof _packagename {
+      string packageName = 18;
+   }
+
+   repeated ReqFindElement children = 19;
 }
 message RspFindElement {
    RspStatus status = 1;
