@@ -4,8 +4,6 @@
 
 #include <algorithm>
 
-#include <loguru.hpp>
-
 MockAccessibleApplication::MockAccessibleApplication(std::shared_ptr<AccessibleNode> node)
 : AccessibleApplication(node), mWindowList{}
 {

@@ -1,6 +1,5 @@
 #pragma once
 #include "bitmask.h"
-
 #include <string>
 
 enum class A11yEvent {

@@ -1,11 +1,7 @@
-#include "Waiter.h"
+#include "Aurum.h"
 #include <unistd.h>
 #include <chrono>
 #include <thread>
-
-#include "ISearchable.h"
-#include "UiObject.h"
-#include <loguru.hpp>
 
 Waiter::Waiter() : Waiter(nullptr) {}
 
@@ -32,7 +28,7 @@ template bool Waiter::waitFor(
 template <typename R>
 R Waiter::waitFor(const std::function<R(const ISearchable *)> condition) const
 {
-    LOG_SCOPE_F(INFO, "Waiter::waitFor ISearchable");
+    dlog_print(DLOG_INFO, LOG_TAG, "Waiter::waitFor ISearchable");
     // startTime = currentTime();
     std::chrono::system_clock::time_point start =
         std::chrono::system_clock::now();
@@ -51,7 +47,7 @@ R Waiter::waitFor(const std::function<R(const ISearchable *)> condition) const
 template <typename R>
 R Waiter::waitFor(const std::function<R(const UiObject *)> condition) const
 {
-    LOG_SCOPE_F(INFO, "Waiter::waitFor UiObject");
+    dlog_print(DLOG_INFO, LOG_TAG, "Waiter::waitFor UiObject");
     if (mUiObject) {
         std::chrono::system_clock::time_point start =
             std::chrono::system_clock::now();

@@ -1,6 +1,4 @@
-#include "Comparer.h"
-
-#include <loguru.hpp>
+#include "Aurum.h"
 
 Comparer::Comparer(const std::shared_ptr<UiDevice> device, const std::shared_ptr<UiSelector> selector,
                    const bool &earlyReturn)
@@ -27,7 +25,7 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(const std::sh
 {
     Comparer comparer(device, selector, earlyReturn);
 
-    LOG_SCOPE_F(INFO, "findObjects selector(%s) from (type:%s style:%s, role:%s, text:%s) earlyReturn:%d", selector->description().c_str(), root->getType().c_str(),  root->getStyle().c_str(),  root->getRole().c_str(),  root->getText().c_str(), earlyReturn);
+    dlog_print(DLOG_INFO, LOG_TAG, "findObjects selector(%s) from (type:%s style:%s, role:%s, text:%s) earlyReturn:%d", selector->description().c_str(), root->getType().c_str(),  root->getStyle().c_str(),  root->getRole().c_str(),  root->getText().c_str(), earlyReturn);
 
     if (selector->mParent) {
         auto ret = Comparer::findObjects(device, selector->mParent, root);
@@ -47,7 +45,7 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(const std::sh
 {
     std::list<std::shared_ptr<PartialMatch>> partialList{};
     std::vector<std::shared_ptr<AccessibleNode>> ret = findObjects(root, 0, 0, partialList);
-    LOG_F(INFO, "%d object(s) found", ret.size());
+    dlog_print(DLOG_INFO, LOG_TAG, "%d object(s) found", ret.size());
     return ret;
 }
 
@@ -56,7 +54,6 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(
     std::list<std::shared_ptr<PartialMatch>> &partialMatches)
 {
     std::vector<std::shared_ptr<AccessibleNode>> ret;
-    //LOG_SCOPE_F(INFO, "findObjects idx:%d, depth:%d, partialMatches.size:%d", index, depth, partialMatches.size());
 
     root->refresh();
     for (auto &match : partialMatches)
@@ -79,11 +76,11 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(
             if (!ret.empty() && mEarlyReturn) return ret;
         }
     } else {
-        LOG_F(INFO, "Abort searching! No need to search children(maxDepth limit overflow, %d < %d < %d)", mSelector->mMinDepth?*(mSelector->mMinDepth):-1, depth, mSelector->mMaxDepth?*(mSelector->mMaxDepth):9999999);
+        dlog_print(DLOG_INFO, LOG_TAG, "Abort searching! No need to search children(maxDepth limit overflow, %d < %d < %d)", mSelector->mMinDepth?*(mSelector->mMinDepth):-1, depth, mSelector->mMaxDepth?*(mSelector->mMaxDepth):9999999);
     }
 
     if (currentMatch && currentMatch->finalizeMatch()){
-        LOG_F(INFO, "Found matched = %s with criteria %s", root->description().c_str(), currentMatch->debugPrint().c_str());
+        dlog_print(DLOG_INFO, LOG_TAG, "Found matched = %s with criteria %s", root->description().c_str(), currentMatch->debugPrint().c_str());
         ret.push_back(root);
     }
 

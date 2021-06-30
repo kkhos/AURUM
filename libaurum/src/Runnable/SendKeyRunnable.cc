@@ -1,7 +1,4 @@
-#include "SendKeyRunnable.h"
-
-#include <UiDevice.h>
-#include <loguru.hpp>
+#include "Aurum.h"
 
 SendKeyRunnable::SendKeyRunnable(std::string keycode)
     : mKeycode{keycode}
@@ -10,7 +7,7 @@ SendKeyRunnable::SendKeyRunnable(std::string keycode)
 
 void SendKeyRunnable::run() const
 {
-	LOG_F(INFO, "sendKey %s",mKeycode.c_str());
+	dlog_print(DLOG_INFO, LOG_TAG, "sendKey %s",mKeycode.c_str());
 	std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();
 	mDevice->pressKeyCode(mKeycode.c_str(), KeyRequestType::PRESS);
 	mDevice->pressKeyCode(mKeycode.c_str(), KeyRequestType::RELEASE);

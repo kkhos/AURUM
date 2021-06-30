@@ -1,14 +1,11 @@
-#include "UiObject.h"
-#include "Comparer.h"
-#include "Sel.h"
+#include "Aurum.h"
 
 #include <iostream>
 #include <utility>
 
-#include <loguru.hpp>
-
 #include <chrono>
 #include <thread>
+
 UiObject::UiObject() : UiObject(nullptr, nullptr, nullptr) {}
 
 UiObject::~UiObject()
@@ -89,7 +86,7 @@ std::vector<std::shared_ptr<UiObject>> UiObject::findObjects(
     auto nodes = Comparer::findObjects(mDevice, selector, getAccessibleNode());
     for ( auto& node : nodes) {
         if (!node) {
-            LOG_F(INFO, "Skipped! (node == nullptr)");
+            dlog_print(DLOG_INFO, LOG_TAG, "Skipped! (node == nullptr)");
             continue;
         }
         result.push_back(std::make_shared<UiObject>(mDevice, selector, std::move(node)));

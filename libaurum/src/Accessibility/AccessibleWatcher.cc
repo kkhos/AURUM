@@ -1,16 +1,14 @@
-#include "AccessibleWatcher.h"
+#include "Aurum.h"
 
 #ifdef TIZEN
 #include "AtspiAccessibleWatcher.h"
 #endif
-
 #include "MockAccessibleWatcher.h"
 
 #include <string.h>
 #include <iostream>
 #include <utility>
 #include <algorithm>
-#include <loguru.hpp>
 
 AccessibleWatcher::AccessibleWatcher()
 :mSources{}, mLock{}
@@ -59,17 +57,17 @@ AccessibleWatcher *AccessibleWatcher::getInstance(AccessibleWatcher *watcherImpl
 
 std::vector<std::shared_ptr<AccessibleApplication>> AccessibleWatcher::getActiveApplications(void) const
 {
-    LOG_SCOPE_F(INFO, "getActiveApplications for this(%p)", this);
+    dlog_print(DLOG_INFO, LOG_TAG, "getActiveApplications for this(%p)", this);
 
     std::vector<std::shared_ptr<AccessibleApplication>> ret{};
     auto apps = this->getApplications();
-    LOG_F(INFO, "apps size %d", apps.size());
+    dlog_print(DLOG_INFO, LOG_TAG, "apps size %d", apps.size());
 
     apps.erase(std::remove_if(apps.begin(), apps.end(), [](auto app){
         return !app->isActive();
     }), apps.end());
 
-    LOG_F(INFO, "active apps size %d", apps.size());
+    dlog_print(DLOG_INFO, LOG_TAG, "active apps size %d", apps.size());
 
     return apps;
 }
@@ -77,7 +75,7 @@ std::vector<std::shared_ptr<AccessibleApplication>> AccessibleWatcher::getActive
 void AccessibleWatcher::attach(std::shared_ptr<IEventConsumer> source)
 {
     std::unique_lock<std::mutex> lock(mLock);
-    LOG_F(INFO, "source attached %p", source.get());
+    dlog_print(DLOG_INFO, LOG_TAG, "source attached %p", source.get());
     if (source) {
         mSources.insert(source);
     }
@@ -86,7 +84,7 @@ void AccessibleWatcher::attach(std::shared_ptr<IEventConsumer> source)
 void AccessibleWatcher::detach(std::shared_ptr<IEventConsumer> source)
 {
     std::unique_lock<std::mutex> lock(mLock);
-    LOG_F(INFO, "source detached %p", source.get());
+    dlog_print(DLOG_INFO, LOG_TAG, "source detached %p", source.get());
     if (source) {
         auto iter = mSources.find(source);
         if (iter != mSources.end()) mSources.erase(iter);

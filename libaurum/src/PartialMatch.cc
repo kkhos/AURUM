@@ -1,12 +1,9 @@
-#include "PartialMatch.h"
+#include "Aurum.h"
 
 #include <iostream>
 #include <set>
 #include <regex>
 #include <sstream>
-
-#include <loguru.hpp>
-
 
 bool PartialMatch::checkCriteria(const std::string *textA, const std::string textB, const bool *match)
 {
@@ -80,7 +77,6 @@ std::shared_ptr<PartialMatch> PartialMatch::accept(const std::shared_ptr<Accessi
                                                    int index, int absoluteDepth,
                                                    int relativeDepth)
 {
-    //LOG_SCOPE_F(INFO, "PartialMatch::accept idx:%d abs:%d rel:%d / %d < %d < %d", index, absoluteDepth, relativeDepth, selector->mMinDepth?*(selector->mMinDepth):-1, relativeDepth, selector->mMaxDepth?*(selector->mMaxDepth):9999999);
     PartialMatch *match = nullptr;
 
     if ((selector->mMinDepth && (relativeDepth < *(selector->mMinDepth))) ||

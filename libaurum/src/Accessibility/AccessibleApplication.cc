@@ -1,8 +1,6 @@
-#include "AccessibleApplication.h"
-#include "AccessibleWatcher.h"
+#include "Aurum.h"
 
 #include <algorithm>
-#include <loguru.hpp>
 
 AccessibleApplication::AccessibleApplication(std::shared_ptr<AccessibleNode> node)
 : mNode{node}

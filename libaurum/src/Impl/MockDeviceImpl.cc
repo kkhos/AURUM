@@ -1,5 +1,4 @@
 #include "MockDeviceImpl.h"
-#include <loguru.hpp>
 
 #include <functional>
 #include <algorithm>

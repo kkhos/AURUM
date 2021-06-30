@@ -1,5 +1,4 @@
-#include "AccessibleWindow.h"
-#include "AccessibleWatcher.h"
+#include "Aurum.h"
 
 AccessibleWindow::AccessibleWindow(std::shared_ptr<AccessibleApplication> app, std::shared_ptr<AccessibleNode> node)
 : mApp{app}, mNode{node}

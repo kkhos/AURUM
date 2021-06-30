@@ -1,12 +1,11 @@
-#include "AccessibleNode.h"
+#include "Aurum.h"
+
 #include <string.h>
 #include <iostream>
 #include <vector>
 
-#include <loguru.hpp>
 #include "config.h"
 #include <sstream>
-
 
 AccessibleNode::~AccessibleNode()
 {
@@ -76,7 +75,7 @@ void AccessibleNode::notify(int type, int type2, void *src)
 void AccessibleNode::invalidate()
 {
     std::unique_lock<std::mutex> lock(mLock);
-    LOG_F(INFO, "object %p is now invalid", this);
+    dlog_print(DLOG_INFO, LOG_TAG, "object %p is now invalid", this);
     mValid = false;
 }
 
@@ -101,7 +100,7 @@ void AccessibleNode::print(int depth, int maxDepth)
 void AccessibleNode::print(int d)
 {
     this->refresh();
-    LOG_F(INFO, "%s%s",std::string(d, ' ').c_str(), description().c_str());
+    dlog_print(DLOG_INFO, LOG_TAG, "%s %s",std::string(d, ' ').c_str(), description().c_str());
 }
 
 bool AccessibleNode::isSupporting(AccessibleNodeInterface thisIface) const

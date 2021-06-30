@@ -5,8 +5,6 @@
 #include <algorithm>
 #include <vector>
 
-#include <loguru.hpp>
-
 AtspiAccessibleApplication::AtspiAccessibleApplication(std::shared_ptr<AccessibleNode> node)
 : AccessibleApplication(node)
 {

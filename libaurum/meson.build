@@ -49,6 +49,7 @@ if get_option('tizen') == true
   libaurum_dep += [
     dependency('capi-system-info'),
     dependency('capi-ui-efl-util'),
+    dependency('dlog'),
     dependency('elementary'),
     dependency('libtdm'),
   ]

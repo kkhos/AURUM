@@ -1,13 +1,9 @@
-#include "UiDevice.h"
-#include "AccessibleWatcher.h"
-#include "Comparer.h"
+#include "Aurum.h"
 
 #ifdef TIZEN
 #include "TizenDeviceImpl.h"
 #endif
 #include "MockDeviceImpl.h"
-
-#include "Runnables.h"
 
 #include <unistd.h>
 #include <utility>
@@ -17,7 +13,6 @@
 #include <algorithm>
 #include <iostream>
 
-#include <loguru.hpp>
 UiDevice::UiDevice() : UiDevice(nullptr) {}
 
 UiDevice::UiDevice(IDevice *impl)
