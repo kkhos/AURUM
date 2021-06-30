@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "AccessibleApplication.h"
 #include "AccessibleWindow.h"
 #include "AccessibleNode.h"

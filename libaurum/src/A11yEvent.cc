@@ -1,6 +1,5 @@
-#include "A11yEvent.h"
-
 #include "Aurum.h"
+
 #include <unordered_map>
 
 A11yEventInfo::A11yEventInfo() : A11yEventInfo(A11yEvent::EVENT_NONE, nullptr, nullptr) {}
