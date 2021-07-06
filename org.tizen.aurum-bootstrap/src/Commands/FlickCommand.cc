@@ -1,7 +1,6 @@
+#include "bootstrap.h"
 #include "FlickCommand.h"
-#include <loguru.hpp>
-
-#include <UiDevice.h>
+#include "UiDevice.h"
 
 FlickCommand::FlickCommand(const ::aurum::ReqFlick *request,
                            ::aurum::RspFlick *      response)
@@ -11,7 +10,7 @@ FlickCommand::FlickCommand(const ::aurum::ReqFlick *request,
 
 ::grpc::Status FlickCommand::execute()
 {
-    LOG_SCOPE_F(INFO, "Flick --------------- ");
+    LOGI("Flick --------------- ");
 
     const ::aurum::Point &startPoint = mRequest->startpoint();
     const ::aurum::Point &endPoint = mRequest->endpoint();

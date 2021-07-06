@@ -1,14 +1,10 @@
+#include "bootstrap.h"
 #include "DumpObjectTreeCommand.h"
-
-#include "ISearchable.h"
-
-#include "Sel.h"
-#include "UiDevice.h"
 #include "UiObject.h"
+#include "UiDevice.h"
 #include "UiSelector.h"
-
-#include <loguru.hpp>
-
+#include "Sel.h"
+#include "ISearchable.h"
 
 DumpObjectTreeCommand::DumpObjectTreeCommand(const ::aurum::ReqDumpObjectTree* request,
                                                    ::aurum::RspDumpObjectTree* response)
@@ -66,8 +62,8 @@ void DumpObjectTreeCommand::traverse(::aurum::Element *root, std::shared_ptr<Nod
 
 ::grpc::Status DumpObjectTreeCommand::execute()
 {
-    LOG_SCOPE_F(INFO, "DumpObjectTree --------------- ");
-    LOG_F(INFO, "elementid : %s", mRequest->elementid().c_str());
+    LOGI("DumpObjectTree --------------- ");
+    LOGI("elementid : %s", mRequest->elementid().c_str());
     if (mRequest->elementid().length()) {
         auto obj = mObjMap->getElement(mRequest->elementid());
         if (!obj) return grpc::Status::OK;;

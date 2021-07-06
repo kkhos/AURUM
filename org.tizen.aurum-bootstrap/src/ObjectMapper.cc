@@ -1,6 +1,6 @@
 #include "ObjectMapper.h"
 #include <memory>
-#include <loguru.hpp>
+#include "bootstrap.h"
 #include <algorithm>
 #include <sstream>
 
@@ -21,40 +21,40 @@ std::string ObjectMapper::addElement(std::shared_ptr<UiObject> object)
     mObjectMap[key] = object;
     std::string value = object->getId();
     mObjectMapReverse[value] = key;
-    LOG_SCOPE_F(INFO, "addElement %p as key %s, id %s", object.get(), key.c_str(), value.c_str());
+    LOGI("addElement %p as key %s, id %s", object.get(), key.c_str(), value.c_str());
     return key;
 }
 
 std::shared_ptr<UiObject> ObjectMapper::getElement(std::string key)
 {
-    LOG_SCOPE_F(INFO, "getElement for key(%s)", key.c_str());
+    LOGI("getElement for key(%s)", key.c_str());
     unsigned long long keyCnt = (unsigned long long)std::stoll(key); // this key is a result of calling std:to_string(mObjCounter)
     if (keyCnt <= 0 || keyCnt > mObjCounter) return nullptr;
     if (mObjectMap.count(key)) {
         std::shared_ptr<UiObject> obj = mObjectMap[key];
         obj->refresh();
-        LOG_F(INFO, "succeeded");
+        LOGI("succeeded");
         return obj;
     }
-    LOG_F(INFO, "failed(object not found)");
+    LOGI("failed(object not found)");
     return nullptr;
 }
 
 std::string ObjectMapper::getElement(std::shared_ptr<UiObject> object)
 {
-    LOG_SCOPE_F(INFO, "getElement for object(%p)", object.get());
+    LOGI("getElement for object(%p)", object.get());
     std::string value = object->getId();
     if (mObjectMapReverse.count(value)) {
-        LOG_F(INFO, "succeeded");
+        LOGI("succeeded");
         return mObjectMapReverse[value];
     }
-    LOG_F(INFO, "failed(object not found)");
+    LOGI("failed(object not found)");
     return std::string{""};
 }
 
 bool ObjectMapper::removeElement(const std::string key)
 {
-    LOG_SCOPE_F(INFO, "removeElement for key(%s)", key.c_str());
+    LOGI("removeElement for key(%s)", key.c_str());
     std::shared_ptr<UiObject> obj = getElement(key);
     if (obj) {
         std::string value = obj->getId();
@@ -66,7 +66,7 @@ bool ObjectMapper::removeElement(const std::string key)
 
 bool ObjectMapper::removeElement(std::shared_ptr<UiObject> object)
 {
-    LOG_SCOPE_F(INFO, "removeElement for object(%p)", object.get());
+    LOGI("removeElement for object(%p)", object.get());
     std::string key = getElement(object);
     if (key.empty()) return false;
     return removeElement(key);
@@ -76,7 +76,7 @@ void ObjectMapper::cleanUp()
 {
     std::stringstream ss{};
 
-    LOG_SCOPE_F(INFO, "clean up object map");
+    LOGI("clean up object map");
     ss << "mObjectMapReverse: ";
     for(auto iter = mObjectMapReverse.begin(); iter != mObjectMapReverse.end(); ) {
 	auto obj = mObjectMap[iter->second];
@@ -98,7 +98,7 @@ void ObjectMapper::cleanUp()
         }
     }
     ss << std::endl;
-    LOG_F(INFO, "%s", ss.str().c_str());
+    LOGI("%s", ss.str().c_str());
 }
 
 //    std::remove_if(mObjectMapReverse.begin(), mObjectMapReverse.end(), [](auto& pair){return !pair.first->isValid();});

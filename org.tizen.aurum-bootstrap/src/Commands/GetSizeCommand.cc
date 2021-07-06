@@ -1,7 +1,6 @@
+#include "bootstrap.h"
 #include "GetSizeCommand.h"
-#include <loguru.hpp>
-
-#include <UiObject.h>
+#include "UiObject.h"
 
 GetSizeCommand::GetSizeCommand(const ::aurum::ReqGetSize* request,
                                ::aurum::RspGetSize*       response)
@@ -11,7 +10,7 @@ GetSizeCommand::GetSizeCommand(const ::aurum::ReqGetSize* request,
 
 ::grpc::Status GetSizeCommand::execute()
 {
-    LOG_SCOPE_F(INFO, "GetSize --------------- ");
+    LOGI("GetSize --------------- ");
     ObjectMapper *mObjMap = ObjectMapper::getInstance();
     std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
     if (obj) {

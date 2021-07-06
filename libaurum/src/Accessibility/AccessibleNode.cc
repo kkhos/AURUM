@@ -75,7 +75,7 @@ void AccessibleNode::notify(int type, int type2, void *src)
 void AccessibleNode::invalidate()
 {
     std::unique_lock<std::mutex> lock(mLock);
-    dlog_print(DLOG_INFO, LOG_TAG, "object %p is now invalid", this);
+    LOGI("object %p is now invalid", this);
     mValid = false;
 }
 
@@ -100,7 +100,7 @@ void AccessibleNode::print(int depth, int maxDepth)
 void AccessibleNode::print(int d)
 {
     this->refresh();
-    dlog_print(DLOG_INFO, LOG_TAG, "%s %s",std::string(d, ' ').c_str(), description().c_str());
+    LOGI("%s %s",std::string(d, ' ').c_str(), description().c_str());
 }
 
 bool AccessibleNode::isSupporting(AccessibleNodeInterface thisIface) const

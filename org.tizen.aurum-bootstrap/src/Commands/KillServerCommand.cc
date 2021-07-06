@@ -1,5 +1,5 @@
+#include "bootstrap.h"
 #include "KillServerCommand.h"
-#include <loguru.hpp>
 
 KillServerCommand::KillServerCommand(const ::aurum::ReqEmpty* request,
                                      ::aurum::RspEmpty*       response)
@@ -9,7 +9,7 @@ KillServerCommand::KillServerCommand(const ::aurum::ReqEmpty* request,
 
 ::grpc::Status KillServerCommand::execute()
 {
-    LOG_SCOPE_F(INFO, "Kill Server ");
+    LOGI("Kill Server ");
 
     exit(1);
 
