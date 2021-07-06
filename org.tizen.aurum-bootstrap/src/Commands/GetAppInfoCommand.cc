@@ -1,5 +1,5 @@
+#include "bootstrap.h"
 #include "GetAppInfoCommand.h"
-#include <loguru.hpp>
 #ifdef GBSBUILD
 #include <app_manager_extension.h>
 #include <package_manager.h>
@@ -13,7 +13,7 @@ GetAppInfoCommand::GetAppInfoCommand(const ::aurum::ReqGetAppInfo* request,
 
 ::grpc::Status GetAppInfoCommand::execute()
 {
-    LOG_SCOPE_F(INFO, "GetAppInfo --------------- ");
+    LOGI("GetAppInfo --------------- ");
 #ifdef GBSBUILD
     std::string packageName = mRequest->packagename();
 

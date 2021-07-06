@@ -1,12 +1,10 @@
+#include "bootstrap.h"
 #include "GetDeviceTimeCommand.h"
 
 #include <system_settings.h>
 #include <utils_i18n.h>
-
-#include <loguru.hpp>
-
-#include "UiDevice.h"
 #include <string>
+#include "UiDevice.h"
 
 #define BUFSIZE 64
 
@@ -88,7 +86,7 @@ public:
 
 ::grpc::Status GetDeviceTimeCommand::execute()
 {
-    LOG_SCOPE_F(INFO, "GetDeviceTime --------------- ");
+    LOGI("GetDeviceTime --------------- ");
 
     std::shared_ptr<UiDevice> obj = UiDevice::getInstance();
     ::aurum::ReqGetDeviceTime_TimeType type = mRequest->type();
