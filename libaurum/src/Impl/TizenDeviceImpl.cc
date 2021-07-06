@@ -15,10 +15,13 @@
 #include <tbm_surface.h>
 #include <system_info.h>
 
+#define NANO_SEC 1000000000.0
+#define MICRO_SEC 1000000
+
 TizenDeviceImpl::TizenDeviceImpl()
 : mFakeTouchHandle{0}, mFakeKeyboardHandle{0}, mFakeWheelHandle{0}, tStart{}, isTimerStarted{false}, mTouchSeq{}
 {
-    dlog_print(DLOG_INFO, LOG_TAG, "device implementation init");
+    LOGI("device implementation init");
     TizenDeviceImpl *obj = static_cast<TizenDeviceImpl*>(this);
     obj->mFakeTouchHandle = efl_util_input_initialize_generator(EFL_UTIL_INPUT_DEVTYPE_TOUCHSCREEN);
     obj->mFakeKeyboardHandle =
@@ -39,7 +42,7 @@ bool TizenDeviceImpl::click(const int x, const int y)
 
 bool TizenDeviceImpl::click(const int x, const int y, const unsigned int intv)
 {
-    dlog_print(DLOG_INFO, LOG_TAG, "click %d %d , intv:%d", x, y, intv);
+    LOGI("click %d %d , intv:%d", x, y, intv);
 
     int seq = touchDown(x, y);
     if (seq < 0) return false;
@@ -53,7 +56,7 @@ bool TizenDeviceImpl::click(const int x, const int y, const unsigned int intv)
 int TizenDeviceImpl::touchDown(const int x, const int y)
 {
     int seq = grabTouchSeqNumber();
-    dlog_print(DLOG_INFO, LOG_TAG, "touch down %d %d , seq:%d", x, y, seq);
+    LOGI("touch down %d %d , seq:%d", x, y, seq);
     if (seq >= 0) {
          TizenDeviceImpl *obj = static_cast<TizenDeviceImpl*>(this);
          long result = (long)efl_util_input_generate_touch(obj->mFakeTouchHandle, seq, EFL_UTIL_INPUT_TOUCH_BEGIN,
@@ -69,7 +72,7 @@ int TizenDeviceImpl::touchDown(const int x, const int y)
 
 bool TizenDeviceImpl::touchMove(const int x, const int y, const int seq)
 {
-    dlog_print(DLOG_INFO, LOG_TAG, "touch move %d %d, seq:%d", x, y, seq);
+    LOGI("touch move %d %d, seq:%d", x, y, seq);
     if (seq >= 0) {
          TizenDeviceImpl *obj = static_cast<TizenDeviceImpl*>(this);
          long result = (long)efl_util_input_generate_touch(obj->mFakeTouchHandle, seq, EFL_UTIL_INPUT_TOUCH_UPDATE,
@@ -81,7 +84,7 @@ bool TizenDeviceImpl::touchMove(const int x, const int y, const int seq)
 
 bool TizenDeviceImpl::touchUp(const int x, const int y, const int seq)
 {
-   dlog_print(DLOG_INFO, LOG_TAG, "touch up %d %d, seq:%d", x, y, seq);
+   LOGI("touch up %d %d, seq:%d", x, y, seq);
    if (seq >= 0) {
         TizenDeviceImpl *obj = static_cast<TizenDeviceImpl*>(this);
         long result = (long)efl_util_input_generate_touch(obj->mFakeTouchHandle, seq, EFL_UTIL_INPUT_TOUCH_END,
@@ -93,7 +96,7 @@ bool TizenDeviceImpl::touchUp(const int x, const int y, const int seq)
 
 bool TizenDeviceImpl::wheelUp(int amount, const int durationMs)
 {
-    dlog_print(DLOG_INFO, LOG_TAG, "wheel up %d for %d", amount, durationMs);
+    LOGI("wheel up %d for %d", amount, durationMs);
     long result = -1;
     TizenDeviceImpl *obj = static_cast<TizenDeviceImpl*>(this);
     obj->mFakeWheelHandle = efl_util_input_initialize_generator_with_sync(EFL_UTIL_INPUT_DEVTYPE_POINTER, NULL);
@@ -109,7 +112,7 @@ bool TizenDeviceImpl::wheelUp(int amount, const int durationMs)
 
 bool TizenDeviceImpl::wheelDown(int amount, const int durationMs)
 {
-    dlog_print(DLOG_INFO, LOG_TAG, "wheel down %d for %d", amount, durationMs);
+    LOGI("wheel down %d for %d", amount, durationMs);
     long result = -1;
     TizenDeviceImpl *obj = static_cast<TizenDeviceImpl*>(this);
     obj->mFakeWheelHandle = efl_util_input_initialize_generator_with_sync(EFL_UTIL_INPUT_DEVTYPE_POINTER, NULL);
@@ -134,7 +137,7 @@ int TizenDeviceImpl::stopTimer(void)
     if (!isTimerStarted) return 0;
     isTimerStarted = false;
     clock_gettime(CLOCK_MONOTONIC, &tEnd);
-    return ((tEnd.tv_sec + tEnd.tv_nsec/1000000000.0) - (tStart.tv_sec + tStart.tv_nsec/1000000000.0)) * 1000000;
+    return ((tEnd.tv_sec + tEnd.tv_nsec/NANO_SEC) - (tStart.tv_sec + tStart.tv_nsec/NANO_SEC)) * MICRO_SEC;
 }
 
 bool TizenDeviceImpl::drag(const int sx, const int sy, const int ex, const int ey,
@@ -156,7 +159,7 @@ bool TizenDeviceImpl::drag(const int sx, const int sy, const int ex, const int e
         _steps = (int)(_durationUs / (INTV_MINIMUM_DRAG_MS * MSEC_PER_SEC)) - 1;
         _stepUs  = (INTV_MINIMUM_DRAG_MS * MSEC_PER_SEC);
     }
-    dlog_print(DLOG_INFO, LOG_TAG, "flicking (%d, %d) -> (%d, %d) for (%d ms)", sx, sy, ex, ey, durationMs);
+    LOGI("flicking (%d, %d) -> (%d, %d) for (%d ms)", sx, sy, ex, ey, durationMs);
     startTimer();
     int seq = touchDown(sx, sy);
     if (seq < 0) return false;

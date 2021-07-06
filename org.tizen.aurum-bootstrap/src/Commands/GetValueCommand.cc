@@ -1,7 +1,6 @@
+#include "bootstrap.h"
 #include "GetValueCommand.h"
-#include <loguru.hpp>
-
-#include <UiObject.h>
+#include "UiObject.h"
 
 GetValueCommand::GetValueCommand(const ::aurum::ReqGetValue* request,
                                  ::aurum::RspGetValue*       response)
@@ -11,7 +10,7 @@ GetValueCommand::GetValueCommand(const ::aurum::ReqGetValue* request,
 
 ::grpc::Status GetValueCommand::execute()
 {
-    LOG_SCOPE_F(INFO, "GetValue --------------- ");
+    LOGI("GetValue --------------- ");
     ObjectMapper* mObjMap = ObjectMapper::getInstance();
     std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
 

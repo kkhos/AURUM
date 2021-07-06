@@ -1,5 +1,4 @@
 #include "Command.h"
-#include <loguru.hpp>
 
 ::grpc::Status Command::executePost()
 {

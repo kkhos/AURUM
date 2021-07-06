@@ -1,5 +1,5 @@
+#include "bootstrap.h"
 #include "RemoveAppCommand.h"
-#include <loguru.hpp>
 #include <chrono>
 #include <thread>
 #ifdef GBSBUILD
@@ -14,13 +14,13 @@ RemoveAppCommand::RemoveAppCommand(const ::aurum::ReqRemoveApp* request,
 
 ::grpc::Status RemoveAppCommand::execute()
 {
-    LOG_SCOPE_F(INFO, "RemoveAppCommand::execute");
+    LOGI("RemoveAppCommand::execute");
 
 #ifdef GBSBUILD
     package_manager_request_h pkgRequest;
     std::string               name = mRequest->packagename();
     int                       id;
-    LOG_F(INFO, "package name :%s", name.c_str());
+    LOGI("package name :%s", name.c_str());
 
     if (package_manager_request_create(&pkgRequest) == PACKAGE_MANAGER_ERROR_NONE) {
         if (package_manager_request_uninstall(pkgRequest, name.c_str(), &id) == PACKAGE_MANAGER_ERROR_NONE) {
@@ -33,7 +33,7 @@ RemoveAppCommand::RemoveAppCommand(const ::aurum::ReqRemoveApp* request,
 
 ::grpc::Status RemoveAppCommand::executePost()
 {
-    LOG_SCOPE_F(INFO, "RemoveAppCommand::executePost");
+     LOGI("RemoveAppCommand::executePost");
     std::this_thread::sleep_for(std::chrono::milliseconds{5000});
     return grpc::Status::OK;
 }

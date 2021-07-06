@@ -15,61 +15,9 @@ AtspiAccessibleNode::AtspiAccessibleNode(AtspiAccessible *node)
     watcher->attach(shared_from_this());
 
     if (mNode) {
-        /*
-        GArray *ifaces = AtspiWrapper::Atspi_accessible_get_interfaces(mNode);
-        if (ifaces) {
-            for (unsigned int i = 0; i < ifaces->len; i++) {
-                char *iface = g_array_index(ifaces, char *, i);
-                if (!strcmp(iface, "Action"))
-                    mSupportingIfaces |=
-                        static_cast<int>(AccessibleNodeInterface::ACTION);
-                else if (!strcmp(iface, "Collection"))
-                    mSupportingIfaces |=
-                        static_cast<int>(AccessibleNodeInterface::COLLECTION);
-                else if (!strcmp(iface, "Component"))
-                    mSupportingIfaces |=
-                        static_cast<int>(AccessibleNodeInterface::COMPONENT);
-                else if (!strcmp(iface, "Document"))
-                    mSupportingIfaces |=
-                        static_cast<int>(AccessibleNodeInterface::DOCUMENT);
-                else if (!strcmp(iface, "EditableText"))
-                    mSupportingIfaces |=
-                        static_cast<int>(AccessibleNodeInterface::EDITABLETEXT);
-                else if (!strcmp(iface, "Hypertext"))
-                    mSupportingIfaces |=
-                        static_cast<int>(AccessibleNodeInterface::HYPERTEXT);
-                else if (!strcmp(iface, "Image"))
-                    mSupportingIfaces |=
-                        static_cast<int>(AccessibleNodeInterface::IMAGE);
-                else if (!strcmp(iface, "Selection"))
-                    mSupportingIfaces |=
-                        static_cast<int>(AccessibleNodeInterface::SELECTION);
-                else if (!strcmp(iface, "Text"))
-                    mSupportingIfaces |=
-                        static_cast<int>(AccessibleNodeInterface::TEXT);
-                else if (!strcmp(iface, "Value"))
-                    mSupportingIfaces |=
-                        static_cast<int>(AccessibleNodeInterface::VALUE);
-                else if (!strcmp(iface, "Accessible"))
-                    mSupportingIfaces |=
-                        static_cast<int>(AccessibleNodeInterface::ACCESSIBLE);
-                else if (!strcmp(iface, "Table"))
-                    mSupportingIfaces |=
-                        static_cast<int>(AccessibleNodeInterface::TABLE);
-                else if (!strcmp(iface, "TableCell"))
-                    mSupportingIfaces |=
-                        static_cast<int>(AccessibleNodeInterface::TABLECELL);
-                else
-                    LOG_F(WARNING, "Not Supported interface found %s", iface);
-
-                g_free(iface);
-            }
-            g_array_free(ifaces, FALSE);
-        }*/
-
         this->refresh();
     } else {
-        dlog_print(DLOG_INFO, LOG_TAG, "AtspiAccessibleNode Ctor : mNode is null");
+        LOGI("AtspiAccessibleNode Ctor : mNode is null");
     }
 }
 
@@ -100,7 +48,6 @@ std::shared_ptr<AccessibleNode> AtspiAccessibleNode::getChildAt(int index) const
         AtspiWrapper::unlock();
         return std::make_shared<AtspiAccessibleNode>(nullptr);
     }
-    dlog_print(DLOG_INFO, LOG_TAG, "getChild @ %d from node(%p)", index, mNode);
     AtspiAccessible *rawChild = AtspiWrapper::Atspi_accessible_get_child_at_index(mNode, index, NULL);
     AtspiWrapper::unlock();
     return std::make_shared<AtspiAccessibleNode>(rawChild);
@@ -127,10 +74,8 @@ std::shared_ptr<AccessibleNode> AtspiAccessibleNode::getParent() const
     AtspiAccessible *rawParent = AtspiWrapper::Atspi_accessible_get_parent(mNode, NULL);
     AtspiWrapper::unlock();
     return std::make_shared<AtspiAccessibleNode>(rawParent);
-/*  auto node = AccessibleNode::get(parent);
-    if (parent) g_object_unref(parent);
-    return node; */
 }
+
 bool AtspiAccessibleNode::isValid() const
 {
     if(!AccessibleNode::isValid())  return false;
@@ -145,7 +90,6 @@ bool AtspiAccessibleNode::isValid() const
     g_object_unref(st);
     return true;
 }
-
 
 void* AtspiAccessibleNode::getRawHandler(void) const
 {
@@ -312,7 +256,7 @@ void AtspiAccessibleNode::setValue(std::string text)
     }
 
     AtspiEditableText *iface = AtspiWrapper::Atspi_accessible_get_editable_text(mNode);
-    dlog_print(DLOG_INFO, LOG_TAG, "set Value iface:%p obj:%p text:%s", iface, mNode, text.c_str() );
+    LOGI("set Value iface:%p obj:%p text:%s", iface, mNode, text.c_str() );
     if (iface) {
         int len = getText().length();
         AtspiWrapper::Atspi_editable_text_delete_text(iface, 0, len, NULL);
@@ -324,10 +268,6 @@ void AtspiAccessibleNode::setValue(std::string text)
 
 void AtspiAccessibleNode::setFeatureProperty(AtspiStateType type)
 {
-/*
-    LONGCLICKABLE = 0X0040,
-    SCROLLABLE = 0X0080,
-*/
     switch(type) {
         case ATSPI_STATE_CHECKED:
             setFeatureProperty(NodeFeatureProperties::CHECKED, true);
