@@ -57,17 +57,17 @@ AccessibleWatcher *AccessibleWatcher::getInstance(AccessibleWatcher *watcherImpl
 
 std::vector<std::shared_ptr<AccessibleApplication>> AccessibleWatcher::getActiveApplications(void) const
 {
-    dlog_print(DLOG_INFO, LOG_TAG, "getActiveApplications for this(%p)", this);
+    LOGI("getActiveApplications for this(%p)", this);
 
     std::vector<std::shared_ptr<AccessibleApplication>> ret{};
     auto apps = this->getApplications();
-    dlog_print(DLOG_INFO, LOG_TAG, "apps size %d", apps.size());
+    LOGI("apps size %d", apps.size());
 
     apps.erase(std::remove_if(apps.begin(), apps.end(), [](auto app){
         return !app->isActive();
     }), apps.end());
 
-    dlog_print(DLOG_INFO, LOG_TAG, "active apps size %d", apps.size());
+    LOGI("active apps size %d", apps.size());
 
     return apps;
 }
@@ -75,7 +75,6 @@ std::vector<std::shared_ptr<AccessibleApplication>> AccessibleWatcher::getActive
 void AccessibleWatcher::attach(std::shared_ptr<IEventConsumer> source)
 {
     std::unique_lock<std::mutex> lock(mLock);
-    dlog_print(DLOG_INFO, LOG_TAG, "source attached %p", source.get());
     if (source) {
         mSources.insert(source);
     }
@@ -84,7 +83,6 @@ void AccessibleWatcher::attach(std::shared_ptr<IEventConsumer> source)
 void AccessibleWatcher::detach(std::shared_ptr<IEventConsumer> source)
 {
     std::unique_lock<std::mutex> lock(mLock);
-    dlog_print(DLOG_INFO, LOG_TAG, "source detached %p", source.get());
     if (source) {
         auto iter = mSources.find(source);
         if (iter != mSources.end()) mSources.erase(iter);

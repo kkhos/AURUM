@@ -1,7 +1,5 @@
+#include <Aurum.h>
 #include "SendKeyCommand.h"
-#include <loguru.hpp>
-
-#include <UiDevice.h>
 
 SendKeyCommand::SendKeyCommand(const ::aurum::ReqKey* request,
                                ::aurum::RspKey*       response)
@@ -11,7 +9,7 @@ SendKeyCommand::SendKeyCommand(const ::aurum::ReqKey* request,
 
 ::grpc::Status SendKeyCommand::execute()
 {
-    LOG_SCOPE_F(INFO, "SendKey --------------- ");
+    LOGI("SendKey --------------- ");
     std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();
     ::aurum::ReqKey_KeyType type = mRequest->type();
     ::aurum::ReqKey_KeyActionType action_type = mRequest->actiontype();

@@ -1,7 +1,5 @@
+#include <Aurum.h>
 #include "TakeScreenshotCommand.h"
-#include <loguru.hpp>
-#include "UiObject.h"
-#include "UiDevice.h"
 #include <fstream>
 
 TakeScreenshotCommand::TakeScreenshotCommand(
@@ -13,7 +11,7 @@ TakeScreenshotCommand::TakeScreenshotCommand(
 
 ::grpc::Status TakeScreenshotCommand::execute()
 {
-    LOG_SCOPE_F(INFO, "TakeScreenshot --------------- ");
+    LOGI("TakeScreenshot --------------- ");
 
     std::string path = "/tmp/screenshot.png";
     std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();

@@ -108,11 +108,11 @@ static void _print_stateset_debug( AtspiStateSet *stateSet)
 
    char *state_name = NULL;
    AtspiStateType stat;
-   dlog_print(DLOG_INFO, LOG_TAG, "check ss:%p s:%p, len:%d", stateSet, states, states->len);
+   LOGI("check ss:%p s:%p, len:%d", stateSet, states, states->len);
    for (int i = 0; states && (i < states->len); ++i) {
       stat = g_array_index(states, AtspiStateType, i);
       state_name = state_to_char(stat);
-      dlog_print(DLOG_INFO, LOG_TAG, "state: %s", state_name);
+      LOGI("state: %s", state_name);
       free(state_name);
    }
    g_array_free(states, 1);

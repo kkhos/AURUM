@@ -1,13 +1,5 @@
+#include <Aurum.h>
 #include "FindElementCommand.h"
-
-#include "ISearchable.h"
-
-#include "Sel.h"
-#include "UiDevice.h"
-#include "UiObject.h"
-#include "UiSelector.h"
-
-#include <loguru.hpp>
 
 FindElementCommand::FindElementCommand(const ::aurum::ReqFindElement* request,
                                        ::aurum::RspFindElement*       response)
@@ -54,7 +46,7 @@ std::vector<std::shared_ptr<UiSelector>> FindElementCommand::getSelectors(void)
 
 ::grpc::Status FindElementCommand::execute()
 {
-    LOG_SCOPE_F(INFO, "findElement --------------- ");
+    LOGI("findElement --------------- ");
     auto searchableObj = getSearchableTop();
     auto selectors     = getSelectors();
 
@@ -72,7 +64,7 @@ std::vector<std::shared_ptr<UiSelector>> FindElementCommand::getSelectors(void)
             key = mObjMap->getElement(found);
             if (key.length() <= 0)
               key = mObjMap->addElement(std::move(found));
-            LOG_F(INFO, "found object : %s key:%s",
+            LOGI("found object : %s key:%s",
                   obj->getAutomationId().c_str(), key.c_str());
             ::aurum::Element* elm = mResponse->add_elements();
             elm->set_elementid(key);

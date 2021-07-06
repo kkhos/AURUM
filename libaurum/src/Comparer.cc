@@ -25,7 +25,7 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(const std::sh
 {
     Comparer comparer(device, selector, earlyReturn);
 
-    dlog_print(DLOG_INFO, LOG_TAG, "findObjects selector(%s) from (type:%s style:%s, role:%s, text:%s) earlyReturn:%d", selector->description().c_str(), root->getType().c_str(),  root->getStyle().c_str(),  root->getRole().c_str(),  root->getText().c_str(), earlyReturn);
+    LOGI("findObjects selector(%s) from (type:%s style:%s, role:%s, text:%s) earlyReturn:%d", selector->description().c_str(), root->getType().c_str(),  root->getStyle().c_str(),  root->getRole().c_str(),  root->getText().c_str(), earlyReturn);
 
     if (selector->mParent) {
         auto ret = Comparer::findObjects(device, selector->mParent, root);
@@ -45,7 +45,7 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(const std::sh
 {
     std::list<std::shared_ptr<PartialMatch>> partialList{};
     std::vector<std::shared_ptr<AccessibleNode>> ret = findObjects(root, 0, 0, partialList);
-    dlog_print(DLOG_INFO, LOG_TAG, "%d object(s) found", ret.size());
+    LOGI("%d object(s) found", ret.size());
     return ret;
 }
 
@@ -76,11 +76,11 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(
             if (!ret.empty() && mEarlyReturn) return ret;
         }
     } else {
-        dlog_print(DLOG_INFO, LOG_TAG, "Abort searching! No need to search children(maxDepth limit overflow, %d < %d < %d)", mSelector->mMinDepth?*(mSelector->mMinDepth):-1, depth, mSelector->mMaxDepth?*(mSelector->mMaxDepth):9999999);
+        LOGI("Abort searching! No need to search children(maxDepth limit overflow, %d < %d < %d)", mSelector->mMinDepth?*(mSelector->mMinDepth):-1, depth, mSelector->mMaxDepth?*(mSelector->mMaxDepth):9999999);
     }
 
     if (currentMatch && currentMatch->finalizeMatch()){
-        dlog_print(DLOG_INFO, LOG_TAG, "Found matched = %s with criteria %s", root->description().c_str(), currentMatch->debugPrint().c_str());
+        LOGI("Found matched = %s with criteria %s", root->description().c_str(), currentMatch->debugPrint().c_str());
         ret.push_back(root);
     }
 

@@ -1,6 +1,5 @@
+#include <Aurum.h>
 #include "TouchDownCommand.h"
-#include <UiDevice.h>
-#include <loguru.hpp>
 
 TouchDownCommand::TouchDownCommand(const ::aurum::ReqTouchDown* request,
                                    ::aurum::RspTouchDown*       response)
@@ -10,7 +9,7 @@ TouchDownCommand::TouchDownCommand(const ::aurum::ReqTouchDown* request,
 
 ::grpc::Status TouchDownCommand::execute()
 {
-    LOG_SCOPE_F(INFO, "TouchDown --------------- ");
+    LOGI("TouchDown --------------- ");
     const aurum::Point& point_ = mRequest->coordination();
     int seq = UiDevice::getInstance()
         ->touchDown(point_.x(), point_.y());

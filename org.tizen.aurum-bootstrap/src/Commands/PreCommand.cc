@@ -1,6 +1,6 @@
+#include <Aurum.h>
 #include "PreCommand.h"
 #include <atspi/atspi.h>
-#include <loguru.hpp>
 
 #include <thread>
 #include <chrono>
@@ -16,16 +16,16 @@ PreCommand::PreCommand(Command *cmd) : mCommand{cmd} {}
 ::grpc::Status PreCommand::execute()
 {
     {
-       LOG_SCOPE_F(INFO, "PreCommand --------------- ");
-       display_state_e state;
-       if (device_display_get_state(&state) != DEVICE_ERROR_NONE) {
-            LOG_F(INFO, "getting display state has failed");
-       }
+        LOGI("PreCommand --------------- ");
+        display_state_e state;
+        if (device_display_get_state(&state) != DEVICE_ERROR_NONE) {
+            LOGI("getting display state has failed");
+        }
 
         bool isDisplayOn = DISPLAY_STATE_SCREEN_OFF != state;
 
         if (device_power_wakeup(false) != DEVICE_ERROR_NONE) {
-             LOG_F(INFO, "turning on display has failed");
+             LOGI("turning on display has failed");
         }
 
         if (!isDisplayOn)

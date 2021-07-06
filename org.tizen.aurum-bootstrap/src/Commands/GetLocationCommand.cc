@@ -1,5 +1,5 @@
+#include <Aurum.h>
 #include "GetLocationCommand.h"
-#include <loguru.hpp>
 
 GetLocationCommand::GetLocationCommand(const ::aurum::ReqGetLocation* request,
                                        ::aurum::RspGetLocation*       response)
@@ -9,7 +9,7 @@ GetLocationCommand::GetLocationCommand(const ::aurum::ReqGetLocation* request,
 
 ::grpc::Status GetLocationCommand::execute()
 {
-    LOG_SCOPE_F(INFO, "CliGetLocation --------------- ");
+    LOGI("CliGetLocation --------------- ");
     // ObjectMapper *mObjMap = ObjectMapper::getInstance();
 
     mResponse->set_alt(-1);

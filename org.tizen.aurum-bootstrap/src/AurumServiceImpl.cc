@@ -1,12 +1,11 @@
+#include <Aurum.h>
 #include "AurumServiceImpl.h"
 
-#include <AccessibleWatcher.h>
 #include "Commands/Commands.h"
 #include "Commands/PostCommand.h"
 #include "Commands/PreCommand.h"
 
 #include "config.h"
-#include <loguru.hpp>
 
 using namespace grpc;
 using namespace aurum;

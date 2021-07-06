@@ -3,10 +3,18 @@
 
 #include <dlog.h>
 
-#ifdef  LOG_TAG
-#undef  LOG_TAG
+#ifdef LOG_TAG
+#undef LOG_TAG
 #endif
 #define LOG_TAG "AURUM"
+
+#ifndef LOGI
+#define LOGI(fmt, arg...) \
+    ({ do { \
+        dlog_print(DLOG_INFO, LOG_TAG, "%s: %s(%d) > " fmt, \
+                __FILE__, __func__, __LINE__, ##arg); \
+    } while (0); })
+#endif
 
 #include "UiDevice.h"
 #include "UiObject.h"

@@ -22,12 +22,12 @@ static bool iShowingNode(AtspiAccessible *node)
     if (node) name = AtspiWrapper::Atspi_accessible_get_name(node, NULL);
     else return false;
 
-    dlog_print(DLOG_INFO, LOG_TAG, "isShowing %s", name);
+    LOGI("isShowing %s", name);
     auto stateSet = AtspiWrapper::Atspi_accessible_get_state_set(node);
 
     if (AtspiWrapper::Atspi_state_set_contains(stateSet, ATSPI_STATE_ACTIVE)
         && AtspiWrapper::Atspi_state_set_contains(stateSet, ATSPI_STATE_SHOWING)) {
-        dlog_print(DLOG_INFO, LOG_TAG, "active and showing %p %s", node, name);
+        LOGI("active and showing %p %s", node, name);
         free(name);
         g_object_unref(stateSet);
         return true;
@@ -41,14 +41,14 @@ static std::vector<AtspiAccessible *>
 findActiveNode(AtspiAccessible *node, int depth,
                                        int max_depth)
 {
-    dlog_print(DLOG_INFO, LOG_TAG, "findActiveNode %p %d/%d", node, depth, max_depth);
+    LOGI("findActiveNode %p %d/%d", node, depth, max_depth);
 
     std::vector<AtspiAccessible *> ret{};
 
     if (iShowingNode(node)) {
         char *name = AtspiWrapper::Atspi_accessible_get_name(node, NULL);
         if (name) {
-            dlog_print(DLOG_INFO, LOG_TAG, "%s", name);
+            LOGI("%s", name);
             free(name);
         }
         ret.push_back(node);
@@ -60,10 +60,10 @@ findActiveNode(AtspiAccessible *node, int depth,
     int nchild = AtspiWrapper::Atspi_accessible_get_child_count(node, NULL);
     if (nchild <= 0) return ret;
 
-    dlog_print(DLOG_INFO, LOG_TAG, "findActiveNode node %p has %d children", node, nchild);
+    LOGI("findActiveNode node %p has %d children", node, nchild);
     for (int i = 0; i < nchild; i++) {
         AtspiAccessible* child = AtspiWrapper::Atspi_accessible_get_child_at_index(node, i, NULL);
-        dlog_print(DLOG_INFO, LOG_TAG, "a child found @ %d : %p", i, child);
+        LOGI("a child found @ %d : %p", i, child);
         std::vector<AtspiAccessible *> childRet = findActiveNode(child, depth + 1, max_depth);
         ret.insert(ret.end(), childRet.begin(), childRet.end());
         g_object_unref(child);
@@ -74,7 +74,7 @@ findActiveNode(AtspiAccessible *node, int depth,
 
 static gpointer _event_thread_loop (gpointer data)
 {
-    dlog_print(DLOG_INFO, LOG_TAG, "event thread start");
+    LOGI("event thread start");
     AtspiEventListener * listener =
         atspi_event_listener_new(AtspiAccessibleWatcher::onAtspiEvents, data, NULL);
 
@@ -83,7 +83,7 @@ static gpointer _event_thread_loop (gpointer data)
 
     atspi_event_main();
 
-    dlog_print(DLOG_INFO, LOG_TAG, "event thread end");
+    LOGI("event thread end");
     atspi_event_listener_deregister(listener, "object:", NULL);
     atspi_event_listener_deregister(listener, "window:", NULL);
 
@@ -209,57 +209,57 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *user_data)
 
 void AtspiAccessibleWatcher::print_debug()
 {
-    dlog_print(DLOG_INFO, LOG_TAG, "activatewindowlist-------------------");
+    LOGI("activatewindowlist-------------------");
     std::for_each(mActivatedWindowList.begin(), mActivatedWindowList.end(), [](auto acc){
-        dlog_print(DLOG_INFO, LOG_TAG, "child:%p", acc);
+        LOGI("child:%p", acc);
     });
 
-    dlog_print(DLOG_INFO, LOG_TAG, "mActivatedApplicationList--------------------------");
+    LOGI("mActivatedApplicationList--------------------------");
     std::for_each(mActivatedApplicationList.begin(), mActivatedApplicationList.end(), [](auto acc){
-        dlog_print(DLOG_INFO, LOG_TAG, "child:%p", acc);
+        LOGI("child:%p", acc);
     });
 
-    dlog_print(DLOG_INFO, LOG_TAG, "mWindowSet------------------------------");
+    LOGI("mWindowSet------------------------------");
     std::for_each(mWindowSet.begin(), mWindowSet.end(), [](auto acc){
-        dlog_print(DLOG_INFO, LOG_TAG, "child:%p", acc);
+        LOGI("child:%p", acc);
     });
-    dlog_print(DLOG_INFO, LOG_TAG, "------------------------------");
+    LOGI("------------------------------");
 }
 
 void AtspiAccessibleWatcher::onWindowActivated(AtspiAccessible *node,
                             WindowActivateInfoType type)
 {
-    dlog_print(DLOG_INFO, LOG_TAG, "onWindowActivated obj:%p", node);
+    LOGI("onWindowActivated obj:%p", node);
     notifyAll((int)EventType::Window, (int)WindowEventType::WindowActivated, node);
 }
 
 void AtspiAccessibleWatcher::onWindowDeactivated(AtspiAccessible *node)
 {
-    dlog_print(DLOG_INFO, LOG_TAG, "onWindowDeactivated obj:%p", node);
+    LOGI("onWindowDeactivated obj:%p", node);
     notifyAll((int)EventType::Window, (int)WindowEventType::WindowDeactivated, node);
 }
 
 void AtspiAccessibleWatcher::onWindowCreated(AtspiAccessible *node)
 {
-    dlog_print(DLOG_INFO, LOG_TAG, "onWindowCreated obj:%p", node);
+    LOGI("onWindowCreated obj:%p", node);
     notifyAll((int)EventType::Window, (int)WindowEventType::WindowCreated, node);
 }
 
 void AtspiAccessibleWatcher::onWindowDestroyed(AtspiAccessible *node)
 {
-    dlog_print(DLOG_INFO, LOG_TAG, "onWindowDestroyed obj:%p", node);
+    LOGI("onWindowDestroyed obj:%p", node);
     notifyAll((int)EventType::Window, (int)WindowEventType::WindowDestroyed, node);
 }
 
 void AtspiAccessibleWatcher::onVisibilityChanged(AtspiAccessible *node, bool visible)
 {
-    dlog_print(DLOG_INFO, LOG_TAG, "onVisibilityChanged obj:%p", node);
+    LOGI("onVisibilityChanged obj:%p", node);
     notifyAll((int)EventType::Object, (int)ObjectEventType::ObjectStateVisible, node);
 }
 
 void AtspiAccessibleWatcher::onObjectDefunct(AtspiAccessible *node)
 {
-    dlog_print(DLOG_INFO, LOG_TAG, "onObjectDefunct obj:%p", node);
+    LOGI("onObjectDefunct obj:%p", node);
     notifyAll((int)EventType::Object, (int)ObjectEventType::ObjectStateDefunct, node);
 }
 
@@ -290,7 +290,7 @@ std::shared_ptr<AccessibleApplication> AtspiAccessibleWatcher::getApplicationAt(
 std::vector<std::shared_ptr<AccessibleApplication>> AtspiAccessibleWatcher::getApplications(void) const
 {
     AtspiWrapper::lock();
-    dlog_print(DLOG_INFO, LOG_TAG, "getApplications for this(%p)", this);
+    LOGI("getApplications for this(%p)", this);
     std::vector<std::shared_ptr<AccessibleApplication>> ret{};
     AtspiAccessible *root = AtspiWrapper::Atspi_get_desktop(0);
     int nchild = AtspiWrapper::Atspi_accessible_get_child_count(root, NULL);
@@ -337,7 +337,7 @@ bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const 
             for (const auto &event : localEvents) {
                 if (COMPARE(type, event->getEvent()))
 				{
-                    dlog_print(DLOG_INFO, LOG_TAG, "type %d == %d name %s pkg %s",static_cast<int>(type), static_cast<int>(event->getEvent()), event->getName().c_str(), event->getPkg().c_str()); 
+                    LOGI("type %d == %d name %s pkg %s",static_cast<int>(type), static_cast<int>(event->getEvent()), event->getName().c_str(), event->getPkg().c_str()); 
 				    return true; 
 				}
 			}
@@ -354,11 +354,11 @@ bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const 
 
 bool AtspiAccessibleWatcher::removeFromActivatedList(AtspiAccessible *node)
 {
-    dlog_print(DLOG_INFO, LOG_TAG, "remove from activelist node %p", node);
+    LOGI("remove from activelist node %p", node);
     mActivatedWindowList.remove_if([&](auto &n) { return n == node; });
 
     AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(node, NULL);
-    dlog_print(DLOG_INFO, LOG_TAG, "node:%p, app:%p", node, app);
+    LOGI("node:%p, app:%p", node, app);
     if (app) {
         mActivatedApplicationList.remove_if([&](auto &n) { return n == app; });
         g_object_unref(app);
@@ -368,7 +368,7 @@ bool AtspiAccessibleWatcher::removeFromActivatedList(AtspiAccessible *node)
 
 bool AtspiAccessibleWatcher::addToActivatedList(AtspiAccessible *node)
 {
-    dlog_print(DLOG_INFO, LOG_TAG, "add to activelist node %p", node);
+    LOGI("add to activelist node %p", node);
     mActivatedWindowList.remove_if([&](auto &n) { return n == node; });
     mActivatedWindowList.push_front(node);
 
@@ -376,7 +376,7 @@ bool AtspiAccessibleWatcher::addToActivatedList(AtspiAccessible *node)
     if ( iter == mWindowSet.end()) mWindowSet.insert(node);
 
     AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(node, NULL);
-    dlog_print(DLOG_INFO, LOG_TAG, "node:%p, app:%p", node, app);
+    LOGI("node:%p, app:%p", node, app);
     if (app) {
         mActivatedApplicationList.remove_if([&](auto &n) { if(n == app) { g_object_unref(app); return true;} else return false; });
         mActivatedApplicationList.push_front(app);

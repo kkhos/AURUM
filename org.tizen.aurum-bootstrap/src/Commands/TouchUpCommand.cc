@@ -1,6 +1,5 @@
+#include <Aurum.h>
 #include "TouchUpCommand.h"
-#include <UiDevice.h>
-#include <loguru.hpp>
 
 TouchUpCommand::TouchUpCommand(const ::aurum::ReqTouchUp* request,
                                ::aurum::RspTouchUp*       response)
@@ -10,7 +9,7 @@ TouchUpCommand::TouchUpCommand(const ::aurum::ReqTouchUp* request,
 
 ::grpc::Status TouchUpCommand::execute()
 {
-    LOG_SCOPE_F(INFO, "TouchUp --------------- ");
+    LOGI("TouchUp --------------- ");
     const aurum::Point& point = mRequest->coordination();
     int seq = mRequest->seqid();
     UiDevice::getInstance()->touchUp(point.x(), point.y(), seq);

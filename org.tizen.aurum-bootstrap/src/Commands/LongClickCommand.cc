@@ -1,8 +1,5 @@
+#include <Aurum.h>
 #include "LongClickCommand.h"
-#include <loguru.hpp>
-
-#include <UiObject.h>
-#include <UiDevice.h>
 
 LongClickCommand::LongClickCommand(const ::aurum::ReqClick* request,
                                    ::aurum::RspClick*       response)
@@ -12,7 +9,7 @@ LongClickCommand::LongClickCommand(const ::aurum::ReqClick* request,
 
 ::grpc::Status LongClickCommand::execute()
 {
-    LOG_SCOPE_F(INFO, "LongClick --------------- ");
+    LOGI("LongClick --------------- ");
 
     ObjectMapper* mObjMap = ObjectMapper::getInstance();
     ::aurum::ReqClick_RequestType type = mRequest->type();

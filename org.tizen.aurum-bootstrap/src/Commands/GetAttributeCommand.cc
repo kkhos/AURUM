@@ -1,8 +1,5 @@
+#include <Aurum.h>
 #include "GetAttributeCommand.h"
-#include <loguru.hpp>
-
-#include <UiDevice.h>
-#include <UiObject.h>
 
 GetAttributeCommand::GetAttributeCommand(
     const ::aurum::ReqGetAttribute* request, ::aurum::RspGetAttribute* response)
@@ -20,7 +17,7 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
 {
     ::aurum::ReqGetAttribute_RequestType type = request->attribute();
 
-    LOG_SCOPE_F(INFO, "type : %d", type);
+    LOGI("type : %d", type);
 
     if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_VISIBLE)
         return std::make_unique<GetVisibleAttributeCommand>(request, response);

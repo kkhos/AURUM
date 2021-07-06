@@ -1,6 +1,5 @@
+#include <Aurum.h>
 #include "TouchMoveCommand.h"
-#include <UiDevice.h>
-#include <loguru.hpp>
 
 TouchMoveCommand::TouchMoveCommand(const ::aurum::ReqTouchMove* request,
                                    ::aurum::RspTouchMove*       response)
@@ -10,7 +9,7 @@ TouchMoveCommand::TouchMoveCommand(const ::aurum::ReqTouchMove* request,
 
 ::grpc::Status TouchMoveCommand::execute()
 {
-    LOG_SCOPE_F(INFO, "TouchMove --------------- ");
+    LOGI("TouchMove --------------- ");
     const aurum::Point& point = mRequest->coordination();
     int seq = mRequest->seqid();
     UiDevice::getInstance()->touchMove(point.x(), point.y(), seq);

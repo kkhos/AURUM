@@ -69,7 +69,7 @@ AtspiAccessibleNode::AtspiAccessibleNode(AtspiAccessible *node)
 
         this->refresh();
     } else {
-        dlog_print(DLOG_INFO, LOG_TAG, "AtspiAccessibleNode Ctor : mNode is null");
+        LOGI("AtspiAccessibleNode Ctor : mNode is null");
     }
 }
 
@@ -100,7 +100,6 @@ std::shared_ptr<AccessibleNode> AtspiAccessibleNode::getChildAt(int index) const
         AtspiWrapper::unlock();
         return std::make_shared<AtspiAccessibleNode>(nullptr);
     }
-    dlog_print(DLOG_INFO, LOG_TAG, "getChild @ %d from node(%p)", index, mNode);
     AtspiAccessible *rawChild = AtspiWrapper::Atspi_accessible_get_child_at_index(mNode, index, NULL);
     AtspiWrapper::unlock();
     return std::make_shared<AtspiAccessibleNode>(rawChild);
@@ -312,7 +311,7 @@ void AtspiAccessibleNode::setValue(std::string text)
     }
 
     AtspiEditableText *iface = AtspiWrapper::Atspi_accessible_get_editable_text(mNode);
-    dlog_print(DLOG_INFO, LOG_TAG, "set Value iface:%p obj:%p text:%s", iface, mNode, text.c_str() );
+    LOGI("set Value iface:%p obj:%p text:%s", iface, mNode, text.c_str() );
     if (iface) {
         int len = getText().length();
         AtspiWrapper::Atspi_editable_text_delete_text(iface, 0, len, NULL);

@@ -1,8 +1,8 @@
+#include <Aurum.h>
 #include "InstallAppCommand.h"
 #include <fstream>
 #include <chrono>
 #include <thread>
-#include <loguru.hpp>
 #ifdef GBSBUILD
 #include <package_manager.h>
 #endif
@@ -16,7 +16,7 @@ InstallAppCommand::InstallAppCommand(
 
 ::grpc::Status InstallAppCommand::execute()
 {
-    LOG_SCOPE_F(INFO, "InstallApp --------------- ");
+    LOGI("InstallApp --------------- ");
 #ifdef GBSBUILD
     ::aurum::ReqInstallApp chunk;
 
@@ -40,7 +40,7 @@ InstallAppCommand::InstallAppCommand(
 
 ::grpc::Status InstallAppCommand::executePost()
 {
-    LOG_SCOPE_F(INFO, "InstallAppCommand::executePost");
+    LOGI("InstallAppCommand::executePost");
     std::this_thread::sleep_for(std::chrono::milliseconds{5000});
     return grpc::Status::OK;
 }

@@ -1,6 +1,5 @@
+#include <Aurum.h>
 #include "ClearCommand.h"
-#include <UiObject.h>
-#include <loguru.hpp>
 #include <string>
 
 ClearCommand::ClearCommand(const ::aurum::ReqClear* request,
@@ -25,7 +24,7 @@ bool ClearCommand::hasHintText(std::shared_ptr<UiObject> obj)
 
 ::grpc::Status ClearCommand::execute()
 {
-    LOG_SCOPE_F(INFO, "Clear --------------- ");
+    LOGI("Clear --------------- ");
     ObjectMapper* mObjMap = ObjectMapper::getInstance();
     std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
 
