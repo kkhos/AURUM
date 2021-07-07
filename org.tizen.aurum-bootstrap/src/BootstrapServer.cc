@@ -57,6 +57,8 @@ static void _service_app_terminate(void *data)
 static void _service_app_control(app_control_h app_control, void *data)
 {
     ServiceContext *ctx = (ServiceContext*)data;
+    if (!ctx)
+       LOGE("Service context is empty!");
 }
 
 int main(int argc, char **argv)
@@ -66,7 +68,6 @@ int main(int argc, char **argv)
 #endif
 
     service_app_lifecycle_callback_s event_callback;
-    app_event_handler_h handlers[5] = {NULL, };
     ServiceContext ctx = {0,};
 
     event_callback.create = _service_app_create;
