@@ -19,7 +19,7 @@
 #ifndef LOGE
 #define FONT_RED    "\033[31m"
 #define FONT_RESET  "\033[0m"
-#define LOGI_RED(fmt, arg...) \
+#define LOGE(fmt, arg...) \
     ({ do { \
         dlog_print(DLOG_ERROR, LOG_TAG, \
                    FONT_RED "%s: %s(%d) > " fmt FONT_RESET, \
