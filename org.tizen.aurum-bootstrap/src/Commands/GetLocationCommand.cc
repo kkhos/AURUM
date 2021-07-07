@@ -9,7 +9,7 @@ GetLocationCommand::GetLocationCommand(const ::aurum::ReqGetLocation* request,
 
 ::grpc::Status GetLocationCommand::execute()
 {
-    LOGI("CliGetLocation --------------- ");
+    LOGI("GetLocation --------------- ");
     // ObjectMapper *mObjMap = ObjectMapper::getInstance();
 
     mResponse->set_alt(-1);
