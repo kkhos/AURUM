@@ -15,22 +15,21 @@ PreCommand::PreCommand(Command *cmd) : mCommand{cmd} {}
 
 ::grpc::Status PreCommand::execute()
 {
-    {
-        LOGI("PreCommand --------------- ");
-        display_state_e state;
-        if (device_display_get_state(&state) != DEVICE_ERROR_NONE) {
-            LOGI("getting display state has failed");
-        }
-
-        bool isDisplayOn = DISPLAY_STATE_SCREEN_OFF != state;
-
-        if (device_power_wakeup(false) != DEVICE_ERROR_NONE) {
-             LOGI("turning on display has failed");
-        }
-
-        if (!isDisplayOn)
-            std::this_thread::sleep_for(std::chrono::milliseconds{INTV_TURNON_MARGIN});
+    display_state_e state;
+    if (device_display_get_state(&state) != DEVICE_ERROR_NONE) {
+        LOGD("getting display state has failed");
     }
+
+    bool isDisplayOn = DISPLAY_STATE_SCREEN_OFF != state;
+
+    if (!isDisplayOn) {
+        if (device_power_wakeup(false) != DEVICE_ERROR_NONE) {
+            LOGI("turning on display has failed");
+        }
+
+        std::this_thread::sleep_for(std::chrono::milliseconds{INTV_TURNON_MARGIN});
+    }
+
     mCommand->executePre();
     return mCommand->execute();
 }
