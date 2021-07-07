@@ -6,6 +6,7 @@
 #include "Commands/PreCommand.h"
 
 #include "config.h"
+#include "bootstrap.h"
 
 using namespace grpc;
 using namespace aurum;
