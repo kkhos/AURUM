@@ -10,9 +10,6 @@
 #include <iostream>
 #include <algorithm>
 
-#include <loguru.hpp>
-
-
 #include "MockAccessibleWatcher.h"
 #include "MockAccessibleApplication.h"
 #include "MockAccessibleWindow.h"

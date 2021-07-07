@@ -10,9 +10,6 @@
 #include <iostream>
 #include <algorithm>
 
-#include <loguru.hpp>
-
-
 #include "MockAccessibleWatcher.h"
 #include "MockAccessibleApplication.h"
 #include "MockAccessibleWindow.h"
@@ -22,7 +19,6 @@
 class AurumTestSel : public ::testing::Test {
     public:
         AurumTestSel() : mDevice{nullptr}, mWatcher{nullptr}, mApps{}, mWins{}, mNodes{}{
-            //loguru::g_stderr_verbosity = loguru::Verbosity_9;
         }
     protected:
         void SetUp() override {

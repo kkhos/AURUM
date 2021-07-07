@@ -6,16 +6,12 @@
 #include <Sel.h>
 #include <Until.h>
 
-
 #include "MockDeviceImpl.h"
 
 #include <iostream>
 #include <algorithm>
 #include <chrono>
 #include <thread>
-
-#include <loguru.hpp>
-
 
 #include "MockAccessibleWatcher.h"
 #include "MockAccessibleApplication.h"
@@ -27,7 +23,6 @@ class AurumTestUiDevice : public ::testing::Test {
     public:
         AurumTestUiDevice()
         : mDevice{nullptr}, mWatcher{nullptr}, mApp{nullptr}, mWin{nullptr}, mNode{nullptr} {
-            //loguru::g_stderr_verbosity = loguru::Verbosity_9;
         }
 
         void SetUp() override {

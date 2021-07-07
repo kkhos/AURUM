@@ -11,8 +11,6 @@
 #include <thread>
 #include <iostream>
 
-#include <loguru.hpp>
-
 std::vector<std::shared_ptr<A11yEventInfo>> AtspiAccessibleWatcher::mEventQueue;
 GThread *AtspiAccessibleWatcher::mEventThread = nullptr;
 

@@ -22,7 +22,6 @@ endif
 root_inc = include_directories('./')
 
 subdir('protocol')
-subdir('libloguru')
 subdir('libaurum')
 if get_option('tizen') == true
   subdir('org.tizen.aurum-bootstrap')

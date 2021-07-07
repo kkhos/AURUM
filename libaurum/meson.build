@@ -27,7 +27,6 @@ libaurum_inc = [
   include_directories('./inc/Runnable'),
   include_directories('./inc/Interface'),
   root_inc,
-  loguru_inc,
 ]
 
 libaurum_src = []
@@ -37,7 +36,6 @@ libaurum_dep = [
   dependency('atspi-2'),
   dependency('gio-2.0'),
   dependency('threads'),
-  loguru_deps,
 ]
 
 if get_option('tizen') == true
@@ -53,7 +51,6 @@ endif
 libaurum_lib = library('aurum', libaurum_src,
                         dependencies: libaurum_dep,
                         include_directories: libaurum_inc,
-                        link_with: libloguru,
                         install: true,
                         version: meson.project_version(),
                )

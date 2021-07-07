@@ -3,7 +3,6 @@ bootstrap_svr_inc = [
    root_inc,
    include_directories('inc'),
    include_directories('inc/Commands'),
-   loguru_inc,
 ]
 
 bootstrap_svr_src = [
@@ -44,7 +43,6 @@ bootstrap_svr_src += [
 bootstrap_svr_dep = [
    libaurum,
    grpc_deps,
-   loguru_deps,
 ]
 
 if get_option('tizen') == true
@@ -65,7 +63,6 @@ bootstrap_svr_bin = executable(
    [bootstrap_svr_src, grpc_src, grpc_pb_src],
    dependencies: bootstrap_svr_dep,
    include_directories: bootstrap_svr_inc,
-   link_with: libloguru,
    install:true,
    install_dir:  join_paths(get_option('tzapp_path'), 'org.tizen.aurum-bootstrap', 'bin'),
    pie:true,
