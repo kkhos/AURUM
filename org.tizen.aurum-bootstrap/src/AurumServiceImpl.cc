@@ -6,12 +6,14 @@
 #include "Commands/PreCommand.h"
 
 #include "config.h"
+#include "bootstrap.h"
 
 using namespace grpc;
 using namespace aurum;
 
 aurumServiceImpl::aurumServiceImpl()
 {
+    LOGI("creates watcher instance (start to look up at_spi server)");
     AccessibleWatcher::getInstance();
 }
 
@@ -24,7 +26,11 @@ aurumServiceImpl::aurumServiceImpl()
     return rst;
 }
 
-aurumServiceImpl::~aurumServiceImpl() {}
+aurumServiceImpl::~aurumServiceImpl() 
+{
+    LOGI("bootstrap service terminated");
+}
+
 ::grpc::Status aurumServiceImpl::aurumServiceImpl::killServer(
     ::grpc::ServerContext* context, const ::aurum::ReqEmpty* request,
     ::aurum::RspEmpty* response)
@@ -32,6 +38,7 @@ aurumServiceImpl::~aurumServiceImpl() {}
     std::unique_ptr<KillServerCommand> cmd = std::make_unique<KillServerCommand>(request, response);
     return execute(cmd.get());
 }
+
 ::grpc::Status aurumServiceImpl::aurumServiceImpl::findElement(
     ::grpc::ServerContext* context, const ::aurum::ReqFindElement* request,
     ::aurum::RspFindElement* response)
@@ -47,6 +54,7 @@ aurumServiceImpl::~aurumServiceImpl() {}
     std::unique_ptr<ClickCommand> cmd = ClickCommand::createCommand(request, response);
     return execute(cmd.get());
 }
+
 ::grpc::Status aurumServiceImpl::getValue(::grpc::ServerContext*      context,
                                           const ::aurum::ReqGetValue* request,
                                           ::aurum::RspGetValue*       response)
@@ -54,6 +62,7 @@ aurumServiceImpl::~aurumServiceImpl() {}
     std::unique_ptr<GetValueCommand> cmd = std::make_unique<GetValueCommand>(request, response);
     return execute(cmd.get());
 }
+
 ::grpc::Status aurumServiceImpl::setValue(::grpc::ServerContext*      context,
                                           const ::aurum::ReqSetValue* request,
                                           ::aurum::RspSetValue*       response)
@@ -61,6 +70,7 @@ aurumServiceImpl::~aurumServiceImpl() {}
     std::unique_ptr<SetValueCommand> cmd = std::make_unique<SetValueCommand>(request, response);
     return execute(cmd.get());
 }
+
 ::grpc::Status aurumServiceImpl::getAttribute(
     ::grpc::ServerContext* context, const ::aurum::ReqGetAttribute* request,
     ::aurum::RspGetAttribute* response)
@@ -68,6 +78,7 @@ aurumServiceImpl::~aurumServiceImpl() {}
     std::unique_ptr<GetAttributeCommand> cmd = GetAttributeCommand::createCommand(request, response);
     return execute(cmd.get());
 }
+
 ::grpc::Status aurumServiceImpl::getSize(::grpc::ServerContext*     context,
                                          const ::aurum::ReqGetSize* request,
                                          ::aurum::RspGetSize*       response)
@@ -75,6 +86,7 @@ aurumServiceImpl::~aurumServiceImpl() {}
     std::unique_ptr<GetSizeCommand> cmd = std::make_unique<GetSizeCommand>(request, response);
     return execute(cmd.get());
 }
+
 ::grpc::Status aurumServiceImpl::clear(::grpc::ServerContext*   context,
                                        const ::aurum::ReqClear* request,
                                        ::aurum::RspClear*       response)
@@ -82,6 +94,7 @@ aurumServiceImpl::~aurumServiceImpl() {}
     std::unique_ptr<ClearCommand> cmd = std::make_unique<ClearCommand>(request, response);
     return execute(cmd.get());
 }
+
 ::grpc::Status aurumServiceImpl::installApp(
     ::grpc::ServerContext*                         context,
     ::grpc::ServerReader< ::aurum::ReqInstallApp>* request,
@@ -90,6 +103,7 @@ aurumServiceImpl::~aurumServiceImpl() {}
     std::unique_ptr<InstallAppCommand> cmd = std::make_unique<InstallAppCommand>(request, response);
     return execute(cmd.get());
 }
+
 ::grpc::Status aurumServiceImpl::removeApp(::grpc::ServerContext*       context,
                                            const ::aurum::ReqRemoveApp* request,
                                            ::aurum::RspRemoveApp* response)
@@ -97,6 +111,7 @@ aurumServiceImpl::~aurumServiceImpl() {}
     std::unique_ptr<RemoveAppCommand> cmd = std::make_unique<RemoveAppCommand>(request, response);
     return execute(cmd.get());
 }
+
 ::grpc::Status aurumServiceImpl::getAppInfo(
     ::grpc::ServerContext* context, const ::aurum::ReqGetAppInfo* request,
     ::aurum::RspGetAppInfo* response)
@@ -104,6 +119,7 @@ aurumServiceImpl::~aurumServiceImpl() {}
     std::unique_ptr<GetAppInfoCommand> cmd = std::make_unique<GetAppInfoCommand>(request, response);
     return execute(cmd.get());
 }
+
 ::grpc::Status aurumServiceImpl::launchApp(::grpc::ServerContext*       context,
                                            const ::aurum::ReqLaunchApp* request,
                                            ::aurum::RspLaunchApp* response)
@@ -111,6 +127,7 @@ aurumServiceImpl::~aurumServiceImpl() {}
     std::unique_ptr<LaunchAppCommand> cmd = std::make_unique<LaunchAppCommand>(request, response);
     return execute(cmd.get());
 }
+
 ::grpc::Status aurumServiceImpl::closeApp(::grpc::ServerContext*      context,
                                           const ::aurum::ReqCloseApp* request,
                                           ::aurum::RspCloseApp*       response)
@@ -118,6 +135,7 @@ aurumServiceImpl::~aurumServiceImpl() {}
     std::unique_ptr<CloseAppCommand> cmd = std::make_unique<CloseAppCommand>(request, response);
     return execute(cmd.get());
 }
+
 ::grpc::Status aurumServiceImpl::touchDown(::grpc::ServerContext*       context,
                                            const ::aurum::ReqTouchDown* request,
                                            ::aurum::RspTouchDown* response)
@@ -125,6 +143,7 @@ aurumServiceImpl::~aurumServiceImpl() {}
     std::unique_ptr<TouchDownCommand> cmd = std::make_unique<TouchDownCommand>(request, response);
     return execute(cmd.get());
 }
+
 ::grpc::Status aurumServiceImpl::touchUp(::grpc::ServerContext*     context,
                                          const ::aurum::ReqTouchUp* request,
                                          ::aurum::RspTouchUp*       response)
@@ -132,6 +151,7 @@ aurumServiceImpl::~aurumServiceImpl() {}
     std::unique_ptr<TouchUpCommand> cmd = std::make_unique<TouchUpCommand>(request, response);
     return execute(cmd.get());
 }
+
 ::grpc::Status aurumServiceImpl::touchMove(::grpc::ServerContext*       context,
                                            const ::aurum::ReqTouchMove* request,
                                            ::aurum::RspTouchMove* response)
@@ -139,6 +159,7 @@ aurumServiceImpl::~aurumServiceImpl() {}
     std::unique_ptr<TouchMoveCommand> cmd = std::make_unique<TouchMoveCommand>(request, response);
     return execute(cmd.get());
 }
+
 ::grpc::Status aurumServiceImpl::longClick(::grpc::ServerContext*   context,
                                            const ::aurum::ReqClick* request,
                                            ::aurum::RspClick*       response)
@@ -146,6 +167,7 @@ aurumServiceImpl::~aurumServiceImpl() {}
     std::unique_ptr<LongClickCommand> cmd = std::make_unique<LongClickCommand>(request, response);
     return execute(cmd.get());
 }
+
 ::grpc::Status aurumServiceImpl::flick(::grpc::ServerContext*   context,
                                        const ::aurum::ReqFlick* request,
                                        ::aurum::RspFlick*       response)
@@ -153,6 +175,7 @@ aurumServiceImpl::~aurumServiceImpl() {}
     std::unique_ptr<FlickCommand> cmd = std::make_unique<FlickCommand>(request, response);
     return execute(cmd.get());
 }
+
 ::grpc::Status aurumServiceImpl::getDeviceTime(
     ::grpc::ServerContext* context, const ::aurum::ReqGetDeviceTime* request,
     ::aurum::RspGetDeviceTime* response)
@@ -160,6 +183,7 @@ aurumServiceImpl::~aurumServiceImpl() {}
     std::unique_ptr<GetDeviceTimeCommand> cmd = std::make_unique<GetDeviceTimeCommand>(request, response);
     return execute(cmd.get());
 }
+
 ::grpc::Status aurumServiceImpl::getLocation(
     ::grpc::ServerContext* context, const ::aurum::ReqGetLocation* request,
     ::aurum::RspGetLocation* response)
@@ -167,6 +191,7 @@ aurumServiceImpl::~aurumServiceImpl() {}
     std::unique_ptr<GetLocationCommand> cmd = std::make_unique<GetLocationCommand>(request, response);
     return execute(cmd.get());
 }
+
 ::grpc::Status aurumServiceImpl::sendKey(::grpc::ServerContext* context,
                                          const ::aurum::ReqKey* request,
                                          ::aurum::RspKey*       response)
@@ -174,6 +199,7 @@ aurumServiceImpl::~aurumServiceImpl() {}
     std::unique_ptr<SendKeyCommand> cmd = std::make_unique<SendKeyCommand>(request, response);
     return execute(cmd.get());
 }
+
 ::grpc::Status aurumServiceImpl::takeScreenshot(::grpc::ServerContext* context,
                                                 const ::aurum::ReqTakeScreenshot* request,
                                                 ::grpc::ServerWriter< ::aurum::RspTakeScreenshot>* writer)
