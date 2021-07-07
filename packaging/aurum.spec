@@ -131,6 +131,11 @@ meson \
         -e 's%^.*: warning: .*$%\x1b[30;43m&\x1b[m%'
 
 %build
+
+%if "%{tizen_profile_name}" == "tv"
+        CFLAGS+=" -DTIZEN_TV";export CFLAGS
+%endif
+
 ninja \
     -C gbsbuild \
     -j %(echo "`/usr/bin/getconf _NPROCESSORS_ONLN`") \
