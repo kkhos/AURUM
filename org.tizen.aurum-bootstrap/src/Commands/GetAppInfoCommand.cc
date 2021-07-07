@@ -22,7 +22,6 @@ GetAppInfoCommand::GetAppInfoCommand(const ::aurum::ReqGetAppInfo* request,
     app_state_e    appState;
 
     char* label = nullptr;
-    int   ret = -1;
 
     mResponse->set_status(::aurum::RspStatus::OK);
     mResponse->set_isinstalled(false);

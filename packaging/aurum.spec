@@ -29,7 +29,6 @@ BuildRequires: pkgconfig(capi-system-device)
 BuildRequires: pkgconfig(libtzplatform-config)
 BuildRequires: pkgconfig(capi-system-system-settings)
 BuildRequires: pkgconfig(capi-base-utils-i18n)
-BuildRequires: pkgconfig(capi-privacy-privilege-manager)
 
 %if 0%{?gendoc:1}
 BuildRequires:  doxygen
@@ -215,6 +214,4 @@ echo "signing %{TZ_SYS_RO_APP}/org.tizen.aurum-bootstrap"
 %files gcov
 %{_datadir}/gcov/obj/*
 %{_bindir}/test_*
-%else
-%exclude %{_bindir}/test_*
 %endif

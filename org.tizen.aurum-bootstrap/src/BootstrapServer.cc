@@ -54,11 +54,6 @@ static void _service_app_terminate(void *data)
     g_thread_join(ctx->thread);
 }
 
-static void _service_app_control(app_control_h app_control, void *data)
-{
-    ServiceContext *ctx = (ServiceContext*)data;
-}
-
 int main(int argc, char **argv)
 {
 #ifdef TIZEN_GCOV
@@ -66,12 +61,10 @@ int main(int argc, char **argv)
 #endif
 
     service_app_lifecycle_callback_s event_callback;
-    app_event_handler_h handlers[5] = {NULL, };
     ServiceContext ctx = {0,};
 
     event_callback.create = _service_app_create;
     event_callback.terminate = _service_app_terminate;
-    event_callback.app_control = _service_app_control;
 
     int result = -1;
 

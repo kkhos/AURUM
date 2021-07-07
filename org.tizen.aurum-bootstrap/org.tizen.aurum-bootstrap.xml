@@ -10,7 +10,6 @@
 	<privileges>
 		<privilege>http://tizen.org/privilege/datasharing</privilege>
 		<privilege>http://tizen.org/privilege/externalstroage</privilege>
-		<privilege>http://tizen.org/privilege/mediastorage</privilege>
 		<privilege>http://tizen.org/privilege/application.info</privilege>
 		<privilege>http://tizen.org/privilege/application.launch</privilege>
 		<privilege>http://tizen.org/privilege/packagemanager.info</privilege>
@@ -21,7 +20,6 @@
 		<privilege>http://tizen.org/privilege/appmanager.launch</privilege>
 		<privilege>http://tizen.org/privilege/inputgenerator</privilege>
 		<privilege>http://tizen.org/privilege/screenshot</privilege>
-		<privilege>http://tizen.org/privilege/location</privilege>
 		<privilege>http://tizen.org/privilege/display</privilege>
 	</privileges>
 	<feature name="http://tizen.org/feature/network.ethernet">true</feature>
