@@ -9,7 +9,7 @@ KillServerCommand::KillServerCommand(const ::aurum::ReqEmpty* request,
 
 ::grpc::Status KillServerCommand::execute()
 {
-    LOGI("Kill Server ");
+    LOGI("Kill Server --------------- ");
 
     exit(1);
 

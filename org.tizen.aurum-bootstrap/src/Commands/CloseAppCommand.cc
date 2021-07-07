@@ -39,7 +39,7 @@ CloseAppCommand::CloseAppCommand(const ::aurum::ReqCloseApp* request,
 
 ::grpc::Status CloseAppCommand::executePost()
 {
-    LOGI("CloseAppCommand::executePost");
+    LOGI("Wait for 1500ms");
     std::this_thread::sleep_for(std::chrono::milliseconds{1500});
     return grpc::Status::OK;
 }

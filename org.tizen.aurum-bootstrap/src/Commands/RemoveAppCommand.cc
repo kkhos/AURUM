@@ -33,7 +33,7 @@ RemoveAppCommand::RemoveAppCommand(const ::aurum::ReqRemoveApp* request,
 
 ::grpc::Status RemoveAppCommand::executePost()
 {
-     LOGI("RemoveAppCommand::executePost");
+    LOGI("Wait for 5000ms");
     std::this_thread::sleep_for(std::chrono::milliseconds{5000});
     return grpc::Status::OK;
 }

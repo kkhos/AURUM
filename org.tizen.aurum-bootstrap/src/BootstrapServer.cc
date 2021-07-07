@@ -58,7 +58,7 @@ static void _service_app_control(app_control_h app_control, void *data)
 {
     ServiceContext *ctx = (ServiceContext*)data;
     if (!ctx)
-       LOGE("Service context is empty!");
+        LOGE("Service context is empty!");
 }
 
 int main(int argc, char **argv)

@@ -40,7 +40,7 @@ InstallAppCommand::InstallAppCommand(
 
 ::grpc::Status InstallAppCommand::executePost()
 {
-    LOGI("InstallAppCommand::executePost");
+    LOGI("Wait for 5000ms");
     std::this_thread::sleep_for(std::chrono::milliseconds{5000});
     return grpc::Status::OK;
 }
