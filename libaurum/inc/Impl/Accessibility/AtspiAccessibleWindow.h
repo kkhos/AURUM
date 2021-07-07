@@ -1,4 +1,5 @@
 #pragma once
+
 #include "AccessibleWindow.h"
 
 class AtspiAccessibleWindow : public AccessibleWindow {

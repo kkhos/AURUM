@@ -1,5 +1,4 @@
-#ifndef _BOOTSTRAP_H_
-#define _BOOTSTRAP_H_
+#pragma once
 
 #include <dlog.h>
 
@@ -25,6 +24,4 @@
                    FONT_RED "%s: %s(%d) > " fmt FONT_RESET, \
                    __FILE__, __func__, __LINE__, ##arg); \
     } while (0); })
-#endif
-
 #endif
