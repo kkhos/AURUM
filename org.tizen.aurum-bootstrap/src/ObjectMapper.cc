@@ -36,7 +36,7 @@ std::shared_ptr<UiObject> ObjectMapper::getElement(std::string key)
         LOGI("succeeded");
         return obj;
     }
-    LOGI("failed(object not found)");
+    LOGI("key is not exist in mObjectMap");
     return nullptr;
 }
 
@@ -48,7 +48,7 @@ std::string ObjectMapper::getElement(std::shared_ptr<UiObject> object)
         LOGI("succeeded");
         return mObjectMapReverse[value];
     }
-    LOGI("failed(object not found)");
+    LOGI("object is not exist in mObjectMapReverse");
     return std::string{""};
 }
 
@@ -100,16 +100,3 @@ void ObjectMapper::cleanUp()
     ss << std::endl;
     LOGI("%s", ss.str().c_str());
 }
-
-//    std::remove_if(mObjectMapReverse.begin(), mObjectMapReverse.end(), [](auto& pair){return !pair.first->isValid();});
-    //auto iter = std::find_if(mObjectMap.begin(), mObjectMap.end(), [](const std::pair<std::string, std::shared_ptr<UiObject>>& pair)->bool{
-        //return !pair.second->isValid();
-    //});
-/*
-    while ( iter != mObjectMap.end()) {
-        removeElement(iter->second);
-        iter = std::find_if(std::next(iter), mObjectMap.end(), [](const std::pair<std::string, std::shared_ptr<UiObject>>& pair)->bool{
-            return !pair.second->isValid();
-        });
-    }
-    */

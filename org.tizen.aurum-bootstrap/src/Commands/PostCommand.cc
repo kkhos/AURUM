@@ -8,10 +8,9 @@ PostCommand::PostCommand(Command *cmd) : mCommand{cmd} {}
 ::grpc::Status PostCommand::execute()
 {
     ::grpc::Status rst = mCommand->execute();
-    LOGI("PostCommand --------------- ");
+
     mCommand->executePost();
 
-    // do post-command
     return rst;
 }
 
