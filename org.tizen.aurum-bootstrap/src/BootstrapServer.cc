@@ -3,7 +3,6 @@
 #include "bootstrap.h"
 
 #include <service_app.h>
-#include <privacy_privilege_manager.h>
 
 #include <gio/gio.h>
 #include <grpcpp/grpcpp.h>
@@ -11,9 +10,6 @@
 
 #include "AurumServiceImpl.h"
 #include "config.h"
-
-#define PRIV_MEDIASTORAGE "http://tizen.org/privilege/mediastorage"
-#define PRIV_LOCATION "http://tizen.org/privilege/location"
 
 using namespace grpc;
 
@@ -40,72 +36,12 @@ _grpc_thread_func (gpointer data)
     return NULL;
 }
 
-static void
-reponse_cb(ppm_call_cause_e cause, ppm_request_result_e result,
-                                      const char *privilege, void *user_data)
-{
-    if (cause == PRIVACY_PRIVILEGE_MANAGER_CALL_CAUSE_ERROR) {
-        LOGI("PPM Error PRIVACY_PRIVILEGE_MANAGER_CALL_CAUSE_ERROR");
-        return;
-    }
-
-    switch (result) {
-        case PRIVACY_PRIVILEGE_MANAGER_REQUEST_RESULT_ALLOW_FOREVER:
-            LOGI("priv:%s PRIVACY_PRIVILEGE_MANAGER_REQUEST_RESULT_ALLOW_FOREVER", privilege);
-            break;
-        case PRIVACY_PRIVILEGE_MANAGER_REQUEST_RESULT_DENY_FOREVER:
-            LOGI("priv:%s PRIVACY_PRIVILEGE_MANAGER_REQUEST_RESULT_ALLOW_FOREVER", privilege);
-            break;
-        case PRIVACY_PRIVILEGE_MANAGER_REQUEST_RESULT_DENY_ONCE:
-            LOGI("priv:%s PRIVACY_PRIVILEGE_MANAGER_REQUEST_RESULT_ALLOW_FOREVER", privilege);
-            break;
-        default:
-            LOGI("priv:%s default", privilege);
-            break;
-    }
-}
-
-static void
-check_permission(char *path_privilege)
-{
-    ppm_check_result_e result;
-    int ret;
-    LOGI("path_privilege = %s",path_privilege);
-    ret = ppm_check_permission(path_privilege, &result);
-
-    if (ret == PRIVACY_PRIVILEGE_MANAGER_ERROR_NONE) {
-        switch (result) {
-            case PRIVACY_PRIVILEGE_MANAGER_CHECK_RESULT_ALLOW:
-                break;
-
-            case PRIVACY_PRIVILEGE_MANAGER_CHECK_RESULT_DENY:
-                LOGI("PRIVACY_PRIVILEGE_MANAGER_CHECK_RESULT_DENY");
-                ;
-                break;
-
-            case PRIVACY_PRIVILEGE_MANAGER_CHECK_RESULT_ASK:
-                LOGI("PRIVACY_PRIVILEGE_MANAGER_CHECK_RESULT_ASK");
-                ppm_request_permission(path_privilege, reponse_cb, NULL);
-                break;
-
-            default:
-                break;
-        }
-    } else {
-        LOGI("Error to check permission[0x%x]", ret);
-    }
-}
-
-
 static bool _service_app_create(void *data)
 {
     ServiceContext *ctx = (ServiceContext*)data;
 
     ctx->loop = g_main_loop_new ( NULL , FALSE );
     ctx->thread = g_thread_new("grpc_thread", _grpc_thread_func, ctx);
-
-    check_permission(PRIV_LOCATION);
-    check_permission(PRIV_MEDIASTORAGE);
 
     return true;
 }
