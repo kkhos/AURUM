@@ -1,4 +1,5 @@
 #pragma once
+
 #include "AccessibleApplication.h"
 #include "MockAccessibleWindow.h"
 #include "MockAccessibleNode.h"

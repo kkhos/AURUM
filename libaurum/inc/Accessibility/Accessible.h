@@ -1,5 +1,4 @@
-#ifndef _ACCESSIBLE_H_
-#define _ACCESSIBLE_H_
+#pragma once
 
 #include "AccessibleNode.h"
 #include "AccessibleUtils.h"
@@ -8,5 +7,3 @@
 #include "AccessibleWindow.h"
 #include "IEventConsumer.h"
 #include "IEventSource.h"
-
-#endif /* _ACCESSIBLE_H_ */
