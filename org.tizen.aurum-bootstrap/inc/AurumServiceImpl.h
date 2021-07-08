@@ -10,7 +10,7 @@ public:
     virtual ~aurumServiceImpl();
 
 protected:
-    ::grpc::Status execute(Command *cmd);
+    ::grpc::Status execute(Command *cmd, bool clean);
 
 public:
     ::grpc::Status killServer(::grpc::ServerContext *  context,
