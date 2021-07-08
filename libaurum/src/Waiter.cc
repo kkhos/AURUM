@@ -28,7 +28,7 @@ template bool Waiter::waitFor(
 template <typename R>
 R Waiter::waitFor(const std::function<R(const ISearchable *)> condition) const
 {
-    LOGI("Waiter::waitFor ISearchable");
+    LOGI("waitFor ISearchable");
     std::chrono::system_clock::time_point start =
         std::chrono::system_clock::now();
     R result = condition(mSearchableObject);
@@ -46,7 +46,7 @@ R Waiter::waitFor(const std::function<R(const ISearchable *)> condition) const
 template <typename R>
 R Waiter::waitFor(const std::function<R(const UiObject *)> condition) const
 {
-    LOGI("Waiter::waitFor UiObject");
+    LOGI("waitFor UiObject");
     if (mUiObject) {
         std::chrono::system_clock::time_point start =
             std::chrono::system_clock::now();
