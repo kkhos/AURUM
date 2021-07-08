@@ -253,7 +253,6 @@ std::shared_ptr<AccessibleApplication> AtspiAccessibleWatcher::getApplicationAt(
 std::vector<std::shared_ptr<AccessibleApplication>> AtspiAccessibleWatcher::getApplications(void) const
 {
     AtspiWrapper::lock();
-    LOGI("getApplications for this(%p)", this);
     std::vector<std::shared_ptr<AccessibleApplication>> ret{};
     AtspiAccessible *root = AtspiWrapper::Atspi_get_desktop(0);
     int nchild = AtspiWrapper::Atspi_accessible_get_child_count(root, NULL);

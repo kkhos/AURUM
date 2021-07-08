@@ -77,26 +77,19 @@ void ObjectMapper::cleanUp()
     std::stringstream ss{};
 
     LOGI("clean up object map");
-    ss << "mObjectMapReverse: ";
     for(auto iter = mObjectMapReverse.begin(); iter != mObjectMapReverse.end(); ) {
 	auto obj = mObjectMap[iter->second];
         if (obj && !obj->isValid()) {
             iter = mObjectMapReverse.erase(iter);
         } else {
-            ss << "(" << iter->first << "," << iter->second << ") ";
             ++iter;
         }
     }
-    ss << std::endl;
-    ss << "mObjectMap: ";
     for(auto iter = mObjectMap.begin(); iter != mObjectMap.end(); ) {
         if (!iter->second->isValid()) {
             iter = mObjectMap.erase(iter);
         } else {
-            ss << "(" << iter->first << "," << iter->second.get() << ") ";
             ++iter;
         }
     }
-    ss << std::endl;
-    LOGI("%s", ss.str().c_str());
 }

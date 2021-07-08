@@ -19,22 +19,6 @@ AccessibleWatcher::~AccessibleWatcher()
 {
 }
 
-/*
-void AccessibleWatcher::printDbgInformation() const
-{
-    LOG_SCOPE_F(INFO, "%d %d", mActivatedWindowList.size(),  mWindowSet.size());
-
-    for (auto iter = mActivatedWindowList.begin(); iter != mActivatedWindowList.end(); ++iter) {
-        LOG_F(INFO, "%p", *iter);
-    }
-        LOG_F(INFO, "-----------");
-
-    for (auto iter = mWindowSet.begin(); iter != mWindowSet.end(); ++iter) {
-        LOG_F(INFO, "%p", *iter);
-    }
-}
-*/
-
 AccessibleWatcher *AccessibleWatcher::getInstance(AccessibleWatcher *watcherImpl)
 {
     static AccessibleWatcher *mInstance = nullptr;
@@ -57,17 +41,15 @@ AccessibleWatcher *AccessibleWatcher::getInstance(AccessibleWatcher *watcherImpl
 
 std::vector<std::shared_ptr<AccessibleApplication>> AccessibleWatcher::getActiveApplications(void) const
 {
-    LOGI("getActiveApplications for this(%p)", this);
-
     std::vector<std::shared_ptr<AccessibleApplication>> ret{};
     auto apps = this->getApplications();
-    LOGI("apps size %d", apps.size());
+    LOGI("available app process size %d", (int)apps.size());
 
     apps.erase(std::remove_if(apps.begin(), apps.end(), [](auto app){
         return !app->isActive();
     }), apps.end());
 
-    LOGI("active apps size %d", apps.size());
+    LOGI("active apps size %d", (int)apps.size());
 
     return apps;
 }

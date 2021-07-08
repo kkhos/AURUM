@@ -55,6 +55,7 @@ std::vector<std::shared_ptr<AccessibleNode>> UiDevice::getWindowRoot() const
         auto activeWindows = app->getActiveWindows();
         std::transform(activeWindows.begin(), activeWindows.end(), std::back_inserter(ret),
             [&](std::shared_ptr<AccessibleWindow> window){
+                LOGI("Active pkg: %s, window: %s", window->getAccessibleNode()->getPkg().c_str(), window->getTitle().c_str());
                 return window->getAccessibleNode();
             }
         );
