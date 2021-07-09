@@ -231,5 +231,7 @@ private:
     /**
      * @brief TBD
      */
-	static std::vector<std::shared_ptr<A11yEventInfo>>    mEventQueue;
+    static std::vector<std::shared_ptr<A11yEventInfo>>    mEventQueue;
+
+    static std::mutex mMutex;
 };

@@ -1,7 +1,6 @@
 #include "AtspiWrapper.h"
 
 std::recursive_mutex AtspiWrapper::mMutex = std::recursive_mutex{};
-//std::unique_lock<std::mutex> AtspiWrapper::mLock = std::unique_lock<std::mutex>(mMutex, std::defer_lock);
 
 GArray* AtspiWrapper::Atspi_state_set_get_states(AtspiStateSet *set)
 {
@@ -139,13 +138,4 @@ void AtspiWrapper::Atspi_accessible_clear_cache (AtspiAccessible *node)
 {
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_clear_cache(node);
-}
-void AtspiWrapper::lock()
-{
-    mMutex.lock();
-}
-
-void AtspiWrapper::unlock()
-{
-    mMutex.unlock();
 }
