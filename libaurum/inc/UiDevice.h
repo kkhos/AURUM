@@ -222,7 +222,7 @@ private:
     /**
      * @brief TBD
      */
-    IDevice *     mDeviceImpl;
+    IDevice *mDeviceImpl;
     /**
      * @brief TBD
      */

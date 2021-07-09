@@ -36,7 +36,7 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    static std::shared_ptr<AccessibleNode>             findObject(const std::shared_ptr<UiDevice> device,
+    static std::shared_ptr<AccessibleNode>          findObject(const std::shared_ptr<UiDevice> device,
                                                     const std::shared_ptr<UiSelector> selector,
                                                     const std::shared_ptr<AccessibleNode> root);
 

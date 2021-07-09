@@ -58,20 +58,6 @@ std::string UiSelector::description()
     return ss.str();
 }
 
-/*
-UiSelector::UiSelector(const UiSelector &src)
-{
-    // 복사 생성자
-}
-
-UiSelector& UiSelector::operator= (const UiSelector& src)
-{
-    // = 오버라이드
-    if (this == &src) return *this; // 자기 대입 방지
-    return *this;
-}
-*/
-
 UiSelector *UiSelector::text(std::string text, bool match)
 {
     this->mText = std::make_unique<std::string>(text);

@@ -5,12 +5,10 @@
 
 #include <gio/gio.h>
 
-//std::map<AtspiAccessible *, AccessibleNode *> AccessibleNode::mNodeMap{};
-
 AtspiAccessibleNode::AtspiAccessibleNode(AtspiAccessible *node)
 : mNode{node}
 {
-    const auto trickDontRemove = std::shared_ptr<AtspiAccessibleNode>( this, [](AtspiAccessibleNode*){} );
+    const auto trickDontRemove = std::shared_ptr<AtspiAccessibleNode>( this, [](AtspiAccessibleNode *){} );
     auto watcher = AccessibleWatcher::getInstance();
     watcher->attach(shared_from_this());
 
@@ -93,7 +91,7 @@ bool AtspiAccessibleNode::isValid() const
 
 void* AtspiAccessibleNode::getRawHandler(void) const
 {
-    return static_cast<void*>(mNode);
+    return static_cast<void *>(mNode);
 }
 
 void AtspiAccessibleNode::refresh()
