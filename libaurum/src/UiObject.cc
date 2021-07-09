@@ -17,7 +17,7 @@ UiObject::UiObject(const std::shared_ptr<UiDevice> device, const std::shared_ptr
                    const AccessibleNode *node)
     : mDevice(device),
       mSelector(selector),
-      mNode(std::shared_ptr<AccessibleNode>(const_cast<AccessibleNode*>(node))),
+      mNode(std::shared_ptr<AccessibleNode>(const_cast<AccessibleNode *>(node))),
       mWaiter(new Waiter{this, this})
 {
 }

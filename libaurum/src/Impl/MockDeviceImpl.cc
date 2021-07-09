@@ -15,6 +15,9 @@
 #include <chrono>
 #include <thread>
 
+#define NANO_SEC 1000000000.0
+#define MICRO_SEC 1000000
+
 MockDeviceImpl::MockDeviceImpl()
 :tStart{}, isTimerStarted{false}, mTouchRelease{}, mTouchDown{}, mKeyDevice{}, mWheelDevice{0}
 {
@@ -104,7 +107,7 @@ bool MockDeviceImpl::wheelUp(int amount, const int durationMs)
 {
     for (int i = 0; i < amount; i++){
         mWheelDevice++;
-        usleep(durationMs*MSEC_PER_SEC/amount);
+        usleep(durationMs * MSEC_PER_SEC/amount);
     }
 
     return true;
@@ -114,7 +117,7 @@ bool MockDeviceImpl::wheelDown(int amount, const int durationMs)
 {
     for (int i = 0; i < amount; i++){
         mWheelDevice--;
-        usleep(durationMs*MSEC_PER_SEC/(double)amount);
+        usleep(durationMs * MSEC_PER_SEC/(double)amount);
     }
 
     return true;
@@ -180,7 +183,7 @@ long long MockDeviceImpl::getSystemTime(TimeRequestType type)
         clock_gettime(CLOCK_REALTIME, &t);
     }
 
-    return (long long)t.tv_sec * 1000L + (long long)(t.tv_nsec / 1000000);
+    return (long long)t.tv_sec * 1000L + (long long)(t.tv_nsec / MICRO_SEC);
 }
 
 bool MockDeviceImpl::strokeKeyCode(std::string keycode, unsigned int intv)
@@ -220,13 +223,13 @@ int MockDeviceImpl::stopTimer(void)
     if (!isTimerStarted) return 0;
     isTimerStarted = false;
     clock_gettime(CLOCK_MONOTONIC, &tEnd);
-    return ((tEnd.tv_sec + tEnd.tv_nsec/1000000000.0) - (tStart.tv_sec + tStart.tv_nsec/1000000000.0)) * 1000000;
+    return ((tEnd.tv_sec + tEnd.tv_nsec/NANO_SEC) - (tStart.tv_sec + tStart.tv_nsec/NANO_SEC)) * MICRO_SEC;
 }
 
 long long MockDeviceImpl::timeStamp(void)
 {
     struct timespec t;
     clock_gettime(CLOCK_MONOTONIC, &t);
-    long long rtn = (t.tv_sec + t.tv_nsec/1000000000.0) * 1000000;
+    long long rtn = (t.tv_sec + t.tv_nsec/NANO_SEC) * MICRO_SEC;
     return rtn;
 }

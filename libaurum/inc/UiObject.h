@@ -325,7 +325,7 @@ private:
     /**
      * @brief TBD
      */
-    const Waiter *        mWaiter;
+    const Waiter *mWaiter;
 
     /**
      * @brief TBD

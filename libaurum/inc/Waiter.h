@@ -21,7 +21,7 @@ public:
      * @since_tizen 5.5
      */
     Waiter(const ISearchable *searchableObject,
-           const UiObject *   uiObject = nullptr);  // : mObject{object}
+           const UiObject *uiObject = nullptr);  // : mObject{object}
 
     /**
      * @brief TBD
@@ -55,7 +55,7 @@ private:
      * @brief TBD
      * @since_tizen 5.5
      */
-    const UiObject *   mUiObject;
+    const UiObject *mUiObject;
 
     /**
      * @brief TBD

@@ -60,7 +60,7 @@ findActiveNode(AtspiAccessible *node, int depth,
 
     LOGI("findActiveNode node %p has %d children", node, nchild);
     for (int i = 0; i < nchild; i++) {
-        AtspiAccessible* child = AtspiWrapper::Atspi_accessible_get_child_at_index(node, i, NULL);
+        AtspiAccessible *child = AtspiWrapper::Atspi_accessible_get_child_at_index(node, i, NULL);
         LOGI("a child found @ %d : %p", i, child);
         std::vector<AtspiAccessible *> childRet = findActiveNode(child, depth + 1, max_depth);
         ret.insert(ret.end(), childRet.begin(), childRet.end());
@@ -73,7 +73,7 @@ findActiveNode(AtspiAccessible *node, int depth,
 static gpointer _event_thread_loop (gpointer data)
 {
     LOGI("event thread start");
-    AtspiEventListener * listener =
+    AtspiEventListener *listener =
         atspi_event_listener_new(AtspiAccessibleWatcher::onAtspiEvents, data, NULL);
 
     atspi_event_listener_register(listener, "window:", NULL);
@@ -93,7 +93,7 @@ AtspiAccessibleWatcher::AtspiAccessibleWatcher()
 : mDbusProxy{nullptr}
 {
     GVariant *enabled_variant = nullptr, *result = nullptr;
-    GError *  error = nullptr;
+    GError *error = nullptr;
     atspi_set_main_context (g_main_context_default ());
     atspi_init();
 
@@ -119,7 +119,7 @@ AtspiAccessibleWatcher::AtspiAccessibleWatcher()
 AtspiAccessibleWatcher::~AtspiAccessibleWatcher()
 {
     GVariant *enabled_variant = nullptr, *result = nullptr;
-    GError *  error = nullptr;
+    GError *error = nullptr;
 
     enabled_variant = g_variant_new_boolean(false);
     result = g_dbus_proxy_call_sync(
@@ -244,7 +244,7 @@ std::shared_ptr<AccessibleApplication> AtspiAccessibleWatcher::getApplicationAt(
 {
     AtspiWrapper::lock();
     AtspiAccessible *root = AtspiWrapper::Atspi_get_desktop(0);
-    AtspiAccessible* child = AtspiWrapper::Atspi_accessible_get_child_at_index(root, index, NULL);
+    AtspiAccessible *child = AtspiWrapper::Atspi_accessible_get_child_at_index(root, index, NULL);
     g_object_unref(root);
     AtspiWrapper::unlock();
     return std::make_shared<AtspiAccessibleApplication>(std::make_shared<AtspiAccessibleNode>(child));
@@ -263,7 +263,7 @@ std::vector<std::shared_ptr<AccessibleApplication>> AtspiAccessibleWatcher::getA
     }
 
     for (int i = 0; i < nchild; i++){
-        AtspiAccessible* child = AtspiWrapper::Atspi_accessible_get_child_at_index(root, i, NULL);
+        AtspiAccessible *child = AtspiWrapper::Atspi_accessible_get_child_at_index(root, i, NULL);
         if (child) {
             ret.push_back(std::make_shared<AtspiAccessibleApplication>(std::make_shared<AtspiAccessibleNode>(child)));
         }

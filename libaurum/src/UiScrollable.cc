@@ -38,11 +38,7 @@ bool UiScrollable::scrollForward()
 bool UiScrollable::scrollForward(int steps)
 {
 
-/*
-    화면 크기 확인 
-    scroll to 
-
-*/
+    //TODO Check Scree Size here
     return true;
 
 }

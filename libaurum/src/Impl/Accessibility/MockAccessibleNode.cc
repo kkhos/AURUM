@@ -8,7 +8,7 @@ MockAccessibleNode::MockAccessibleNode(std::shared_ptr<AccessibleNode> parent, s
 : mParentNode(parent), mChildrenList{}, mActionSet{}
 {
     printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
-    const auto trickDontRemove = std::shared_ptr<MockAccessibleNode>( this, [](MockAccessibleNode*){} );
+    const auto trickDontRemove = std::shared_ptr<MockAccessibleNode>( this, [](MockAccessibleNode *){} );
 
     setProperties(text,pkg,role,res,type,style,automationId, boundingBox, supportingIfaces, featureProperty);
     auto watcher = AccessibleWatcher::getInstance();

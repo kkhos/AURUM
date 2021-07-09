@@ -79,7 +79,7 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(
             }
         }
     } else {
-        LOGI("Abort searching! No need to search children(maxDepth limit overflow, %d < %d < %d)", mSelector->mMinDepth?*(mSelector->mMinDepth):-1, depth, mSelector->mMaxDepth?*(mSelector->mMaxDepth):9999999);
+        LOGI("Abort searching! No need to search children(maxDepth limit overflow, %d < %d < %d)", mSelector->mMinDepth? * (mSelector->mMinDepth): -1, depth, mSelector->mMaxDepth?*(mSelector->mMaxDepth):9999999);
     }
 
     if (currentMatch && currentMatch->finalizeMatch()){

@@ -92,5 +92,5 @@ private:
      * @brief TBD
      * @since_tizen 5.5
      */
-    AtspiAccessible* mNode;
+    AtspiAccessible *mNode;
 };
