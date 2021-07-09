@@ -145,9 +145,10 @@ ninja \
   find . -name '*.gcno' -exec cp '{}' gcov-obj ';'
 %endif
 
-meson test \
-    -C gbsbuild \
-    -v
+#Enable below test if needed
+#meson test \
+#    -C gbsbuild \
+#    -v
 
 %install
 
