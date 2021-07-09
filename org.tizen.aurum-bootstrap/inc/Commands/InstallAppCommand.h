@@ -9,12 +9,12 @@
 
 class InstallAppCommand : public Command {
 private:
-    ::grpc::ServerReader< ::aurum::ReqInstallApp>* mRequest;
-    ::aurum::RspInstallApp*                        mResponse;
+    ::grpc::ServerReader< ::aurum::ReqInstallApp> *mRequest;
+    ::aurum::RspInstallApp *mResponse;
 
 public:
-    InstallAppCommand(::grpc::ServerReader< ::aurum::ReqInstallApp>* request,
-                      ::aurum::RspInstallApp*                        response);
+    InstallAppCommand(::grpc::ServerReader< ::aurum::ReqInstallApp> *request,
+                      ::aurum::RspInstallApp *response);
     ::grpc::Status execute() override;
     ::grpc::Status executePost() override;
 };

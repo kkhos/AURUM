@@ -11,8 +11,11 @@ SetValueCommand::SetValueCommand(const ::aurum::ReqSetValue* request,
 {
     LOGI("SetValue --------------- ");
     LOGI("text:%s", mRequest->stringvalue().c_str());
-    ObjectMapper* mObjMap = ObjectMapper::getInstance();
+    
+    ObjectMapper *mObjMap = ObjectMapper::getInstance();
     std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
-    if (obj) obj->setText(const_cast<std::string&>(mRequest->stringvalue()));
+    if (obj) {
+        obj->setText(const_cast<std::string&>(mRequest->stringvalue()));
+    }
     return grpc::Status::OK;
 }

@@ -9,10 +9,10 @@
 
 class SendKeyCommand : public Command {
 private:
-    const ::aurum::ReqKey* mRequest;
-    ::aurum::RspKey*       mResponse;
+    const ::aurum::ReqKey *mRequest;
+    ::aurum::RspKey *mResponse;
 
 public:
-    SendKeyCommand(const ::aurum::ReqKey* request, ::aurum::RspKey* response);
+    SendKeyCommand(const ::aurum::ReqKey *request, ::aurum::RspKey *response);
     ::grpc::Status execute() override;
 };

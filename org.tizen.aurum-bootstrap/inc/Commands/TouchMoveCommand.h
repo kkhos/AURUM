@@ -9,11 +9,11 @@
 
 class TouchMoveCommand : public Command {
 private:
-    const ::aurum::ReqTouchMove* mRequest;
-    ::aurum::RspTouchMove*       mResponse;
+    const ::aurum::ReqTouchMove *mRequest;
+    ::aurum::RspTouchMove *mResponse;
 
 public:
-    TouchMoveCommand(const ::aurum::ReqTouchMove* request,
-                     ::aurum::RspTouchMove*       response);
+    TouchMoveCommand(const ::aurum::ReqTouchMove *request,
+                     ::aurum::RspTouchMove *response);
     ::grpc::Status execute() override;
 };

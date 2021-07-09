@@ -9,12 +9,12 @@
 
 class GetDeviceTimeCommand : public Command {
 private:
-    const ::aurum::ReqGetDeviceTime* mRequest;
-    ::aurum::RspGetDeviceTime*       mResponse;
+    const ::aurum::ReqGetDeviceTime *mRequest;
+    ::aurum::RspGetDeviceTime *mResponse;
 
 public:
-    GetDeviceTimeCommand(const ::aurum::ReqGetDeviceTime* request,
-                         ::aurum::RspGetDeviceTime*       response);
+    GetDeviceTimeCommand(const ::aurum::ReqGetDeviceTime *request,
+                         ::aurum::RspGetDeviceTime *response);
     ;
     ::grpc::Status execute() override;
 };

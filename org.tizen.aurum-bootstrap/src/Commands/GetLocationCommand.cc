@@ -1,8 +1,8 @@
 #include "bootstrap.h"
 #include "GetLocationCommand.h"
 
-GetLocationCommand::GetLocationCommand(const ::aurum::ReqGetLocation* request,
-                                       ::aurum::RspGetLocation*       response)
+GetLocationCommand::GetLocationCommand(const ::aurum::ReqGetLocation *request,
+                                       ::aurum::RspGetLocation *response)
     : mRequest{request}, mResponse{response}
 {
 }
@@ -10,7 +10,6 @@ GetLocationCommand::GetLocationCommand(const ::aurum::ReqGetLocation* request,
 ::grpc::Status GetLocationCommand::execute()
 {
     LOGI("GetLocation --------------- ");
-    // ObjectMapper *mObjMap = ObjectMapper::getInstance();
 
     mResponse->set_alt(-1);
     mResponse->set_lat(-1);

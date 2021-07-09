@@ -9,12 +9,12 @@
 
 class GetValueCommand : public Command {
 private:
-    const ::aurum::ReqGetValue* mRequest;
-    ::aurum::RspGetValue*       mResponse;
+    const ::aurum::ReqGetValue *mRequest;
+    ::aurum::RspGetValue *mResponse;
 
 public:
-    GetValueCommand(const ::aurum::ReqGetValue* request,
-                    ::aurum::RspGetValue*       response);
+    GetValueCommand(const ::aurum::ReqGetValue *request,
+                    ::aurum::RspGetValue *response);
     ;
     ::grpc::Status execute() override;
 };

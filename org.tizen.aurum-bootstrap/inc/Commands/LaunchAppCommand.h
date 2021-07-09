@@ -9,12 +9,12 @@
 
 class LaunchAppCommand : public Command {
 private:
-    const ::aurum::ReqLaunchApp* mRequest;
-    ::aurum::RspLaunchApp*       mResponse;
+    const ::aurum::ReqLaunchApp *mRequest;
+    ::aurum::RspLaunchApp *mResponse;
 
 public:
-    LaunchAppCommand(const ::aurum::ReqLaunchApp* request,
-                     ::aurum::RspLaunchApp*       response);
+    LaunchAppCommand(const ::aurum::ReqLaunchApp *request,
+                     ::aurum::RspLaunchApp *response);
     ::grpc::Status execute() override;
     ::grpc::Status executePost() override;
 };

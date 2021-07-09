@@ -2,8 +2,8 @@
 #include "TouchMoveCommand.h"
 #include "UiDevice.h"
 
-TouchMoveCommand::TouchMoveCommand(const ::aurum::ReqTouchMove* request,
-                                   ::aurum::RspTouchMove*       response)
+TouchMoveCommand::TouchMoveCommand(const ::aurum::ReqTouchMove *request,
+                                   ::aurum::RspTouchMove *response)
     : mRequest{request}, mResponse{response}
 {
 }

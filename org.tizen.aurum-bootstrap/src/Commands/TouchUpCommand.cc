@@ -2,8 +2,8 @@
 #include "TouchUpCommand.h"
 #include "UiDevice.h"
 
-TouchUpCommand::TouchUpCommand(const ::aurum::ReqTouchUp* request,
-                               ::aurum::RspTouchUp*       response)
+TouchUpCommand::TouchUpCommand(const ::aurum::ReqTouchUp *request,
+                               ::aurum::RspTouchUp *response)
     : mRequest{request}, mResponse{response}
 {
 }

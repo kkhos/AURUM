@@ -9,12 +9,12 @@
 
 class LongClickCommand : public Command {
 private:
-    const ::aurum::ReqClick* mRequest;
-    ::aurum::RspClick*       mResponse;
+    const ::aurum::ReqClick *mRequest;
+    ::aurum::RspClick *mResponse;
 
 public:
-    LongClickCommand(const ::aurum::ReqClick* request,
-                     ::aurum::RspClick*       response);
+    LongClickCommand(const ::aurum::ReqClick *request,
+                     ::aurum::RspClick *response);
     ::grpc::Status execute() override;
 private:
     const static unsigned int LOGNCLICK_INTERVAL = 50;

@@ -7,8 +7,8 @@
 #include <app_control.h>
 #endif
 
-LaunchAppCommand::LaunchAppCommand(const ::aurum::ReqLaunchApp* request,
-                                   ::aurum::RspLaunchApp*       response)
+LaunchAppCommand::LaunchAppCommand(const ::aurum::ReqLaunchApp *request,
+                                   ::aurum::RspLaunchApp *response)
     : mRequest{request}, mResponse{response}
 {
 }

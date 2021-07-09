@@ -9,12 +9,12 @@
 
 class RemoveAppCommand : public Command {
 private:
-    const ::aurum::ReqRemoveApp* mRequest;
-    ::aurum::RspRemoveApp*       mResponse;
+    const ::aurum::ReqRemoveApp *mRequest;
+    ::aurum::RspRemoveApp *mResponse;
 
 public:
-    RemoveAppCommand(const ::aurum::ReqRemoveApp* request,
-                     ::aurum::RspRemoveApp*       response);
+    RemoveAppCommand(const ::aurum::ReqRemoveApp *request,
+                     ::aurum::RspRemoveApp *response);
     ;
     ::grpc::Status execute() override;
     ::grpc::Status executePost() override;

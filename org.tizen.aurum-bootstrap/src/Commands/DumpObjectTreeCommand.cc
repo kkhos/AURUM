@@ -6,8 +6,8 @@
 #include "Sel.h"
 #include "ISearchable.h"
 
-DumpObjectTreeCommand::DumpObjectTreeCommand(const ::aurum::ReqDumpObjectTree* request,
-                                                   ::aurum::RspDumpObjectTree* response)
+DumpObjectTreeCommand::DumpObjectTreeCommand(const ::aurum::ReqDumpObjectTree *request,
+                                                   ::aurum::RspDumpObjectTree *response)
     : mRequest{request}, mResponse{response}
 {
     mObjMap = ObjectMapper::getInstance();
@@ -55,7 +55,7 @@ void DumpObjectTreeCommand::traverse(::aurum::Element *root, std::shared_ptr<Nod
     root->set_isselectable(obj->isSelectable());
 
     for( auto && childNode : node->mChildren) {
-        ::aurum::Element* child = root->add_child();
+        ::aurum::Element *child = root->add_child();
         traverse(child, childNode, depth+1);
     }
 }
@@ -69,7 +69,7 @@ void DumpObjectTreeCommand::traverse(::aurum::Element *root, std::shared_ptr<Nod
         if (!obj) return grpc::Status::OK;;
 
         auto node = obj->getDescendant();
-        ::aurum::Element* root = mResponse->add_roots();
+        ::aurum::Element *root = mResponse->add_roots();
         traverse(root, node, 0);
     }
     return grpc::Status::OK;

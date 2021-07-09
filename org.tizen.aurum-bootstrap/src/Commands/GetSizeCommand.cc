@@ -2,8 +2,8 @@
 #include "GetSizeCommand.h"
 #include "UiObject.h"
 
-GetSizeCommand::GetSizeCommand(const ::aurum::ReqGetSize* request,
-                               ::aurum::RspGetSize*       response)
+GetSizeCommand::GetSizeCommand(const ::aurum::ReqGetSize *request,
+                               ::aurum::RspGetSize *response)
     : mRequest{request}, mResponse{response}
 {
 }

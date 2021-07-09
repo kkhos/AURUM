@@ -15,14 +15,14 @@ using namespace grpc;
 
 typedef struct _ServiceContext {
     GMainLoop *loop;
-    GThread   *thread;
+    GThread *thread;
     std::unique_ptr<Server> server;
 } ServiceContext;
 
 static gpointer
 _grpc_thread_func (gpointer data)
 {
-    ServiceContext *ctx = (ServiceContext*)data;
+    ServiceContext *ctx = (ServiceContext *)data;
     std::string binding("0.0.0.0:50051");
     aurumServiceImpl service;
     ServerBuilder builder;
@@ -38,7 +38,7 @@ _grpc_thread_func (gpointer data)
 
 static bool _service_app_create(void *data)
 {
-    ServiceContext *ctx = (ServiceContext*)data;
+    ServiceContext *ctx = (ServiceContext *)data;
 
     ctx->loop = g_main_loop_new ( NULL , FALSE );
     ctx->thread = g_thread_new("grpc_thread", _grpc_thread_func, ctx);
@@ -48,7 +48,7 @@ static bool _service_app_create(void *data)
 
 static void _service_app_terminate(void *data)
 {
-    ServiceContext *ctx = (ServiceContext*)data;
+    ServiceContext *ctx = (ServiceContext *)data;
     ctx->server->Shutdown();
     g_main_loop_unref(ctx->loop);
     g_thread_join(ctx->thread);
@@ -56,7 +56,7 @@ static void _service_app_terminate(void *data)
 
 static void _service_app_control(app_control_h app_control, void *data)
 {
-    ServiceContext *ctx = (ServiceContext*)data;
+    ServiceContext *ctx = (ServiceContext *)data;
     if (!ctx)
         LOGE("Service context is empty!");
 }
