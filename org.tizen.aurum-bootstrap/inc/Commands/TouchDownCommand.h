@@ -9,11 +9,11 @@
 
 class TouchDownCommand : public Command {
 private:
-    const ::aurum::ReqTouchDown* mRequest;
-    ::aurum::RspTouchDown*       mResponse;
+    const ::aurum::ReqTouchDown *mRequest;
+    ::aurum::RspTouchDown *mResponse;
 
 public:
-    TouchDownCommand(const ::aurum::ReqTouchDown* request,
-                     ::aurum::RspTouchDown*       response);
+    TouchDownCommand(const ::aurum::ReqTouchDown *request,
+                     ::aurum::RspTouchDown *response);
     ::grpc::Status execute() override;
 };

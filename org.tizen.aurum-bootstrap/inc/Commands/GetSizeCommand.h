@@ -9,12 +9,12 @@
 
 class GetSizeCommand : public Command {
 private:
-    const ::aurum::ReqGetSize* mRequest;
-    ::aurum::RspGetSize*       mResponse;
+    const ::aurum::ReqGetSize *mRequest;
+    ::aurum::RspGetSize *mResponse;
 
 public:
-    GetSizeCommand(const ::aurum::ReqGetSize* request,
-                   ::aurum::RspGetSize*       response);
+    GetSizeCommand(const ::aurum::ReqGetSize *request,
+                   ::aurum::RspGetSize *response);
     ;
     ::grpc::Status execute() override;
 };

@@ -8,13 +8,13 @@
 #include "config.h"
 class ClickCommand : public Command {
 protected:
-    const ::aurum::ReqClick* mRequest;
-    ::aurum::RspClick*       mResponse;
+    const ::aurum::ReqClick *mRequest;
+    ::aurum::RspClick *mResponse;
 
 public:
-    ClickCommand(const ::aurum::ReqClick* request, ::aurum::RspClick* response);
+    ClickCommand(const ::aurum::ReqClick *request, ::aurum::RspClick *response);
     ::grpc::Status execute() override;
-    static std::unique_ptr<ClickCommand> createCommand(const ::aurum::ReqClick* request, ::aurum::RspClick* response);
+    static std::unique_ptr<ClickCommand> createCommand(const ::aurum::ReqClick *request, ::aurum::RspClick *response);
 };
 
 class ClickElementCommand : public ClickCommand {

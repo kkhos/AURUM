@@ -9,11 +9,11 @@
 
 class SetValueCommand : public Command {
 private:
-    const ::aurum::ReqSetValue* mRequest;
-    ::aurum::RspSetValue*       mResponse;
+    const ::aurum::ReqSetValue *mRequest;
+    ::aurum::RspSetValue *mResponse;
 
 public:
-    SetValueCommand(const ::aurum::ReqSetValue* request,
-                    ::aurum::RspSetValue*       response);
+    SetValueCommand(const ::aurum::ReqSetValue *request,
+                    ::aurum::RspSetValue *response);
     ::grpc::Status execute() override;
 };

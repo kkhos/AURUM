@@ -9,16 +9,16 @@
 
 class GetAttributeCommand : public Command {
 protected:
-    const ::aurum::ReqGetAttribute* mRequest;
-    ::aurum::RspGetAttribute*       mResponse;
-    ObjectMapper* mObjMap;
+    const ::aurum::ReqGetAttribute *mRequest;
+    ::aurum::RspGetAttribute *mResponse;
+    ObjectMapper *mObjMap;
 
 public:
-    GetAttributeCommand(const ::aurum::ReqGetAttribute* request,
-                        ::aurum::RspGetAttribute*       response);
+    GetAttributeCommand(const ::aurum::ReqGetAttribute *request,
+                        ::aurum::RspGetAttribute *response);
     ::grpc::Status execute() override;
-    static std::unique_ptr<GetAttributeCommand> createCommand(const ::aurum::ReqGetAttribute* request,
-                                                              ::aurum::RspGetAttribute*       response);
+    static std::unique_ptr<GetAttributeCommand> createCommand(const ::aurum::ReqGetAttribute *request,
+                                                              ::aurum::RspGetAttribute *response);
 };
 
 class GetVisibleAttributeCommand : public GetAttributeCommand {

@@ -4,7 +4,7 @@
 #include "UiDevice.h"
 
 GetAttributeCommand::GetAttributeCommand(
-    const ::aurum::ReqGetAttribute* request, ::aurum::RspGetAttribute* response)
+    const ::aurum::ReqGetAttribute *request, ::aurum::RspGetAttribute *response)
     : mRequest{request}, mResponse{response},  mObjMap{ObjectMapper::getInstance()}
 {
 }
@@ -14,8 +14,8 @@ GetAttributeCommand::GetAttributeCommand(
     return grpc::Status::CANCELLED;
 }
 
-std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::aurum::ReqGetAttribute* request,
-                                                                        ::aurum::RspGetAttribute*       response)
+std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::aurum::ReqGetAttribute *request,
+                                                                        ::aurum::RspGetAttribute*response)
 {
     LOGI("GetAttribute --------------- ");
     ::aurum::ReqGetAttribute_RequestType type = request->attribute();

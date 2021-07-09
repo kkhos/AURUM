@@ -10,15 +10,15 @@
 
 class DumpObjectTreeCommand: public Command {
 protected:
-    const ::aurum::ReqDumpObjectTree* mRequest;
-    ::aurum::RspDumpObjectTree*       mResponse;
+    const ::aurum::ReqDumpObjectTree *mRequest;
+    ::aurum::RspDumpObjectTree *mResponse;
 
 protected:
-    ObjectMapper* mObjMap;
+    ObjectMapper *mObjMap;
 
 public:
-    DumpObjectTreeCommand(const ::aurum::ReqDumpObjectTree* request,
-                       ::aurum::RspDumpObjectTree*       response);
+    DumpObjectTreeCommand(const ::aurum::ReqDumpObjectTree *request,
+                       ::aurum::RspDumpObjectTree *response);
     ::grpc::Status execute() override;
 
 private:

@@ -3,8 +3,8 @@
 #include "UiObject.h"
 #include "UiDevice.h"
 
-ClickCommand::ClickCommand(const ::aurum::ReqClick* request,
-                           ::aurum::RspClick*       response)
+ClickCommand::ClickCommand(const ::aurum::ReqClick *request,
+                           ::aurum::RspClick *response)
     : mRequest{request}, mResponse{response}
 {
 }
@@ -14,7 +14,7 @@ ClickCommand::ClickCommand(const ::aurum::ReqClick* request,
    return grpc::Status::CANCELLED;
 }
 
-std::unique_ptr<ClickCommand> ClickCommand::createCommand(const ::aurum::ReqClick* request, ::aurum::RspClick* response)
+std::unique_ptr<ClickCommand> ClickCommand::createCommand(const ::aurum::ReqClick *request, ::aurum::RspClick *response)
 {
     ::aurum::ReqClick_RequestType type = request->type();
 
@@ -30,7 +30,7 @@ std::unique_ptr<ClickCommand> ClickCommand::createCommand(const ::aurum::ReqClic
 
 ::grpc::Status ClickElementCommand::execute()
 {
-    ObjectMapper* mObjMap = ObjectMapper::getInstance();
+    ObjectMapper *mObjMap = ObjectMapper::getInstance();
     std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
     LOGI("ClickElementCommand execute %p", obj.get());
 
@@ -55,7 +55,7 @@ std::unique_ptr<ClickCommand> ClickCommand::createCommand(const ::aurum::ReqClic
 
 ::grpc::Status ClickAtspiCommand::execute()
 {
-    ObjectMapper* mObjMap = ObjectMapper::getInstance();
+    ObjectMapper *mObjMap = ObjectMapper::getInstance();
     std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
 
     LOGI("ClickAtspiCommand execute %p", obj.get());

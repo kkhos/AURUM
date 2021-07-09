@@ -9,12 +9,12 @@
 
 class CloseAppCommand : public Command {
 private:
-    const ::aurum::ReqCloseApp* mRequest;
-    ::aurum::RspCloseApp*       mResponse;
+    const ::aurum::ReqCloseApp *mRequest;
+    ::aurum::RspCloseApp *mResponse;
 
 public:
-    CloseAppCommand(const ::aurum::ReqCloseApp* request,
-                    ::aurum::RspCloseApp*       response);
+    CloseAppCommand(const ::aurum::ReqCloseApp *request,
+                    ::aurum::RspCloseApp *response);
     ::grpc::Status execute() override;
     ::grpc::Status executePost() override;
 };

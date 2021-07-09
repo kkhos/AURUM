@@ -9,8 +9,8 @@
 #define BUFSIZE 64
 
 GetDeviceTimeCommand::GetDeviceTimeCommand(
-    const ::aurum::ReqGetDeviceTime* request,
-    ::aurum::RspGetDeviceTime*       response)
+    const ::aurum::ReqGetDeviceTime *request,
+    ::aurum::RspGetDeviceTime *response)
     : mRequest{request}, mResponse{response}
 {
 }

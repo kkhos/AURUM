@@ -6,8 +6,8 @@
 #include <app_manager_extension.h>
 #endif
 
-CloseAppCommand::CloseAppCommand(const ::aurum::ReqCloseApp* request,
-                                 ::aurum::RspCloseApp*       response)
+CloseAppCommand::CloseAppCommand(const ::aurum::ReqCloseApp *request,
+                                 ::aurum::RspCloseApp *response)
     : mRequest{request}, mResponse{response}
 {
 }

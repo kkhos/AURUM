@@ -2,8 +2,8 @@
 #include "TouchDownCommand.h"
 #include "UiDevice.h"
 
-TouchDownCommand::TouchDownCommand(const ::aurum::ReqTouchDown* request,
-                                   ::aurum::RspTouchDown*       response)
+TouchDownCommand::TouchDownCommand(const ::aurum::ReqTouchDown *request,
+                                   ::aurum::RspTouchDown *response)
     : mRequest{request}, mResponse{response}
 {
 }

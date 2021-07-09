@@ -9,11 +9,11 @@
 
 class TouchUpCommand : public Command {
 private:
-    const ::aurum::ReqTouchUp* mRequest;
-    ::aurum::RspTouchUp*       mResponse;
+    const ::aurum::ReqTouchUp *mRequest;
+    ::aurum::RspTouchUp *mResponse;
 
 public:
-    TouchUpCommand(const ::aurum::ReqTouchUp* request,
-                   ::aurum::RspTouchUp*       response);
+    TouchUpCommand(const ::aurum::ReqTouchUp *request,
+                   ::aurum::RspTouchUp *response);
     ::grpc::Status execute() override;
 };

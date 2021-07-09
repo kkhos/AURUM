@@ -2,8 +2,8 @@
 #include "SendKeyCommand.h"
 #include "UiDevice.h"
 
-SendKeyCommand::SendKeyCommand(const ::aurum::ReqKey* request,
-                               ::aurum::RspKey*       response)
+SendKeyCommand::SendKeyCommand(const ::aurum::ReqKey *request,
+                               ::aurum::RspKey *response)
     : mRequest{request}, mResponse{response}
 {
 }

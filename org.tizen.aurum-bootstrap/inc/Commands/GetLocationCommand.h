@@ -9,12 +9,12 @@
 
 class GetLocationCommand : public Command {
 private:
-    const ::aurum::ReqGetLocation* mRequest;
-    ::aurum::RspGetLocation*       mResponse;
+    const ::aurum::ReqGetLocation *mRequest;
+    ::aurum::RspGetLocation *mResponse;
 
 public:
-    GetLocationCommand(const ::aurum::ReqGetLocation* request,
-                       ::aurum::RspGetLocation*       response);
+    GetLocationCommand(const ::aurum::ReqGetLocation *request,
+                       ::aurum::RspGetLocation *response);
     ;
     ::grpc::Status execute() override;
 };

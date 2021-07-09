@@ -9,11 +9,11 @@
 
 class TakeScreenshotCommand : public Command {
 private:
-    const ::aurum::ReqTakeScreenshot*                  mRequest;
-    ::grpc::ServerWriter< ::aurum::RspTakeScreenshot>* mWriter;
+    const ::aurum::ReqTakeScreenshot *mRequest;
+    ::grpc::ServerWriter< ::aurum::RspTakeScreenshot> *mWriter;
 
 public:
-    TakeScreenshotCommand(const ::aurum::ReqTakeScreenshot*                  request,
-                          ::grpc::ServerWriter< ::aurum::RspTakeScreenshot>* writer);
+    TakeScreenshotCommand(const ::aurum::ReqTakeScreenshot *request,
+                          ::grpc::ServerWriter< ::aurum::RspTakeScreenshot> *writer);
     ::grpc::Status execute() override;
 };

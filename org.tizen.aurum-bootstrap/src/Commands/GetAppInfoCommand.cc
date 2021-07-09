@@ -5,8 +5,8 @@
 #include <package_manager.h>
 #endif
 
-GetAppInfoCommand::GetAppInfoCommand(const ::aurum::ReqGetAppInfo* request,
-                                     ::aurum::RspGetAppInfo*       response)
+GetAppInfoCommand::GetAppInfoCommand(const ::aurum::ReqGetAppInfo *request,
+                                     ::aurum::RspGetAppInfo *response)
     : mRequest{request}, mResponse{response}
 {
 }
@@ -21,7 +21,7 @@ GetAppInfoCommand::GetAppInfoCommand(const ::aurum::ReqGetAppInfo* request,
     package_info_h package_info;
     app_state_e    appState;
 
-    char* label = nullptr;
+    char *label = nullptr;
 
     mResponse->set_status(::aurum::RspStatus::OK);
     mResponse->set_isinstalled(false);

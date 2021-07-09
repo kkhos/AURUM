@@ -9,11 +9,11 @@
 
 class ClearCommand : public Command {
 private:
-    const ::aurum::ReqClear* mRequest;
-    ::aurum::RspClear*       mResponse;
+    const ::aurum::ReqClear *mRequest;
+    ::aurum::RspClear *mResponse;
 
 public:
-    ClearCommand(const ::aurum::ReqClear* request, ::aurum::RspClear* response);
+    ClearCommand(const ::aurum::ReqClear *request, ::aurum::RspClear *response);
     ::grpc::Status execute() override;
 
 protected:
