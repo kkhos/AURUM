@@ -93,8 +93,9 @@ static gpointer _event_thread_loop (gpointer data)
 AtspiAccessibleWatcher::AtspiAccessibleWatcher()
 : mDbusProxy{nullptr}
 {
-    GVariant *enabled_variant = nullptr, *result = nullptr;
-    GError *error = nullptr;
+    GVariant *result = nullptr;
+    GError *  error = nullptr;
+
     atspi_set_main_context (g_main_context_default ());
     atspi_init();
 
@@ -106,32 +107,28 @@ AtspiAccessibleWatcher::AtspiAccessibleWatcher()
         "org.a11y.Bus", "/org/a11y/bus", "org.freedesktop.DBus.Properties",
         NULL, &error);
 
-    enabled_variant = g_variant_new_boolean(true);
     result = g_dbus_proxy_call_sync(
         mDbusProxy, "Set",
-        g_variant_new("(ssv)", "org.a11y.Status", "IsEnabled", enabled_variant),
+        g_variant_new("(ssv)", "org.a11y.Status", "IsEnabled", g_variant_new_boolean(true)),
         G_DBUS_CALL_FLAGS_NONE, -1, NULL, &error);
 
-    g_variant_unref(enabled_variant);
     g_variant_unref(result);
-    g_error_free(error);
+    if (error) g_error_free(error);
 }
 
 AtspiAccessibleWatcher::~AtspiAccessibleWatcher()
 {
-    GVariant *enabled_variant = nullptr, *result = nullptr;
-    GError *error = nullptr;
+    GVariant *result = nullptr;
+    GError *  error = nullptr;
 
-    enabled_variant = g_variant_new_boolean(false);
     result = g_dbus_proxy_call_sync(
         mDbusProxy, "Set",
-        g_variant_new("(ssv)", "org.a11y.Status", "IsEnabled", enabled_variant),
+        g_variant_new("(ssv)", "org.a11y.Status", "IsEnabled", g_variant_new_boolean(false)),
         G_DBUS_CALL_FLAGS_NONE, -1, NULL, &error);
 
     g_object_unref(mDbusProxy);
-    g_variant_unref(enabled_variant);
     g_variant_unref(result);
-    g_error_free(error);
+    if (error) g_error_free(error);
 
     atspi_event_quit();
     g_thread_join(mEventThread);
