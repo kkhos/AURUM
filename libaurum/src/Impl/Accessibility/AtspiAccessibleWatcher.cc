@@ -13,6 +13,7 @@
 
 std::vector<std::shared_ptr<A11yEventInfo>> AtspiAccessibleWatcher::mEventQueue;
 GThread *AtspiAccessibleWatcher::mEventThread = nullptr;
+std::mutex AtspiAccessibleWatcher::mMutex = std::mutex{};
 
 static bool iShowingNode(AtspiAccessible *node)
 {
@@ -139,10 +140,8 @@ AtspiAccessibleWatcher::~AtspiAccessibleWatcher()
 
 void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *user_data)
 {
-    AtspiWrapper::lock();
     if (!event->source)
     {
-        AtspiWrapper::unlock();
         return;
     }
     char *name = NULL, *pkg = NULL;
@@ -158,7 +157,9 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *user_data)
     else
         pkg = strdup("");
 
+    mMutex.lock();
     mEventQueue.push_back(std::make_shared<A11yEventInfo>(std::string(event->type), std::string(name), std::string(pkg)));
+    mMutex.unlock();
 
     if (!strcmp(event->type, "object:state-changed:defunct")) {
          instance->onObjectDefunct(
@@ -166,8 +167,6 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *user_data)
     }
     if (name) free(name);
     if (pkg) free(pkg);
-
-    AtspiWrapper::unlock();
 }
 
 void AtspiAccessibleWatcher::print_debug()
@@ -228,13 +227,9 @@ void AtspiAccessibleWatcher::onObjectDefunct(AtspiAccessible *node)
 
 int AtspiAccessibleWatcher::getApplicationCount(void) const
 {
-    AtspiWrapper::lock();
-
     AtspiAccessible *root = AtspiWrapper::Atspi_get_desktop(0);
     int nchild = AtspiWrapper::Atspi_accessible_get_child_count(root, NULL);
     g_object_unref(root);
-
-    AtspiWrapper::unlock();
 
     if (nchild <= 0) return 0;
     return nchild;
@@ -242,23 +237,19 @@ int AtspiAccessibleWatcher::getApplicationCount(void) const
 
 std::shared_ptr<AccessibleApplication> AtspiAccessibleWatcher::getApplicationAt(int index) const
 {
-    AtspiWrapper::lock();
     AtspiAccessible *root = AtspiWrapper::Atspi_get_desktop(0);
     AtspiAccessible *child = AtspiWrapper::Atspi_accessible_get_child_at_index(root, index, NULL);
     g_object_unref(root);
-    AtspiWrapper::unlock();
     return std::make_shared<AtspiAccessibleApplication>(std::make_shared<AtspiAccessibleNode>(child));
 }
 
 std::vector<std::shared_ptr<AccessibleApplication>> AtspiAccessibleWatcher::getApplications(void) const
 {
-    AtspiWrapper::lock();
     std::vector<std::shared_ptr<AccessibleApplication>> ret{};
     AtspiAccessible *root = AtspiWrapper::Atspi_get_desktop(0);
     int nchild = AtspiWrapper::Atspi_accessible_get_child_count(root, NULL);
     if (nchild <= 0) {
         g_object_unref(root);
-        AtspiWrapper::unlock();
         return ret;
     }
 
@@ -269,7 +260,6 @@ std::vector<std::shared_ptr<AccessibleApplication>> AtspiAccessibleWatcher::getA
         }
     }
     g_object_unref(root);
-    AtspiWrapper::unlock();
     return ret;
 }
 
@@ -278,9 +268,9 @@ std::vector<std::shared_ptr<AccessibleApplication>> AtspiAccessibleWatcher::getA
 
 bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout)
 {
-    AtspiWrapper::lock();
+    mMutex.lock();
     mEventQueue.clear();
-    AtspiWrapper::unlock();
+    mMutex.unlock();
     if (cmd)
         cmd->run();
 
@@ -289,10 +279,10 @@ bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const 
 	while (true)
     {
         std::vector<std::shared_ptr<A11yEventInfo>> localEvents;
-        AtspiWrapper::lock();
+        mMutex.lock();
         localEvents.assign(mEventQueue.begin(), mEventQueue.end());
         mEventQueue.clear();
-        AtspiWrapper::unlock();
+        mMutex.unlock();
 
         if (!localEvents.empty())
         {

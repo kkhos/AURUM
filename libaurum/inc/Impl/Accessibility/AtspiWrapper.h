@@ -29,8 +29,6 @@ public:
     static AtspiAccessible *Atspi_accessible_get_application (AtspiAccessible *node, GError **error);
     static void Atspi_accessible_clear_cache (AtspiAccessible *node);
 
-    static void lock();
-    static void unlock();
 private:
     static std::recursive_mutex mMutex;
     //static std::unique_lock<std::mutex> mLock;
