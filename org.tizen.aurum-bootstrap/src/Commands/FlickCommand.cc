@@ -3,7 +3,7 @@
 #include "UiDevice.h"
 
 FlickCommand::FlickCommand(const ::aurum::ReqFlick *request,
-                           ::aurum::RspFlick *      response)
+                           ::aurum::RspFlick *response)
     : mRequest{request}, mResponse{response}
 {
 }

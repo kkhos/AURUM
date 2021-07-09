@@ -2,8 +2,8 @@
 #include "GetValueCommand.h"
 #include "UiObject.h"
 
-GetValueCommand::GetValueCommand(const ::aurum::ReqGetValue* request,
-                                 ::aurum::RspGetValue*       response)
+GetValueCommand::GetValueCommand(const ::aurum::ReqGetValue *request,
+                                 ::aurum::RspGetValue *response)
     : mRequest{request}, mResponse{response}
 {
 }
@@ -11,7 +11,7 @@ GetValueCommand::GetValueCommand(const ::aurum::ReqGetValue* request,
 ::grpc::Status GetValueCommand::execute()
 {
     LOGI("GetValue --------------- ");
-    ObjectMapper* mObjMap = ObjectMapper::getInstance();
+    ObjectMapper *mObjMap = ObjectMapper::getInstance();
     std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
 
     if (obj) {

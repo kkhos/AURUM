@@ -9,12 +9,12 @@
 
 class GetAppInfoCommand : public Command {
 private:
-    const ::aurum::ReqGetAppInfo* mRequest;
-    ::aurum::RspGetAppInfo*       mResponse;
+    const ::aurum::ReqGetAppInfo *mRequest;
+    ::aurum::RspGetAppInfo *mResponse;
 
 public:
-    GetAppInfoCommand(const ::aurum::ReqGetAppInfo* request,
-                      ::aurum::RspGetAppInfo*       response);
+    GetAppInfoCommand(const ::aurum::ReqGetAppInfo *request,
+                      ::aurum::RspGetAppInfo *response);
     ;
     ::grpc::Status execute() override;
 };

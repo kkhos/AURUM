@@ -5,8 +5,8 @@
 #include "UiDevice.h"
 
 TakeScreenshotCommand::TakeScreenshotCommand(
-    const ::aurum::ReqTakeScreenshot*                  request,
-    ::grpc::ServerWriter< ::aurum::RspTakeScreenshot>* writer)
+    const ::aurum::ReqTakeScreenshot *request,
+    ::grpc::ServerWriter< ::aurum::RspTakeScreenshot> *writer)
     : mRequest{request}, mWriter{writer}
 {
 }

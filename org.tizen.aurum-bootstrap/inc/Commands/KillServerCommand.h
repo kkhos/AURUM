@@ -9,12 +9,12 @@
 
 class KillServerCommand : public Command {
 private:
-    const ::aurum::ReqEmpty* mRequest;
-    ::aurum::RspEmpty*       mResponse;
+    const ::aurum::ReqEmpty *mRequest;
+    ::aurum::RspEmpty *mResponse;
 
 public:
-    KillServerCommand(const ::aurum::ReqEmpty* request,
-                      ::aurum::RspEmpty*       response);
+    KillServerCommand(const ::aurum::ReqEmpty *request,
+                      ::aurum::RspEmpty *response);
     ;
     ::grpc::Status execute() override;
 };

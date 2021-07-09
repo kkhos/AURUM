@@ -2,8 +2,8 @@
 #include "ClearCommand.h"
 #include <string>
 
-ClearCommand::ClearCommand(const ::aurum::ReqClear* request,
-                           ::aurum::RspClear*       response)
+ClearCommand::ClearCommand(const ::aurum::ReqClear *request,
+                           ::aurum::RspClear *response)
     : mRequest{request}, mResponse{response}
 {
 }
@@ -25,7 +25,7 @@ bool ClearCommand::hasHintText(std::shared_ptr<UiObject> obj)
 ::grpc::Status ClearCommand::execute()
 {
     LOGI("Clear --------------- ");
-    ObjectMapper* mObjMap = ObjectMapper::getInstance();
+    ObjectMapper *mObjMap = ObjectMapper::getInstance();
     std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
 
     if (obj) {

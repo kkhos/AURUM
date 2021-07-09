@@ -6,8 +6,8 @@
 #include "Sel.h"
 #include "ISearchable.h"
 
-FindElementCommand::FindElementCommand(const ::aurum::ReqFindElement* request,
-                                       ::aurum::RspFindElement*       response)
+FindElementCommand::FindElementCommand(const ::aurum::ReqFindElement *request,
+                                       ::aurum::RspFindElement *response)
     : mRequest{request}, mResponse{response}
 {
     mObjMap = ObjectMapper::getInstance();
@@ -64,14 +64,14 @@ std::vector<std::shared_ptr<UiSelector>> FindElementCommand::getSelectors(void)
 
     if (founds.size() > 0) {
         for (auto& found : founds) {
-            UiObject*   obj = found.get();
+            UiObject *obj = found.get();
             std::string key{};
             key = mObjMap->getElement(found);
             if (key.length() <= 0)
               key = mObjMap->addElement(std::move(found));
             LOGI("found object : %s key:%s",
                   obj->getAutomationId().c_str(), key.c_str());
-            ::aurum::Element* elm = mResponse->add_elements();
+            ::aurum::Element *elm = mResponse->add_elements();
             elm->set_elementid(key);
             elm->set_package(obj->getApplicationPackage());
 

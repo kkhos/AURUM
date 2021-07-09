@@ -3,8 +3,8 @@
 #include "UiObject.h"
 #include "UiDevice.h"
 
-LongClickCommand::LongClickCommand(const ::aurum::ReqClick* request,
-                                   ::aurum::RspClick*       response)
+LongClickCommand::LongClickCommand(const ::aurum::ReqClick *request,
+                                   ::aurum::RspClick *response)
     : mRequest{request}, mResponse{response}
 {
 }
@@ -13,7 +13,7 @@ LongClickCommand::LongClickCommand(const ::aurum::ReqClick* request,
 {
     LOGI("LongClick --------------- ");
 
-    ObjectMapper* mObjMap = ObjectMapper::getInstance();
+    ObjectMapper *mObjMap = ObjectMapper::getInstance();
     ::aurum::ReqClick_RequestType type = mRequest->type();
 
     if (type == ::aurum::ReqClick_RequestType_ELEMENTID) {

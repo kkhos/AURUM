@@ -1,8 +1,8 @@
 #include "bootstrap.h"
 #include "KillServerCommand.h"
 
-KillServerCommand::KillServerCommand(const ::aurum::ReqEmpty* request,
-                                     ::aurum::RspEmpty*       response)
+KillServerCommand::KillServerCommand(const ::aurum::ReqEmpty *request,
+                                     ::aurum::RspEmpty *response)
     : mRequest{request}, mResponse{response}
 {
 }
