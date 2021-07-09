@@ -234,13 +234,7 @@ message ReqGetAttribute {
 }
 message RspGetAttribute {
    RspStatus status = 1;
-   ParamType type = 2;
-   oneof params {
-      string stringValue = 3;
-      int32 intValue = 4;
-      double doubleValue = 5;
-      bool boolValue = 6;
-   }
+   bool boolValue = 2;
 }
 
 // ------------------------------------ //
