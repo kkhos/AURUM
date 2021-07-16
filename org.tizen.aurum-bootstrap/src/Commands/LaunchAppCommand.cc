@@ -1,11 +1,11 @@
 #include "bootstrap.h"
 #include "LaunchAppCommand.h"
+#include "LaunchAppRunnable.h"
+#include "UiDevice.h"
 #include <chrono>
 #include <thread>
 
-#ifdef GBSBUILD
-#include <app_control.h>
-#endif
+#define WAIT_APP_LAUNCH 10000
 
 LaunchAppCommand::LaunchAppCommand(const ::aurum::ReqLaunchApp *request,
                                    ::aurum::RspLaunchApp *response)
@@ -16,43 +16,9 @@ LaunchAppCommand::LaunchAppCommand(const ::aurum::ReqLaunchApp *request,
 ::grpc::Status LaunchAppCommand::execute()
 {
     LOGI("LaunchApp --------------- ");
-#ifdef GBSBUILD
-    app_control_h appControl;
-    std::string   packageName = mRequest->packagename();
-    int           ret = -1;
+    std::unique_ptr<LaunchAppRunnable> cmd = std::make_unique<LaunchAppRunnable>(mRequest->packagename());
+    std::shared_ptr<UiDevice> obj = UiDevice::getInstance();
+    obj->executeAndWaitForEvents(cmd.get(), A11yEvent::EVENT_WINDOW_ACTIVATE, WAIT_APP_LAUNCH);
 
-    if (packageName.empty()) return grpc::Status::OK;
-
-    ret = app_control_create(&appControl);
-    if (ret) {
-        LOGE("Launch Failed(1/3) Err Code : %ull", ret);
-        mResponse->set_status(::aurum::RspStatus::ERROR);
-        return grpc::Status::OK;
-    }
-
-    ret = app_control_set_app_id(appControl, packageName.c_str());
-    if (ret) {
-        LOGE("Launch Failed(2/3) Err Code : %ull", ret);
-        mResponse->set_status(::aurum::RspStatus::ERROR);
-        app_control_destroy(appControl);
-        return grpc::Status::OK;
-    }
-
-    ret = app_control_send_launch_request(appControl, NULL, NULL);
-    if (ret) {
-        LOGE("Launch Failed(3/3) Err Code : %ull", ret);
-        mResponse->set_status(::aurum::RspStatus::ERROR);
-        app_control_destroy(appControl);
-        return grpc::Status::OK;
-    }
-
-    app_control_destroy(appControl);
-#endif
-    return grpc::Status::OK;
-}
-::grpc::Status LaunchAppCommand::executePost()
-{
-    LOGI("Wait for 2500ms");
-    std::this_thread::sleep_for(std::chrono::milliseconds{2500});
     return grpc::Status::OK;
 }

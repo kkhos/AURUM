@@ -49,6 +49,8 @@ public:
      */
     virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout) override;
 
+    std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> getActiveAppMap(void);
+
 public:
     /**
      * @brief TBD
@@ -67,4 +69,6 @@ private:
      * @brief TBD
      */
     std::vector<std::shared_ptr<AccessibleApplication>> mApplicationList;
+
+    std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> mActiveAppMap;
 };

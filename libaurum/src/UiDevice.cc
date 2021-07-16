@@ -4,7 +4,7 @@
 #include "TizenDeviceImpl.h"
 #endif
 #include "MockDeviceImpl.h"
-
+#include "AtspiAccessibleWatcher.h"
 #include <unistd.h>
 #include <utility>
 #include <vector>
@@ -49,17 +49,20 @@ std::shared_ptr<UiDevice> UiDevice::getInstance(IDevice *deviceImpl)
 std::vector<std::shared_ptr<AccessibleNode>> UiDevice::getWindowRoot() const
 {
     std::vector<std::shared_ptr<AccessibleNode>> ret{};
-
-    auto apps = AccessibleWatcher::getInstance()->getActiveApplications();
-    for (auto &app : apps){
-        auto activeWindows = app->getActiveWindows();
+ 
+    auto appsMap = AccessibleWatcher::getInstance()->getActiveAppMap();
+    LOGI("activeAppMap.size: %d" , appsMap.size());
+    for (auto itr = appsMap.begin(); itr != appsMap.end(); itr++)
+    {
+        auto activeWindows = itr->second->getActiveWindows();
         std::transform(activeWindows.begin(), activeWindows.end(), std::back_inserter(ret),
             [&](std::shared_ptr<AccessibleWindow> window){
-                LOGI("Active pkg: %s, window: %s", window->getAccessibleNode()->getPkg().c_str(), window->getTitle().c_str());
+                LOGI("active pkg: %s, window: %s", window->getAccessibleNode()->getPkg().c_str(), window->getTitle().c_str());
                 return window->getAccessibleNode();
             }
         );
     }
+
     return ret;
 }
 

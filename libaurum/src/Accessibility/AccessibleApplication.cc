@@ -25,7 +25,6 @@ bool AccessibleApplication::isActive(void)
 std::vector<std::shared_ptr<AccessibleWindow>> AccessibleApplication::getActiveWindows(void)
 {
     auto children = getWindows();
-
     children.erase(std::remove_if(children.begin(), children.end(), [](auto child){
                         return !(child->isActive() && child->isShowing()); // && child->isShowing() && child->isVisible());
                     }), children.end());

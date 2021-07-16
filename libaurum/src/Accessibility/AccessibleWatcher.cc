@@ -41,6 +41,8 @@ AccessibleWatcher *AccessibleWatcher::getInstance(AccessibleWatcher *watcherImpl
 
 std::vector<std::shared_ptr<AccessibleApplication>> AccessibleWatcher::getActiveApplications(void) const
 {
+
+    LOGI(" ");
     std::vector<std::shared_ptr<AccessibleApplication>> ret{};
     auto apps = this->getApplications();
     LOGI("available app process size %d", (int)apps.size());
