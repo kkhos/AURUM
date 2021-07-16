@@ -7,6 +7,7 @@
 #include "IEventSource.h"
 #include "Runnable.h"
 #include "A11yEvent.h"
+#include <atspi/atspi.h>
 
 #include <memory>
 #include <vector>
@@ -64,6 +65,7 @@ public:
      */
     virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout) = 0;
 
+    virtual std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> getActiveAppMap(void) = 0;
 public:
     /**
      * @brief TBD

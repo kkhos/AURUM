@@ -3,12 +3,14 @@ bootstrap_svr_inc = [
    root_inc,
    include_directories('inc'),
    include_directories('inc/Commands'),
+   include_directories('inc/Runnable'),
 ]
 
 bootstrap_svr_src = [
    files('src/BootstrapServer.cc'),
    files('src/AurumServiceImpl.cc'),
    files('src/ObjectMapper.cc'),
+   files('src/Runnable/LaunchAppRunnable.cc'),
 ]
 
 bootstrap_svr_src += [

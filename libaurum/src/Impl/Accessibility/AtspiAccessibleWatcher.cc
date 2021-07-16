@@ -149,7 +149,29 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *user_data)
     if (app)
     {
         pkg = AtspiWrapper::Atspi_accessible_get_name(app, NULL);
-        g_object_unref(app);
+        if (!strcmp(event->type, "window:activate")) {
+            LOGI("window activated in app(%s)", pkg);
+            if (instance->mActiveAppMap.find(app) == instance->mActiveAppMap.end()) {
+                LOGI("add activated window's app in map");
+                instance->mActiveAppMap.insert(std::pair<AtspiAccessible *, std::shared_ptr<AccessibleApplication>>(app,
+                                     std::make_shared<AtspiAccessibleApplication>(std::make_shared<AtspiAccessibleNode>(app))));
+            }
+            else {
+                LOGI("app(%s) is already in map", pkg);
+            }
+        }
+        else if (!strcmp(event->type, "window:deactivate")) {
+            LOGI("window deactivate in app(%s)", pkg);
+            if (instance->mActiveAppMap.find(app) == instance->mActiveAppMap.end()) {
+                LOGI("window deactivated delete app(%s) in map", pkg);
+                instance->mActiveAppMap.erase(app);
+            }
+            else {
+                LOGE("deactivated window's app(%s) is not in map", pkg);
+            }
+
+            g_object_unref(app);
+        }
     }
     else
         pkg = strdup("");
@@ -299,6 +321,11 @@ bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const 
     }
 
     return false;
+}
+
+std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> AtspiAccessibleWatcher::getActiveAppMap(void)
+{
+    return mActiveAppMap;
 }
 
 bool AtspiAccessibleWatcher::removeFromActivatedList(AtspiAccessible *node)
