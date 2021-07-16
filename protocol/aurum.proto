@@ -316,6 +316,8 @@ message RspGetAppInfo {
 
 message ReqLaunchApp{
    string packageName = 1;
+   string key = 2;
+   string value = 3;
 }
 message RspLaunchApp{
    RspStatus status = 1;

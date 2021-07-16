@@ -7,8 +7,8 @@
 #include <app_control.h>
 #endif
 
-LaunchAppRunnable::LaunchAppRunnable(std::string pkg)
-    : mPkg{pkg}
+LaunchAppRunnable::LaunchAppRunnable(std::string pkg, std::string key, std::string value)
+    : mPkg{pkg}, mKey{key}, mValue{value}
 {
 }
 
@@ -25,6 +25,15 @@ void LaunchAppRunnable::run() const
     if (ret) {
         LOGE("Launch Failed(app_control_create) Err Code : %ull", ret);
         return;
+    }
+
+    if (!mKey.empty() && !mValue.empty()) {
+        ret = app_control_add_extra_data(appControl, mKey.c_str(), mValue.c_str());
+        if (ret) {
+            LOGE("Launch Failed(app_control_add_extra_data) Err Code : %ull", ret);
+            app_control_destroy(appControl);
+            return;
+        }
     }
 
     ret = app_control_set_app_id(appControl, packageName.c_str());
