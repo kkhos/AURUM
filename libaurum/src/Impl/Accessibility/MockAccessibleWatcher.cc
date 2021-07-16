@@ -30,6 +30,10 @@ void MockAccessibleWatcher::addApplication(std::shared_ptr<AccessibleApplication
 {
     mApplicationList.push_back(application);
 }
+std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> MockAccessibleWatcher::getActiveAppMap(void)
+{
+    return mActiveAppMap;
+}
 
 std::shared_ptr<MockAccessibleApplication> MockAccessibleWatcher::addApplication(std::string pkgName, Rect<int> geometry, int ifaces, int properties)
 {

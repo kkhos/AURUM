@@ -176,7 +176,7 @@ public:
      */
     bool sendKeyAndWaitForEvents(
         const std::string keycode, const A11yEvent type, const int timeout) const;
-private:
+
     bool executeAndWaitForEvents(
         const Runnable *cmd, const A11yEvent type, const int timeout) const;
 public:

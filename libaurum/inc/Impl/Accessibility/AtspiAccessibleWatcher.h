@@ -2,6 +2,7 @@
 
 #include "AccessibleNode.h"
 #include "AccessibleWatcher.h"
+#include "AtspiAccessibleApplication.h"
 
 #include <atspi/atspi.h>
 #include <gio/gio.h>
@@ -103,6 +104,8 @@ public:
      * @since_tizen 6.5
      */
     virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout) override;
+
+    virtual std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> getActiveAppMap(void) override;
 
 public:
     /**
@@ -221,7 +224,7 @@ private:
     /**
      * @brief TBD
      */
-    std::map<AtspiAccessible *, AtspiAccessible *> mWindowAppMap;
+    std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> mActiveAppMap;
 
     /**
      * @brief TBD
