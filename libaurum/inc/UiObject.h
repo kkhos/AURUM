@@ -190,7 +190,13 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    const Rect<int> getBoundingBox() const;
+    const Rect<int> getScreenBoundingBox() const;
+
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    const Rect<int> getWindowBoundingBox() const;
 
     /**
      * @brief TBD

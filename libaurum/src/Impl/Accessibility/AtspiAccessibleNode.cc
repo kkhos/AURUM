@@ -151,13 +151,22 @@ void AtspiAccessibleNode::refresh()
         }
         AtspiComponent *component = AtspiWrapper::Atspi_accessible_get_component_iface(mNode);
         if (component) {
-            AtspiRect *extent = AtspiWrapper::Atspi_component_get_extents(
+            AtspiRect *screenExtent = AtspiWrapper::Atspi_component_get_extents(
                 component, ATSPI_COORD_TYPE_SCREEN, NULL);
-            if (extent) {
-                mBoundingBox =
-                    Rect<int>{extent->x, extent->y, extent->x + extent->width,
-                            extent->y + extent->height};
-                g_free(extent);
+            if (screenExtent) {
+                mScreenBoundingBox =
+                    Rect<int>{screenExtent->x, screenExtent->y, screenExtent->x + screenExtent->width,
+                            screenExtent->y + screenExtent->height};\
+                g_free(screenExtent);
+            }
+
+            AtspiRect *windowExtent = AtspiWrapper::Atspi_component_get_extents(
+                component, ATSPI_COORD_TYPE_WINDOW, NULL);
+            if (windowExtent) {
+                mWindowBoundingBox =
+                    Rect<int>{windowExtent->x, windowExtent->y, windowExtent->x + windowExtent->width,
+                            windowExtent->y + windowExtent->height};\
+                g_free(windowExtent);
             }
             g_object_unref(component);
         }

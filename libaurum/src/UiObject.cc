@@ -265,16 +265,22 @@ bool UiObject::isValid() const
     return mNode->isValid();
 }
 
-const Rect<int> UiObject::getBoundingBox() const
+const Rect<int> UiObject::getScreenBoundingBox() const
 {
     mNode->refresh();
-    return mNode->getBoundingBox();
+    return mNode->getScreenBoundingBox();
+}
+
+const Rect<int> UiObject::getWindowBoundingBox() const
+{
+    mNode->refresh();
+    return mNode->getWindowBoundingBox();
 }
 
 void UiObject::click() const
 {
     mNode->refresh();
-    const Rect<int> rect = mNode->getBoundingBox();
+    const Rect<int> rect = mNode->getScreenBoundingBox();
     const Point2D<int> midPoint = rect.midPoint();
     mDevice->click(midPoint.x, midPoint.y);
 }
@@ -282,7 +288,7 @@ void UiObject::click() const
 void UiObject::longClick(const unsigned int intv) const
 {
     mNode->refresh();
-    const Rect<int> rect = mNode->getBoundingBox();
+    const Rect<int> rect = mNode->getScreenBoundingBox();
     const Point2D<int> midPoint = rect.midPoint();
     mDevice->click(midPoint.x, midPoint.y, intv);
 }
