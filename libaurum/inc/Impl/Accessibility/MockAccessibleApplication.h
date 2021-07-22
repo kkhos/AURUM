@@ -18,7 +18,7 @@ public:
      * @brief TBD
      * @since tizen_6.0
      */
-    MockAccessibleApplication(std::shared_ptr<AccessibleNode> parent, std::string text,std::string pkg,std::string role, std::string res,std::string type,std::string style,Rect<int> boundingBox,int supportingIfaces,int featureProperty);
+    MockAccessibleApplication(std::shared_ptr<AccessibleNode> parent, std::string text,std::string pkg,std::string role, std::string res,std::string type,std::string style,Rect<int> screenBoundingBox,int supportingIfaces,int featureProperty);
 
     /**
      * @brief TBD

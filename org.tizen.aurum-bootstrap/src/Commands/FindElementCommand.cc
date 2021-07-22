@@ -76,11 +76,19 @@ std::vector<std::shared_ptr<UiSelector>> FindElementCommand::getSelectors(void)
             elm->set_package(obj->getApplicationPackage());
 
             ::aurum::Rect *rect = elm->mutable_geometry();
-            const Rect<int> &size = obj->getBoundingBox();
+            const Rect<int> &size = obj->getScreenBoundingBox();
             rect->set_x(size.mTopLeft.x);
             rect->set_y(size.mTopLeft.y);
             rect->set_width(size.width());
             rect->set_height(size.height());
+
+            ::aurum::Rect *windowRect = elm->mutable_window_relative_geometry();
+            const Rect<int> &windowRelativeSize = obj->getWindowBoundingBox();
+            windowRect->set_x(windowRelativeSize.mTopLeft.x);
+            windowRect->set_y(windowRelativeSize.mTopLeft.y);
+            windowRect->set_width(windowRelativeSize.width());
+            windowRect->set_height(windowRelativeSize.height());
+
             elm->set_widget_type(obj->getElementType());
             elm->set_widget_style(obj->getElementStyle());
 
