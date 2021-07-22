@@ -26,11 +26,18 @@ void DumpObjectTreeCommand::traverse(::aurum::Element *root, std::shared_ptr<Nod
     root->set_elementid(key);
 
     ::aurum::Rect *rect = root->mutable_geometry();
-    const Rect<int> &size = obj->getBoundingBox();
+    const Rect<int> &size = obj->getScreenBoundingBox();
     rect->set_x(size.mTopLeft.x);
     rect->set_y(size.mTopLeft.y);
     rect->set_width(size.width());
     rect->set_height(size.height());
+
+    ::aurum::Rect *windowRect = root->mutable_window_relative_geometry();
+    const Rect<int> &windowSize = obj->getWindowBoundingBox();
+    windowRect->set_x(windowSize.mTopLeft.x);
+    windowRect->set_y(windowSize.mTopLeft.y);
+    windowRect->set_width(windowSize.width());
+    windowRect->set_height(windowSize.height());
 
     root->set_widget_type(obj->getElementType());
     root->set_widget_style(obj->getElementStyle());

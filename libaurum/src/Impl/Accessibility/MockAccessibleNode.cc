@@ -4,13 +4,13 @@
 #include <algorithm>
 #include <iostream>
 
-MockAccessibleNode::MockAccessibleNode(std::shared_ptr<AccessibleNode> parent, std::string text, std::string pkg, std::string role, std::string res, std::string type, std::string style,std::string automationId,  Rect<int> boundingBox, int supportingIfaces,int featureProperty)
+MockAccessibleNode::MockAccessibleNode(std::shared_ptr<AccessibleNode> parent, std::string text, std::string pkg, std::string role, std::string res, std::string type, std::string style,std::string automationId,  Rect<int> screenBoundingBox, int supportingIfaces,int featureProperty)
 : mParentNode(parent), mChildrenList{}, mActionSet{}
 {
     printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
     const auto trickDontRemove = std::shared_ptr<MockAccessibleNode>( this, [](MockAccessibleNode *){} );
 
-    setProperties(text,pkg,role,res,type,style,automationId, boundingBox, supportingIfaces, featureProperty);
+    setProperties(text,pkg,role,res,type,style,automationId, screenBoundingBox, supportingIfaces, featureProperty);
     auto watcher = AccessibleWatcher::getInstance();
     watcher->attach(shared_from_this());
 }
@@ -47,7 +47,7 @@ void* MockAccessibleNode::getRawHandler(void) const
     return (void*)1;
 }
 
-void MockAccessibleNode::setProperties(std::string text,std::string pkg,std::string role,std::string id,std::string type,std::string style,std::string automationId, Rect<int> boundingBox,int supportingIfaces,int featureProperty)
+void MockAccessibleNode::setProperties(std::string text,std::string pkg,std::string role,std::string id,std::string type,std::string style,std::string automationId, Rect<int> screenBoundingBox,int supportingIfaces,int featureProperty)
 {
     mText = text;
     mPkg = pkg;
@@ -56,7 +56,7 @@ void MockAccessibleNode::setProperties(std::string text,std::string pkg,std::str
     mAutomationId = automationId;
     mType = type;
     mStyle = style;
-    mBoundingBox = boundingBox;
+    mScreenBoundingBox = screenBoundingBox;
     mSupportingIfaces = supportingIfaces;
     mFeatureProperty = featureProperty;
 }

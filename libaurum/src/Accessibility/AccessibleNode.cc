@@ -13,7 +13,7 @@ AccessibleNode::~AccessibleNode()
 
 AccessibleNode::AccessibleNode()
 : mText{""}, mPkg{""}, mRole{""}, mId{""}, mType{""}, mStyle{""},
-  mBoundingBox{0,0,0,0}, mSupportingIfaces(0), mFeatureProperty(0), mValid{true}, mLock{}
+  mScreenBoundingBox{0,0,0,0}, mWindowBoundingBox{0,0,0,0}, mSupportingIfaces(0), mFeatureProperty(0), mValid{true}, mLock{}
 {
 }
 
@@ -127,9 +127,14 @@ std::string AccessibleNode::getStyle() const
     return mStyle;
 }
 
-Rect<int> AccessibleNode::getBoundingBox() const
+Rect<int> AccessibleNode::getScreenBoundingBox() const
 {
-    return mBoundingBox;
+    return mScreenBoundingBox;
+}
+
+Rect<int> AccessibleNode::getWindowBoundingBox() const
+{
+    return mWindowBoundingBox;
 }
 
 bool AccessibleNode::isCheckable() const

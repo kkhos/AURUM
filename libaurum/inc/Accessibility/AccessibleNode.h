@@ -166,7 +166,13 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    Rect<int> getBoundingBox() const;
+    Rect<int> getScreenBoundingBox() const;
+
+    /**
+     * @brief TBD
+     * @since_tizen 5.5
+     */
+    Rect<int> getWindowBoundingBox() const;
 
     /**
      * @brief TBD
@@ -353,7 +359,12 @@ protected:
     /**
      * @brief TBD
      */
-    Rect<int> mBoundingBox;
+    Rect<int> mScreenBoundingBox;
+
+    /**
+     * @brief TBD
+     */
+    Rect<int> mWindowBoundingBox;
 
     /**
      * @brief TBD
