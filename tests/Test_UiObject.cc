@@ -223,11 +223,11 @@ TEST_F(AurumTestUiObject, setText_P1)
     ASSERT_EQ(parent->getText(), "new_test2");
 }
 
-TEST_F(AurumTestUiObject, getBoundingBox_P1)
+TEST_F(AurumTestUiObject, getScreenBoundingBox_P1)
 {
     auto obj = UiDevice::getInstance();
     auto parent = obj->findObject(Sel::text("test2"));
-    auto box = parent->getBoundingBox();
+    auto box = parent->getScreenBoundingBox();
 
     ASSERT_EQ(box.mBottomRight.x, 200 );
     ASSERT_EQ(box.mBottomRight.y, 200 );
@@ -399,7 +399,7 @@ TEST_F(AurumTestUiObject, click_P1)
     ASSERT_NE(obj, nullptr);
     obj->click();
 
-    auto rect = obj->getBoundingBox();
+    auto rect = obj->getScreenBoundingBox();
     const Point2D<int> midPoint = rect.midPoint();
 
     ASSERT_EQ(mDevice->mTouchRelease[1].x, midPoint.x);
@@ -413,7 +413,7 @@ TEST_F(AurumTestUiObject, longClick_P1)
     ASSERT_NE(obj, nullptr);
     obj->longClick(interval);
 
-    auto rect = obj->getBoundingBox();
+    auto rect = obj->getScreenBoundingBox();
     const Point2D<int> midPoint = rect.midPoint();
 
     ASSERT_NEAR(mDevice->mTouchRelease[1].stamp1, mDevice->mTouchRelease[1].stamp2, interval*1000*1.1);
