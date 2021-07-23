@@ -7,8 +7,8 @@
 #include <app_control.h>
 #endif
 
-LaunchAppRunnable::LaunchAppRunnable(std::string pkg, std::string key, std::string value)
-    : mPkg{pkg}, mKey{key}, mValue{value}
+LaunchAppRunnable::LaunchAppRunnable(std::string pkg, const google::protobuf::RepeatedPtrField<aurum::LaunchData>& data)
+    : mPkg{pkg}, mData(data)
 {
 }
 
@@ -27,14 +27,14 @@ void LaunchAppRunnable::run() const
         return;
     }
 
-    if (!mKey.empty() && !mValue.empty()) {
-        ret = app_control_add_extra_data(appControl, mKey.c_str(), mValue.c_str());
+    std::for_each(mData.begin(), mData.end(), [&](auto data){
+        ret = app_control_add_extra_data(appControl, data.key().c_str(),data.value().c_str());
         if (ret) {
             LOGE("Launch Failed(app_control_add_extra_data) Err Code : %ull", ret);
             app_control_destroy(appControl);
             return;
         }
-    }
+    });
 
     ret = app_control_set_app_id(appControl, packageName.c_str());
     if (ret) {
