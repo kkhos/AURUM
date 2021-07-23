@@ -88,6 +88,11 @@ message Rect {
    int32 height = 4;
 }
 
+message LaunchData {
+   string key = 1;
+   string value = 2;
+}
+
 // ------------------------------------ //
 
 message ReqFindElement {
@@ -323,8 +328,7 @@ message RspGetAppInfo {
 
 message ReqLaunchApp{
    string packageName = 1;
-   string key = 2;
-   string value = 3;
+   repeated LaunchData data = 2;
 }
 message RspLaunchApp{
    RspStatus status = 1;
