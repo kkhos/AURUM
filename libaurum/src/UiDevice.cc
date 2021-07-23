@@ -51,7 +51,7 @@ std::vector<std::shared_ptr<AccessibleNode>> UiDevice::getWindowRoot() const
     std::vector<std::shared_ptr<AccessibleNode>> ret{};
 
     auto appsMap = AccessibleWatcher::getInstance()->getActiveAppMap();
-    LOGI("activeAppMap.size: %d" , appsMap.size());
+    LOGI("activeAppMap.size: %d" , (int)appsMap.size());
     for (auto itr = appsMap.begin(); itr != appsMap.end(); itr++)
     {
         auto activeWindows = itr->second->getActiveWindows();
