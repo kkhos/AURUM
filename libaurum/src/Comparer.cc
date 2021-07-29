@@ -44,6 +44,7 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(const std::sh
 std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(const std::shared_ptr<AccessibleNode> root)
 {
     std::list<std::shared_ptr<PartialMatch>> partialList{};
+    root->refresh();
     std::vector<std::shared_ptr<AccessibleNode>> ret = findObjects(root, 0, 0, partialList);
     LOGI("%d object(s) found", (int)ret.size());
     return ret;
@@ -55,7 +56,6 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(
 {
     std::vector<std::shared_ptr<AccessibleNode>> ret;
 
-    root->refresh();
     for (auto &match : partialMatches)
         match->update(root, index, depth, partialMatches);
 
