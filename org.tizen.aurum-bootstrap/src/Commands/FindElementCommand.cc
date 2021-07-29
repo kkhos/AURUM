@@ -28,7 +28,8 @@ std::vector<std::shared_ptr<UiSelector>> FindElementCommand::getSelectors(void)
 {
     auto sel = std::make_shared<UiSelector>();
 
-    if(mRequest->_automationid_case())    sel->id(mRequest->automationid());
+    if(mRequest->_elementid_case())       sel->id(mRequest->elementid());
+    if(mRequest->_automationid_case())    sel->automationid(mRequest->automationid());
     if(mRequest->_textfield_case())       sel->text(mRequest->textfield());
     if(mRequest->_widgettype_case())      sel->type(mRequest->widgettype());
     if(mRequest->_widgetstyle_case())     sel->style(mRequest->widgetstyle());
@@ -65,14 +66,13 @@ std::vector<std::shared_ptr<UiSelector>> FindElementCommand::getSelectors(void)
     if (founds.size() > 0) {
         for (auto& found : founds) {
             UiObject *obj = found.get();
-            std::string key{};
-            key = mObjMap->getElement(found);
-            if (key.length() <= 0)
-              key = mObjMap->addElement(std::move(found));
-            LOGI("found object : %s key:%s",
-                  obj->getAutomationId().c_str(), key.c_str());
+            if (mObjMap->getElement(obj->getId()) == nullptr)
+                mObjMap->addElement(std::move(found));
+            LOGI("found object : %p elementId:%s",
+                obj, obj->getId().c_str());
+
             ::aurum::Element *elm = mResponse->add_elements();
-            elm->set_elementid(key);
+            elm->set_elementid(obj->getId());
             elm->set_package(obj->getApplicationPackage());
 
             ::aurum::Rect *rect = elm->mutable_geometry();
@@ -93,7 +93,6 @@ std::vector<std::shared_ptr<UiSelector>> FindElementCommand::getSelectors(void)
             elm->set_widget_style(obj->getElementStyle());
 
             elm->set_text(obj->getText());
-            elm->set_id(obj->getId());
             elm->set_automationid(obj->getAutomationId());
             elm->set_package(obj->getApplicationPackage());
             elm->set_role(obj->getRole());
