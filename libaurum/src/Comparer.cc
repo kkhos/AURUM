@@ -55,7 +55,6 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(
 {
     std::vector<std::shared_ptr<AccessibleNode>> ret;
 
-    root->refresh();
     for (auto &match : partialMatches)
         match->update(root, index, depth, partialMatches);
 
