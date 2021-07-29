@@ -19,9 +19,8 @@ void DumpObjectTreeCommand::traverse(::aurum::Element *root, std::shared_ptr<Nod
     std::string key{};
     std::shared_ptr<UiObject> obj = node->mNode;
 
-    key = mObjMap->getElement(obj);
-    if (key.length() <= 0)
-        key = mObjMap->addElement(obj);
+    if (mObjMap->getElement(obj->getId()) == nullptr)
+        mObjMap->addElement(std::move(obj));
 
     root->set_elementid(key);
 
@@ -43,7 +42,6 @@ void DumpObjectTreeCommand::traverse(::aurum::Element *root, std::shared_ptr<Nod
     root->set_widget_style(obj->getElementStyle());
 
     root->set_text(obj->getText());
-    root->set_id(obj->getId());
     root->set_automationid(obj->getAutomationId());
     root->set_package(obj->getApplicationPackage());
     root->set_role(obj->getRole());
