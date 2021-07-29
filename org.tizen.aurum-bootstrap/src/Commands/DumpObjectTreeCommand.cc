@@ -16,14 +16,12 @@ DumpObjectTreeCommand::DumpObjectTreeCommand(const ::aurum::ReqDumpObjectTree *r
 void DumpObjectTreeCommand::traverse(::aurum::Element *root, std::shared_ptr<Node> node, int depth)
 {
     if (!node->mNode) return;
-    std::string key{};
     std::shared_ptr<UiObject> obj = node->mNode;
 
-    key = mObjMap->getElement(obj);
-    if (key.length() <= 0)
-        key = mObjMap->addElement(obj);
+    if (mObjMap->getElement(obj->getId()) == nullptr)
+        mObjMap->addElement(std::move(obj));
 
-    root->set_elementid(key);
+    root->set_elementid(obj->getId());
 
     ::aurum::Rect *rect = root->mutable_geometry();
     const Rect<int> &size = obj->getScreenBoundingBox();
@@ -43,7 +41,6 @@ void DumpObjectTreeCommand::traverse(::aurum::Element *root, std::shared_ptr<Nod
     root->set_widget_style(obj->getElementStyle());
 
     root->set_text(obj->getText());
-    root->set_id(obj->getId());
     root->set_automationid(obj->getAutomationId());
     root->set_package(obj->getApplicationPackage());
     root->set_role(obj->getRole());

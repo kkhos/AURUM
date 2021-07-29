@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <sstream>
 
-ObjectMapper::ObjectMapper() : mObjectMap{}, mObjectMapReverse{}, mObjCounter{0} {}
+ObjectMapper::ObjectMapper() : mObjectMap{}, mObjCounter{0} {}
 
 ObjectMapper::~ObjectMapper() {}
 
@@ -16,73 +16,39 @@ ObjectMapper *ObjectMapper::getInstance()
 
 std::string ObjectMapper::addElement(std::shared_ptr<UiObject> object)
 {
-    ++mObjCounter;
-    std::string key = std::to_string(mObjCounter);
-    mObjectMap[key] = object;
     std::string value = object->getId();
-    mObjectMapReverse[value] = key;
-    LOGI("addElement %p as key %s, id %s", object.get(), key.c_str(), value.c_str());
-    return key;
+    mObjectMap[value] = object;
+    LOGI("addElement %p, id %s", object.get(), value.c_str());
+    return value;
 }
 
-std::shared_ptr<UiObject> ObjectMapper::getElement(std::string key)
+std::shared_ptr<UiObject> ObjectMapper::getElement(std::string elementId)
 {
-    LOGI("getElement for key(%s)", key.c_str());
-    unsigned long long keyCnt = (unsigned long long)std::stoll(key); // this key is a result of calling std:to_string(mObjCounter)
-    if (keyCnt <= 0 || keyCnt > mObjCounter) return nullptr;
-    if (mObjectMap.count(key)) {
-        std::shared_ptr<UiObject> obj = mObjectMap[key];
+    LOGI("getElement for elementId(%s)", elementId.c_str());
+    if (mObjectMap.count(elementId)) {
+        std::shared_ptr<UiObject> obj = mObjectMap[elementId];
         obj->refresh();
         LOGI("succeeded");
         return obj;
     }
-    LOGI("key is not exist in mObjectMap");
+    LOGI("Id(%s) is not exist in mObjectMap", elementId.c_str());
     return nullptr;
 }
 
-std::string ObjectMapper::getElement(std::shared_ptr<UiObject> object)
+bool ObjectMapper::removeElement(const std::string elementId)
 {
-    LOGI("getElement for object(%p)", object.get());
-    std::string value = object->getId();
-    if (mObjectMapReverse.count(value)) {
-        LOGI("succeeded");
-        return mObjectMapReverse[value];
-    }
-    LOGI("object is not exist in mObjectMapReverse");
-    return std::string{""};
-}
-
-bool ObjectMapper::removeElement(const std::string key)
-{
-    LOGI("removeElement for key(%s)", key.c_str());
-    std::shared_ptr<UiObject> obj = getElement(key);
+    LOGI("removeElement for Id(%s)", elementId.c_str());
+    std::shared_ptr<UiObject> obj = getElement(elementId);
     if (obj) {
-        std::string value = obj->getId();
-        if (mObjectMap.erase(key) && mObjectMapReverse.erase(value))
+        if (mObjectMap.erase(elementId))
             return true;
     }
     return false;
 }
 
-bool ObjectMapper::removeElement(std::shared_ptr<UiObject> object)
-{
-    LOGI("removeElement for object(%p)", object.get());
-    std::string key = getElement(object);
-    if (key.empty()) return false;
-    return removeElement(key);
-}
-
 void ObjectMapper::cleanUp()
 {
     LOGI("clean up object map");
-    for(auto iter = mObjectMapReverse.begin(); iter != mObjectMapReverse.end(); ) {
-        auto obj = mObjectMap[iter->second];
-        if (obj && !obj->isValid()) {
-            iter = mObjectMapReverse.erase(iter);
-        } else {
-            ++iter;
-        }
-    }
     for(auto iter = mObjectMap.begin(); iter != mObjectMap.end(); ) {
         if (!iter->second->isValid()) {
             iter = mObjectMap.erase(iter);
