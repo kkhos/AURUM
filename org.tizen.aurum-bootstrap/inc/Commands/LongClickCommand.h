@@ -17,5 +17,5 @@ public:
                      ::aurum::RspClick *response);
     ::grpc::Status execute() override;
 private:
-    const static unsigned int LOGNCLICK_INTERVAL = 50;
+    const static unsigned int LOGNCLICK_INTERVAL = 500;
 };

@@ -336,5 +336,5 @@ private:
     /**
      * @brief TBD
      */
-    static const unsigned int LOGNCLICK_INTERVAL = 50;
+    static const unsigned int LOGNCLICK_INTERVAL = 500;
 };
