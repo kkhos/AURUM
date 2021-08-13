@@ -27,8 +27,7 @@ std::shared_ptr<UiObject> ObjectMapper::getElement(std::string elementId)
     LOGI("getElement for elementId(%s)", elementId.c_str());
     if (mObjectMap.count(elementId)) {
         std::shared_ptr<UiObject> obj = mObjectMap[elementId];
-        obj->refresh();
-        LOGI("succeeded");
+        LOGI("Object find succeeded");
         return obj;
     }
     LOGI("Id(%s) is not exist in mObjectMap", elementId.c_str());

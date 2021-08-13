@@ -30,7 +30,7 @@ bool ClearCommand::hasHintText(std::shared_ptr<UiObject> obj)
 
     if (obj) {
         obj->setText("");
-        obj->refresh();
+        obj->updateName();
         auto text = obj->getText();
         if (text.length() != 0) {
             if (hasHintText(obj)) {
