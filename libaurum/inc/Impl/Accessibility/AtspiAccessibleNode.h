@@ -55,6 +55,20 @@ public:
      */
     void* getRawHandler(void) const override;
 
+    void updateRoleName() override;
+
+    void updateUniqueId() override;
+
+    void updateName() override;
+
+    void updateApplication() override;
+
+    void updateAttributes() override;
+
+    void updateStates() override;
+
+    void updateExtents() override;
+
     /**
      * @brief TBD
      * @since_tizen 5.5

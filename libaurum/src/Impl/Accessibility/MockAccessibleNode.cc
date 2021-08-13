@@ -61,6 +61,34 @@ void MockAccessibleNode::setProperties(std::string text,std::string pkg,std::str
     mFeatureProperty = featureProperty;
 }
 
+void MockAccessibleNode::updateRoleName()
+{
+}
+
+void MockAccessibleNode::updateUniqueId()
+{
+}
+
+void MockAccessibleNode::updateName()
+{
+}
+
+void MockAccessibleNode::updateApplication()
+{
+}
+
+void MockAccessibleNode::updateAttributes()
+{
+}
+
+void MockAccessibleNode::updateStates()
+{
+}
+
+void MockAccessibleNode::updateExtents()
+{
+}
+
 void MockAccessibleNode::refresh()
 {
 }

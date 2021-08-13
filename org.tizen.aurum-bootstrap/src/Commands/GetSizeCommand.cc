@@ -16,6 +16,7 @@ GetSizeCommand::GetSizeCommand(const ::aurum::ReqGetSize *request,
     ObjectMapper *mObjMap = ObjectMapper::getInstance();
     std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
     if (obj) {
+        obj->updateExtents();
         ::aurum::Rect *rect = mResponse->mutable_size();
         if (type == ::aurum::ReqGetSize_CoordType::ReqGetSize_CoordType_SCREEN) {
             const Rect<int> &size = obj->getScreenBoundingBox();
