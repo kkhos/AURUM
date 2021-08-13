@@ -13,7 +13,9 @@ AtspiAccessibleNode::AtspiAccessibleNode(AtspiAccessible *node)
     watcher->attach(shared_from_this());
 
     if (mNode) {
-        this->refresh();
+        this->updateApplication();
+        this->updateUniqueId();
+        this->updateStates();
     } else {
         LOGI("AtspiAccessibleNode Ctor : mNode is null");
     }
@@ -83,6 +85,124 @@ bool AtspiAccessibleNode::isValid() const
 void* AtspiAccessibleNode::getRawHandler(void) const
 {
     return static_cast<void *>(mNode);
+}
+
+void AtspiAccessibleNode::updateRoleName()
+{
+    AtspiWrapper::Atspi_accessible_clear_cache(mNode);
+
+    gchar *rolename = AtspiWrapper::Atspi_accessible_get_role_name(mNode, NULL);
+    if (rolename) {
+        mRole = rolename;
+        g_free(rolename);
+    }
+}
+
+void AtspiAccessibleNode::updateUniqueId()
+{
+    AtspiWrapper::Atspi_accessible_clear_cache(mNode);
+
+    #ifdef TIZEN
+    gchar *uID = AtspiWrapper::Atspi_accessible_get_unique_id(mNode, NULL);
+    if (uID) {
+        mId = uID;
+        g_free(uID);
+    }
+    #else
+        mId = std::string{"N/A"};
+    #endif
+}
+
+void AtspiAccessibleNode::updateName()
+{
+    AtspiWrapper::Atspi_accessible_clear_cache(mNode);
+
+    gchar *name = AtspiWrapper::Atspi_accessible_get_name(mNode, NULL);
+    if (name) {
+        mText = name;
+        g_free(name);
+    }
+}
+
+void AtspiAccessibleNode::updateApplication()
+{
+    AtspiWrapper::Atspi_accessible_clear_cache(mNode);
+
+    AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(mNode, NULL);
+    if (app) {
+        gchar *pkg = AtspiWrapper::Atspi_accessible_get_name(app, NULL);
+        if (pkg) {
+            mPkg = pkg;
+            g_free(pkg);
+        }
+        g_object_unref(app);
+    }
+}
+
+void AtspiAccessibleNode::updateAttributes()
+{
+    AtspiWrapper::Atspi_accessible_clear_cache(mNode);
+
+    GHashTable *attributes = AtspiWrapper::Atspi_accessible_get_attributes(mNode, NULL);
+    if (attributes) {
+        char *t = (char*)g_hash_table_lookup(attributes, "type");
+        if (!t) t = (char*)g_hash_table_lookup(attributes, "t");
+        if (!t) t = (char*)g_hash_table_lookup(attributes, "class");
+        char *s = (char*)g_hash_table_lookup(attributes, "style");
+        char *a = (char*)g_hash_table_lookup(attributes, "automationId");
+
+        if (t) mType =  std::string(t);
+        if (s) mStyle = std::string(s);
+        if (a) mAutomationId = std::string(a);
+
+        g_hash_table_unref(attributes);
+    }
+}
+
+void AtspiAccessibleNode::updateStates()
+{
+    AtspiWrapper::Atspi_accessible_clear_cache(mNode);
+
+    AtspiStateSet *st = AtspiWrapper::Atspi_accessible_get_state_set(mNode);
+    if (st) {
+        GArray *states = AtspiWrapper::Atspi_state_set_get_states(st);
+        if (states) {
+            AtspiStateType stat;
+            for (unsigned int i = 0; states && (i < states->len); ++i) {
+                stat = g_array_index(states, AtspiStateType, i);
+                setFeatureProperty(stat);
+            }
+            g_array_free(states, 1);
+        }
+        g_object_unref(st);
+    }
+}
+
+void AtspiAccessibleNode::updateExtents()
+{
+    AtspiWrapper::Atspi_accessible_clear_cache(mNode);
+
+    AtspiComponent *component = AtspiWrapper::Atspi_accessible_get_component_iface(mNode);
+    if (component) {
+        AtspiRect *screenExtent = AtspiWrapper::Atspi_component_get_extents(
+            component, ATSPI_COORD_TYPE_SCREEN, NULL);
+        if (screenExtent) {
+            mScreenBoundingBox =
+                Rect<int>{screenExtent->x, screenExtent->y, screenExtent->x + screenExtent->width,
+                        screenExtent->y + screenExtent->height};\
+            g_free(screenExtent);
+        }
+
+        AtspiRect *windowExtent = AtspiWrapper::Atspi_component_get_extents(
+            component, ATSPI_COORD_TYPE_WINDOW, NULL);
+        if (windowExtent) {
+            mWindowBoundingBox =
+                Rect<int>{windowExtent->x, windowExtent->y, windowExtent->x + windowExtent->width,
+                        windowExtent->y + windowExtent->height};\
+            g_free(windowExtent);
+        }
+        g_object_unref(component);
+    }
 }
 
 void AtspiAccessibleNode::refresh()

@@ -294,6 +294,20 @@ public:
      */
     bool DoAtspiActivate() const;
 
+    void updateRoleName() const;
+
+    void updateUniqueId() const;
+
+    void updateName() const;
+
+    void updateApplication() const;
+
+    void updateAttributes() const;
+
+    void updateStates() const;
+
+    void updateExtents() const;
+
     /**
      * @brief TBD
      * @since_tizen 5.5

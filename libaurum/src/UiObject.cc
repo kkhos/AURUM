@@ -260,6 +260,41 @@ void UiObject::refresh() const
     mNode->refresh();
 }
 
+void UiObject::updateRoleName() const
+{
+    mNode->updateRoleName();
+}
+
+void UiObject::updateUniqueId() const
+{
+    mNode->updateUniqueId();
+}
+
+void UiObject::updateName() const
+{
+    mNode->updateName();
+}
+
+void UiObject::updateApplication() const
+{
+    mNode->updateApplication();
+}
+
+void UiObject::updateAttributes() const
+{
+    mNode->updateAttributes();
+}
+
+void UiObject::updateStates() const
+{
+    mNode->updateStates();
+}
+
+void UiObject::updateExtents() const
+{
+    mNode->updateExtents();
+}
+
 bool UiObject::isValid() const
 {
     return mNode->isValid();
@@ -267,19 +302,17 @@ bool UiObject::isValid() const
 
 const Rect<int> UiObject::getScreenBoundingBox() const
 {
-    mNode->refresh();
     return mNode->getScreenBoundingBox();
 }
 
 const Rect<int> UiObject::getWindowBoundingBox() const
 {
-    mNode->refresh();
     return mNode->getWindowBoundingBox();
 }
 
 void UiObject::click() const
 {
-    mNode->refresh();
+    mNode->updateExtents();
     const Rect<int> rect = mNode->getScreenBoundingBox();
     const Point2D<int> midPoint = rect.midPoint();
     mDevice->click(midPoint.x, midPoint.y);
@@ -287,7 +320,7 @@ void UiObject::click() const
 
 void UiObject::longClick(const unsigned int intv) const
 {
-    mNode->refresh();
+    mNode->updateExtents();
     const Rect<int> rect = mNode->getScreenBoundingBox();
     const Point2D<int> midPoint = rect.midPoint();
     mDevice->click(midPoint.x, midPoint.y, intv);
@@ -304,6 +337,5 @@ std::shared_ptr<AccessibleNode> UiObject::getAccessibleNode() const
     if (mNode == nullptr) throw;
     // TODO : wait for animation and refresh current node
     // mDevice->waitForIdle();
-    mNode->refresh();
     return mNode;
 }

@@ -15,6 +15,7 @@ GetValueCommand::GetValueCommand(const ::aurum::ReqGetValue *request,
     std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
 
     if (obj) {
+        obj->updateName();
         std::string text = obj->getText();
         mResponse->set_stringvalue(text.c_str());
         mResponse->set_status(::aurum::RspStatus::OK);
