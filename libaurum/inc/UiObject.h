@@ -296,6 +296,48 @@ public:
 
     /**
      * @brief TBD
+     * @since_tizen 6.5
+     */
+    void updateRoleName() const;
+
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    void updateUniqueId() const;
+
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    void updateName() const;
+
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    void updateApplication() const;
+
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    void updateAttributes() const;
+
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    void updateStates() const;
+
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    void updateExtents() const;
+
+    /**
+     * @brief TBD
      * @since_tizen 5.5
      */
     void refresh() const;

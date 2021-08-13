@@ -57,6 +57,48 @@ public:
 
     /**
      * @brief TBD
+     * @since_tizen 6.5
+     */
+    void updateRoleName() override;
+
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    void updateUniqueId() override;
+
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    void updateName() override;
+
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    void updateApplication() override;
+
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    void updateAttributes() override;
+
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    void updateStates() override;
+
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    void updateExtents() override;
+
+    /**
+     * @brief TBD
      * @since_tizen 5.5
      */
     void refresh() override;

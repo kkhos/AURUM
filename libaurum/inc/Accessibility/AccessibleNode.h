@@ -273,6 +273,48 @@ public:
 
     /**
      * @brief TBD
+     * @since_tizen 6.5
+     */
+    virtual void updateRoleName() = 0;
+
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    virtual void updateUniqueId() = 0;
+
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    virtual void updateName() = 0;
+
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    virtual void updateApplication() = 0;
+
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    virtual void updateAttributes() = 0;
+
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    virtual void updateStates() = 0;
+
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    virtual void updateExtents() = 0;
+
+    /**
+     * @brief TBD
      * @since_tizen 5.5
      */
     virtual void refresh() = 0;

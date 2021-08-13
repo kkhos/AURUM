@@ -66,10 +66,11 @@ std::vector<std::shared_ptr<UiSelector>> FindElementCommand::getSelectors(void)
     if (founds.size() > 0) {
         for (auto& found : founds) {
             UiObject *obj = found.get();
+            obj->refresh();
             if (mObjMap->getElement(obj->getId()) == nullptr)
                 mObjMap->addElement(std::move(found));
-            LOGI("found object : %p elementId:%s",
-                obj, obj->getId().c_str());
+
+            LOGI("found object : %p elementId:%s", obj, obj->getId().c_str());
 
             ::aurum::Element *elm = mResponse->add_elements();
             elm->set_elementid(obj->getId());
