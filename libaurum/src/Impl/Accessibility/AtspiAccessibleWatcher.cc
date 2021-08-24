@@ -162,7 +162,7 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *user_data)
         }
         else if (!strncmp(event->type, "window:deactivate", 16)) {
             LOGI("window deactivate in app(%s)", pkg);
-            if (!instance->mActiveAppMap.count(app)) {
+            if (instance->mActiveAppMap.count(app)) {
                 LOGI("window deactivated delete app(%s) in map", pkg);
                 instance->mActiveAppMap.erase(app);
             }
