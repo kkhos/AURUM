@@ -20,7 +20,7 @@ void DumpObjectTreeCommand::traverse(::aurum::Element *root, std::shared_ptr<Nod
 
     obj->refresh();
     if (mObjMap->getElement(obj->getId()) == nullptr)
-        mObjMap->addElement(std::move(obj));
+        mObjMap->addElement(obj);
 
     root->set_elementid(obj->getId());
 
