@@ -1,4 +1,8 @@
 from __future__ import print_function
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.dirname(__file__)))))
+from __future__ import print_function
 from aurum_pb2 import *
 from aurum_pb2_grpc import BootstrapStub
 import logging
