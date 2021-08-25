@@ -1,0 +1,9 @@
+python3 -m venv v
+
+source v/bin/activate
+
+pip3 install -r ../../../protocol/resources/python/requirements.txt
+
+python3 -m grpc_tools.protoc --python_out=./ --grpc_python_out=./ -I ./../../../protocol/ ../../../protocol/aurum.proto
+
+python3 ../../../protocol/resources/python/mobile/mobileSetup.py
