@@ -1,3 +1,5 @@
+* test python script must be in same location as aurum_pb2.py
+
 ```sh
 
 python3 -m venv v
