@@ -129,6 +129,12 @@ public:
      */
     long long getSystemTime(TimeRequestType type) override;
 
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    const Rect<int> getScreenSize() override;
+
 protected:
     /**
      * @brief TBD
@@ -243,4 +249,9 @@ private:
      * @brief TBD
      */
     std::set<int> mTouchSeq;
+
+    /**
+     * @brief TBD
+     */
+    Rect<int> mScreenSize;
 };
