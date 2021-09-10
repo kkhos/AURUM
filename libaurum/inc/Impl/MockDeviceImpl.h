@@ -137,6 +137,12 @@ public:
      */
     long long getSystemTime(TimeRequestType type) override;
 
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    const Rect<int> getScreenSize() override;
+
 protected:
     /**
      * @brief TBD
@@ -263,4 +269,9 @@ public:
      * @brief TBD
      */
     int mWheelDevice;
+
+    /**
+     * @brief TBD
+     */
+    Rect<int> mScreenSize;
 };
