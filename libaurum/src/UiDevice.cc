@@ -254,3 +254,8 @@ long long UiDevice::getSystemTime(TimeRequestType type)
 {
     return mDeviceImpl->getSystemTime(type);
 }
+
+const Size2D<int> UiDevice::getScreenSize()
+{
+    return mDeviceImpl->getScreenSize();
+}

@@ -1,7 +1,8 @@
 #pragma once
 
 #include "config.h"
-
+#include "Rect.h"
+#include "Size2D.h"
 #include <string>
 
 /**
@@ -247,4 +248,13 @@ public:
      * @since_tizen 5.5
      */
     virtual long long getSystemTime(TimeRequestType type) = 0;
+
+    /**
+     * @brief Gets device screen size.
+     *
+     * @return @Size2D
+     *
+     * @since_tizen 6.5
+     */
+    virtual const Size2D<int> getScreenSize() = 0;
 };

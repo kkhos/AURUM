@@ -36,6 +36,7 @@
 #include "IDevice.h"
 #include "Accessible.h"
 #include "Point2D.h"
+#include "Size2D.h"
 #include "Rect.h"
 #include "PartialMatch.h"
 #include "Comparer.h"

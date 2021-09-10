@@ -26,6 +26,13 @@ TizenDeviceImpl::TizenDeviceImpl()
     obj->mFakeTouchHandle = efl_util_input_initialize_generator(EFL_UTIL_INPUT_DEVTYPE_TOUCHSCREEN);
     obj->mFakeKeyboardHandle =
        efl_util_input_initialize_generator(EFL_UTIL_INPUT_DEVTYPE_KEYBOARD);
+
+    int width = 0;
+    int height = 0;
+    system_info_get_platform_int("http://tizen.org/feature/screen.width", &width);
+    system_info_get_platform_int("http://tizen.org/feature/screen.height", &height);
+
+    mScreenSize = Size2D<int>{width, height};
 }
 
 TizenDeviceImpl::~TizenDeviceImpl()
@@ -248,12 +255,7 @@ bool TizenDeviceImpl::takeScreenshot(std::string path, float scale, int quality)
     efl_util_screenshot_h screenshot = NULL;
     tbm_surface_h tbm_surface = NULL;
 
-    int width = 0, height = 0;
-    if (system_info_get_platform_int("http://tizen.org/feature/screen.width", &width) ||
-        system_info_get_platform_int("http://tizen.org/feature/screen.height", &height))
-        return false;
-
-    screenshot = efl_util_screenshot_initialize(width, height);
+    screenshot = efl_util_screenshot_initialize(mScreenSize.width, mScreenSize.height);
 
     if (screenshot) {
         tbm_surface = efl_util_screenshot_take_tbm_surface(screenshot);
@@ -317,6 +319,12 @@ long long TizenDeviceImpl::getSystemTime(TimeRequestType type)
 
     return clock->getTime();
 
+}
+
+const Size2D<int> TizenDeviceImpl::getScreenSize()
+{
+    TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
+    return obj->mScreenSize;
 }
 
 int TizenDeviceImpl::grabTouchSeqNumber()

@@ -15,6 +15,7 @@ libaurum_install_inc = [
   './inc/Misc/bitmask.h',
   './inc/Misc/Point2D.h',
   './inc/Misc/Rect.h',
+  './inc/Misc/Size2D.h',
   './inc/Aurum.h',
 ]
 

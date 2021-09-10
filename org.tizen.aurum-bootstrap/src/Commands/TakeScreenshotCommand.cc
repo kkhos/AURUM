@@ -15,13 +15,24 @@ TakeScreenshotCommand::TakeScreenshotCommand(
 {
     LOGI("TakeScreenshot --------------- ");
 
-    std::string path = "/tmp/screenshot.png";
+    struct tm timeinfo;
+    time_t now = time(0);
+    if (!localtime_r(&now, &timeinfo)) {
+        LOGE("fail to get localtime. Screenshot cancelled");
+        return grpc::Status::CANCELLED;
+    }
+
+    char name[128];
+    std::snprintf(name, 128, "/tmp/screenshot-%d-%d-%d-%d:%d:%d.png",
+                              (timeinfo.tm_year + 1900), (timeinfo.tm_mon + 1), timeinfo.tm_mday,
+                              timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec);
+    std::string path(name);
     std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();
     mDevice->takeScreenshot(path, 1.0, 1);
 
     std::ifstream ifs(path, std::ifstream::binary);
     ::aurum::RspTakeScreenshot rsp;
-    int size = 1920 * 1080;
+    int size = mDevice->getScreenSize().width * mDevice->getScreenSize().height;
     char buf[size];
 
     while (!ifs.eof()) {
