@@ -1,7 +1,7 @@
 #pragma once
 
 #include "config.h"
-
+#include "Rect.h"
 #include <string>
 
 /**
@@ -139,4 +139,10 @@ public:
      * @since_tizen 5.5
      */
     virtual long long getSystemTime(TimeRequestType type) = 0;
+
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    virtual const Rect<int> getScreenSize() = 0;
 };
