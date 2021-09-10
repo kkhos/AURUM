@@ -234,6 +234,14 @@ public:
      */
     long long getSystemTime(TimeRequestType type) override;
 
+    /**
+     * @brief Gets device screen size.
+     *
+     * @return @Size2D
+     *
+     * @since_tizen 6.5
+     */
+    const Size2D<int> getScreenSize() override;
 public:
 
     /**

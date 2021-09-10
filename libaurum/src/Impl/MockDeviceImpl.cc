@@ -1,3 +1,5 @@
+#include "Aurum.h"
+
 #include "MockDeviceImpl.h"
 
 #include <functional>
@@ -184,6 +186,11 @@ long long MockDeviceImpl::getSystemTime(TimeRequestType type)
     }
 
     return (long long)t.tv_sec * 1000L + (long long)(t.tv_nsec / MICRO_SEC);
+}
+
+const Size2D<int> MockDeviceImpl::getScreenSize()
+{
+    return mScreenSize;
 }
 
 bool MockDeviceImpl::strokeKeyCode(std::string keycode, unsigned int intv)
