@@ -126,6 +126,11 @@ public:
      */
     long long getSystemTime(TimeRequestType type) override;
 
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    const Rect<int> getScreenSize() override;
 public:
 
     /**
