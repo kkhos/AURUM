@@ -2,9 +2,7 @@
 #include "CloseAppCommand.h"
 #include <chrono>
 #include <thread>
-#ifdef GBSBUILD
 #include <app_manager_extension.h>
-#endif
 
 CloseAppCommand::CloseAppCommand(const ::aurum::ReqCloseApp *request,
                                  ::aurum::RspCloseApp *response)
@@ -15,7 +13,7 @@ CloseAppCommand::CloseAppCommand(const ::aurum::ReqCloseApp *request,
 ::grpc::Status CloseAppCommand::execute()
 {
     LOGI("CloseApp --------------- ");
-#ifdef GBSBUILD
+
     std::string   packageName = mRequest->packagename();
     app_context_h app_context = NULL;
 
@@ -33,7 +31,7 @@ CloseAppCommand::CloseAppCommand(const ::aurum::ReqCloseApp *request,
         mResponse->set_status(::aurum::RspStatus::ERROR);
         return grpc::Status::OK;
     }
-#endif
+    
     return grpc::Status::OK;
 }
 

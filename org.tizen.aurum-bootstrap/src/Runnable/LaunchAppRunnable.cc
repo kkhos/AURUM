@@ -2,10 +2,7 @@
 #include "bootstrap.h"
 #include "LaunchAppCommand.h"
 #include "LaunchAppRunnable.h"
-
-#ifdef GBSBUILD
 #include <app_control.h>
-#endif
 
 LaunchAppRunnable::LaunchAppRunnable(std::string pkg, const google::protobuf::RepeatedPtrField<aurum::LaunchData>& data)
     : mPkg{pkg}, mData(data)
@@ -14,7 +11,6 @@ LaunchAppRunnable::LaunchAppRunnable(std::string pkg, const google::protobuf::Re
 
 void LaunchAppRunnable::run() const
 {
-#ifdef GBSBUILD
     app_control_h appControl;
     std::string   packageName = mPkg;
     int           ret = -1;
@@ -51,7 +47,6 @@ void LaunchAppRunnable::run() const
     }
 
     app_control_destroy(appControl);
-#endif
 }
 
 std::string LaunchAppRunnable::getPkgName()
