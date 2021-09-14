@@ -2,9 +2,7 @@
 #include "RemoveAppCommand.h"
 #include <chrono>
 #include <thread>
-#ifdef GBSBUILD
 #include <package_manager.h>
-#endif
 
 RemoveAppCommand::RemoveAppCommand(const ::aurum::ReqRemoveApp* request,
                                    ::aurum::RspRemoveApp*       response)
@@ -16,7 +14,6 @@ RemoveAppCommand::RemoveAppCommand(const ::aurum::ReqRemoveApp* request,
 {
     LOGI("RemoveAppCommand::execute");
 
-#ifdef GBSBUILD
     package_manager_request_h pkgRequest;
     std::string               name = mRequest->packagename();
     int                       id;
@@ -27,7 +24,7 @@ RemoveAppCommand::RemoveAppCommand(const ::aurum::ReqRemoveApp* request,
             mResponse->set_status(::aurum::RspStatus::OK);
         }
     }
-#endif
+    
     return grpc::Status::OK;
 }
 

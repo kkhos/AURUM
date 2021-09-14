@@ -3,9 +3,7 @@
 #include <fstream>
 #include <chrono>
 #include <thread>
-#ifdef GBSBUILD
 #include <package_manager.h>
-#endif
 
 InstallAppCommand::InstallAppCommand(
     ::grpc::ServerReader<::aurum::ReqInstallApp> *request,
@@ -17,7 +15,7 @@ InstallAppCommand::InstallAppCommand(
 ::grpc::Status InstallAppCommand::execute()
 {
     LOGI("InstallApp --------------- ");
-#ifdef GBSBUILD
+
     ::aurum::ReqInstallApp chunk;
 
     std::ofstream outfile("/tmp/app.tpk", std::ofstream::binary);
@@ -34,7 +32,7 @@ InstallAppCommand::InstallAppCommand(
 
     package_manager_request_create(&pkgRequest);
     package_manager_request_install(pkgRequest, "/tmp/app.tpk", &id);
-#endif
+
     return grpc::Status::OK;
 }
 
