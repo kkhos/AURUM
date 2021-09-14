@@ -6,9 +6,7 @@
 #include <vector>
 #include <mutex>
 
-#include "AccessibleUtils.h"
 #include "IEventConsumer.h"
-
 #include "Rect.h"
 #include "config.h"
 
