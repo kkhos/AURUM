@@ -31,16 +31,6 @@ UiObject::UiObject(const std::shared_ptr<UiDevice> device, const std::shared_ptr
 {
 }
 
-// UiObject::UiObject(const UiObject &src)
-//     : mDevice(src.mDevice),
-//       mSelector(src.mSelector),
-//       mNode(src.mNode),
-//       mWaiter{src.mWaiter},
-//       mNode_src(std::move(src.mNode_src))
-
-// {
-// }
-
 UiObject::UiObject(UiObject &&src)
     : mDevice(src.mDevice),
       mSelector(std::move(src.mSelector)),

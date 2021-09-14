@@ -1,19 +1,10 @@
 #pragma once
 
 enum class EventType {
-    Window,
     Object,
 };
 
-enum class WindowEventType {
-    WindowActivated,
-    WindowDeactivated,
-    WindowCreated,
-    WindowDestroyed,
-};
-
 enum class ObjectEventType {
-    ObjectStateVisible,
     ObjectStateDefunct,
 };
 

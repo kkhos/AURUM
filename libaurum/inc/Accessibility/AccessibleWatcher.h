@@ -3,7 +3,6 @@
 #include "AccessibleApplication.h"
 #include "AccessibleWindow.h"
 #include "AccessibleNode.h"
-#include "AccessibleUtils.h"
 #include "IEventSource.h"
 #include "Runnable.h"
 #include "A11yEvent.h"

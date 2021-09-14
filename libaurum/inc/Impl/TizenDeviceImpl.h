@@ -1,13 +1,11 @@
 #pragma once
 
 #include "config.h"
-
 #include "IDevice.h"
-#include <set>
 
-#ifdef GBS_BUILD
+#include <set>
 #include <efl_util.h>
-#endif
+
 /**
  * @brief TizenDeviceImpl Class
  * @since_tizen 5.5

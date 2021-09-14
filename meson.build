@@ -9,8 +9,6 @@ dir_include   = join_paths(dir_prefix, get_option('includedir'))
 
 config_h = configuration_data()
 if get_option('tizen') == true
-  config_h.set10('GBS_BUILD', true)
-  config_h.set10('GBSBUILD', true)
   config_h.set10('TIZEN', true)
 else
   message('')
