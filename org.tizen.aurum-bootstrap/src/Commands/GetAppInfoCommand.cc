@@ -1,9 +1,7 @@
 #include "bootstrap.h"
 #include "GetAppInfoCommand.h"
-#ifdef GBSBUILD
 #include <app_manager_extension.h>
 #include <package_manager.h>
-#endif
 
 GetAppInfoCommand::GetAppInfoCommand(const ::aurum::ReqGetAppInfo *request,
                                      ::aurum::RspGetAppInfo *response)
@@ -14,7 +12,7 @@ GetAppInfoCommand::GetAppInfoCommand(const ::aurum::ReqGetAppInfo *request,
 ::grpc::Status GetAppInfoCommand::execute()
 {
     LOGI("GetAppInfo --------------- ");
-#ifdef GBSBUILD
+
     std::string packageName = mRequest->packagename();
 
     app_context_h  app_context;
@@ -45,6 +43,5 @@ GetAppInfoCommand::GetAppInfoCommand(const ::aurum::ReqGetAppInfo *request,
         }
     }
 
-#endif
     return grpc::Status::OK;
 }

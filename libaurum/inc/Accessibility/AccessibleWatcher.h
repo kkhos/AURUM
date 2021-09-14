@@ -3,7 +3,6 @@
 #include "AccessibleApplication.h"
 #include "AccessibleWindow.h"
 #include "AccessibleNode.h"
-#include "AccessibleUtils.h"
 #include "IEventSource.h"
 #include "Runnable.h"
 #include "A11yEvent.h"
@@ -59,13 +58,18 @@ public:
      */
     virtual std::vector<std::shared_ptr<AccessibleApplication>> getApplications(void) const = 0;
 
-    /**s
+    /**
      * @brief TBD
      * @since_tizen 6.5
      */
     virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout) = 0;
 
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
     virtual std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> getActiveAppMap(void) = 0;
+
 public:
     /**
      * @brief TBD

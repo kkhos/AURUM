@@ -11,6 +11,9 @@
 #include <thread>
 #include <iostream>
 
+#define COMPARE(A, B) \
+    (B != A11yEvent::EVENT_NONE) && ((A & B) == B)
+
 std::vector<std::shared_ptr<A11yEventInfo>> AtspiAccessibleWatcher::mEventQueue;
 GThread *AtspiAccessibleWatcher::mEventThread = nullptr;
 std::mutex AtspiAccessibleWatcher::mMutex = std::mutex{};
@@ -188,56 +191,6 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *user_data)
     if (pkg) free(pkg);
 }
 
-void AtspiAccessibleWatcher::print_debug()
-{
-    LOGI("activatewindowlist-------------------");
-    std::for_each(mActivatedWindowList.begin(), mActivatedWindowList.end(), [](auto acc){
-        LOGI("child:%p", acc);
-    });
-
-    LOGI("mActivatedApplicationList--------------------------");
-    std::for_each(mActivatedApplicationList.begin(), mActivatedApplicationList.end(), [](auto acc){
-        LOGI("child:%p", acc);
-    });
-
-    LOGI("mWindowSet------------------------------");
-    std::for_each(mWindowSet.begin(), mWindowSet.end(), [](auto acc){
-        LOGI("child:%p", acc);
-    });
-    LOGI("------------------------------");
-}
-
-void AtspiAccessibleWatcher::onWindowActivated(AtspiAccessible *node,
-                            WindowActivateInfoType type)
-{
-    LOGI("onWindowActivated obj:%p", node);
-    notifyAll((int)EventType::Window, (int)WindowEventType::WindowActivated, node);
-}
-
-void AtspiAccessibleWatcher::onWindowDeactivated(AtspiAccessible *node)
-{
-    LOGI("onWindowDeactivated obj:%p", node);
-    notifyAll((int)EventType::Window, (int)WindowEventType::WindowDeactivated, node);
-}
-
-void AtspiAccessibleWatcher::onWindowCreated(AtspiAccessible *node)
-{
-    LOGI("onWindowCreated obj:%p", node);
-    notifyAll((int)EventType::Window, (int)WindowEventType::WindowCreated, node);
-}
-
-void AtspiAccessibleWatcher::onWindowDestroyed(AtspiAccessible *node)
-{
-    LOGI("onWindowDestroyed obj:%p", node);
-    notifyAll((int)EventType::Window, (int)WindowEventType::WindowDestroyed, node);
-}
-
-void AtspiAccessibleWatcher::onVisibilityChanged(AtspiAccessible *node, bool visible)
-{
-    LOGI("onVisibilityChanged obj:%p", node);
-    notifyAll((int)EventType::Object, (int)ObjectEventType::ObjectStateVisible, node);
-}
-
 void AtspiAccessibleWatcher::onObjectDefunct(AtspiAccessible *node)
 {
     LOGI("onObjectDefunct obj:%p", node);
@@ -281,9 +234,6 @@ std::vector<std::shared_ptr<AccessibleApplication>> AtspiAccessibleWatcher::getA
     g_object_unref(root);
     return ret;
 }
-
-#define COMPARE(A, B) \
-    (B != A11yEvent::EVENT_NONE) && ((A & B) == B)
 
 bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout)
 {

@@ -6,9 +6,7 @@
 #include <vector>
 #include <mutex>
 
-#include "AccessibleUtils.h"
 #include "IEventConsumer.h"
-
 #include "Rect.h"
 #include "config.h"
 
@@ -63,7 +61,7 @@ enum class NodeFeatureProperties {
  * @since_tizen 5.5
  */
 class AccessibleNode : public std::enable_shared_from_this<AccessibleNode>, public IEventConsumer  {
-public:  // Constructor & Destructor
+public:
     /**
      * @brief TBD
      * @since_tizen 5.5

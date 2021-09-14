@@ -41,36 +41,6 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    virtual void onWindowActivated(AtspiAccessible *node, WindowActivateInfoType type) = 0;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
-    virtual void onWindowDeactivated(AtspiAccessible *node) = 0;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
-    virtual void onWindowCreated(AtspiAccessible *node) = 0;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
-    virtual void onWindowDestroyed(AtspiAccessible *node) = 0;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
-    virtual void onVisibilityChanged(AtspiAccessible *node, bool visible) = 0;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     virtual void onObjectDefunct(AtspiAccessible *node) = 0;
 };
 
@@ -118,36 +88,6 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    void onWindowActivated(AtspiAccessible *node, WindowActivateInfoType type) override;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
-    void onWindowDeactivated(AtspiAccessible *node) override;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
-    void onWindowCreated(AtspiAccessible *node) override;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
-    void onWindowDestroyed(AtspiAccessible *node) override;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
-    void onVisibilityChanged(AtspiAccessible *node, bool visible) override;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     void onObjectDefunct(AtspiAccessible *node) override;
 
     /**
@@ -179,8 +119,6 @@ private:
      * @since_tizen 5.5
      */
     bool addToWindowSet(AtspiAccessible *node);
-
-    void print_debug();
 
     /**
      * @brief TBD
