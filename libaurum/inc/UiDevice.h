@@ -18,110 +18,218 @@
 #include <string>
 
 /**
- * @brief UiDevice class
- * @since_tizen 5.5
+ * @class UiDevice
+ *
+ * @ingroup aurum
+ *
+ * @brief UiDevice provides access to state information about the device.
+ *         You can also use this class to simulate user actions on the device.
  */
 class UiDevice : public IDevice, public ISearchable {
 public:
     /**
-     * @brief TBD
+     * @brief Performs a click at arbitrary coordinates specified by the user.
+     *
+     * @param x x coordinate
+     * @param y y coordinate
+     *
+     * @return true if the click succeeded else false
+     *
      * @since_tizen 5.5
      */
     bool click(const int x, const int y) override;
 
     /**
-     * @brief TBD
+     * @brief Performs a click at arbitrary coordinates specified by the user during the specified time.
+     *
+     * @param x x coordinate
+     * @param y y coordinate
+     * @param intv total time to maintain down action
+     *
+     * @return true if the click succeeded else false
+     *
      * @since_tizen 5.5
      */
     bool click(const int x, const int y, const unsigned int intv) override;
 
     /**
-     * @brief TBD
+     * @brief Performs a drag from one coordinate to another using the number of steps
+     *        during the specified time.
+     *
+     * @param sx start x coordinate
+     * @param sy start y coordinate
+     * @param ex end x coordinate
+     * @param ey end y coordinate
+     * @param steps the number of move steps
+     * @param durationMs total time to drag event
+     *
+     * @return true if the drag succeeded else false
+     *
      * @since_tizen 5.5
      */
     bool drag(const int sx, const int sy, const int ex, const int ey,
               const int steps, const int durationMs) override;
 
     /**
-     * @brief TBD
+     * @brief Performs a touch down at arbitrary coordinates specified by the user.
+     *
+     * @param x x coordinate
+     * @param y y coordinate
+     *
+     * @return touch event number
+     *
      * @since_tizen 5.5
      */
     int touchDown(const int x, const int y) override;
 
     /**
-     * @brief TBD
+     * @brief Performs a touch move at arbitrary coordinates specified by the user.
+     *
+     * @param x x coordinate
+     * @param y y coordinate
+     * @param seq touch event number
+     *
+     * @return true if the touch move succeeded else false
+     *
      * @since_tizen 5.5
      */
     bool touchMove(const int x, const int y, const int seq) override;
 
     /**
-     * @brief TBD
+     * @brief Performs a touch up at arbitrary coordinates specified by the user.
+     *
+     * @param x x coordinate
+     * @param y y coordinate
+     * @param seq touch event number
+     *
+     * @return true if the touch up succeeded else false
+     *
      * @since_tizen 5.5
      */
     bool touchUp(const int x, const int y, const int seq) override;
 
     /**
-     * @brief TBD
+     * @brief Performs a wheel up on device with event amount and duration.
+     *
+     * @param amount the number of wheel up event sent
+     * @param durationMs total time to wheel up event
+     *
+     * @return true if the wheel up succeeded else false
+     *
      * @since_tizen 5.5
      */
     bool wheelUp(int amount, const int durationMs) override;
 
     /**
-     * @brief TBD
+     * @brief Performs a wheel down on device with event amount and duration.
+     *
+     * @param amount the number of wheel down event sent
+     * @param durationMs total time to wheel down event
+     *
+     * @return true if the wheel down succeeded else false
+     *
      * @since_tizen 5.5
      */
     bool wheelDown(int amount, const int durationMs) override;
 
     /**
-     * @brief TBD
+     * @brief Simulates a press on the back key.
+     *
+     * @param type one of @KeyRequestType
+     *
+     * @return true if the press back succeeded else false
+     *
      * @since_tizen 5.5
      */
     bool pressBack(KeyRequestType type) override;
 
     /**
-     * @brief TBD
+     * @brief Simulates a press on the home key.
+     *
+     * @param type one of @KeyRequestType
+     *
+     * @return true if the press home succeeded else false
+     *
      * @since_tizen 5.5
      */
     bool pressHome(KeyRequestType type) override;
 
     /**
-     * @brief TBD
+     * @brief Simulates a press on the menu key.
+     *
+     * @param type one of @KeyRequestType
+     *
+     * @return true if the press menu succeeded else false
+     *
      * @since_tizen 5.5
      */
     bool pressMenu(KeyRequestType type) override;
 
     /**
-     * @brief TBD
+     * @brief Simulates a press on the volume up key.
+     *
+     * @param type one of @KeyRequestType
+     *
+     * @return true if the press volume up succeeded else false
+     *
      * @since_tizen 5.5
      */
     bool pressVolUp(KeyRequestType type) override;
 
     /**
-     * @brief TBD
+     * @brief Simulates a press on the volume down key.
+     *
+     * @param type one of @KeyRequestType
+     *
+     * @return true if the press volume down succeeded else false
+     *
      * @since_tizen 5.5
      */
     bool pressVolDown(KeyRequestType type) override;
 
     /**
-     * @brief TBD
+     * @brief Simulates a press on the power key.
+     *
+     * @param type one of @KeyRequestType
+     *
+     * @return true if the press power succeeded else false
+     *
      * @since_tizen 5.5
      */
     bool pressPower(KeyRequestType type) override;
 
     /**
-     * @brief TBD
+     * @brief Simulates a press on the given keycode key.
+     *
+     * @param keycode keycode
+     * @param type one of @KeyRequestType
+     *
+     * @return true if the press keycode succeeded else false
+     *
      * @since_tizen 5.5
      */
     bool pressKeyCode(std::string keycode, KeyRequestType type) override;
 
     /**
-     * @brief TBD
+     * @brief Take a screenshot of current window and store it as image file.
+     *
+     * @param path where the image file should be written to
+     * @param scale scale the screenshot down if needed; 1.0f for original size
+     * @param quality quality of the PNG compression; range: 0-100
+     *
+     * @return true if screen shot is created successfully, false otherwise
+     *
      * @since_tizen 5.5
      */
     bool takeScreenshot(std::string path, float scale, int quality) override;
 
     /**
-     * @brief TBD
+     * @brief Gets device system time.
+     *
+     * @param type one of @TimeRequestType
+     *
+     * @return utc time stamp
+     *
      * @since_tizen 5.5
      */
     long long getSystemTime(TimeRequestType type) override;
@@ -129,102 +237,143 @@ public:
 public:
 
     /**
-     * @brief TBD
+     * @brief Checks that there is object that satisfied with the selector condition in the device.
+     *
+     * @param selector @UiSelector
+     *
+     * @return object exist or not
+     *
      * @since_tizen 5.5
      */
     bool hasObject(const std::shared_ptr<UiSelector> selector) const override;
 
     /**
-     * @brief TBD
+     * @brief Finds that object that satisfied with the selector condition in the device.
+     *
+     * @param selector @UiSelector
+     *
+     * @return Found UiObject ptr
+     *
      * @since_tizen 5.5
      */
     std::shared_ptr<UiObject> findObject(
         const std::shared_ptr<UiSelector> selector) const override;
 
     /**
-     * @brief TBD
+     * @brief Finds that objects that satisfied with the selector condition in the device.
+     *
+     * @param selector @UiSelector
+     *
+     * @return Found UiObject ptr vector
+     *
      * @since_tizen 5.5
      */
     std::vector<std::shared_ptr<UiObject>> findObjects(
         const std::shared_ptr<UiSelector> selector) const override;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * TODO
      */
     bool waitFor(
         const std::function<bool(const ISearchable *)> condition) const;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * TODO
      */
     std::shared_ptr<UiObject> waitFor(
         const std::function<std::shared_ptr<UiObject>(const ISearchable *)>
             condition) const;
 
     /**
-     * @brief TBD
+     * @brief Waits for a specific A11y Event for a some time by user set.
+     *
+     * @param type one of @A11yEvent
+     * @param timeout time to wait event occur
+     *
+     * @return true if event happened in time, otherwise false
+     *
      * @since_tizen 6.5
      */
     bool waitForEvents(
         const A11yEvent type, const int timeout) const;
 
     /**
-     * @brief TBD
+     * @brief Sends key event and Wait for a specific A11y Event for a some time by user set.
+     *
+     * @param keycode keycode
+     * @param type one of @A11yEvent
+     * @param timeout time to wait event occur
+     *
+     * @return true if event happened in time, otherwise false
+     *
      * @since_tizen 6.5
      */
     bool sendKeyAndWaitForEvents(
         const std::string keycode, const A11yEvent type, const int timeout) const;
 
+    /**
+     * @brief Runs command and Wait for a specific A11y Event for a some time by user set.
+     *
+     * @param cmd @Runnable
+     * @param type one of @A11yEvent
+     * @param timeout time to wait event occur
+     *
+     * @return true if event happened in time, otherwise false
+     *
+     * @since_tizen 6.5
+     */
     bool executeAndWaitForEvents(
         const Runnable *cmd, const A11yEvent type, const int timeout) const;
 public:
     /**
-     * @brief TBD
+     * @brief Gets UiDevice instance.
+     *
+     * @return UiDevice ptr
+     *
      * @since_tizen 5.5
      */
     static std::shared_ptr<UiDevice> getInstance(IDevice *deviceImpl = nullptr);
 
     /**
-     * @brief TBD
+     * @brief Gets currently enabled applications root window.
+     *
+     * @return AccessibleNode ptr vector
      * @since_tizen 5.5
      */
     std::vector<std::shared_ptr<AccessibleNode>> getWindowRoot() const;
 private:
     /**
-     * @brief TBD
+     * @brief Waits process idle.
+     *
      * @since_tizen 5.5
      */
     bool waitForIdle() const;
 
 private:
     /**
-     * @brief TBD
+     * @brief UiDevice Consturctor.
+     *
      * @since_tizen 5.5
      */
     UiDevice();
 
     /**
-     * @brief TBD
+     * @brief UiDevice Consturctor with IDevice.
+     *
      * @since_tizen 5.5
      */
     UiDevice(IDevice *impl);
 
 public:
     /**
-     * @brief TBD
+     * @brief UiDevice Destructor.
+     *
      * @since_tizen 5.5
      */
     virtual ~UiDevice();
 
 private:
-    /**
-     * @brief TBD
-     */
     IDevice *mDeviceImpl;
-    /**
-     * @brief TBD
-     */
+
     const Waiter *mWaiter;
 };

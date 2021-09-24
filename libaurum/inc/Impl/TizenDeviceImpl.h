@@ -6,239 +6,124 @@
 #include <set>
 #include <efl_util.h>
 
-/**
- * @brief TizenDeviceImpl Class
- * @since_tizen 5.5
- */
 class TizenDeviceImpl : public IDevice {
 public:
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     TizenDeviceImpl();
 
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     ~TizenDeviceImpl();
 
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     bool click(const int x, const int y) override;
 
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     bool click(const int x, const int y, const unsigned int intv) override;
 
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     bool drag(const int sx, const int sy, const int ex, const int ey,
               const int steps, const int durationMs) override;
 
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     int touchDown(const int x, const int y) override;
 
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     bool touchMove(const int x, const int y, const int seq) override;
 
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     bool touchUp(const int x, const int y, const int seq) override;
 
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     bool wheelUp(int amount, const int durationMs) override;
 
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     bool wheelDown(int amount, const int durationMs) override;
 
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     bool pressBack(KeyRequestType type) override;
 
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     bool pressHome(KeyRequestType type) override;
 
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     bool pressMenu(KeyRequestType type) override;
 
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     bool pressVolUp(KeyRequestType type) override;
 
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     bool pressVolDown(KeyRequestType type) override;
 
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     bool pressPower(KeyRequestType type) override;
 
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     bool pressKeyCode(std::string keycode, KeyRequestType type) override;
 
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     bool takeScreenshot(std::string path, float scale, int quality) override;
 
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     long long getSystemTime(TimeRequestType type) override;
 
 protected:
     /**
-     * @brief TBD
+     * @brief Press and release given key during intv.
+     *
      * @since_tizen 5.5
      */
     bool strokeKeyCode(std::string keycode, unsigned int intv);
 
     /**
-     * @brief TBD
+     * @brief Press given key.
+     *
      * @since_tizen 5.5
      */
     bool pressKeyCode(std::string keycode);
 
     /**
-     * @brief TBD
+     * @brief Release given key.
+     *
      * @since_tizen 5.5
      */
     bool releaseKeyCode(std::string keycode);
 
     /**
-     * @brief TBD
+     * @brief Increase touch count and return the number to manage touch count.
+     *
      * @since_tizen 5.5
      */
     int grabTouchSeqNumber();
 
     /**
-     * @brief TBD
+     * @brief Delete given touch number.
+     *
      * @since_tizen 5.5
      */
     bool releaseTouchSeqNumber(int seq);
 
 private:
     /**
-     * @brief TBD
+     * @brief Timer utility.
+     *
      * @since_tizen 5.5
      */
     void startTimer(void);
 
     /**
-     * @brief TBD
+     * @brief Timer utility.
+     *
      * @since_tizen 5.5
      */
     int stopTimer(void);
 
 private:
-    /**
-     * @brief TBD
-     */
     efl_util_inputgen_h mFakeTouchHandle;
 
-    /**
-     * @brief TBD
-     */
     efl_util_inputgen_h mFakeKeyboardHandle;
 
-    /**
-     * @brief TBD
-     */
     efl_util_inputgen_h mFakeWheelHandle;
 
-    /**
-     * @brief TBD
-     */
     static const int INTV_CLICK = 5;
 
-    /**
-     * @brief TBD
-     */
     static const int INTV_SHORTSTROKE = 100;
 
-    /**
-     * @brief TBD
-     */
     static const int INTV_LONGSTROKE = 2000;
 
-    /**
-     * @brief TBD
-     */
     static const int INTV_MINIMUM_DRAG_MS = 25;
 
-    /**
-     * @brief TBD
-     */
     static const int INTV_MINIMUM_USLEEP = 1000;
 
-    /**
-     * @brief TBD
-     */
     static const int MINIMUM_DURATION_DRAG = 100;
 
-    /**
-     * @brief TBD
-     */
     static const unsigned int MSEC_PER_SEC = 1000;
 
-    /**
-     * @brief TBD
-     */
     static const unsigned int MAX_FINGER_NUMBER = 2;
 
-    /**
-     * @brief TBD
-     */
     struct timespec tStart;
 
-    /**
-     * @brief TBD
-     */
     bool isTimerStarted;
 
-    /**
-     * @brief TBD
-     */
     std::set<int> mTouchSeq;
 };
