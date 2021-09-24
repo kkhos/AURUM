@@ -34,11 +34,11 @@ bool MockDeviceImpl::click(const int x, const int y)
     return click(x, y, INTV_CLICK);
 }
 
-bool MockDeviceImpl::click(const int x, const int y, const unsigned int intv)
+bool MockDeviceImpl::click(const int x, const int y, const unsigned int durationMs)
 {
     int seq = touchDown(x, y);
     if (seq < 0) return false;
-    std::this_thread::sleep_for(std::chrono::milliseconds{intv});
+    std::this_thread::sleep_for(std::chrono::milliseconds{durationMs});
     return touchUp(x, y, seq);
 }
 

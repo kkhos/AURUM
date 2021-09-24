@@ -44,7 +44,7 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    bool click(const int x, const int y, const unsigned int intv) override;
+    bool click(const int x, const int y, const unsigned int durationMs) override;
 
     /**
      * @brief TBD
@@ -142,7 +142,7 @@ protected:
      * @brief TBD
      * @since_tizen 5.5
      */
-    bool strokeKeyCode(std::string keycode, unsigned int intv);
+    bool strokeKeyCode(std::string keycode, unsigned int durationMs);
 
     /**
      * @brief TBD

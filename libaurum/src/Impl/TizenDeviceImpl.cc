@@ -40,13 +40,13 @@ bool TizenDeviceImpl::click(const int x, const int y)
     return click(x, y, INTV_CLICK);
 }
 
-bool TizenDeviceImpl::click(const int x, const int y, const unsigned int intv)
+bool TizenDeviceImpl::click(const int x, const int y, const unsigned int durationMs)
 {
-    LOGI("click %d %d , intv:%d", x, y, intv);
+    LOGI("click %d %d , durationMs:%d", x, y, durationMs);
 
     int seq = touchDown(x, y);
     if (seq < 0) return false;
-    usleep(intv * MSEC_PER_SEC);
+    usleep(durationMs * MSEC_PER_SEC);
     touchUp(x, y, seq);
 
     return true;
@@ -221,10 +221,10 @@ bool TizenDeviceImpl::pressKeyCode(std::string keycode, KeyRequestType type)
     return false;
 }
 
-bool TizenDeviceImpl::strokeKeyCode(std::string keycode, unsigned int intv)
+bool TizenDeviceImpl::strokeKeyCode(std::string keycode, unsigned int durationMs)
 {
     pressKeyCode(keycode);
-    usleep(intv * 1000);
+    usleep(durationMs * 1000);
     releaseKeyCode(keycode);
     return true;
 }

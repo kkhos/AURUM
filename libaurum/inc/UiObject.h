@@ -286,7 +286,7 @@ public:
      * @brief TBD
      * @since_tizen 5.5
      */
-    void longClick(const unsigned int intv = LOGNCLICK_INTERVAL) const;
+    void longClick(const unsigned int durationMs = LOGNCLICK_INTERVAL) const;
 
     /**
      * @brief TBD

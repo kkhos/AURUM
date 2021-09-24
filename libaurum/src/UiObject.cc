@@ -308,12 +308,12 @@ void UiObject::click() const
     mDevice->click(midPoint.x, midPoint.y);
 }
 
-void UiObject::longClick(const unsigned int intv) const
+void UiObject::longClick(const unsigned int durationMs) const
 {
     mNode->updateExtents();
     const Rect<int> rect = mNode->getScreenBoundingBox();
     const Point2D<int> midPoint = rect.midPoint();
-    mDevice->click(midPoint.x, midPoint.y, intv);
+    mDevice->click(midPoint.x, midPoint.y, durationMs);
 }
 
 bool UiObject::DoAtspiActivate() const

@@ -148,9 +148,9 @@ bool UiDevice::click(const int x, const int y)
     return result;
 }
 
-bool UiDevice::click(const int x, const int y, const unsigned int intv)
+bool UiDevice::click(const int x, const int y, const unsigned int durationMs)
 {
-    bool result = mDeviceImpl->click(x, y, intv);
+    bool result = mDeviceImpl->click(x, y, durationMs);
     waitForIdle();
     return result;
 }
