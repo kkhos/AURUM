@@ -29,6 +29,7 @@ BuildRequires: pkgconfig(capi-system-device)
 BuildRequires: pkgconfig(libtzplatform-config)
 BuildRequires: pkgconfig(capi-system-system-settings)
 BuildRequires: pkgconfig(capi-base-utils-i18n)
+BuildRequires: pkgconfig(vconf)
 
 %if 0%{?gendoc:1}
 BuildRequires:  doxygen
@@ -38,17 +39,9 @@ BuildRequires:  doxygen
 BuildRequires:  lcov
 %endif
 
-%if "%{?profile}" == "tv"
-  %define __hash_signing 0
-%else
-  %define __hash_signing 1
-%endif
-
-%if 0%{?__hash_signing}
 BuildRequires:  hash-signer
 %if 0%{?sec_product_feature_profile_wearable}
 Requires(post): signing-client
-%endif
 %endif
 
 %description
@@ -152,13 +145,11 @@ ninja \
 
 %install
 
-%if 0%{?__hash_signing}
 %define tizen_sign 1
 %define tizen_sign_base /usr/apps/org.tizen.aurum-bootstrap
 %define tizen_sign_level platform
 %define tizen_author_sign 1
 %define tizen_dist_sign 1
-%endif
 
 export DESTDIR=%{buildroot}
 ninja -C gbsbuild install
