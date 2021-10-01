@@ -9,7 +9,6 @@ def run_command(command):
     output = stream.read()
 
 # Start scrip here
-run_command("sdb root on")
 run_command("sdb forward tcp:50051 tcp:50051")
 run_command("sdb shell app_launcher -s org.tizen.aurum-bootstrap")
 # Wait 1 sec till bootstrap launched
