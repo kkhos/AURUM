@@ -1,13 +1,13 @@
 #include <iostream>
-#include <glib.h>
-#include "bootstrap.h"
-
 #include <service_app.h>
-
 #include <gio/gio.h>
 #include <grpcpp/grpcpp.h>
 #include <aurum.grpc.pb.h>
+#include <glib.h>
+#include <vconf.h>
+#include <system_info.h>
 
+#include "bootstrap.h"
 #include "AurumServiceImpl.h"
 #include "config.h"
 
@@ -15,7 +15,24 @@ using namespace grpc;
 
 typedef struct _ServiceContext {
     std::unique_ptr<Server> server;
+    bool forceTouchEnabled;
 } ServiceContext;
+
+static void _vconf_force_enable_touch_set(void *data, bool enable)
+{
+    ServiceContext *ctx = (ServiceContext *)data;
+    int ret;
+
+    if (ctx->forceTouchEnabled == enable) return;
+
+    ret = vconf_set_bool("memory/window_system/input/force_enable_touch", enable);
+    if (ret != VCONF_OK) {
+        LOGE("Fail to set touch enable via vconf");
+        return;
+    }
+
+    ctx->forceTouchEnabled = enable;
+}
 
 static bool _service_app_create(void *data)
 {
@@ -23,6 +40,18 @@ static bool _service_app_create(void *data)
     std::string binding("0.0.0.0:50051");
     aurumServiceImpl service;
     ServerBuilder builder;
+    char *value;
+    int ret;
+
+    ctx->forceTouchEnabled = false;
+    ret = system_info_get_platform_string("http://tizen.org/feature/profile", &value);
+    if (ret != SYSTEM_INFO_ERROR_NONE) LOGE("Fail to get system profile infomation");
+    else {
+        if (!strncmp("tv", value, 2))
+            _vconf_force_enable_touch_set(ctx, true);
+
+        free(value);
+    }
 
     LOGI("[T] Server Listening on %s", binding.c_str());
     builder.AddListeningPort(binding, grpc::InsecureServerCredentials());
@@ -36,6 +65,9 @@ static bool _service_app_create(void *data)
 static void _service_app_terminate(void *data)
 {
     ServiceContext *ctx = (ServiceContext *)data;
+
+    if (ctx->forceTouchEnabled)
+        _vconf_force_enable_touch_set(ctx, false);
     ctx->server->Shutdown();
 }
 
