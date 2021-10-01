@@ -23,9 +23,9 @@ TizenDeviceImpl::TizenDeviceImpl()
 {
     LOGI("device implementation init");
     TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
-    obj->mFakeTouchHandle = efl_util_input_initialize_generator(EFL_UTIL_INPUT_DEVTYPE_TOUCHSCREEN);
+    obj->mFakeTouchHandle = efl_util_input_initialize_generator_with_sync(EFL_UTIL_INPUT_DEVTYPE_TOUCHSCREEN, NULL);
     obj->mFakeKeyboardHandle =
-       efl_util_input_initialize_generator(EFL_UTIL_INPUT_DEVTYPE_KEYBOARD);
+       efl_util_input_initialize_generator_with_sync(EFL_UTIL_INPUT_DEVTYPE_KEYBOARD, NULL);
 }
 
 TizenDeviceImpl::~TizenDeviceImpl()
