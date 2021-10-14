@@ -360,6 +360,12 @@ public:
      */
     void setFeatureProperty(NodeFeatureProperties prop, bool has);
 
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    void resetFeatureProperty();
+
 protected:
     /**
      * @brief TBD

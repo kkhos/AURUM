@@ -161,8 +161,9 @@ void AtspiAccessibleNode::updateAttributes()
 
 void AtspiAccessibleNode::updateStates()
 {
-    AtspiWrapper::Atspi_accessible_clear_cache(mNode);
+    resetFeatureProperty();
 
+    AtspiWrapper::Atspi_accessible_clear_cache(mNode);
     AtspiStateSet *st = AtspiWrapper::Atspi_accessible_get_state_set(mNode);
     if (st) {
         GArray *states = AtspiWrapper::Atspi_state_set_get_states(st);

@@ -91,6 +91,10 @@ void AccessibleNode::setFeatureProperty(NodeFeatureProperties prop, bool has)
         mFeatureProperty &= ~static_cast<int>(prop);
 }
 
+void AccessibleNode::resetFeatureProperty()
+{
+    mFeatureProperty = 0;
+}
 
 std::string AccessibleNode::getText() const
 {
