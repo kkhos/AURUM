@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _SEND_KEY_RUNNABLE_H_
+#define _SEND_KEY_RUNNABLE_H_
 
 #include <string>
 
@@ -29,3 +30,5 @@ public:
     SendKeyRunnable(std::string keycode);
     void run() const override;
 };
+
+#endif

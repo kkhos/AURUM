@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _UI_OBJECT_H_
+#define _UI_OBJECT_H_
 
 #include "config.h"
 
@@ -397,3 +398,5 @@ private:
      */
     static const unsigned int LOGNCLICK_INTERVAL = 500;
 };
+
+#endif

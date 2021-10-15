@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _ATSPI_ACCESSIBLE_APPLICATION_H_
+#define _ATSPI_ACCESSIBLE_APPLICATION_H_
 
 #include "AccessibleApplication.h"
 
@@ -49,3 +50,5 @@ public:
      */
     std::string getPackageName(void) override;
 };
+
+#endif

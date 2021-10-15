@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _ACCESSIBLE_H_
+#define _ACCESSIBLE_H_
 
 #include "AccessibleNode.h"
 #include "AccessibleWatcher.h"
@@ -23,3 +24,5 @@
 #include "AccessibleWindow.h"
 #include "IEventConsumer.h"
 #include "IEventSource.h"
+
+#endif

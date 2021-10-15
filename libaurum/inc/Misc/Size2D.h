@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _SIZE2D_H_
+#define _SIZE2D_H_
 
 /**
  * @brief Size2D Class.
@@ -78,3 +79,5 @@ public:
     T width;
     T height;
 };
+
+#endif

@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _ACCESSIBLE_APPLICATION_H_
+#define _ACCESSIBLE_APPLICATION_H_
 
 #include "AccessibleWindow.h"
 #include "AccessibleNode.h"
@@ -40,3 +41,4 @@ private:
     std::shared_ptr<AccessibleNode> mNode;
 };
 
+#endif

@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _AURUM_SERVICE_IMPL_H_
+#define _AURUM_SERVICE_IMPL_H_
 
 #include <grpcpp/grpcpp.h>
 #include "Commands/Command.h"
@@ -107,3 +108,5 @@ public:
                             const ::aurum::ReqDumpObjectTree *request,
                             ::aurum::RspDumpObjectTree *response) override;
 };
+
+#endif

@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _A11Y_EVENT_H_
+#define _A11Y_EVENT_H_
 
 #include "bitmask.h"
 #include <string>
@@ -64,3 +65,4 @@ protected:
 	const std::string mPkg;
 };
 
+#endif

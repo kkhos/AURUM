@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _RECT_H_
+#define _RECT_H_
 
 #include "Point2D.h"
 
@@ -110,3 +111,5 @@ public:
      */
     Point2D<T> mBottomRight;
 };
+
+#endif

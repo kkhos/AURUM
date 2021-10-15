@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _MOCK_ACCESSIBLE_NODE_H_
+#define _MOCK_ACCESSIBLE_NODE_H_
 
 #include "AccessibleNode.h"
 
@@ -200,3 +201,5 @@ private:
      */
     std::mutex                            mLock;
 };
+
+#endif

@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _UI_SELECTOR_H_
+#define _UI_SELECTOR_H_
 
 #include "config.h"
 
@@ -381,3 +382,5 @@ public:
      */
     std::shared_ptr<UiSelector> mParent;
 };
+
+#endif

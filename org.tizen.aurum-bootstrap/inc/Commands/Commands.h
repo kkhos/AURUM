@@ -15,8 +15,6 @@
  *
  */
 
-#pragma once
-
 #include "Commands/KillServerCommand.h"
 #include "Commands/FindElementCommand.h"
 

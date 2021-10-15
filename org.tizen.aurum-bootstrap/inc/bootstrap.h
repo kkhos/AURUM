@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _BOOT_STRAP_H_
+#define _BOOT_STRAP_H_
 
 #include <dlog.h>
 
@@ -41,4 +42,6 @@
                    FONT_RED "%s: %s(%d) > " fmt FONT_RESET, \
                    __FILE__, __func__, __LINE__, ##arg); \
     } while (0); })
+#endif
+
 #endif

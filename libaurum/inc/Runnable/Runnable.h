@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _RUNNABLE_H_
+#define _RUNNABLE_H_
 
 class Runnable
 {
@@ -24,3 +25,4 @@ public:
 	virtual void run() const = 0;
 };
 
+#endif

@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _UI_DEVICE_H_
+#define _UI_DEVICE_H_
 
 #include "config.h"
 
@@ -401,3 +402,5 @@ private:
     IDevice *mDeviceImpl;
     const Waiter *mWaiter;
 };
+
+#endif

@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _ATSPI_WRAPPER_H_
+#define _ATSPI_WRAPPER_H_
 
 #include <atspi/atspi.h>
 #include <mutex>
@@ -50,3 +51,5 @@ private:
     static std::recursive_mutex mMutex;
     //static std::unique_lock<std::mutex> mLock;
 };
+
+#endif

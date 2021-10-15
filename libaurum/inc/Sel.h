@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _SEL_H_
+#define _SEL_H_
 
 #include "config.h"
 
@@ -23,6 +24,7 @@
 #include <string>
 
 #include "UiSelector.h"
+
 /**
  * @brief Sel class
  * @since_tizen 5.5
@@ -53,3 +55,5 @@ public:
      */
     static std::shared_ptr<UiSelector> depth(int depth);
 };
+
+#endif
