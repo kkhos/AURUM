@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _UI_SCROLLABLE_H_
+#define _UI_SCROLLABLE_H_
 
 #include "UiObject.h"
 #include <memory>
@@ -94,3 +95,5 @@ private:
      */
     int mScrollStep;
 };
+
+#endif

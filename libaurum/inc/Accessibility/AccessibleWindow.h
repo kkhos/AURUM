@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _ACCESSIBLE_WINDOW_H_
+#define _ACCESSIBLE_WINDOW_H_
 
 #include "AccessibleNode.h"
 
@@ -80,3 +81,5 @@ private:
      */
     std::shared_ptr<AccessibleNode> mNode;
 };
+
+#endif

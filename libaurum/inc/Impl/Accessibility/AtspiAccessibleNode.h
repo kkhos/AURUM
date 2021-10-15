@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _ATSPI_ACCESSIBLE_NODE_H_
+#define _ATSPI_ACCESSIBLE_NODE_H_
 
 #include "AccessibleNode.h"
 #include <atspi/atspi.h>
@@ -153,3 +154,5 @@ private:
      */
     AtspiAccessible *mNode;
 };
+
+#endif

@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _WAITER_H_
+#define _WAITER_H_
 
 #include "ISearchable.h"
 
@@ -86,3 +87,5 @@ private:
      */
     const int          WAIT_TIMEOUT_MS;
 };
+
+#endif

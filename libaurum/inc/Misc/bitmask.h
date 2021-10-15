@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _BITMASK_H_
+#define _BITMASK_H_
 
 #include <type_traits>
 
@@ -88,3 +89,4 @@ operator^=(E& lhs,E rhs){
     return lhs;
 }
 
+#endif

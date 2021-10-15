@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _IEVENT_CONSUMER_H_
+#define _IEVENT_CONSUMER_H_
 
 enum class EventType {
     none = 0,
@@ -33,3 +34,5 @@ public:
     virtual ~IEventConsumer() {};
     virtual void notify(int type, int type2, void *src) = 0;
 };
+
+#endif

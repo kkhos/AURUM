@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _COMPARER_H_
+#define _COMPARER_H_
 
 #include "config.h"
 
@@ -96,3 +97,5 @@ private:
      */
     bool              mEarlyReturn;
 };
+
+#endif

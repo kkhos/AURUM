@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _MOCK_ACCESSIBLE_APPLICATION_H_
+#define _MOCK_ACCESSIBLE_APPLICATION_H_
 
 #include "AccessibleApplication.h"
 #include "MockAccessibleWindow.h"
@@ -81,3 +82,5 @@ private:
      */
     std::vector<std::shared_ptr<AccessibleWindow>> mWindowList;
 };
+
+#endif

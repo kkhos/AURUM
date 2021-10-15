@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _ATSPI_ACCESSIBLE_WATCHER_H_
+#define _ATSPI_ACCESSIBLE_WATCHER_H_
 
 #include "AccessibleNode.h"
 #include "AccessibleWatcher.h"
@@ -193,3 +194,5 @@ private:
 
     static std::mutex mMutex;
 };
+
+#endif

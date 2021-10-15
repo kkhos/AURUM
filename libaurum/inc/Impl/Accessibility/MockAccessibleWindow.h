@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _MOCK_ACCESSIBLE_WINDOW_H_
+#define _MOCK_ACCESSIBLE_WINDOW_H_
 
 #include "AccessibleWindow.h"
 #include "MockAccessibleNode.h"
@@ -49,3 +50,5 @@ private:
      */
     std::shared_ptr<MockAccessibleNode> mMockNode;
 };
+
+#endif
