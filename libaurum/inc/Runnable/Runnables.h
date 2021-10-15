@@ -15,6 +15,9 @@
  *
  */
 
-#pragma once
+#ifndef _RUNNABLES_H_
+#define _RUNNABLES_H_
 
 #include "SendKeyRunnable.h"
+
+#endif

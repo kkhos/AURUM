@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _ACCESSIBLE_WATCHER_H_
+#define _ACCESSIBLE_WATCHER_H_
 
 #include "AccessibleApplication.h"
 #include "AccessibleWindow.h"
@@ -123,3 +124,5 @@ private:
      */
     std::mutex mLock;
 };
+
+#endif

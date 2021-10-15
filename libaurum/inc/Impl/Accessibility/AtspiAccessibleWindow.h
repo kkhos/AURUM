@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _ATSPI_ACCESSIBLE_WINDOW_H_
+#define _ATSPI_ACCESSIBLE_WINDOW_H_
 
 #include "AccessibleWindow.h"
 
@@ -34,3 +35,5 @@ public:
     ~AtspiAccessibleWindow();
 
 };
+
+#endif

@@ -15,8 +15,6 @@
  *
  */
 
-#pragma once
-
 #include <dlog.h>
 
 #ifdef LOG_TAG

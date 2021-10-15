@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _MOCK_DEVICE_IMPL_H_
+#define _MOCK_DEVICE_IMPL_H_
 
 #include "config.h"
 #include "IDevice.h"
@@ -292,3 +293,5 @@ public:
      */
     Size2D<int> mScreenSize;
 };
+
+#endif

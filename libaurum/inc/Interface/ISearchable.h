@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _ISEARCHABLE_H_
+#define _ISEARCHABLE_H_
 
 #include "config.h"
 
@@ -58,3 +59,5 @@ public:
     virtual std::vector<std::shared_ptr<UiObject>> findObjects(
         const std::shared_ptr<UiSelector> selector) const = 0;
 };
+
+#endif

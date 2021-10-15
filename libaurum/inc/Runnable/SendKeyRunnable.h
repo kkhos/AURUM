@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _SEND_KEY_RUNNABLE_H_
+#define _SEND_KEY_RUNNABLE_H_
 
 #include <string>
 
@@ -23,9 +24,11 @@
 
 class SendKeyRunnable : public Runnable {
 protected:
-	std::string mKeycode;
+    std::string mKeycode;
 
 public:
     SendKeyRunnable(std::string keycode);
     void run() const override;
 };
+
+#endif

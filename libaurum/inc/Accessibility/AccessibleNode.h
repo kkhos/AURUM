@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _ACCESSIBLE_NODE_H_
+#define _ACCESSIBLE_NODE_H_
 
 #include <map>
 #include <memory>
@@ -450,3 +451,5 @@ private:
      */
     mutable std::mutex mLock;
 };
+
+#endif

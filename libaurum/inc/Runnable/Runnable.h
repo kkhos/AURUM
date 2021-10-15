@@ -15,12 +15,14 @@
  *
  */
 
-#pragma once
+#ifndef _RUNNABLE_H_
+#define _RUNNABLE_H_
 
 class Runnable
 {
 public:
-	virtual ~Runnable() { }
-	virtual void run() const = 0;
+    virtual ~Runnable() { }
+    virtual void run() const = 0;
 };
 
+#endif
