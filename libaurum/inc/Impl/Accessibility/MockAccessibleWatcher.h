@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _MOCK_ACCESSIBLE_WATCHER_H_
+#define _MOCK_ACCESSIBLE_WATCHER_H_
 
 #include "AccessibleNode.h"
 #include "AccessibleWatcher.h"
@@ -89,3 +90,5 @@ private:
 
     std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> mActiveAppMap;
 };
+
+#endif

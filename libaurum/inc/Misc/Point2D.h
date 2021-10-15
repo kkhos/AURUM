@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _POINT2D_H_
+#define _POINT2D_H_
 
 /**
  * @brief Point2d Class
@@ -78,3 +79,5 @@ public:
      */
     T y;
 };
+
+#endif

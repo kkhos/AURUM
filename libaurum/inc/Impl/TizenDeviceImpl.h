@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _TIZEN_DEVICE_IMPL_H_
+#define _TIZEN_DEVICE_IMPL_H_
 
 #include "config.h"
 #include "IDevice.h"
@@ -196,3 +197,5 @@ private:
      */
     Size2D<int> mScreenSize;
 };
+
+#endif

@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _AURUM_H_
+#define _AURUM_H_
 
 #include <dlog.h>
 
@@ -59,3 +60,5 @@
 #include "Comparer.h"
 #include "A11yEvent.h"
 #include "Runnables.h"
+
+#endif

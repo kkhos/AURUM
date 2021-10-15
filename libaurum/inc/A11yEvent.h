@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _A11Y_EVENT_H_
+#define _A11Y_EVENT_H_
 
 #include "bitmask.h"
 #include <string>
@@ -48,19 +49,20 @@ enableEnumClassBitfield(A11yEvent);
 
 class A11yEventInfo {
 public:
-	A11yEventInfo();
-	A11yEventInfo(A11yEvent event, std::string name = "", std::string pkg = "");
-	A11yEventInfo(std::string event, std::string name = "", std::string pkg = "");
-	~A11yEventInfo();
+    A11yEventInfo();
+    A11yEventInfo(A11yEvent event, std::string name = "", std::string pkg = "");
+    A11yEventInfo(std::string event, std::string name = "", std::string pkg = "");
+    ~A11yEventInfo();
 public:
-	A11yEvent getEvent();
+    A11yEvent getEvent();
     A11yEvent getEvent(std::string event);
-	std::string getName();
-	std::string getPkg();
+    std::string getName();
+    std::string getPkg();
 
 protected:
-	const A11yEvent mEvent;
-	const std::string mName;
-	const std::string mPkg;
+    const A11yEvent mEvent;
+    const std::string mName;
+    const std::string mPkg;
 };
 
+#endif

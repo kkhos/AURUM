@@ -15,7 +15,8 @@
  *
  */
 
-#pragma once
+#ifndef _OBJECT_MAPPER_H_
+#define _OBJECT_MAPPER_H_
 
 #include <map>
 #include <string>
@@ -40,3 +41,5 @@ public:
     bool removeElement(const std::string elementId);
     void cleanUp();
 };
+
+#endif

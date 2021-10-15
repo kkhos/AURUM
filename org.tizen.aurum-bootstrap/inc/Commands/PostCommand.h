@@ -15,8 +15,6 @@
  *
  */
 
-#pragma once
-
 #include <gio/gio.h>
 #include <grpcpp/grpcpp.h>
 #include "Commands/Command.h"
