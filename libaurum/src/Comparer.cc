@@ -17,6 +17,8 @@
 
 #include "Aurum.h"
 
+using namespace Aurum;
+
 Comparer::Comparer(const std::shared_ptr<UiDevice> device, const std::shared_ptr<UiSelector> selector,
                    const bool &earlyReturn)
     : mDevice(device), mSelector(selector), mEarlyReturn(earlyReturn)

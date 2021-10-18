@@ -24,6 +24,8 @@
 #include <vector>
 #include <memory>
 
+namespace Aurum {
+
 /**
  * @class UiSelector
  *
@@ -382,5 +384,7 @@ public:
     std::vector<std::shared_ptr<UiSelector>> mChild;
     std::shared_ptr<UiSelector> mParent;
 };
+
+}
 
 #endif

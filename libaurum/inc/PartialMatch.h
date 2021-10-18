@@ -25,6 +25,8 @@
 #include "AccessibleNode.h"
 #include "UiSelector.h"
 
+namespace Aurum {
+
 /**
  * @class PartialMatch
  *
@@ -164,5 +166,7 @@ private:
     const int                                mDepth;
     std::list<std::shared_ptr<PartialMatch>> mPartialMatches;
 };
+
+}
 
 #endif

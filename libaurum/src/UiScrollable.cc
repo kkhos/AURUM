@@ -17,6 +17,8 @@
 
 #include "Aurum.h"
 
+using namespace Aurum;
+
 UiScrollable::UiScrollable(std::shared_ptr<UiSelector> selector)
 : mSelector{selector}, mMaxSearchSwipe{100}, mScrollStep{50}
 {
@@ -54,7 +56,6 @@ bool UiScrollable::scrollForward()
 
 bool UiScrollable::scrollForward(int steps)
 {
-
     //TODO Check Scree Size here
     return true;
 

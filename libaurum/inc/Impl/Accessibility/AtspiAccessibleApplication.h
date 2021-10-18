@@ -23,6 +23,10 @@
 #include <memory>
 #include <atspi/atspi.h>
 
+using namespace Aurum;
+
+namespace AurumInternal {
+
 /**
  * @internal
  *
@@ -62,5 +66,7 @@ public:
      */
     std::string getPackageName(void) override;
 };
+
+}
 
 #endif

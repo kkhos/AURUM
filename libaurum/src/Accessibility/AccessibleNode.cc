@@ -24,6 +24,8 @@
 #include "config.h"
 #include <sstream>
 
+using namespace Aurum;
+
 AccessibleNode::~AccessibleNode()
 {
 }

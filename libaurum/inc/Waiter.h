@@ -22,6 +22,8 @@
 
 #include <functional>
 
+namespace Aurum {
+
 /**
  * @class Waiter
  *
@@ -89,5 +91,7 @@ private:
     const int          WAIT_INTERVAL_MS;
     const int          WAIT_TIMEOUT_MS;
 };
+
+}
 
 #endif

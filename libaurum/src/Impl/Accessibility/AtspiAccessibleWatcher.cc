@@ -28,6 +28,9 @@
 #include <thread>
 #include <iostream>
 
+using namespace Aurum;
+using namespace AurumInternal;
+
 #define COMPARE(A, B) \
     (B != A11yEvent::EVENT_NONE) && ((A & B) == B)
 

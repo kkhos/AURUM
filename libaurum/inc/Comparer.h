@@ -30,6 +30,8 @@
 #include <memory>
 #include <vector>
 
+namespace Aurum {
+
 /**
  * @class Comparer
  *
@@ -126,5 +128,7 @@ private:
     const std::shared_ptr<UiSelector> mSelector;
     bool mEarlyReturn;
 };
+
+}
 
 #endif

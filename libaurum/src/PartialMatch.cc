@@ -22,6 +22,8 @@
 #include <regex>
 #include <sstream>
 
+using namespace Aurum;
+
 bool PartialMatch::checkCriteria(const std::string textA, const std::string textB)
 {
     std::regex re(textA);

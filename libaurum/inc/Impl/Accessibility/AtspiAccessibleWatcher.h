@@ -32,6 +32,10 @@
 #include <set>
 #include <map>
 
+using namespace Aurum;
+
+namespace AurumInternal {
+
 /**
  * @internal
  *
@@ -156,5 +160,7 @@ private:
     static std::vector<std::shared_ptr<A11yEventInfo>> mEventQueue;
     static std::mutex mMutex;
 };
+
+}
 
 #endif

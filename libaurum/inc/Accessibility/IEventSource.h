@@ -21,6 +21,8 @@
 #include "IEventConsumer.h"
 #include <memory>
 
+namespace Aurum {
+
 /**
  * @class IEventSource
  *
@@ -67,5 +69,7 @@ public:
      */
     virtual void notifyAll(int type1, int type2, void *src) = 0;
 };
+
+}
 
 #endif

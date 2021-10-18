@@ -22,6 +22,9 @@
 
 #include <gio/gio.h>
 
+using namespace Aurum;
+using namespace AurumInternal;
+
 AtspiAccessibleNode::AtspiAccessibleNode(AtspiAccessible *node)
 : mNode{node}
 {

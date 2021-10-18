@@ -24,6 +24,10 @@
 #include <set>
 #include <efl_util.h>
 
+using namespace Aurum;
+
+namespace AurumInternal {
+
 class TizenDeviceImpl : public IDevice {
 public:
     TizenDeviceImpl();
@@ -197,5 +201,7 @@ private:
      */
     Size2D<int> mScreenSize;
 };
+
+}
 
 #endif

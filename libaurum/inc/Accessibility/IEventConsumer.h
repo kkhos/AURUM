@@ -18,6 +18,8 @@
 #ifndef _IEVENT_CONSUMER_H_
 #define _IEVENT_CONSUMER_H_
 
+namespace Aurum {
+
 /**
  * @class EventType
  *
@@ -70,5 +72,7 @@ public:
      */
     virtual void notify(int type1, int type2, void *src) = 0;
 };
+
+}
 
 #endif

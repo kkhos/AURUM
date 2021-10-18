@@ -23,6 +23,10 @@
 #include <mutex>
 #include <set>
 
+using namespace Aurum;
+
+namespace AurumMock {
+
 class MockAccessibleNode : public AccessibleNode {
 public:
     /**
@@ -201,5 +205,7 @@ private:
      */
     std::mutex                            mLock;
 };
+
+}
 
 #endif

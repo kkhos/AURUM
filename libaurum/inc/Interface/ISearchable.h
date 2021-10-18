@@ -25,6 +25,8 @@
 #include <memory>
 #include <vector>
 
+namespace Aurum {
+
 class UiObject;
 
 /**
@@ -78,5 +80,7 @@ public:
     virtual std::vector<std::shared_ptr<UiObject>> findObjects(
         const std::shared_ptr<UiSelector> selector) const = 0;
 };
+
+}
 
 #endif

@@ -18,6 +18,8 @@
 #ifndef _POINT2D_H_
 #define _POINT2D_H_
 
+namespace Aurum {
+
 /**
  * @class Point2D
  *
@@ -93,5 +95,7 @@ public:
     T x;
     T y;
 };
+
+}
 
 #endif

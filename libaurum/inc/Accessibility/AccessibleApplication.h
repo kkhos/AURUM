@@ -23,6 +23,8 @@
 
 #include <memory>
 
+namespace Aurum {
+
 /**
  * @class AccessibleApplication
  *
@@ -97,5 +99,7 @@ public:
 private:
     std::shared_ptr<AccessibleNode> mNode;
 };
+
+}
 
 #endif

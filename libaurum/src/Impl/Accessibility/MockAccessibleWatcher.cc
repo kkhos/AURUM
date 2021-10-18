@@ -20,6 +20,9 @@
 #include "MockAccessibleApplication.h"
 #include "MockAccessibleNode.h"
 
+using namespace Aurum;
+using namespace AurumMock;
+
 MockAccessibleWatcher::MockAccessibleWatcher()
 {
 }

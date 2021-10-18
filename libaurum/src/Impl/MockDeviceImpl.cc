@@ -34,6 +34,9 @@
 #include <chrono>
 #include <thread>
 
+using namespace Aurum;
+using namespace AurumMock;
+
 #define NANO_SEC 1000000000.0
 #define MICRO_SEC 1000000
 

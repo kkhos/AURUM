@@ -20,6 +20,8 @@
 
 #include <type_traits>
 
+namespace Aurum {
+
 template<typename E>
 struct enable_bitmask_operators{
     static const bool enable=false;
@@ -87,6 +89,8 @@ operator^=(E& lhs,E rhs){
     lhs=static_cast<E>(
         static_cast<underlying>(lhs) ^ static_cast<underlying>(rhs));
     return lhs;
+}
+
 }
 
 #endif

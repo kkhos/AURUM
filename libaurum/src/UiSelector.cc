@@ -19,6 +19,8 @@
 #include <string>
 #include <sstream>
 
+using namespace Aurum;
+
 UiSelector::UiSelector()
 : mId{}, mAutomationId{}, mRole{}, mText{}, mPkg{}, mType{}, mStyle{},
   mMatchId{}, mMatchAutomationId{}, mMatchRole{}, mMatchText{}, mMatchPkg{}, mMatchType{}, mMatchStyle{},

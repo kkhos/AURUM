@@ -21,6 +21,8 @@
 #include <atspi/atspi.h>
 #include <mutex>
 
+namespace AurumInternal {
+
 /**
  * @internal
  *
@@ -60,5 +62,7 @@ public:
 private:
     static std::recursive_mutex mMutex;
 };
+
+}
 
 #endif
