@@ -23,6 +23,8 @@
 
 #include "UiObject.h"
 
+using namespace Aurum;
+
 class ObjectMapper {
 private:
     std::map<std::string, std::shared_ptr<UiObject>> mObjectMap;

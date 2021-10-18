@@ -18,6 +18,8 @@
 #ifndef _IEVENT_CONSUMER_H_
 #define _IEVENT_CONSUMER_H_
 
+namespace Aurum {
+
 enum class EventType {
     none = 0,
     Object = 1,
@@ -34,5 +36,7 @@ public:
     virtual ~IEventConsumer() {};
     virtual void notify(int type, int type2, void *src) = 0;
 };
+
+}
 
 #endif

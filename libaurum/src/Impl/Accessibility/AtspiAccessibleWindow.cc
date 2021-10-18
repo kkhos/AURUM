@@ -18,6 +18,9 @@
 #include "AtspiAccessibleWindow.h"
 #include "AtspiWrapper.h"
 
+using namespace Aurum;
+using namespace AurumInternal;
+
 AtspiAccessibleWindow::AtspiAccessibleWindow(std::shared_ptr<AccessibleApplication> app, std::shared_ptr<AccessibleNode> node)
 : AccessibleWindow(app, node)
 {

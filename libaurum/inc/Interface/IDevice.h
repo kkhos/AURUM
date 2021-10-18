@@ -23,6 +23,8 @@
 #include "Size2D.h"
 #include <string>
 
+namespace Aurum {
+
 /**
  * @brief TimeRequestType enum class.
  *
@@ -276,5 +278,7 @@ public:
      */
     virtual const Size2D<int> getScreenSize() = 0;
 };
+
+}
 
 #endif

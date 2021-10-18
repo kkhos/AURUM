@@ -22,6 +22,8 @@
 
 #include "Runnable.h"
 
+namespace Aurum {
+
 class SendKeyRunnable : public Runnable {
 protected:
     std::string mKeycode;
@@ -30,5 +32,7 @@ public:
     SendKeyRunnable(std::string keycode);
     void run() const override;
 };
+
+}
 
 #endif

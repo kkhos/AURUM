@@ -27,6 +27,10 @@
 #include <vector>
 #include <map>
 
+using namespace Aurum;
+
+namespace AurumInternal {
+
 enum class MockKeyType {
     BACK,
     HOME,
@@ -293,5 +297,7 @@ public:
      */
     Size2D<int> mScreenSize;
 };
+
+}
 
 #endif

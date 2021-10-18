@@ -30,6 +30,8 @@
 #include <memory>
 #include <vector>
 
+namespace Aurum {
+
 /**
  * @brief Comparer class
  * @since_tizen 5.5
@@ -97,5 +99,7 @@ private:
      */
     bool              mEarlyReturn;
 };
+
+}
 
 #endif

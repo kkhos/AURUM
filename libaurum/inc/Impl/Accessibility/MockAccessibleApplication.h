@@ -24,6 +24,10 @@
 
 #include <memory>
 
+using namespace Aurum;
+
+namespace AurumInternal {
+
 class MockAccessibleApplication : public AccessibleApplication, public std::enable_shared_from_this<MockAccessibleApplication> {
 public:
     /**
@@ -82,5 +86,7 @@ private:
      */
     std::vector<std::shared_ptr<AccessibleWindow>> mWindowList;
 };
+
+}
 
 #endif

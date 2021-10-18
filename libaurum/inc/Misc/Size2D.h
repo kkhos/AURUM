@@ -18,6 +18,8 @@
 #ifndef _SIZE2D_H_
 #define _SIZE2D_H_
 
+namespace Aurum {
+
 /**
  * @brief Size2D Class.
  *        This class for represent specific obejct's size as width and height.
@@ -79,5 +81,7 @@ public:
     T width;
     T height;
 };
+
+}
 
 #endif

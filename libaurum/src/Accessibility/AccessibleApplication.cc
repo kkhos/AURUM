@@ -19,6 +19,8 @@
 
 #include <algorithm>
 
+using namespace Aurum;
+
 AccessibleApplication::AccessibleApplication(std::shared_ptr<AccessibleNode> node)
 : mNode{node}
 {

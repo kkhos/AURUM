@@ -20,6 +20,9 @@
 
 #include "UiObject.h"
 #include <memory>
+
+namespace Aurum {
+
 /**
  * @brief UiScrollable class
  * @since_tizen 5.5
@@ -95,5 +98,7 @@ private:
      */
     int mScrollStep;
 };
+
+}
 
 #endif

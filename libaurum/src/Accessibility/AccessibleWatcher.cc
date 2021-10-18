@@ -27,6 +27,9 @@
 #include <utility>
 #include <algorithm>
 
+using namespace Aurum;
+using namespace AurumInternal;
+
 AccessibleWatcher::AccessibleWatcher()
 :mSources{}, mLock{}
 {

@@ -25,6 +25,8 @@
 
 #include "UiSelector.h"
 
+namespace Aurum {
+
 /**
  * @brief Sel class
  * @since_tizen 5.5
@@ -55,5 +57,7 @@ public:
      */
     static std::shared_ptr<UiSelector> depth(int depth);
 };
+
+}
 
 #endif

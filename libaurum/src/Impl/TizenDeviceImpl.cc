@@ -32,6 +32,9 @@
 #include <tbm_surface.h>
 #include <system_info.h>
 
+using namespace Aurum;
+using namespace AurumInternal;
+
 #define NANO_SEC 1000000000.0
 #define MICRO_SEC 1000000
 
