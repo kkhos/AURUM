@@ -17,6 +17,8 @@
 
 #include "AtspiWrapper.h"
 
+using namespace AurumInternal;
+
 std::recursive_mutex AtspiWrapper::mMutex = std::recursive_mutex{};
 
 GArray *AtspiWrapper::Atspi_state_set_get_states(AtspiStateSet *set)

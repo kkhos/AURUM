@@ -21,6 +21,10 @@
 #include "AccessibleNode.h"
 #include <atspi/atspi.h>
 
+using namespace Aurum;
+
+namespace AurumInternal {
+
 /**
  * @brief AtspiAccessibleNode is inherited from AccessibleNode class.
  *        It manages object informations which from atspi server.
@@ -143,5 +147,7 @@ private:
 private:
     AtspiAccessible *mNode;
 };
+
+}
 
 #endif

@@ -28,6 +28,8 @@
 #include <memory>
 #include <vector>
 
+namespace Aurum {
+
 class UiDevice;
 
 /**
@@ -510,5 +512,7 @@ private:
     const Waiter *mWaiter;
     static const unsigned int LOGNCLICK_INTERVAL = 500;
 };
+
+}
 
 #endif

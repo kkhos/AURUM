@@ -18,6 +18,8 @@
 #include "Aurum.h"
 #include <utility>
 
+using namespace Aurum;
+
 std::shared_ptr<UiSelector> Sel::text(std::string text)
 {
     std::shared_ptr<UiSelector> sel = std::make_shared<UiSelector>();

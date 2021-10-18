@@ -20,6 +20,8 @@
 
 #include "Point2D.h"
 
+namespace Aurum {
+
 /**
  * @class Rect
  *
@@ -140,5 +142,7 @@ public:
     Point2D<T> mTopLeft;
     Point2D<T> mBottomRight;
 };
+
+}
 
 #endif

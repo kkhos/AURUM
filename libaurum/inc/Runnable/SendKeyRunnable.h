@@ -22,6 +22,8 @@
 
 #include "Runnable.h"
 
+namespace Aurum {
+
 /**
  * @class SendKeyRunnable
  *
@@ -48,5 +50,7 @@ public:
      */
     void run() const override;
 };
+
+}
 
 #endif

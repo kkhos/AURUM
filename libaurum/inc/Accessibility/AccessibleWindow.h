@@ -23,6 +23,8 @@
 #include <string>
 #include <memory>
 
+namespace Aurum {
+
 class AccessibleApplication;
 
 /**
@@ -102,5 +104,7 @@ private:
     std::shared_ptr<AccessibleApplication> mApp;
     std::shared_ptr<AccessibleNode> mNode;
 };
+
+}
 
 #endif

@@ -28,6 +28,8 @@
 #include "Rect.h"
 #include "config.h"
 
+namespace Aurum {
+
 /**
  * @brief AccessibleNodeInterface enum class
  *
@@ -423,5 +425,7 @@ private:
     bool mValid;
     mutable std::mutex mLock;
 };
+
+}
 
 #endif

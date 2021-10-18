@@ -22,6 +22,8 @@
 #include "ISearchable.h"
 #include "UiSelector.h"
 
+namespace Aurum {
+
 /**
  * @class Until
  *
@@ -114,5 +116,7 @@ public:
     static std::function<bool(const UiObject *)> checkable(
         const bool isCheckable);
 };
+
+}
 
 #endif

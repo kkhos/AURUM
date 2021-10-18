@@ -19,6 +19,8 @@
 
 #include <unordered_map>
 
+using namespace Aurum;
+
 A11yEventInfo::A11yEventInfo() : A11yEventInfo(A11yEvent::EVENT_NONE, nullptr, nullptr) {}
 
 A11yEventInfo::~A11yEventInfo() {}

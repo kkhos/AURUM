@@ -18,6 +18,8 @@
 #include "MockAccessibleWindow.h"
 #include "MockAccessibleNode.h"
 
+using namespace Aurum;
+using namespace AurumInternal::Mock;
 
 class AurumTestUiDevice : public ::testing::Test {
     public:

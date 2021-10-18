@@ -21,6 +21,8 @@
 #include "bitmask.h"
 #include <string>
 
+namespace Aurum {
+
 /**
  * @class A11yEvent
  *
@@ -143,5 +145,7 @@ protected:
     const std::string mName;
     const std::string mPkg;
 };
+
+}
 
 #endif

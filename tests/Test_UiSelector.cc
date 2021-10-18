@@ -10,13 +10,13 @@
 #include <iostream>
 #include <algorithm>
 
-
-
 #include "MockAccessibleWatcher.h"
 #include "MockAccessibleApplication.h"
 #include "MockAccessibleWindow.h"
 #include "MockAccessibleNode.h"
 
+using namespace Aurum;
+using namespace AurumInternal::Mock;
 
 class AurumTestUiSelector : public ::testing::Test {
     public:

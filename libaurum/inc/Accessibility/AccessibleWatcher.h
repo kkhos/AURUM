@@ -33,6 +33,8 @@
 
 #include "config.h"
 
+namespace Aurum {
+
 /**
  * @class AccessibleWatcher
  *
@@ -145,5 +147,7 @@ private:
     std::set<std::shared_ptr<IEventConsumer>> mSources;
     std::mutex mLock;
 };
+
+}
 
 #endif
