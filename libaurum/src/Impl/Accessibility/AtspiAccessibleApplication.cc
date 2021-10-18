@@ -22,6 +22,9 @@
 #include <algorithm>
 #include <vector>
 
+using namespace Aurum;
+using namespace AurumInternal;
+
 AtspiAccessibleApplication::AtspiAccessibleApplication(std::shared_ptr<AccessibleNode> node)
 : AccessibleApplication(node)
 {

@@ -28,6 +28,8 @@
 #include <memory>
 #include <vector>
 
+namespace Aurum {
+
 class UiDevice;
 
 class Node : public std::enable_shared_from_this<Node> {
@@ -398,5 +400,7 @@ private:
      */
     static const unsigned int LOGNCLICK_INTERVAL = 500;
 };
+
+}
 
 #endif

@@ -21,6 +21,9 @@
 
 #include <algorithm>
 
+using namespace Aurum;
+using namespace AurumInternal;
+
 MockAccessibleApplication::MockAccessibleApplication(std::shared_ptr<AccessibleNode> node)
 : AccessibleApplication(node), mWindowList{}
 {

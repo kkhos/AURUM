@@ -23,6 +23,10 @@
 #include <memory>
 #include <atspi/atspi.h>
 
+using namespace Aurum;
+
+namespace AurumInternal {
+
 class AtspiAccessibleApplication : public AccessibleApplication, public std::enable_shared_from_this<AtspiAccessibleApplication> {
 public:
     /**
@@ -50,5 +54,7 @@ public:
      */
     std::string getPackageName(void) override;
 };
+
+}
 
 #endif

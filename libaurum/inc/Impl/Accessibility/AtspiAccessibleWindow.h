@@ -20,6 +20,10 @@
 
 #include "AccessibleWindow.h"
 
+using namespace Aurum;
+
+namespace AurumInternal {
+
 class AtspiAccessibleWindow : public AccessibleWindow {
 public:
     /**
@@ -35,5 +39,7 @@ public:
     ~AtspiAccessibleWindow();
 
 };
+
+}
 
 #endif

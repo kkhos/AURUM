@@ -17,6 +17,8 @@
 
 #include "Aurum.h"
 
+using namespace Aurum;
+
 SendKeyRunnable::SendKeyRunnable(std::string keycode)
     : mKeycode{keycode}
 {

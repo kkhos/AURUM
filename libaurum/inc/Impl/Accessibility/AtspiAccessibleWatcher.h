@@ -32,6 +32,10 @@
 #include <set>
 #include <map>
 
+using namespace Aurum;
+
+namespace AurumInternal {
+
 /**
  * @brief WindowActivateInfoType enum class
  * @since_tizen 5.5
@@ -194,5 +198,7 @@ private:
 
     static std::mutex mMutex;
 };
+
+}
 
 #endif

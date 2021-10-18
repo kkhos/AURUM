@@ -20,6 +20,8 @@
 #include <chrono>
 #include <thread>
 
+using namespace Aurum;
+
 Waiter::Waiter() : Waiter(nullptr) {}
 
 Waiter::~Waiter() {}

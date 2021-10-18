@@ -33,6 +33,8 @@
 
 #include "config.h"
 
+namespace Aurum {
+
 /**
  * @brief AccessibleWatcher class
  * @since_tizen 5.5
@@ -124,5 +126,7 @@ private:
      */
     std::mutex mLock;
 };
+
+}
 
 #endif

@@ -18,6 +18,8 @@
 #ifndef _POINT2D_H_
 #define _POINT2D_H_
 
+namespace Aurum {
+
 /**
  * @brief Point2d Class
  * @since_tizen 5.5
@@ -79,5 +81,7 @@ public:
      */
     T y;
 };
+
+}
 
 #endif

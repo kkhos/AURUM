@@ -21,6 +21,9 @@
 #include "ISearchable.h"
 
 #include <functional>
+
+namespace Aurum {
+
 /**
  * @brief Waiter class
  * @since_tizen 5.5
@@ -87,5 +90,7 @@ private:
      */
     const int          WAIT_TIMEOUT_MS;
 };
+
+}
 
 #endif

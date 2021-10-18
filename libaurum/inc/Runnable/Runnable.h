@@ -18,11 +18,15 @@
 #ifndef _RUNNABLE_H_
 #define _RUNNABLE_H_
 
+namespace Aurum {
+
 class Runnable
 {
 public:
     virtual ~Runnable() { }
     virtual void run() const = 0;
 };
+
+}
 
 #endif

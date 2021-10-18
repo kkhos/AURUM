@@ -21,6 +21,10 @@
 #include "AccessibleNode.h"
 #include <atspi/atspi.h>
 
+using namespace Aurum;
+
+namespace AurumInternal {
+
 class AtspiAccessibleNode : public AccessibleNode {
 public:
     /**
@@ -154,5 +158,7 @@ private:
      */
     AtspiAccessible *mNode;
 };
+
+}
 
 #endif
