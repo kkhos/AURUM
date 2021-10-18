@@ -21,6 +21,9 @@
 #include <functional>
 #include "ISearchable.h"
 #include "UiSelector.h"
+
+namespace Aurum {
+
 /**
  * @brief Until class
  * @since_tizen 5.5
@@ -80,5 +83,7 @@ public:
     static std::function<bool(const UiObject *)> checkable(
         const bool isCheckable);
 };
+
+}
 
 #endif

@@ -30,6 +30,8 @@
 #include <algorithm>
 #include <iostream>
 
+using namespace Aurum;
+
 UiDevice::UiDevice() : UiDevice(nullptr) {}
 
 UiDevice::UiDevice(IDevice *impl)

@@ -18,10 +18,13 @@
 #ifndef _IDEVICE_H_
 #define _IDEVICE_H_
 
+
 #include "config.h"
 #include "Rect.h"
 #include "Size2D.h"
 #include <string>
+
+namespace Aurum {
 
 /**
  * @brief TimeRequestType enum class.
@@ -276,5 +279,7 @@ public:
      */
     virtual const Size2D<int> getScreenSize() = 0;
 };
+
+}
 
 #endif

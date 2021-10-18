@@ -21,6 +21,8 @@
 #include "AccessibleWindow.h"
 #include "MockAccessibleNode.h"
 
+namespace Aurum {
+
 class MockAccessibleApplication;
 
 class MockAccessibleWindow : public AccessibleWindow {
@@ -50,5 +52,7 @@ private:
      */
     std::shared_ptr<MockAccessibleNode> mMockNode;
 };
+
+}
 
 #endif

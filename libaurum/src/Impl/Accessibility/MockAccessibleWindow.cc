@@ -19,6 +19,8 @@
 #include "MockAccessibleApplication.h"
 #include "MockAccessibleNode.h"
 
+using namespace Aurum;
+
 MockAccessibleWindow::MockAccessibleWindow(std::shared_ptr<MockAccessibleApplication> app, std::shared_ptr<MockAccessibleNode> node)
 : AccessibleWindow(app, node), mMockNode{node}
 {

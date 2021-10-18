@@ -19,6 +19,7 @@
 #define _AURUM_H_
 
 #include <dlog.h>
+#include <efl_util.h>
 
 #ifdef LOG_TAG
 #undef LOG_TAG

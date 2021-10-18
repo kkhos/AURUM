@@ -21,6 +21,8 @@
 #include "IEventConsumer.h"
 #include <memory>
 
+namespace Aurum {
+
 class IEventSource
 {
 public:
@@ -29,5 +31,7 @@ public:
     virtual void detach(std::shared_ptr<IEventConsumer> source) = 0;
     virtual void notifyAll(int type, int type2, void *src) = 0;
 };
+
+}
 
 #endif

@@ -20,6 +20,8 @@
 
 #include "Point2D.h"
 
+namespace Aurum {
+
 /**
  * @brief Rect Class
  * @since_tizen 5.5
@@ -111,5 +113,7 @@ public:
      */
     Point2D<T> mBottomRight;
 };
+
+}
 
 #endif
