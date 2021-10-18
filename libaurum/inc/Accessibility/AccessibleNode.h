@@ -28,6 +28,8 @@
 #include "Rect.h"
 #include "config.h"
 
+namespace Aurum {
+
 /**
  * @brief AccessibleNodeInterface enum class
  * @since_tizen 5.5
@@ -451,5 +453,7 @@ private:
      */
     mutable std::mutex mLock;
 };
+
+}
 
 #endif

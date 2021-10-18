@@ -24,6 +24,9 @@
 
 #include "AccessibleNode.h"
 #include "UiSelector.h"
+
+namespace Aurum {
+
 /**
  * @brief PartialMatch class
  * @since_tizen 5.5
@@ -120,5 +123,7 @@ private:
      */
     std::list<std::shared_ptr<PartialMatch>> mPartialMatches;
 };
+
+}
 
 #endif

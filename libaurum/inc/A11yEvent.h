@@ -21,6 +21,8 @@
 #include "bitmask.h"
 #include <string>
 
+namespace Aurum {
+
 enum class A11yEvent {
      EVENT_NONE = 0x00000,
      EVENT_WINDOW_CREATE = 0x00001,
@@ -64,5 +66,7 @@ protected:
     const std::string mName;
     const std::string mPkg;
 };
+
+}
 
 #endif

@@ -35,6 +35,8 @@
 #include <functional>
 #include <string>
 
+namespace Aurum {
+
 /**
  * @class UiDevice
  *
@@ -402,5 +404,7 @@ private:
     IDevice *mDeviceImpl;
     const Waiter *mWaiter;
 };
+
+}
 
 #endif

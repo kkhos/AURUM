@@ -21,6 +21,8 @@
 #include <algorithm>
 #include <iostream>
 
+using namespace Aurum;
+
 MockAccessibleNode::MockAccessibleNode(std::shared_ptr<AccessibleNode> parent, std::string text, std::string pkg, std::string role, std::string res, std::string type, std::string style,std::string automationId,  Rect<int> screenBoundingBox, int supportingIfaces,int featureProperty)
 : mParentNode(parent), mChildrenList{}, mActionSet{}
 {

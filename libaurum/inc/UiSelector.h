@@ -23,6 +23,9 @@
 #include <string>
 #include <vector>
 #include <memory>
+
+namespace Aurum {
+
 /**
  * @brief UiSelector class
  * @since_tizen 5.5
@@ -382,5 +385,7 @@ public:
      */
     std::shared_ptr<UiSelector> mParent;
 };
+
+}
 
 #endif

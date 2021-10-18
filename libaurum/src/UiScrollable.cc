@@ -17,6 +17,8 @@
 
 #include "Aurum.h"
 
+using namespace Aurum;
+
 UiScrollable::UiScrollable(std::shared_ptr<UiSelector> selector)
 : mSelector{selector}, mMaxSearchSwipe{100}, mScrollStep{50}
 {

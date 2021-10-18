@@ -21,6 +21,8 @@
 #include <atspi/atspi.h>
 #include <mutex>
 
+namespace Aurum {
+
 class AtspiWrapper {
 public:
     static GArray *Atspi_state_set_get_states(AtspiStateSet *set);
@@ -51,5 +53,7 @@ private:
     static std::recursive_mutex mMutex;
     //static std::unique_lock<std::mutex> mLock;
 };
+
+}
 
 #endif

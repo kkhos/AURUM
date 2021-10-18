@@ -15,7 +15,6 @@
 #include "MockAccessibleWindow.h"
 #include "MockAccessibleNode.h"
 
-
 class AurumTestMisc : public ::testing::Test {
     public:
         AurumTestMisc(){

@@ -28,6 +28,8 @@
 #include <memory>
 #include <vector>
 
+namespace Aurum {
+
 class MockAccessibleWatcher : public AccessibleWatcher {
 public:
     /**
@@ -90,5 +92,7 @@ private:
 
     std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> mActiveAppMap;
 };
+
+}
 
 #endif

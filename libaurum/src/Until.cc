@@ -17,6 +17,8 @@
 
 #include "Aurum.h"
 
+using namespace Aurum;
+
 std::function<bool(const ISearchable *)> Until::hasObject(
     const std::shared_ptr<UiSelector> selector)
 {

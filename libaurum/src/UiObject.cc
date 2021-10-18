@@ -23,6 +23,8 @@
 #include <chrono>
 #include <thread>
 
+using namespace Aurum;
+
 UiObject::UiObject() : UiObject(nullptr, nullptr, nullptr) {}
 
 UiObject::~UiObject()
