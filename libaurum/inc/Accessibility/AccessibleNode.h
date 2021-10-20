@@ -30,6 +30,7 @@
 
 /**
  * @brief AccessibleNodeInterface enum class
+ *
  * @since_tizen 5.5
  */
 enum class AccessibleNodeInterface {
@@ -53,6 +54,7 @@ enum class AccessibleNodeInterface {
 
 /**
  * @brief NodeFeatureProperties enum class
+ *
  * @since_tizen 5.5
  */
 enum class NodeFeatureProperties {
@@ -75,380 +77,350 @@ enum class NodeFeatureProperties {
 };
 
 /**
- * @brief AccessibleNode Class
+ * @brief AccessibleNode Class that provides the abstracted object information to uses.
+ *
  * @since_tizen 5.5
  */
 class AccessibleNode : public std::enable_shared_from_this<AccessibleNode>, public IEventConsumer  {
 public:
     /**
-     * @brief TBD
+     * @brief AccessibleNode constructor.
+     *
      * @since_tizen 5.5
      */
     AccessibleNode();
 
     /**
-     * @brief TBD
+     * @brief AccessibleNode desctructor.
+     *
      * @since_tizen 5.5
      */
     virtual ~AccessibleNode();
 
     /**
-     * @brief TBD
+     * @brief Gets Node information as string.
+     *
+     * @return string
+     *
      * @since_tizen 5.5
      */
     std::string description();
 
 public:
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::getChildCount()
      */
     virtual int getChildCount() const = 0;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::getChildAt()
      */
     virtual std::shared_ptr<AccessibleNode> getChildAt(int index) const = 0;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::getChildren()
      */
     virtual std::vector<std::shared_ptr<AccessibleNode>> getChildren() const = 0;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::getParent()
      */
     virtual std::shared_ptr<AccessibleNode> getParent() const = 0;
 
     /**
-     * @brief TBD
+     * @brief Called by @AccessibleWatcher::notifyAll.
+     *        Changes Node property If it's @EventType, @ObjectEventType are matches.
+     *
+     * @param[in] type @EventType
+     * @param[in] type2 @ObjectEventType
+     * @param[in] src Atspi Node ptr
+     *
      * @since_tizen 5.5
      */
     void notify(int type, int type2, void *src) override;
 
     /**
-     * @brief TBD
+     * @brief Changes Node state to invalidate.
+     *
      * @since_tizen 5.5
      */
     void invalidate();
 
 public:
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::getText()
      */
     std::string getText() const;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::getPkg()
      */
     std::string getPkg() const;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::getId()
      */
     std::string getId() const;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::getAutomationId()
      */
     std::string getAutomationId() const;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::getRole()
      */
     std::string getRole() const;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::getType()
      */
     std::string getType() const;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::getStyle()
      */
     std::string getStyle() const;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::getScreenBoundingBox()
      */
     Rect<int> getScreenBoundingBox() const;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::getWindowBoundingBox()
      */
     Rect<int> getWindowBoundingBox() const;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::isCheckable()
      */
     bool isCheckable() const;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::isChecked()
      */
     bool isChecked() const;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::isClickable()
      */
     bool isClickable() const;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::isEnabled()
      */
     bool isEnabled() const;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::isFocusable()
      */
     bool isFocusable() const;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::isFocused()
      */
     bool isFocused() const;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::isLongClickable()
      */
     bool isLongClickable() const;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::isScrollable()
      */
     bool isScrollable() const;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::isSelectable()
      */
     bool isSelectable() const;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::isSelected()
      */
     bool isSelected() const;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::isVisible()
      */
     bool isVisible() const;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::isShowing()
      */
     bool isShowing() const;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::isActive()
      */
     bool isActive() const;
 
 public:
     /**
-     * @brief TBD
+     * @brief Print Node information.
+     *
+     * @param[in] int depth
+     *
      * @since_tizen 5.5
      */
     void print(int);
 
     /**
-     * @brief TBD
+     * @brief Print Node information.
+     *
+     * @param[in] int depth
+     * @param[in] int maxdepth
+     *
      * @since_tizen 5.5
      */
     void print(int, int);
 
     /**
-     * @brief TBD
+     * @brief Gets matched Atspi node ptr.
+     *
+     * @return Atspi node ptr
+     *
      * @since_tizen 5.5
      */
     virtual void* getRawHandler(void) const = 0;
 
     /**
-     * @brief TBD
-     * @since_tizen 6.5
+     * @copydoc UiObject::updateRoleName()
      */
     virtual void updateRoleName() = 0;
 
     /**
-     * @brief TBD
-     * @since_tizen 6.5
+     * @copydoc UiObject::updateUniqueId()
      */
     virtual void updateUniqueId() = 0;
 
     /**
-     * @brief TBD
-     * @since_tizen 6.5
+     * @copydoc UiObject::updateName()
      */
     virtual void updateName() = 0;
 
     /**
-     * @brief TBD
-     * @since_tizen 6.5
+     * @copydoc UiObject::updateApplication()
      */
     virtual void updateApplication() = 0;
 
     /**
-     * @brief TBD
-     * @since_tizen 6.5
+     * @copydoc UiObject::updateAttributes()
      */
     virtual void updateAttributes() = 0;
 
     /**
-     * @brief TBD
-     * @since_tizen 6.5
+     * @copydoc UiObject::updateStates()
      */
     virtual void updateStates() = 0;
 
     /**
-     * @brief TBD
-     * @since_tizen 6.5
+     * @copydoc UiObject::updateExtents()
      */
     virtual void updateExtents() = 0;
 
     /**
-     * @brief TBD
+     * @brief Updates Node information from atspi server.
+     *
      * @since_tizen 5.5
      */
     virtual void refresh() = 0;
 
     /**
-     * @brief TBD
+     * @brief Gets available atspi action name.
+     *
+     * @return string vector
+     *
      * @since_tizen 5.5
      */
     virtual std::vector<std::string> getActions() const = 0;
 
     /**
-     * @brief TBD
+     * @brief Do atspi action.
+     *
+     * @param[in] action name of action
+     *
+     * @return true if success, else false
+     *
      * @since_tizen 5.5
      */
     virtual bool doAction(std::string action) = 0;
 
     /**
-     * @brief TBD
+     * @brief Sets Node's value.
+     *
+     * @param[in] text string
+     *
      * @since_tizen 5.5
      */
     virtual void setValue(std::string text) = 0;
 
     /**
-     * @brief TBD
+     * @brief Check object valid or not.
+     *
+     * @return true if valid, else false
+     *
      * @since_tizen 5.5
      */
     virtual bool isValid() const;
 
 public:
     /**
-     * @brief TBD
+     * @brief Check Node support given interface or not.
+     *
+     * @param[in] thisIface @AccessibleNodeInterface
+     *
+     * @return true if supporting, else false
+     *
      * @since_tizen 5.5
      */
     bool isSupporting(AccessibleNodeInterface thisIface) const;
 
     /**
-     * @brief TBD
+     * @brief Check Node has given property or not.
+     *
+     * @param[in] prop @NodeFeatureProperties
+     *
+     * @return true if has, else false
+     *
      * @since_tizen 5.5
      */
     bool hasFeatureProperty(NodeFeatureProperties prop) const;
 
     /**
-     * @brief TBD
+     * @brief Sets Node's property.
+     *
+     * @param[in] prop @NodeFeatureProperties
+     * @param[in] has Node has given property ot not
+     *
      * @since_tizen 5.5
      */
     void setFeatureProperty(NodeFeatureProperties prop, bool has);
 
     /**
-     * @brief TBD
+     * @brief Resets all the property value on Node.
+     *
      * @since_tizen 6.5
      */
     void resetFeatureProperty();
 
 protected:
-    /**
-     * @brief TBD
-     */
     std::string mText;
-
-    /**
-     * @brief TBD
-     */
     std::string mPkg;
-
-    /**
-     * @brief TBD
-     */
     std::string mRole;
-
-    /**
-     * @brief TBD
-     */
     std::string mId;
-
-    /**
-     * @brief TBD
-     */
     std::string mAutomationId;
-
-    /**
-     * @brief TBD
-     */
     std::string mType;
-
-    /**
-     * @brief TBD
-     */
     std::string mStyle;
-
-    /**
-     * @brief TBD
-     */
     Rect<int> mScreenBoundingBox;
-
-    /**
-     * @brief TBD
-     */
     Rect<int> mWindowBoundingBox;
-
-    /**
-     * @brief TBD
-     */
     int mSupportingIfaces;
-
-    /**
-     * @brief TBD
-     */
     int mFeatureProperty;
 
 private:
-    /**
-     * @brief TBD
-     */
     bool mValid;
-
-    /**
-     * @brief TBD
-     */
     mutable std::mutex mLock;
 };
 

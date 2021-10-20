@@ -41,7 +41,7 @@
  * @ingroup aurum
  *
  * @brief UiDevice provides access to state information about the device.
- *         You can also use this class to simulate user actions on the device.
+ *        You can also use this class to simulate user actions on the device.
  */
 class UiDevice : public IDevice, public ISearchable {
 public:
