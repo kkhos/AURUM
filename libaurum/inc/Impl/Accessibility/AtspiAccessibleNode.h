@@ -21,137 +21,126 @@
 #include "AccessibleNode.h"
 #include <atspi/atspi.h>
 
+/**
+ * @brief AtspiAccessibleNode is inherited from AccessibleNode class.
+ *        It manages object informations which from atspi server.
+ *
+ * @since_tizen 5.5
+ */
 class AtspiAccessibleNode : public AccessibleNode {
 public:
     /**
-     * @brief TBD
+     * @brief AtspiAccessibleNode constructor.
+     *
+     * @param node AtspiAccessible ptr
+     *
      * @since_tizen 5.5
      */
     AtspiAccessibleNode(AtspiAccessible *node);
 
     /**
-     * @brief TBD
+     * @brief AtspiAccessibleNode desctructor.
+     *
      * @since_tizen 5.5
      */
    ~AtspiAccessibleNode() override;
 
 public:
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::getChildCount()
      */
     int getChildCount() const override;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::getChildAt()
      */
     std::shared_ptr<AccessibleNode> getChildAt(int index) const override;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::getChildren()
      */
     std::vector<std::shared_ptr<AccessibleNode>> getChildren() const override;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc UiObject::getParent()
      */
     std::shared_ptr<AccessibleNode> getParent() const override;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc AccessibleNode::isValid()
      */
     bool isValid() const override;
 
 public:
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc AccessibleNode::getRawHandler()
      */
     void* getRawHandler(void) const override;
 
     /**
-     * @brief TBD
-     * @since_tizen 6.5
+     * @copydoc UiObject::updateRoleName()
      */
     void updateRoleName() override;
 
     /**
-     * @brief TBD
-     * @since_tizen 6.5
+     * @copydoc UiObject::updateUniqueId()
      */
     void updateUniqueId() override;
 
     /**
-     * @brief TBD
-     * @since_tizen 6.5
+     * @copydoc UiObject::updateName()
      */
     void updateName() override;
 
     /**
-     * @brief TBD
-     * @since_tizen 6.5
+     * @copydoc UiObject::updateApplication()
      */
     void updateApplication() override;
 
     /**
-     * @brief TBD
-     * @since_tizen 6.5
+     * @copydoc UiObject::updateAttributes()
      */
     void updateAttributes() override;
 
     /**
-     * @brief TBD
-     * @since_tizen 6.5
+     * @copydoc UiObject::updateStates()
      */
     void updateStates() override;
 
     /**
-     * @brief TBD
-     * @since_tizen 6.5
+     * @copydoc UiObject::updateExtents()
      */
     void updateExtents() override;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc AccessibleNode::refresh()
      */
     void refresh() override;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc AccessibleNode::getActions()
      */
     std::vector<std::string> getActions() const override;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc AccessibleNode::doAction()
      */
     bool doAction(std::string action) override;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc AccessibleNode::setValue()
      */
     void setValue(std::string text) override;
 
 private:
     using AccessibleNode::setFeatureProperty;
+
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc AccessibleNode::setFeatureProperty()
      */
     void setFeatureProperty(AtspiStateType type);
 
 private:
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     AtspiAccessible *mNode;
 };
 
