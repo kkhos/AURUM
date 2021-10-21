@@ -24,52 +24,95 @@
 
 #include "AccessibleNode.h"
 #include "UiSelector.h"
+
 /**
- * @brief PartialMatch class
- * @since_tizen 5.5
+ * @class PartialMatch
+ *
+ * @ingroup aurum
+ *
+ * @brief Class that defines a methods to perform multiple condition of search object.
+ *        It works like helper class for @Comparer.
  */
 class PartialMatch {
 private:
     /**
-     * @brief TBD
+     * @brief PartialMatch constructor.
+     *
      * @since_tizen 5.5
      */
     PartialMatch();
 
 public:
     /**
-     * @brief TBD
+     * @brief PartialMatch constructor with selector, absolute depth.
+     *
+     * @param[in][in] absolute depth(start from root) value
+     *
      * @since_tizen 5.5
      */
     PartialMatch(const std::shared_ptr<UiSelector> selector, const int absDepth);
 
 public:
     /**
-     * @brief TBD
+     * @brief Updates all PartialMatches class.
+     *
+     * @param[in] node target @AssessibleNode
+     * @param[in] index node index
+     * @param[in] depth next depth
+     * @param[in] partialMatches @PartialMatch list
+     *
      * @since_tizen 5.5
      */
     void update(const std::shared_ptr<AccessibleNode> node, int index, int depth,
                 std::list<std::shared_ptr<PartialMatch>> &partialMatches);
 
     /**
-     * @brief TBD
+     * @brief Checks the matching finished or not. If so, saves match result if found.
+     *
+     * @return true if matched child exist, else false
+     *
      * @since_tizen 5.5
      */
     bool finalizeMatch();
 
     /**
-     * @brief TBD
+     * @brief Prints selector information.
+     *
      * @since_tizen 5.5
      */
     std::string debugPrint();
 
 public:
+
+    /**
+     * @brief It determine current given depth accatable and check criteria,
+     *        It checks selector's min, max depth in relative depth, and check criteria.
+     *
+     * @param[in] node target @AccessibleNode
+     * @param[in] selector @UiSelector
+     * @param[in] index node index
+     * @param[in] depth searching depth from ui layout hierarchy
+     *
+     * @return @PartialMatch
+     *
+     * @since_tizen 5.5
+     */
     static std::shared_ptr<PartialMatch> accept(const std::shared_ptr<AccessibleNode> node,
                                                 const std::shared_ptr<UiSelector> selector,
                                                 int index, int depth);
 
     /**
-     * @brief TBD
+     * @brief It determine current given depth accatable and check criteria,
+     *        It checks selector's min, max depth in relative depth, and check criteria.
+     *
+     * @param[in] node target @AccessibleNode
+     * @param[in] selector @UiSelector
+     * @param[in] index node index
+     * @param[in] absoluteDepth absolute depth
+     * @param[in] relativeDepth relative depth
+     *
+     * @return @PartialMatch
+     *
      * @since_tizen 5.5
      */
     static std::shared_ptr<PartialMatch> accept(const std::shared_ptr<AccessibleNode> node,
@@ -77,47 +120,48 @@ public:
                                                 int index, int absoluteDepth,
                                                 int relativeDepth);
 
+private:
+
     /**
-     * @brief TBD
+     * @brief Checks given node's search criteria are satisfied or not.
+     *
+     * @param[in] selector @UiSelector
+     * @param[in] node @AccessibleNode target node
+     *
+     * @return ture if satisfied, else false
+     *
      * @since_tizen 5.5
      */
-private:
     static bool checkCriteria(const std::shared_ptr<UiSelector> selector,
                               const std::shared_ptr<AccessibleNode> node);
 
     /**
-     * @brief TBD
+     * @brief Checks text matched or not.
+     *
+     * @param[in] textA string
+     * @param[in] textB string
+     *
+     * @return ture if matched, else false
+     *
      * @since_tizen 5.5
      */
-
     static bool checkCriteria(const std::string *textA, const std::string textB);
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
-    static bool checkCriteria(const std::string *textA, const std::string textB, const bool *match);
-
-    /**
-     * @brief TBD
+     * @brief Checks boolean value matched or not.
+     *
+     * @param[in] boolA bool
+     * @param[in] boolA bool
+     *
+     * @return ture if matched, else false
+     *
      * @since_tizen 5.5
      */
     static bool checkCriteria(const bool *boolA, const bool boolB);
 
 private:
-    /**
-     * @brief TBD
-     */
     const std::shared_ptr<UiSelector>        mSelector;
-
-    /**
-     * @brief TBD
-     */
     const int                                mDepth;
-
-    /**
-     * @brief TBD
-     */
     std::list<std::shared_ptr<PartialMatch>> mPartialMatches;
 };
 
