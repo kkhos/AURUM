@@ -79,7 +79,7 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(
         PartialMatch::accept(root, mSelector, index, depth);
     if (currentMatch) partialMatches.push_front(currentMatch);
 
-    if (!(mSelector->mMaxDepth && (depth+1 > *(mSelector->mMaxDepth)))) {
+    if (!(mSelector->mMaxDepth && (depth+1 > mSelector->mMaxDepth))) {
         int childCnt = root->getChildCount();
         for (int i = 0; i < childCnt; i++) {
             std::shared_ptr<AccessibleNode> childNode = root->getChildAt(i);
@@ -95,7 +95,7 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(
             }
         }
     } else {
-        LOGI("Abort searching! No need to search children(maxDepth limit overflow, %d < %d < %d)", mSelector->mMinDepth? * (mSelector->mMinDepth): -1, depth, mSelector->mMaxDepth?*(mSelector->mMaxDepth):9999999);
+        LOGI("Abort searching! No need to search children(maxDepth limit overflow, %d < %d < %d)", mSelector->mMinDepth? mSelector->mMinDepth: -1, depth, mSelector->mMaxDepth?(mSelector->mMaxDepth):9999999);
     }
 
     if (currentMatch && currentMatch->finalizeMatch()){
