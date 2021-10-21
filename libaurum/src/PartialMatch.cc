@@ -22,18 +22,16 @@
 #include <regex>
 #include <sstream>
 
-bool PartialMatch::checkCriteria(const std::string *textA, const std::string textB)
+bool PartialMatch::checkCriteria(const std::string textA, const std::string textB)
 {
-    if (!textA) return false;
-    std::regex re(*textA);
+    std::regex re(textA);
     bool rst = !(!!std::regex_match(textB, re) == true);
     return rst;
 }
 
-bool PartialMatch::checkCriteria(const bool *boolA, const bool boolB)
+bool PartialMatch::checkCriteria(const bool boolA, const bool boolB)
 {
-    if (!boolA) return false;
-    return *boolA != boolB;
+    return boolA != boolB;
 }
 
 std::string PartialMatch::debugPrint()
@@ -44,40 +42,40 @@ std::string PartialMatch::debugPrint()
 bool PartialMatch::checkCriteria(const std::shared_ptr<UiSelector> selector,
                                  const std::shared_ptr<AccessibleNode> node)
 {
-    if (selector->mMatchText.get()) {
+    if (selector->mMatchText) {
         node->updateName();
-        if (checkCriteria(selector->mText.get(), node->getText())) return false;
+        if (checkCriteria(selector->mText, node->getText())) return false;
     }
-    if (selector->mMatchId.get()) {
+    if (selector->mMatchId) {
         node->updateUniqueId();
-        if (checkCriteria(selector->mId.get(), node->getId())) return false;
+        if (checkCriteria(selector->mId, node->getId())) return false;
     }
-    if (selector->mMatchType.get() || selector->mMatchAutomationId.get() || selector->mMatchStyle.get()) {
+    if (selector->mMatchType || selector->mMatchAutomationId || selector->mMatchStyle) {
         node->updateAttributes();
-        if (checkCriteria(selector->mAutomationId.get(), node->getAutomationId())) return false;
-        if (checkCriteria(selector->mType.get(), node->getType())) return false;
-        if (checkCriteria(selector->mStyle.get(), node->getStyle())) return false;
+        if (checkCriteria(selector->mAutomationId, node->getAutomationId())) return false;
+        if (checkCriteria(selector->mType, node->getType())) return false;
+        if (checkCriteria(selector->mStyle, node->getStyle())) return false;
     }
-    if (selector->mMatchPkg.get()) {
+    if (selector->mMatchPkg) {
         node->updateApplication();
-         if (checkCriteria(selector->mPkg.get(), node->getPkg())) return false;
+         if (checkCriteria(selector->mPkg, node->getPkg())) return false;
     }
-    if (selector->mMatchRole.get()) {
+    if (selector->mMatchRole) {
         node->updateRoleName();
-        if (checkCriteria(selector->mRole.get(), node->getRole())) return false;
+        if (checkCriteria(selector->mRole, node->getRole())) return false;
     }
-    if (checkCriteria(selector->mIschecked.get(), node->isChecked())) return false;
-    if (checkCriteria(selector->mIscheckable.get(), node->isCheckable())) return false;
-    if (checkCriteria(selector->mIsclickable.get(), node->isClickable())) return false;
-    if (checkCriteria(selector->mIsenabled.get(), node->isEnabled())) return false;
-    if (checkCriteria(selector->mIsfocused.get(), node->isFocused())) return false;
-    if (checkCriteria(selector->mIsfocusable.get(), node->isFocusable())) return false;
-    if (checkCriteria(selector->mIsscrollable.get(), node->isScrollable())) return false;
-    if (checkCriteria(selector->mIsselected.get(), node->isSelected())) return false;
-    if (checkCriteria(selector->mIsshowing.get(), node->isShowing())) return false;
-    if (checkCriteria(selector->mIsactive.get(), node->isActive())) return false;
-    if (checkCriteria(selector->mIsvisible.get(), node->isVisible())) return false;
-    if (checkCriteria(selector->mIsselectable.get(), node->isSelectable())) return false;
+    if (selector->mMatchChecked && checkCriteria(selector->mIschecked, node->isChecked())) return false;
+    if (selector->mMatchCheckable && checkCriteria(selector->mIscheckable, node->isCheckable())) return false;
+    if (selector->mMatchClickable && checkCriteria(selector->mIsclickable, node->isClickable())) return false;
+    if (selector->mMatchEnabled && checkCriteria(selector->mIsenabled, node->isEnabled())) return false;
+    if (selector->mMatchFocused && checkCriteria(selector->mIsfocused, node->isFocused())) return false;
+    if (selector->mMatchFocusable && checkCriteria(selector->mIsfocusable, node->isFocusable())) return false;
+    if (selector->mMatchScrollable && checkCriteria(selector->mIsscrollable, node->isScrollable())) return false;
+    if (selector->mMatchSelected && checkCriteria(selector->mIsselected, node->isSelected())) return false;
+    if (selector->mMatchShowing && checkCriteria(selector->mIsshowing, node->isShowing())) return false;
+    if (selector->mMatchActive && checkCriteria(selector->mIsactive, node->isActive())) return false;
+    if (selector->mMatchVisible && checkCriteria(selector->mIsvisible, node->isVisible())) return false;
+    if (selector->mMatchSelectable && checkCriteria(selector->mIsselectable, node->isSelectable())) return false;
 
     return true;
 }
@@ -105,8 +103,8 @@ std::shared_ptr<PartialMatch> PartialMatch::accept(const std::shared_ptr<Accessi
 {
     PartialMatch *match = nullptr;
 
-    if ((selector->mMinDepth && (relativeDepth < *(selector->mMinDepth))) ||
-        (selector->mMaxDepth && (relativeDepth > *(selector->mMaxDepth)))) {
+    if ((selector->mMinDepth && relativeDepth < selector->mMinDepth) ||
+        (selector->mMaxDepth && relativeDepth > selector->mMaxDepth)) {
         return std::shared_ptr<PartialMatch>(nullptr);
     }
     if (PartialMatch::checkCriteria(selector, node))

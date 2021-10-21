@@ -18,10 +18,28 @@
 #ifndef _RUNNABLE_H_
 #define _RUNNABLE_H_
 
+/**
+ * @class Runnable
+ *
+ * @ingroup aurum
+ *
+ * @brief Class to run UI automation function and get results.
+ */
 class Runnable
 {
 public:
+    /**
+     * @brief Runnable destructor.
+     *
+     * @since_tizen 5.5
+     */
     virtual ~Runnable() { }
+
+    /**
+     * @brief Do given action.
+     *
+     * @since_tizen 5.5
+     */
     virtual void run() const = 0;
 };
 

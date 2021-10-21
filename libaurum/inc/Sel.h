@@ -26,31 +26,55 @@
 #include "UiSelector.h"
 
 /**
- * @brief Sel class
- * @since_tizen 5.5
+ * @class Sel
+ *
+ * @ingroup aurum
+ *
+ * @brief Helper class for use @UiSelctor easily.
+ *        This class using in Aurum feature UTC in cpp test code.
  */
 class Sel {
 public:
     /**
-     * @brief TBD
+     * @brief Sets the search criteria to match the object's text.
+     *
+     * @param[in] text object text
+     *
+     * @return @UiSelector
+     *
      * @since_tizen 5.5
      */
     static std::shared_ptr<UiSelector> text(std::string text);
 
     /**
-     * @brief TBD
+     * @brief Sets the search criteria to match the object's type.
+     *
+     * @param[in] type object type
+     *
+     * @return @UiSelector
+     *
      * @since_tizen 5.5
      */
-    static std::shared_ptr<UiSelector> type(std::string text);
+    static std::shared_ptr<UiSelector> type(std::string type);
 
     /**
-     * @brief TBD
+     * @brief Sets the search criteria to match the object's style.
+     *
+     * @param[in] style object style
+     *
+     * @return @UiSelector
+     *
      * @since_tizen 5.5
      */
-    static std::shared_ptr<UiSelector> style(std::string text);
+    static std::shared_ptr<UiSelector> style(std::string style);
 
     /**
-     * @brief TBD
+     * @brief Sets the depth of the selector.
+     *
+     * @param[in] depth tree depth from root
+     *
+     * @return @UiSelector
+     *
      * @since_tizen 5.5
      */
     static std::shared_ptr<UiSelector> depth(int depth);

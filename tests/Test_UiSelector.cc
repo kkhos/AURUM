@@ -231,7 +231,7 @@ TEST_F(AurumTestUiSelector, Selector_Parent_P1)
     selpp->text("win1");
 
     auto selp = std::make_shared<UiSelector>();
-    selp->text("node4", true)->fromParent(selpp);
+    selp->text("node4")->fromParent(selpp);
 
     auto sel = std::make_shared<UiSelector>();
     sel->text("node5")->fromParent(selp);
@@ -244,7 +244,7 @@ TEST_F(AurumTestUiSelector, Selector_Parent_P1)
 TEST_F(AurumTestUiSelector, Selector_Parent_N2)
 {
     auto selpp = std::make_shared<UiSelector>();
-    selpp->text("win1", false)->role("window");
+    selpp->text("win1")->role("window");
 
     auto selp = std::make_shared<UiSelector>();
     selp->text("node4")->fromParent(selpp);
