@@ -22,6 +22,8 @@
 UiSelector::UiSelector()
 : mId{}, mAutomationId{}, mRole{}, mText{}, mPkg{}, mType{}, mStyle{},
   mMatchId{}, mMatchAutomationId{}, mMatchRole{}, mMatchText{}, mMatchPkg{}, mMatchType{}, mMatchStyle{},
+  mMatchChecked{}, mMatchCheckable{}, mMatchClickable{}, mMatchEnabled{}, mMatchFocused{}, mMatchFocusable{},
+  mMatchScrollable{}, mMatchSelected{}, mMatchShowing{}, mMatchActive{}, mMatchVisible{}, mMatchSelectable{},
   mMinDepth{}, mMaxDepth{}, mIschecked{}, mIscheckable{}, mIsclickable{},
   mIsenabled{}, mIsfocused{}, mIsfocusable{}, mIsscrollable{}, mIsselected{},
   mIsshowing{}, mIsactive{}, mIsvisible{}, mIsselectable{},
@@ -33,34 +35,34 @@ std::string UiSelector::description()
 {
     std::stringstream ss{};
     ss << "{";
-    if(this->mId) ss << "\"mId\":\"" << *this->mId << "\", ";
-    if(this->mAutomationId) ss << "\"mAutomationId\":\"" << *this->mAutomationId << "\", ";
-    if(this->mRole) ss << "\"mRole\":\"" << *this->mRole << "\", ";
-    if(this->mText) ss << "\"mText\":\"" << *this->mText << "\", ";
-    if(this->mPkg) ss << "\"mPkg\":\"" << *this->mPkg << "\", ";
-    if(this->mType) ss << "\"mType\":\"" << *this->mType << "\", ";
-    if(this->mStyle) ss << "\"mStyle\":\"" << *this->mStyle << "\", ";
-    if(this->mMatchId) ss << "\"mMatchId\":\"" << ((*this->mMatchId)?"true":"false") << "\", ";
-    if(this->mMatchAutomationId) ss << "\"mMatchAutomationId\":\"" << ((*this->mMatchAutomationId)?"true":"false") << "\", ";
-    if(this->mMatchRole) ss << "\"mMatchRole\":\"" << ((*this->mMatchRole)?"true":"false") << "\", ";
-    if(this->mMatchText) ss << "\"mMatchText\":\"" << ((*this->mMatchText)?"true":"false") << "\", ";
-    if(this->mMatchPkg) ss << "\"mMatchPkg\":\"" << ((*this->mMatchPkg)?"true":"false") << "\", ";
-    if(this->mMatchType) ss << "\"mMatchType\":\"" << ((*this->mMatchType)?"true":"false") << "\", ";
-    if(this->mMatchStyle) ss << "\"mMatchStyle\":\"" << ((*this->mMatchStyle)?"true":"false" )<< "\", ";
-    if(this->mMinDepth) ss << "\"mMinDepth\":\"" << *this->mMinDepth << "\", ";
-    if(this->mMaxDepth) ss << "\"mMaxDepth\":\"" << *this->mMaxDepth << "\", ";
-    if(this->mIschecked) ss << "\"mIschecked\":\"" << ((*this->mIschecked)?"true":"false") << "\", ";
-    if(this->mIscheckable) ss << "\"mIscheckable\":\"" << ((*this->mIscheckable)?"true":"false") << "\", ";
-    if(this->mIsclickable) ss << "\"mIsclickable\":\"" << ((*this->mIsclickable)?"true":"false") << "\", ";
-    if(this->mIsenabled) ss << "\"mIsenabled\":\"" << ((*this->mIsenabled)?"true":"false") << "\", ";
-    if(this->mIsfocused) ss << "\"mIsfocused\":\"" << ((*this->mIsfocused)?"true":"false") << "\", ";
-    if(this->mIsfocusable) ss << "\"mIsfocusable\":\"" << ((*this->mIsfocusable)?"true":"false") << "\", ";
-    if(this->mIsscrollable) ss << "\"mIsscrollable\":\"" << ((*this->mIsscrollable)?"true":"false") << "\", ";
-    if(this->mIsselected) ss << "\"mIsselected\":\"" << ((*this->mIsselected)?"true":"false") << "\", ";
-    if(this->mIsshowing) ss << "\"mIsshowing\":\"" << ((*this->mIsshowing)?"true":"false") << "\", ";
-    if(this->mIsactive) ss << "\"mIsactive\":\"" << ((*this->mIsactive)?"true":"false") << "\", ";
-    if(this->mIsvisible) ss << "\"mIsvisible\":\"" << ((*this->mIsvisible)?"true":"false") << "\", ";
-    if(this->mIsselectable) ss << "\"mIsselectable\":\"" << ((*this->mIsselectable)?"true":"false") << "\", ";
+    if(!this->mId.empty()) ss << "\"mId\":\"" << this->mId << "\", ";
+    if(!this->mAutomationId.empty()) ss << "\"mAutomationId\":\"" << this->mAutomationId << "\", ";
+    if(!this->mRole.empty()) ss << "\"mRole\":\"" << this->mRole << "\", ";
+    if(!this->mText.empty()) ss << "\"mText\":\"" << this->mText << "\", ";
+    if(!this->mPkg.empty()) ss << "\"mPkg\":\"" << this->mPkg << "\", ";
+    if(!this->mType.empty()) ss << "\"mType\":\"" << this->mType << "\", ";
+    if(!this->mStyle.empty()) ss << "\"mStyle\":\"" << this->mStyle << "\", ";
+    if(this->mMatchId) ss << "\"mMatchId\":\"" << ((this->mMatchId)?"true":"false") << "\", ";
+    if(this->mMatchAutomationId) ss << "\"mMatchAutomationId\":\"" << ((this->mMatchAutomationId)?"true":"false") << "\", ";
+    if(this->mMatchRole) ss << "\"mMatchRole\":\"" << ((this->mMatchRole)?"true":"false") << "\", ";
+    if(this->mMatchText) ss << "\"mMatchText\":\"" << ((this->mMatchText)?"true":"false") << "\", ";
+    if(this->mMatchPkg) ss << "\"mMatchPkg\":\"" << ((this->mMatchPkg)?"true":"false") << "\", ";
+    if(this->mMatchType) ss << "\"mMatchType\":\"" << ((this->mMatchType)?"true":"false") << "\", ";
+    if(this->mMatchStyle) ss << "\"mMatchStyle\":\"" << ((this->mMatchStyle)?"true":"false" )<< "\", ";
+    if(this->mMinDepth) ss << "\"mMinDepth\":\"" << this->mMinDepth << "\", ";
+    if(this->mMaxDepth) ss << "\"mMaxDepth\":\"" << this->mMaxDepth << "\", ";
+    if(this->mMatchChecked) ss << "\"mMatchChecked\":\"" << ((this->mMatchChecked)?"true":"false") << "\", ";
+    if(this->mMatchCheckable) ss << "\"mMatchCheckable\":\"" << ((this->mMatchCheckable)?"true":"false") << "\", ";
+    if(this->mMatchClickable) ss << "\"mMatchClickable\":\"" << ((this->mMatchClickable)?"true":"false") << "\", ";
+    if(this->mMatchEnabled) ss << "\"mMatchEnabled\":\"" << ((this->mMatchEnabled)?"true":"false") << "\", ";
+    if(this->mMatchFocused) ss << "\"mMatchFocused\":\"" << ((this->mMatchFocused)?"true":"false") << "\", ";
+    if(this->mMatchFocusable) ss << "\"mMatchFocusable\":\"" << ((this->mMatchFocusable)?"true":"false") << "\", ";
+    if(this->mMatchScrollable) ss << "\"mMatchScrollable\":\"" << ((this->mMatchScrollable)?"true":"false") << "\", ";
+    if(this->mMatchSelected) ss << "\"mMatchSelected\":\"" << ((this->mMatchSelected)?"true":"false") << "\", ";
+    if(this->mMatchShowing) ss << "\"mMatchShowing\":\"" << ((this->mMatchShowing)?"true":"false") << "\", ";
+    if(this->mMatchActive) ss << "\"mMatchActive\":\"" << ((this->mMatchActive)?"true":"false") << "\", ";
+    if(this->mMatchVisible) ss << "\"mMatchVisible\":\"" << ((this->mMatchVisible)?"true":"false") << "\", ";
+    if(this->mMatchSelectable) ss << "\"mMatchSelectable\":\"" << ((this->mMatchSelectable)?"true":"false") << "\", ";
     if(this->mParent) {
         ss << "\"mParent\":" << this->mParent->description();
     }
@@ -75,150 +77,162 @@ std::string UiSelector::description()
     return ss.str();
 }
 
-UiSelector *UiSelector::text(std::string text, bool match)
+UiSelector *UiSelector::text(std::string text)
 {
-    this->mText = std::make_unique<std::string>(text);
-    this->mMatchText = std::make_unique<bool>(match);
+    this->mText = text;
+    this->mMatchText = true;
     return this;
 }
 
-UiSelector *UiSelector::pkg(std::string text, bool match)
+UiSelector *UiSelector::pkg(std::string text)
 {
-    this->mPkg = std::make_unique<std::string>(text);
-    this->mMatchPkg = std::make_unique<bool>(match);
+    this->mPkg = text;
+    this->mMatchPkg = true;
     return this;
 }
 
-UiSelector *UiSelector::id(std::string text, bool match)
+UiSelector *UiSelector::id(std::string text)
 {
-    this->mId = std::make_unique<std::string>(text);
-    this->mMatchId = std::make_unique<bool>(match);
+    this->mId = text;
+    this->mMatchId = true;
     return this;
 }
 
-UiSelector *UiSelector::automationid(std::string text, bool match)
+UiSelector *UiSelector::automationid(std::string text)
 {
-    this->mAutomationId = std::make_unique<std::string>(text);
-    this->mMatchAutomationId = std::make_unique<bool>(match);
+    this->mAutomationId = text;
+    this->mMatchAutomationId = true;
     return this;
 }
 
-UiSelector *UiSelector::role(std::string text, bool match)
+UiSelector *UiSelector::role(std::string text)
 {
-    this->mRole = std::make_unique<std::string>(text);
-    this->mMatchRole = std::make_unique<bool>(match);
+    this->mRole = text;
+    this->mMatchRole = true;
     return this;
 }
 
-UiSelector *UiSelector::type(std::string text, bool match)
+UiSelector *UiSelector::type(std::string text)
 {
-    this->mType = std::make_unique<std::string>(text);
-    this->mMatchType = std::make_unique<bool>(match);
+    this->mType = text;
+    this->mMatchType = true;
     return this;
 }
 
-UiSelector *UiSelector::style(std::string text, bool match)
+UiSelector *UiSelector::style(std::string text)
 {
-    this->mStyle = std::make_unique<std::string>(text);
-    this->mMatchStyle = std::make_unique<bool>(match);
+    this->mStyle = text;
+    this->mMatchStyle = true;
     return this;
 }
 
 UiSelector *UiSelector::depth(int depth)
 {
-    this->mMinDepth = std::make_unique<int>(depth);
-    this->mMaxDepth = std::make_unique<int>(depth);
+    this->mMinDepth = depth;
+    this->mMaxDepth = depth;
     return this;
 }
 
 UiSelector *UiSelector::depth(int minDepth, int maxDepth)
 {
-    this->mMinDepth = std::make_unique<int>(minDepth);
-    this->mMaxDepth = std::make_unique<int>(maxDepth);
+    this->mMinDepth = minDepth;
+    this->mMaxDepth = maxDepth;
     return this;
 }
 
 UiSelector *UiSelector::minDepth(int depth)
 {
-    this->mMinDepth = std::make_unique<int>(depth);
+    this->mMinDepth = depth;
     return this;
 }
 
 UiSelector *UiSelector::maxDepth(int depth)
 {
-    this->mMaxDepth = std::make_unique<int>(depth);
+    this->mMaxDepth = depth;
     return this;
 }
 
-UiSelector *UiSelector::isChecked(bool cond)
+UiSelector *UiSelector::isChecked(bool condition)
 {
-    this->mIschecked = std::make_unique<bool>(cond);
+    this->mIschecked = condition;
+    this->mMatchChecked = true;
     return this;
 }
 
-UiSelector *UiSelector::isCheckable(bool cond)
+UiSelector *UiSelector::isCheckable(bool condition)
 {
-    this->mIscheckable = std::make_unique<bool>(cond);
+    this->mIscheckable = condition;
+    this->mMatchCheckable = true;
     return this;
 }
 
-UiSelector *UiSelector::isClickable(bool cond)
+UiSelector *UiSelector::isClickable(bool condition)
 {
-    this->mIsclickable = std::make_unique<bool>(cond);
+    this->mIsclickable = condition;
+    this->mMatchClickable = true;
     return this;
 }
 
-UiSelector *UiSelector::isEnabled(bool cond)
+UiSelector *UiSelector::isEnabled(bool condition)
 {
-    this->mIsenabled = std::make_unique<bool>(cond);
+    this->mIsenabled = condition;
+    this->mMatchEnabled = true;
     return this;
 }
 
-UiSelector *UiSelector::isFocused(bool cond)
+UiSelector *UiSelector::isFocused(bool condition)
 {
-    this->mIsfocused = std::make_unique<bool>(cond);
+    this->mIsfocused = condition;
+    this->mMatchFocused = true;
     return this;
 }
 
-UiSelector *UiSelector::isFocusable(bool cond)
+UiSelector *UiSelector::isFocusable(bool condition)
 {
-    this->mIsfocusable = std::make_unique<bool>(cond);
+    this->mIsfocusable = condition;
+    this->mMatchFocusable = true;
     return this;
 }
 
-UiSelector *UiSelector::isScrollable(bool cond)
+UiSelector *UiSelector::isScrollable(bool condition)
 {
-    this->mIsscrollable = std::make_unique<bool>(cond);
+    this->mIsscrollable = condition;
+    this->mMatchScrollable = true;
     return this;
 }
 
-UiSelector *UiSelector::isSelected(bool cond)
+UiSelector *UiSelector::isSelected(bool condition)
 {
-    this->mIsselected = std::make_unique<bool>(cond);
+    this->mIsselected = condition;
+    this->mMatchSelected = true;
     return this;
 }
 
-UiSelector *UiSelector::isShowing(bool cond)
+UiSelector *UiSelector::isShowing(bool condition)
 {
-    this->mIsshowing = std::make_unique<bool>(cond);
+    this->mIsshowing = condition;
+    this->mMatchShowing = true;
     return this;
 }
 
-UiSelector *UiSelector::isActive(bool cond)
+UiSelector *UiSelector::isActive(bool condition)
 {
-    this->mIsactive = std::make_unique<bool>(cond);
+    this->mIsactive = condition;
+    this->mMatchActive = true;
     return this;
 }
 
-UiSelector *UiSelector::isVisible(bool cond)
+UiSelector *UiSelector::isVisible(bool condition)
 {
-    this->mIsvisible = std::make_unique<bool>(cond);
+    this->mIsvisible = condition;
+    this->mMatchVisible = true;
     return this;
 }
 
-UiSelector *UiSelector::isSelectable(bool cond)
+UiSelector *UiSelector::isSelectable(bool condition)
 {
-    this->mIsselectable = std::make_unique<bool>(cond);
+    this->mIsselectable = condition;
+    this->mMatchSelectable = true;
     return this;
 }
 

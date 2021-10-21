@@ -15,66 +15,100 @@
  *
  */
 
-#ifndef _UTIL_H_
-#define _UTIL_H_
+#ifndef _UNTIL_H_
+#define _UNTIL_H_
 
 #include <functional>
 #include "ISearchable.h"
 #include "UiSelector.h"
+
 /**
- * @brief Until class
- * @since_tizen 5.5
+ * @class Until
+ *
+ * @ingroup Aurum
+ *
+ * @brief Class for use in a @Waiter class waiting for a particular object to find
+ *        or waiting for a state change.
  */
 class Until {
 private:
     /**
-     * @brief TBD
+     * @brief Until constructor.
+     *
      * @since_tizen 5.5
      */
     Until();
 
     /**
-     * @brief TBD
+     * @brief Until constructor with selector.
+     *
+     * @param[in] selector @UiSelector
+     *
      * @since_tizen 5.5
      */
     Until(const std::shared_ptr<UiSelector> selector);
 
     /**
-     * @brief TBD
+     * @brief UiSelector constructor with source.
+     *
+     * @param[in] src reference of Until source
+     *
      * @since_tizen 5.5
      */
     Until(const Until &src);
 
     /**
-     * @brief TBD
+     * @brief UiSelector constructor with source.
+     *
+     * @param[in] src Rvalue reference of Util source
+     *
      * @since_tizen 5.5
      */
     Until(const Until &&src);
 
 public:
     /**
-     * @brief TBD
+     * @brief UiSelector destructor.
+     *
      * @since_tizen 5.5
      */
     ~Until();
 
 public:
     /**
-     * @brief TBD
+     * @brief Checks that there is an object that are satisfied with selector condition.
+     *
+     * @param[in] selector @UiSelctor
+     *
+     * @return function that performs hasObject
+     *         returned function will return true if object has, else false
+     *
      * @since_tizen 5.5
      */
     static std::function<bool(const ISearchable *)> hasObject(
         const std::shared_ptr<UiSelector> selector);
 
     /**
-     * @brief TBD
+     * @brief Checks that there is an object that are satisfied with selector condition.
+     *
+     * @param[in] selector @UiSelctor
+     *
+     * @return function that performs findObject
+     *         returned function will return obj if succeed, else nulltpr
+     *
      * @since_tizen 5.5
      */
     static std::function<std::shared_ptr<UiObject>(const ISearchable *)>
                                                  findObject(const std::shared_ptr<UiSelector> selector);
 
     /**
-     * @brief TBD
+     * @brief Checks the given object on checkable state.
+     *
+     * @param[in] isCheckable checkable or not
+     *
+     * @return function that check checkable
+     *         returned function will return true if checkable, else false
+     *
      * @since_tizen 5.5
      */
     static std::function<bool(const UiObject *)> checkable(

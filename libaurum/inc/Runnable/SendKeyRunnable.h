@@ -22,12 +22,30 @@
 
 #include "Runnable.h"
 
+/**
+ * @class SendKeyRunnable
+ *
+ * @ingroup aurum
+ *
+ * @brief Class to send key event and wait a result.
+ */
 class SendKeyRunnable : public Runnable {
 protected:
     std::string mKeycode;
 
 public:
+    /**
+     * @brief SendKeyRunnable constructor with keycode.
+     *
+     * @param[in] keycode keycode string
+     *
+     * @since_tizen 5.5
+     */
     SendKeyRunnable(std::string keycode);
+
+    /**
+     * @copydoc Runnable::run()
+     */
     void run() const override;
 };
 
