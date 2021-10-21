@@ -25,17 +25,17 @@ std::shared_ptr<UiSelector> Sel::text(std::string text)
     return sel;
 }
 
-std::shared_ptr<UiSelector> Sel::type(std::string text)
+std::shared_ptr<UiSelector> Sel::type(std::string type)
 {
     std::shared_ptr<UiSelector> sel = std::make_shared<UiSelector>();
-    sel->type(text);
+    sel->type(type);
     return sel;
 }
 
-std::shared_ptr<UiSelector> Sel::style(std::string text)
+std::shared_ptr<UiSelector> Sel::style(std::string style)
 {
     std::shared_ptr<UiSelector> sel = std::make_shared<UiSelector>();
-    sel->style(text);
+    sel->style(style);
     return sel;
 }
 
