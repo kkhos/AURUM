@@ -23,363 +23,353 @@
 #include <string>
 #include <vector>
 #include <memory>
+
 /**
- * @brief UiSelector class
- * @since_tizen 5.5
+ * @class UiSelector
+ *
+ * @ingroup aurum
+ *
+ * @brief Specifies the elements in the layout hierarchy for tests to target,
+ *        filtered by properties such as text value,
+ *        content-description, class name, and state information.
+ *        User can also target an element by its location in a layout hierarchy.
  */
 class UiSelector {
 public:
     /**
-     * @brief TBD
+     * @brief UiSelector constructor.
+     *
      * @since_tizen 5.5
      */
     UiSelector();
 
     /**
-     * @brief TBD
+     * @brief UiSelector constructor with selector.
      * @since_tizen 5.5
      */
     UiSelector(UiSelector &selector);
 
-    // UiSelector(const UiSelector &src);
-    //        UiSelector &operator= (const UiSelector& src);
-
     /**
-     * @brief TBD
+     * @brief Gets Selector information as string.
+     *
      * @since_tizen 5.5
      */
     std::string description();
 
 public:
     /**
-     * @brief TBD
+     * @brief Sets the search criteria to match the object's Id.
+     *
+     * @param[in] text object Id
+     * @param[in] match check Id is a search criteria or not (default = true)
+     *
+     * @return UiSelector class instance
+     *
      * @since_tizen 5.5
      */
     UiSelector *id(std::string text, bool match = true);
 
     /**
-     * @brief TBD
+     * @brief Sets the search criteria to match the object's automationid.
+     *
+     * @param[in] text object automationid
+     * @param[in] match check automationid is a search criteria or not (default = true)
+     *
+     * @return UiSelector class instance
+     *
      * @since_tizen 5.5
      */
     UiSelector *automationid(std::string text, bool match = true);
 
     /**
-     * @brief TBD
+     * @brief Sets the search criteria to match the object's text.
+     *
+     * @param[in] text object text
+     * @param[in] match check text is a search criteria or not (default = true)
+     *
+     * @return UiSelector class instance
+     *
      * @since_tizen 5.5
      */
     UiSelector *text(std::string text, bool match = true);
 
     /**
-     * @brief TBD
+     * @brief Sets the search criteria to match the object's package name.
+     *
+     * @param[in] text object package name
+     * @param[in] match check package name is a search criteria or not (default = true)
+     *
+     * @return UiSelector class instance
+     *
      * @since_tizen 5.5
      */
     UiSelector *pkg(std::string text, bool match = true);
 
     /**
-     * @brief TBD
+     * @brief Sets the search criteria to match the object's role.
+     *
+     * @param[in] text object role name
+     * @param[in] match check role name is a search criteria or not (default = true)
+     *
+     * @return UiSelector class instance
+     *
      * @since_tizen 5.5
      */
     UiSelector *role(std::string text, bool match = true);
 
     /**
-     * @brief TBD
+     * @brief Sets the search criteria to match the object's type.
+     *
+     * @param[in] text object type name
+     * @param[in] match check type name is a search criteria or not (default = true)
+     *
+     * @return UiSelector class instance
+     *
      * @since_tizen 5.5
      */
     UiSelector *type(std::string text, bool match = true);
 
     /**
-     * @brief TBD
+     * @brief Sets the search criteria to match the object's style.
+     *
+     * @param[in] text object style name
+     * @param[in] match check style name is a search criteria or not (default = true)
+     *
+     * @return UiSelector class instance
+     *
      * @since_tizen 5.5
      */
     UiSelector *style(std::string text, bool match = true);
 
     /**
-     * @brief TBD
+     * @brief Sets the depth of the selector.
+     *
+     * @param[in] depth depth
+     *
+     * @return UiSelector class instance
+     *
      * @since_tizen 5.5
      */
     UiSelector *depth(int depth);
 
     /**
-     * @brief TBD
+     * @brief Sets the min and max depth of the selector.
+     *
+     * @param[in] minDepth min depth
+     * @param[in] maxDepth max depth
+     *
+     * @return UiSelector class instance
+     *
      * @since_tizen 5.5
      */
     UiSelector *depth(int minDepth, int maxDepth);
 
     /**
-     * @brief TBD
+     * @brief Sets the min depth of the selector.
+     *
+     * @param[in] depth min depth
+     *
+     * @return UiSelector class instance
+     *
      * @since_tizen 5.5
      */
     UiSelector *minDepth(int depth);
 
     /**
-     * @brief TBD
+     * @brief Sets the max depth of the selector.
+     *
+     * @param[in] depth max depth
+     *
+     * @return UiSelector class instance
+     *
      * @since_tizen 5.5
      */
     UiSelector *maxDepth(int depth);
 
     /**
-     * @brief TBD
+     * @brief Sets the search criteria to match the object that is currently checked.
+     *
+     * @param[in] condition object's checked condition
+     *
+     * @return UiSelector class instance
+     *
      * @since_tizen 5.5
      */
-    UiSelector *isChecked(bool cond);
+    UiSelector *isChecked(bool condition);
 
     /**
-     * @brief TBD
+     * @brief Sets the search criteria to match the object that is checkable.
+     *
+     * @param[in] condition object's checkable condition
+     *
+     * @return UiSelector class instance
+     *
      * @since_tizen 5.5
      */
-    UiSelector *isCheckable(bool cond);
+    UiSelector *isCheckable(bool condition);
 
     /**
-     * @brief TBD
+     * @brief Sets the search criteria to match the object that is clickable.
+     *
+     * @param[in] condition object's clickable condition
+     *
+     * @return UiSelector class instance
+     *
      * @since_tizen 5.5
      */
-    UiSelector *isClickable(bool cond);
+    UiSelector *isClickable(bool condition);
 
     /**
-     * @brief TBD
+     * @brief Sets the search criteria to match the object that is currently checked.
+     *
+     * @param[in] condition object's checked condition
+     *
+     * @return UiSelector class instance
+     *
      * @since_tizen 5.5
      */
-    UiSelector *isEnabled(bool cond);
+    UiSelector *isEnabled(bool condition);
 
     /**
-     * @brief TBD
+     * @brief Sets the search criteria to match the object that is currently focused.
+     *
+     * @param[in] condition object's focused condition
+     *
+     * @return UiSelector class instance
+     *
      * @since_tizen 5.5
      */
-    UiSelector *isFocused(bool cond);
+    UiSelector *isFocused(bool condition);
 
     /**
-     * @brief TBD
+     * @brief Sets the search criteria to match the object that is focusable.
+     *
+     * @param[in] condition object's focusable condition
+     *
+     * @return UiSelector class instance
+     *
      * @since_tizen 5.5
      */
-    UiSelector *isFocusable(bool cond);
+    UiSelector *isFocusable(bool condition);
 
     /**
-     * @brief TBD
+     * @brief Sets the search criteria to match the object that is scrollable.
+     *
+     * @param[in] condition object's scrollable condition
+     *
+     * @return UiSelector class instance
+     *
      * @since_tizen 5.5
      */
-    UiSelector *isScrollable(bool cond);
+    UiSelector *isScrollable(bool condition);
 
     /**
-     * @brief TBD
+     * @brief Sets the search criteria to match the object that is currently selected.
+     *
+     * @param[in] condition object's selected condition
+     *
+     * @return UiSelector class instance
+     *
      * @since_tizen 5.5
      */
-    UiSelector *isSelected(bool cond);
+    UiSelector *isSelected(bool condition);
 
     /**
-     * @brief TBD
+     * @brief Sets the search criteria to match the object that is showing.
+     *
+     * @param[in] condition object's showing condition
+     *
+     * @return UiSelector class instance
+     *
      * @since_tizen 5.5
      */
-    UiSelector *isShowing(bool cond);
+    UiSelector *isShowing(bool condition);
 
     /**
-     * @brief TBD
+     * @brief Sets the search criteria to match the object that is currently active.
+     *
+     * @param[in] condition object's active condition
+     *
+     * @return UiSelector class instance
+     *
      * @since_tizen 5.5
      */
-    UiSelector *isActive(bool cond);
+    UiSelector *isActive(bool condition);
 
     /**
-     * @brief TBD
+     * @brief Sets the search criteria to match the object that is currently visible.
+     *
+     * @param[in] condition object's visible condition
+     *
+     * @return UiSelector class instance
+     *
      * @since_tizen 5.5
      */
-    UiSelector *isVisible(bool cond);
+    UiSelector *isVisible(bool condition);
 
     /**
-     * @brief TBD
+     * @brief Sets the search criteria to match the object that is selectable.
+     *
+     * @param[in] condition object's selectable condition
+     *
+     * @return UiSelector class instance
+     *
      * @since_tizen 5.5
      */
-    UiSelector *isSelectable(bool cond);
+    UiSelector *isSelectable(bool condition);
 
     /**
-     * @brief TBD
+     * @brief Sets the child selector.
+     *
+     * @param[in] child @UiSelector
+     *
+     * @return UiSelector class instance
+     *
      * @since_tizen 5.5
      */
     UiSelector *hasChild(std::shared_ptr<UiSelector> child);
 
     /**
-     * @brief TBD
+     * @brief Sets the parent selector.
+     *
+     * @param[in] parent @UiSelector
+     *
+     * @return UiSelector class instance
+     *
      * @since_tizen 5.5
      */
     UiSelector *fromParent(std::shared_ptr<UiSelector> parent);
 
 public:
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<std::string> mId;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<std::string> mAutomationId;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<std::string> mRole;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<std::string> mText;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<std::string> mPkg;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<std::string> mType;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<std::string> mStyle;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<bool> mMatchId;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<bool> mMatchAutomationId;
-
-        /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<bool> mMatchRole;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<bool> mMatchText;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<bool> mMatchPkg;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<bool> mMatchType;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<bool> mMatchStyle;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<int> mMinDepth;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<int> mMaxDepth;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<bool> mIschecked;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<bool> mIscheckable;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<bool> mIsclickable;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<bool> mIsenabled;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<bool> mIsfocused;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<bool> mIsfocusable;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<bool> mIsscrollable;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<bool> mIsselected;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<bool> mIsshowing;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<bool> mIsactive;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<bool> mIsvisible;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::unique_ptr<bool> mIsselectable;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::vector<std::shared_ptr<UiSelector>> mChild;
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     std::shared_ptr<UiSelector> mParent;
 };
 

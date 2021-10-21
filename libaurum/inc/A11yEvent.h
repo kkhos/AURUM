@@ -21,6 +21,13 @@
 #include "bitmask.h"
 #include <string>
 
+/**
+ * @class A11yEvent
+ *
+ * @ingroup aurum
+ *
+ * @brief Enum class for A11y Event.
+ */
 enum class A11yEvent {
      EVENT_NONE = 0x00000,
      EVENT_WINDOW_CREATE = 0x00001,
@@ -47,16 +54,80 @@ enum class A11yEvent {
 
 enableEnumClassBitfield(A11yEvent);
 
+/**
+ * @class A11yEventInfo
+ *
+ * @ingroup aurum
+ *
+ * @brief Class that defines the methods for matching the actual A11y Event with an enum value.
+ */
 class A11yEventInfo {
 public:
+    /**
+     * @brief A11yEventInfo constructor.
+     *
+     * @since_tizen 5.5
+     */
     A11yEventInfo();
+
+    /**
+     * @brief A11yEventInfo constructor with event as enum value, name, pkg.
+     *
+     * @since_tizen 5.5
+     */
     A11yEventInfo(A11yEvent event, std::string name = "", std::string pkg = "");
+
+    /**
+     * @brief A11yEventInfo constructor with event as string value, name, pkg.
+     *
+     * @since_tizen 5.5
+     */
     A11yEventInfo(std::string event, std::string name = "", std::string pkg = "");
+
+    /**
+     * @brief A11yEventInfo destructor.
+     *
+     * @since_tizen 5.5
+     */
     ~A11yEventInfo();
+
 public:
+    /**
+     * @brief Gets A11yEvent.
+     *
+     * @return @A11yEvent
+     *
+     * @since_tizen 5.5
+     */
     A11yEvent getEvent();
+
+    /**
+     * @brief Gets matched A11yEvent.
+     *
+     * @param[in] event name of event
+     *
+     * @return @A11yEvent
+     *
+     * @since_tizen 5.5
+     */
     A11yEvent getEvent(std::string event);
+
+    /**
+     * @brief Gets event name of event.
+     *
+     * @return string
+     *
+     * @since_tizen 5.5
+     */
     std::string getName();
+
+    /**
+     * @brief Gets package name of event.
+     *
+     * @return string
+     *
+     * @since_tizen 5.5
+     */
     std::string getPkg();
 
 protected:
