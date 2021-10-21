@@ -31,35 +31,58 @@
 #include <vector>
 
 /**
- * @brief Comparer class
- * @since_tizen 5.5
+ * @class Comparer
+ *
+ * @ingroup aurum
+ *
+ * @brief Class that traverses the object tree and finds an object that match the givin condition.
  */
 class Comparer {
 private:
     /**
-     * @brief TBD
+     * @brief Comparer constructor with device, selector, early return flag.
+     *
      * @since_tizen 5.5
      */
     Comparer(const std::shared_ptr<UiDevice> device, const std::shared_ptr<UiSelector> selector,
              const bool &earlyReturn);
 
     /**
-     * @brief TBD
+     * @brief Comparer destructor.
+     *
      * @since_tizen 5.5
      */
     ~Comparer();
 
 public:
     /**
-     * @brief TBD
+     * @brief find object from device.
+     *        it finds focused window then start to find object as it root.
+     *
+     * @param[in] device @UiDevice
+     * @param[in] selector @UiSelector
+     * @param[in] root @AccessibleNode root object(focused window on current state)
+     *
+     * @return AccessibleNode if found, else nulltpr
+     *
      * @since_tizen 5.5
      */
-    static std::shared_ptr<AccessibleNode>          findObject(const std::shared_ptr<UiDevice> device,
-                                                    const std::shared_ptr<UiSelector> selector,
-                                                    const std::shared_ptr<AccessibleNode> root);
+    static std::shared_ptr<AccessibleNode> findObject(const std::shared_ptr<UiDevice> device,
+                                                      const std::shared_ptr<UiSelector> selector,
+                                                      const std::shared_ptr<AccessibleNode> root);
 
     /**
-     * @brief TBD
+     * @brief find object from device.
+     *        it finds focused window then start to find object as it root.
+     *        Finds all objects to the end of tree.
+     *
+     * @param[in] device @UiDevice
+     * @param[in] selector @UiSelector
+     * @param[in] root @AccessibleNode root object(focused window on current state)
+     * @param[in] earlyReturn find all object or not (default = false)
+     *
+     * @return AccessibleNode if found, else nulltpr
+     *
      * @since_tizen 5.5
      */
     static std::vector<std::shared_ptr<AccessibleNode>> findObjects(
@@ -68,13 +91,26 @@ public:
 
 private:
     /**
-     * @brief TBD
+     * @internal
+     *
+     * @brief Starts find object from root.
+     *
+     * @param[in] root @AccessibleNode
+     *
      * @since_tizen 5.5
      */
     std::vector<std::shared_ptr<AccessibleNode>> findObjects(const std::shared_ptr<AccessibleNode> root);
 
     /**
-     * @brief TBD
+     * @internal
+     *
+     * @brief It updates all partialMatches and traverse tree till given depth to find objects
+     *
+     * @param[in] root @AccessibleNode
+     * @param[in] index node index
+     * @param[in] depth tree depth
+     * @param[in] partialMatches @PartialMatch list
+     *
      * @since_tizen 5.5
      */
     std::vector<std::shared_ptr<AccessibleNode>> findObjects(
@@ -82,20 +118,9 @@ private:
         std::list<std::shared_ptr<PartialMatch>> &partialMatches);
 
 private:
-    /**
-     * @brief TBD
-     */
     const std::shared_ptr<UiDevice> mDevice;
-
-    /**
-     * @brief TBD
-     */
     const std::shared_ptr<UiSelector> mSelector;
-
-    /**
-     * @brief TBD
-     */
-    bool              mEarlyReturn;
+    bool mEarlyReturn;
 };
 
 #endif
