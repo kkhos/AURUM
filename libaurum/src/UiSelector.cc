@@ -150,75 +150,75 @@ UiSelector *UiSelector::maxDepth(int depth)
     return this;
 }
 
-UiSelector *UiSelector::isChecked(bool cond)
+UiSelector *UiSelector::isChecked(bool condition)
 {
-    this->mIschecked = std::make_unique<bool>(cond);
+    this->mIschecked = std::make_unique<bool>(condition);
     return this;
 }
 
-UiSelector *UiSelector::isCheckable(bool cond)
+UiSelector *UiSelector::isCheckable(bool condition)
 {
-    this->mIscheckable = std::make_unique<bool>(cond);
+    this->mIscheckable = std::make_unique<bool>(condition);
     return this;
 }
 
-UiSelector *UiSelector::isClickable(bool cond)
+UiSelector *UiSelector::isClickable(bool condition)
 {
-    this->mIsclickable = std::make_unique<bool>(cond);
+    this->mIsclickable = std::make_unique<bool>(condition);
     return this;
 }
 
-UiSelector *UiSelector::isEnabled(bool cond)
+UiSelector *UiSelector::isEnabled(bool condition)
 {
-    this->mIsenabled = std::make_unique<bool>(cond);
+    this->mIsenabled = std::make_unique<bool>(condition);
     return this;
 }
 
-UiSelector *UiSelector::isFocused(bool cond)
+UiSelector *UiSelector::isFocused(bool condition)
 {
-    this->mIsfocused = std::make_unique<bool>(cond);
+    this->mIsfocused = std::make_unique<bool>(condition);
     return this;
 }
 
-UiSelector *UiSelector::isFocusable(bool cond)
+UiSelector *UiSelector::isFocusable(bool condition)
 {
-    this->mIsfocusable = std::make_unique<bool>(cond);
+    this->mIsfocusable = std::make_unique<bool>(condition);
     return this;
 }
 
-UiSelector *UiSelector::isScrollable(bool cond)
+UiSelector *UiSelector::isScrollable(bool condition)
 {
-    this->mIsscrollable = std::make_unique<bool>(cond);
+    this->mIsscrollable = std::make_unique<bool>(condition);
     return this;
 }
 
-UiSelector *UiSelector::isSelected(bool cond)
+UiSelector *UiSelector::isSelected(bool condition)
 {
-    this->mIsselected = std::make_unique<bool>(cond);
+    this->mIsselected = std::make_unique<bool>(condition);
     return this;
 }
 
-UiSelector *UiSelector::isShowing(bool cond)
+UiSelector *UiSelector::isShowing(bool condition)
 {
-    this->mIsshowing = std::make_unique<bool>(cond);
+    this->mIsshowing = std::make_unique<bool>(condition);
     return this;
 }
 
-UiSelector *UiSelector::isActive(bool cond)
+UiSelector *UiSelector::isActive(bool condition)
 {
-    this->mIsactive = std::make_unique<bool>(cond);
+    this->mIsactive = std::make_unique<bool>(condition);
     return this;
 }
 
-UiSelector *UiSelector::isVisible(bool cond)
+UiSelector *UiSelector::isVisible(bool condition)
 {
-    this->mIsvisible = std::make_unique<bool>(cond);
+    this->mIsvisible = std::make_unique<bool>(condition);
     return this;
 }
 
-UiSelector *UiSelector::isSelectable(bool cond)
+UiSelector *UiSelector::isSelectable(bool condition)
 {
-    this->mIsselectable = std::make_unique<bool>(cond);
+    this->mIsselectable = std::make_unique<bool>(condition);
     return this;
 }
 

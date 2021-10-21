@@ -26,34 +26,53 @@
 #include <vector>
 
 class UiObject;
+
 /**
- * @brief ISearchable interface
- * @since_tizen 5.5
+ * @class ISearchable
+ *
+ * @ingroup aurum
+ *
+ * @brief ISearchable interface that defines a methods for the behavior search object in ui layout hierarchy.
  */
 class ISearchable {
 public:
-
     /**
-     * @brief TBD
+     * @brief ISearchable Destructor.
+     *
      * @since_tizen 5.5
      */
     virtual ~ISearchable() {}
 
     /**
-     * @brief TBD
+     * @brief Checks that there is an object that are satisfied with selector condition.
+     *
+     * @param selector @UiSelctor
+     *
+     * @return true if object has, else false
+     *
      * @since_tizen 5.5
      */
     virtual bool hasObject(const std::shared_ptr<UiSelector> selector) const = 0;
 
     /**
-     * @brief TBD
+     * @brief Checks that there is an object that are satisfied with selector condition.
+     *
+     * @param selector @UiSelctor
+     *
+     * @return UiObject if succeed, else nulltpr
+     *
      * @since_tizen 5.5
      */
     virtual std::shared_ptr<UiObject> findObject(
         const std::shared_ptr<UiSelector> selector) const = 0;
 
     /**
-     * @brief TBD
+     * @brief Checks that there is an object that are satisfied with selector condition.
+     *
+     * @param selector @UiSelctor
+     *
+     * @return UiObject vector if succeed, else nulltpr
+     *
      * @since_tizen 5.5
      */
     virtual std::vector<std::shared_ptr<UiObject>> findObjects(

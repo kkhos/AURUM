@@ -21,20 +21,25 @@
 #include "Point2D.h"
 
 /**
- * @brief Rect Class
- * @since_tizen 5.5
+ * @class Rect
+ *
+ * @ingroup aurum
+ *
+ * @brief Class for Rect expression and operation.
  */
 template <typename T>
 class Rect {
 public:
     /**
-     * @brief TBD
+     * @brief Rect constructor.
+     *
      * @since_tizen 5.5
      */
     Rect() : mTopLeft{0, 0}, mBottomRight{0, 0} {}
 
     /**
-     * @brief TBD
+     * @brief Rect constructor with top topleft point, bottom right point
+     *
      * @since_tizen 5.5
      */
     Rect(const Point2D<T> &tl, const Point2D<T> &br)
@@ -43,7 +48,8 @@ public:
     }
 
     /**
-     * @brief TBD
+     * @brief Rect constructor with top left, top right, bottom left, bottom right coordinates.
+     *
      * @since_tizen 5.5
      */
     Rect(const T &x1, const T &y1, const T &x2, const T &y2)
@@ -52,7 +58,8 @@ public:
     }
 
     /**
-     * @brief TBD
+     * @brief Rect constructor with Rect source.
+     *
      * @since_tizen 5.5
      */
     Rect(const Rect<T> &src)
@@ -63,7 +70,10 @@ public:
     }
 
     /**
-     * @brief TBD
+     * @brief Gets middle point of Rect.
+     *
+     * @return Point2D
+     *
      * @since_tizen 5.5
      */
     Point2D<T> midPoint() const
@@ -73,19 +83,30 @@ public:
     }
 
     /**
-     * @brief TBD
+     * @brief Gets width value of Rect.
+     *
+     * @return width value
+     *
      * @since_tizen 5.5
      */
     T width() const { return mBottomRight.x - mTopLeft.x; }
 
     /**
-     * @brief TBD
+     * @brief Gets height value of Rect.
+     *
+     * @return height value
+     *
      * @since_tizen 5.5
      */
     T height() const { return mBottomRight.y - mTopLeft.y; }
 
     /**
-     * @brief TBD
+     * @brief Checks given Rect is same as this or not.
+     *
+     * @param rhs @Rect
+     *
+     * @return true if same, else false
+     *
      * @since_tizen 5.5
      */
     inline bool operator==(const Rect<T>& rhs)
@@ -94,21 +115,19 @@ public:
     }
 
     /**
-     * @brief TBD
+     * @brief Checks given Rect is not same as this or not.
+     *
+     * @param rhs @Rect
+     *
+     * @return true if same, else false
+     *
      * @since_tizen 5.5
      */
     inline bool operator!=(const Rect<T>& rhs){
         return !(*this == rhs);
     }
 
-    /**
-     * @brief TBD
-     */
     Point2D<T> mTopLeft;
-
-    /**
-     * @brief TBD
-     */
     Point2D<T> mBottomRight;
 };
 

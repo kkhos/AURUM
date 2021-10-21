@@ -19,20 +19,25 @@
 #define _POINT2D_H_
 
 /**
- * @brief Point2d Class
- * @since_tizen 5.5
+ * @class Point2D
+ *
+ * @ingroup aurum
+ *
+ * @brief Class for X, Y coordinate expression and operation.
  */
 template <typename T>
 class Point2D {
 public:
     /**
-     * @brief TBD
+     * @brief Point2D constructor.
+     *
      * @since_tizen 5.5
      */
     Point2D() : x{0}, y{0} {}
 
     /**
-     * @brief TBD
+     * @brief Point2D constructor with Point2D source.
+     *
      * @since_tizen 5.5
      */
     Point2D(const Point2D &src)
@@ -42,7 +47,8 @@ public:
     }
 
     /**
-     * @brief TBD
+     * @brief Point2D constructor with template.
+     *
      * @since_tizen 5.5
      */
     Point2D(const T &x, const T &y)
@@ -52,7 +58,12 @@ public:
     }
 
     /**
-     * @brief TBD
+     * @brief Checks given coordinate is same as this or not.
+     *
+     * @param rhs @Point2D
+     *
+     * @return true if same, else false
+     *
      * @since_tizen 5.5
      */
     inline bool operator==(const Point2D<T>& rhs)
@@ -61,7 +72,12 @@ public:
     }
 
     /**
-     * @brief TBD
+     * @brief Checks given coordinate is not same as this or not.
+     *
+     * @param rhs @Point2D
+     *
+     * @return true if same, else false
+     *
      * @since_tizen 5.5
      */
     inline bool operator!=(const Point2D<T>& rhs)
@@ -69,14 +85,7 @@ public:
         return !(*this == rhs);
     }
 
-    /**
-     * @brief TBD
-     */
     T x;
-
-    /**
-     * @brief TBD
-     */
     T y;
 };
 
