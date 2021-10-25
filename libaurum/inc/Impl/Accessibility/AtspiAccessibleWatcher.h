@@ -33,7 +33,10 @@
 #include <map>
 
 /**
- * @brief WindowActivateInfoType enum class
+ * @internal
+ *
+ * @brief WindowActivateInfoType enum class.
+ *
  * @since_tizen 5.5
  */
 enum class WindowActivateInfoType {
@@ -44,6 +47,8 @@ enum class WindowActivateInfoType {
 };
 
 /**
+ * @internal
+ *
  * @brief IAtspiEvents Interface
  * @since_tizen 5.5
  */
@@ -62,7 +67,16 @@ public:
     virtual void onObjectDefunct(AtspiAccessible *node) = 0;
 };
 
-
+/**
+ * @internal
+ *
+ * @class AtspiAccessibleWatcher
+ *
+ * @ingroup aurum
+ *
+ * @brief Class that communicates with the atspi sever and generates an event,
+ *        and generates a node that matches with atspi node.
+ */
 class AtspiAccessibleWatcher : public AccessibleWatcher, public IAtspiEvents {
 public:
     AtspiAccessibleWatcher();
@@ -70,128 +84,76 @@ public:
 
 public:
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc @AccessibleWatcher::getApplicationCount()
      */
     virtual int getApplicationCount(void) const override;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc @AccessibleWatcher::getApplicationAt()
      */
     virtual std::shared_ptr<AccessibleApplication> getApplicationAt(int index) const override;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc @AccessibleWatcher::getApplications()
      */
     virtual std::vector<std::shared_ptr<AccessibleApplication>> getApplications(void) const override;
 
     /**
-     * @brief TBD
-     * @since_tizen 6.5
+     * @copydoc @AccessibleWatcher::executeAndWaitForEvents()
      */
     virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout) override;
 
+    /**
+     * @copydoc @AccessibleWatcher::getActiveAppMap()
+     */
     virtual std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> getActiveAppMap(void) override;
 
 public:
     /**
-     * @brief TBD
+     * @brief Listen atspi events.
+     *
+     * @param[in] event AtspiEvent
+     * @param[in] watcher @AtspiAccessibleWatcher
+     *
      * @since_tizen 5.5
      */
-    static void onAtspiEvents(AtspiEvent *event, void *user_data);
+    static void onAtspiEvents(AtspiEvent *event, void *watcher);
 
     /**
-     * @brief TBD
+     * @brief Notifies when object defunct.
+     *
+     * @param[in] node @AtspiAccessible
+     *
      * @since_tizen 5.5
      */
     void onObjectDefunct(AtspiAccessible *node) override;
 
     /**
-     * @brief TBD
+     * @brief AtspiEvent listener.
+     *
+     * @param[in] event AtspiEvent
+     * @param[in] user_data data for event by user
+     *
      * @since_tizen 6.5
      */
     static void onEventListener(AtspiEvent *event, void *user_data);
 private:
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
+    /** Private methods for Mock Test **/
     bool removeFromActivatedList(AtspiAccessible *node);
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     bool addToActivatedList(AtspiAccessible *node);
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     bool removeFromWindowSet(AtspiAccessible *node);
-
-    /**
-     * @brief TBD
-     * @since_tizen 5.5
-     */
     bool addToWindowSet(AtspiAccessible *node);
-
-    /**
-     * @brief TBD
-     * @since_tizen 6.5
-     */
     void addEventListener(AtspiEventListener *listener, A11yEvent type);
-
-    /**
-     * @brief TBD
-     * @since_tizen 6.5
-     */
     void removeEventListener(AtspiEventListener *listener, A11yEvent type);
 
-public:
-    /**
-     * @brief TBD
-     */
-    static guint timeoutId;
-
 private:
-    /**
-     * @brief TBD
-     */
-    GDBusProxy *                                  mDbusProxy;
-
-    /**
-     * @brief TBD
-     */
-    std::list<AtspiAccessible *>          mActivatedWindowList;
-
-    /**
-     * @brief TBD
-     */
-    std::list<AtspiAccessible *>          mActivatedApplicationList;
-
-    /**
-     * @brief TBD
-     */
-    std::set<AtspiAccessible *>            mWindowSet;
-
-    /**
-     * @brief TBD
-     */
+    GDBusProxy *mDbusProxy;
+    std::list<AtspiAccessible *> mActivatedWindowList;
+    std::list<AtspiAccessible *> mActivatedApplicationList;
+    std::set<AtspiAccessible *> mWindowSet;
     std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> mActiveAppMap;
-
-    /**
-     * @brief TBD
-     */
-    static GThread *                                      mEventThread;
-
-    /**
-     * @brief TBD
-     */
-    static std::vector<std::shared_ptr<A11yEventInfo>>    mEventQueue;
-
+    static GThread *mEventThread;
+    static std::vector<std::shared_ptr<A11yEventInfo>> mEventQueue;
     static std::mutex mMutex;
 };
 

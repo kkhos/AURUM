@@ -18,21 +18,57 @@
 #ifndef _IEVENT_CONSUMER_H_
 #define _IEVENT_CONSUMER_H_
 
+/**
+ * @class EventType
+ *
+ * @ingroup aurum
+ *
+ * @brief Enum class for Event Type.
+ */
 enum class EventType {
     none = 0,
     Object = 1,
 };
 
+/**
+ * @class ObjectEventType
+ *
+ * @ingroup aurum
+ *
+ * @brief Enum class for Object Event Type.
+ */
 enum class ObjectEventType {
     none = 0,
     ObjectStateDefunct = 1,
 };
 
+/**
+ * @class IEventConsumer
+ *
+ * @ingroup aurum
+ *
+ * @brief Class for Event generate.
+ */
 class IEventConsumer
 {
 public:
+    /**
+     * @brief IEventConsumer destructor.
+     *
+     * @since_tizen 5.5
+     */
     virtual ~IEventConsumer() {};
-    virtual void notify(int type, int type2, void *src) = 0;
+
+    /**
+     * @brief Notifies event to source node.
+     *
+     * @param[in] type1 @EventType
+     * @param[in] type2 @ObjectEventType
+     * @param[in] src source Node ptr
+     *
+     * @since_tizen 5.5
+     */
+    virtual void notify(int type1, int type2, void *src) = 0;
 };
 
 #endif

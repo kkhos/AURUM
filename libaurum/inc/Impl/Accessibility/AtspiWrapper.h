@@ -21,8 +21,18 @@
 #include <atspi/atspi.h>
 #include <mutex>
 
+/**
+ * @internal
+ *
+ * @class AtspiWrapper
+ *
+ * @ingroup aurum
+ *
+ * @brief Class that matches atspi Window Node.
+ */
 class AtspiWrapper {
 public:
+    /** Wrapper methods for Atspi APIs **/
     static GArray *Atspi_state_set_get_states(AtspiStateSet *set);
     static GArray *Atspi_accessible_get_interfaces(AtspiAccessible *node);
     static gchar *Atspi_accessible_get_name(AtspiAccessible *node, GError **error);
@@ -49,7 +59,6 @@ public:
 
 private:
     static std::recursive_mutex mMutex;
-    //static std::unique_lock<std::mutex> mLock;
 };
 
 #endif
