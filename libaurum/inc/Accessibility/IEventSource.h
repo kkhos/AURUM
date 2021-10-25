@@ -21,13 +21,51 @@
 #include "IEventConsumer.h"
 #include <memory>
 
+/**
+ * @class IEventSource
+ *
+ * @ingroup aurum
+ *
+ * @brief Class for Event generate.
+ */
 class IEventSource
 {
 public:
+    /**
+     * @brief IEventSource destructor.
+     *
+     * @since_tizen 5.5
+     */
     virtual ~IEventSource() {};
+
+    /**
+     * @brief Attaches event source.
+     *
+     * @param[in] source @IEventConsumer
+     *
+     * @since_tizen 5.5
+     */
     virtual void attach(std::shared_ptr<IEventConsumer> source) = 0;
+
+    /**
+     * @brief Detaches event source.
+     *
+     * @param[in] source @IEventConsumer
+     *
+     * @since_tizen 5.5
+     */
     virtual void detach(std::shared_ptr<IEventConsumer> source) = 0;
-    virtual void notifyAll(int type, int type2, void *src) = 0;
+
+    /**
+     * @brief Notifies all attached event.
+     *
+     * @param[in] type1 @EventType
+     * @param[in] type2 @ObjectEventType
+     * @param[in] src source Node ptr
+     *
+     * @since_tizen 5.5
+     */
+    virtual void notifyAll(int type1, int type2, void *src) = 0;
 };
 
 #endif
