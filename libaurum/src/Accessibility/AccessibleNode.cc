@@ -50,11 +50,11 @@ std::string AccessibleNode::description() {
     return ss.str();
 }
 
-void AccessibleNode::notify(int type, int type2, void *src)
+void AccessibleNode::notify(int type1, int type2, void *src)
 {
     void *handler = getRawHandler();
 
-    if ((EventType)type == EventType::Object && (ObjectEventType)type2 == ObjectEventType::ObjectStateDefunct) {
+    if ((EventType)type1 == EventType::Object && (ObjectEventType)type2 == ObjectEventType::ObjectStateDefunct) {
         if (handler == src) invalidate();
     }
 }

@@ -155,14 +155,14 @@ AtspiAccessibleWatcher::~AtspiAccessibleWatcher()
     atspi_exit();
 }
 
-void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *user_data)
+void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
 {
     if (!event->source)
     {
         return;
     }
     char *name = NULL, *pkg = NULL;
-    AtspiAccessibleWatcher *instance = (AtspiAccessibleWatcher *)user_data;
+    AtspiAccessibleWatcher *instance = (AtspiAccessibleWatcher *)watcher;
     name = AtspiWrapper::Atspi_accessible_get_name(event->source, NULL);
 
     AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(event->source, NULL);

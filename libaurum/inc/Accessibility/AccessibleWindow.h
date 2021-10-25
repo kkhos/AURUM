@@ -25,60 +25,81 @@
 
 class AccessibleApplication;
 
+/**
+ * @class AccessibleWindow
+ *
+ * @ingroup aurum
+ *
+ * @brief Class that matches atspi Window Node.
+ *        It provides information such as window title, window properties.
+ */
 class AccessibleWindow {
 public:
     /**
-     * @brief TBD
+     * @brief AccessibleWindow constructor.
+     *
+     * @param app @AccessibleApplication
+     * @param node @AccessibleNode
+     *
      * @since_tizen 6.0
      */
     AccessibleWindow(std::shared_ptr<AccessibleApplication> app, std::shared_ptr<AccessibleNode> node);
 
     /**
-     * @brief TBD
+     * @brief AccessibleWindow destructor.
+     *
      * @since_tizen 6.0
      */
     virtual ~AccessibleWindow();
 
 public:
     /**
-     * @brief TBD
+     * @brief Gets window title.
+     *
+     * @return string
+     *
      * @since_tizen 6.0
      */
     std::string getTitle(void);
 
     /**
-     * @brief TBD
+     * @brief Checks current window showing or not.
+     *
+     * @return true if it is showing, else false
+     *
      * @since_tizen 6.0
      */
     bool isShowing();
 
     /**
-     * @brief TBD
+     * @brief Checks current window active or not.
+     *
+     * @return true if it actives, else false
+     *
      * @since_tizen 6.0
      */
     bool isActive();
 
     /**
-     * @brief TBD
+     * @brief Gets the application node that this window belongs.
+     *
+     * @return @AccessibleApplication ptr
+     *
      * @since_tizen 6.0
      */
     std::shared_ptr<AccessibleApplication> getApplication(void);
 
     /**
-     * @brief TBD
-     * @since_tizen 6.0
+     * @brief Gets matched @AccessibleNode.
+     *
+     * @return @AccessibleNode
+     *
+     * @since_tizen 5.5
      */
     std::shared_ptr<AccessibleNode> getAccessibleNode(void);
 
 private:
-     /**
-     * @brief TBD
-     */
     std::shared_ptr<AccessibleApplication> mApp;
-
-    /**
-     * @brief TBD
-     */
     std::shared_ptr<AccessibleNode> mNode;
 };
 

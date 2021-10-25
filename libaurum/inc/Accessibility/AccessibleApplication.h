@@ -23,18 +23,75 @@
 
 #include <memory>
 
+/**
+ * @class AccessibleApplication
+ *
+ * @ingroup aurum
+ *
+ * @brief Class that matches atspi Application Node.
+ *        It provides information such as active window, application name.
+ */
 class AccessibleApplication {
 public:
+    /**
+     * @brief AccessibleApplication constructor.
+     *
+     * @since_tizen 5.5
+     */
     AccessibleApplication(std::shared_ptr<AccessibleNode> node);
+
+    /**
+     * @brief AccessibleApplication destructor.
+     *
+     * @since_tizen 5.5
+     */
     virtual ~AccessibleApplication();
 
 public:
+    /**
+     * @brief Gets matched @AccessibleNode.
+     *
+     * @return @AccessibleNode
+     *
+     * @since_tizen 5.5
+     */
     std::shared_ptr<AccessibleNode> getAccessibleNode();
+
+    /**
+     * @brief Checks this active or not.
+     *
+     * @return true if it actives, else false
+     *
+     * @since_tizen 5.5
+     */
     bool isActive(void);
 
 public:
+    /**
+     * @brief Gets application's window.
+     *
+     * @return @AccessibleWindow vector
+     *
+     * @since_tizen 5.5
+     */
     virtual std::vector<std::shared_ptr<AccessibleWindow>> getWindows(void) = 0;
+
+    /**
+     * @brief Gets currently active window.
+     *
+     * @return @AccessibleWindow vector
+     *
+     * @since_tizen 5.5
+     */
     virtual std::vector<std::shared_ptr<AccessibleWindow>> getActiveWindows(void);
+
+    /**
+     * @brief Gets application package name.
+     *
+     * @return string
+     *
+     * @since_tizen 5.5
+     */
     virtual std::string getPackageName(void) = 0;
 
 private:

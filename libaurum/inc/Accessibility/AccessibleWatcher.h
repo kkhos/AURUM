@@ -34,94 +34,115 @@
 #include "config.h"
 
 /**
- * @brief AccessibleWatcher class
- * @since_tizen 5.5
+ * @class AccessibleWatcher
+ *
+ * @ingroup aurum
+ *
+ * @brief Class that communicates with the atspi sever and generates an event,
+ *        and generates a node that matches with atspi node.
  */
 class AccessibleWatcher : public IEventSource {
 public:
     /**
-     * @brief TBD
+     * @brief AccessibleWatcher constructor.
+     *
      * @since_tizen 5.5
      */
     AccessibleWatcher();
 
     /**
-     * @brief TBD
+     * @brief AccessibleWatcher destructor.
+     *
      * @since_tizen 5.5
      */
     virtual ~AccessibleWatcher();
 
     /**
-     * @brief TBD
+     * @brief Gets @AccessibleWatcher instance.
+     *
      * @since_tizen 5.5
      */
     static AccessibleWatcher *getInstance(AccessibleWatcher *watcherImpl = nullptr);
 
 public:
     /**
-     * @brief TBD
+     * @brief Gets current running application count in device.
+     *
+     * @return application count
+     *
      * @since_tizen 5.5
      */
     virtual int getApplicationCount(void) const = 0;
 
     /**
-     * @brief TBD
+     * @brief Gets application class at specific index.
+     *
+     * @param index application index
+     * 
+     * @return @AccessibleApplication ptr
+     *
      * @since_tizen 5.5
      */
     virtual std::shared_ptr<AccessibleApplication> getApplicationAt(int index) const = 0;
 
     /**
-     * @brief TBD
+     * @brief Gets application node vector.
+     *
+     * @return @AccessibleApplication vector
+     *
      * @since_tizen 5.5
      */
     virtual std::vector<std::shared_ptr<AccessibleApplication>> getApplications(void) const = 0;
 
     /**
-     * @brief TBD
+     * @brief Executes runnable command and wait given event.
+     *
+     * @param cmd @Runnable
+     * @param type @A11yEvent
+     * @param timeout time(millisecond) to wait event occur
+     *
+     * @return true if event occur in time, else false
+     *
      * @since_tizen 6.5
      */
     virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout) = 0;
 
     /**
-     * @brief TBD
+     * @brief Gets active application map.
+     *
+     * @return map (pure Atspi Node ptr(@AtspiAccessible), @AccessibleApplication)
      * @since_tizen 6.5
      */
     virtual std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> getActiveAppMap(void) = 0;
 
 public:
     /**
-     * @brief TBD
+     * @brief Gets active application vector.
+     *
+     * @return @AccessibleApplication vector
+     *
      * @since_tizen 5.5
      */
     virtual std::vector<std::shared_ptr<AccessibleApplication>> getActiveApplications(void) const;
+
 public:
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc @IEventSource::attach()
      */
     void attach(std::shared_ptr<IEventConsumer> source) override;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc @IEventSource::detach()
      */
     void detach(std::shared_ptr<IEventConsumer> source) override;
 
     /**
-     * @brief TBD
-     * @since_tizen 5.5
+     * @copydoc @IEventSource::notifyAll()
      */
-    void notifyAll(int type, int type2, void *src) override;
+    void notifyAll(int type1, int type2, void *src) override;
 
 private:
-    /**
-     * @brief TBD
-     */
     std::set<std::shared_ptr<IEventConsumer>> mSources;
-
-    /**
-     * @brief TBD
-     */
     std::mutex mLock;
 };
 

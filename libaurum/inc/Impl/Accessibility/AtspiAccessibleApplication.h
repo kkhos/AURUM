@@ -23,30 +23,42 @@
 #include <memory>
 #include <atspi/atspi.h>
 
+/**
+ * @internal
+ *
+ * @class AtspiAccessibleApplication
+ *
+ * @ingroup aurum
+ *
+ * @brief Class that matches atspi Application Node.
+ *        It provides information such as active window, application name.
+ */
 class AtspiAccessibleApplication : public AccessibleApplication, public std::enable_shared_from_this<AtspiAccessibleApplication> {
 public:
     /**
-     * @brief TBD
+     * @brief AtspiAccessibleApplication constructor.
+     *
+     * @param node @AccessibleNode
+     *
      * @since_tizen 6.0
      */
     AtspiAccessibleApplication(std::shared_ptr<AccessibleNode> node);
 
     /**
-     * @brief TBD
+     * @brief AtspiAccessibleApplication destructor.
+     *
      * @since_tizen 6.0
      */
     virtual ~AtspiAccessibleApplication();
 
 public:
     /**
-     * @brief TBD
-     * @since_tizen 6.0
+     * @copydoc @AccessibleApplication::getWindows()
      */
     std::vector<std::shared_ptr<AccessibleWindow>> getWindows(void) override;
 
     /**
-     * @brief TBD
-     * @since_tizen 6.0
+     * @copydoc @AccessibleApplication::getPackageName()
      */
     std::string getPackageName(void) override;
 };

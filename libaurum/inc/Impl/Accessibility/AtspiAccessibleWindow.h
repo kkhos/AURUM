@@ -20,17 +20,31 @@
 
 #include "AccessibleWindow.h"
 
+/**
+ * @internal
+ *
+ * @class AtspiAccessibleWindow
+ *
+ * @ingroup aurum
+ *
+ * @brief Class that matches atspi Window Node.
+ */
 class AtspiAccessibleWindow : public AccessibleWindow {
 public:
     /**
-     * @brief TBD
-     * @since_tizen 6.0
+     * @brief AtspiAccessibleWindow constructor.
+     *
+     * @param app @AccessibleApplication
+     * @param node @AccessibleNode
+     *
+     * @since_tizen 5.5
      */
     AtspiAccessibleWindow(std::shared_ptr<AccessibleApplication> app, std::shared_ptr<AccessibleNode> node);
 
     /**
-     * @brief TBD
-     * @since_tizen 6.0
+     * @brief AtspiAccessibleWindow desturctor.
+     *
+     * @since_tizen 5.5
      */
     ~AtspiAccessibleWindow();
 
