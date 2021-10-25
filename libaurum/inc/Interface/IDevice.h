@@ -63,8 +63,8 @@ public:
     /**
      * @brief Performs a click at arbitrary coordinates specified by the user.
      *
-     * @param x x coordinate
-     * @param y y coordinate
+     * @param[in] x x coordinate
+     * @param[in] y y coordinate
      *
      * @return true if the click succeeded else false
      *
@@ -75,9 +75,9 @@ public:
     /**
      * @brief Performs a click at arbitrary coordinates specified by the user during the specified time.
      *
-     * @param x x coordinate
-     * @param y y coordinate
-     * @param durationMs total time to maintain down action
+     * @param[in] x x coordinate
+     * @param[in] y y coordinate
+     * @param[in] durationMs total time to maintain down action
      *
      * @return true if the click succeeded else false
      *
@@ -89,12 +89,12 @@ public:
      * @brief Performs a drag from one coordinate to another using the number of steps
      *        during the specified time.
      *
-     * @param sx start x coordinate
-     * @param sy start y coordinate
-     * @param ex end x coordinate
-     * @param ey end y coordinate
-     * @param steps the number of move steps
-     * @param durationMs total time to drag event
+     * @param[in] sx start x coordinate
+     * @param[in] sy start y coordinate
+     * @param[in] ex end x coordinate
+     * @param[in] ey end y coordinate
+     * @param[in] steps the number of move steps
+     * @param[in] durationMs total time to drag event
      *
      * @return true if the drag succeeded else false
      *
@@ -106,8 +106,8 @@ public:
     /**
      * @brief Performs a touch down at arbitrary coordinates specified by the user.
      *
-     * @param x x coordinate
-     * @param y y coordinate
+     * @param[in] x x coordinate
+     * @param[in] y y coordinate
      *
      * @return touch event number
      *
@@ -118,9 +118,9 @@ public:
     /**
      * @brief Performs a touch move at arbitrary coordinates specified by the user.
      *
-     * @param x x coordinate
-     * @param y y coordinate
-     * @param seq touch event number
+     * @param[in] x x coordinate
+     * @param[in] y y coordinate
+     * @param[in] seq touch event number
      *
      * @return true if the touch move succeeded else false
      *
@@ -131,9 +131,9 @@ public:
     /**
      * @brief Performs a touch up at arbitrary coordinates specified by the user.
      *
-     * @param x x coordinate
-     * @param y y coordinate
-     * @param seq touch event number
+     * @param[in] x x coordinate
+     * @param[in] y y coordinate
+     * @param[in] seq touch event number
      *
      * @return true if the touch up succeeded else false
      *
@@ -144,8 +144,8 @@ public:
     /**
      * @brief Performs a wheel up on device with event amount and duration.
      *
-     * @param amount the number of wheel up event sent
-     * @param durationMs total time to wheel up event
+     * @param[in] amount the number of wheel up event sent
+     * @param[in] durationMs total time to wheel up event
      *
      * @return true if the wheel up succeeded else false
      *
@@ -156,8 +156,8 @@ public:
     /**
      * @brief Performs a wheel down on device with event amount and duration.
      *
-     * @param amount the number of wheel down event sent
-     * @param durationMs total time to wheel down event
+     * @param[in] amount the number of wheel down event sent
+     * @param[in] durationMs total time to wheel down event
      *
      * @return true if the wheel down succeeded else false
      *
@@ -168,7 +168,7 @@ public:
     /**
      * @brief Simulates a press on the back key.
      *
-     * @param type one of @KeyRequestType
+     * @param[in] type one of @KeyRequestType
      *
      * @return true if the press back succeeded else false
      *
@@ -179,7 +179,7 @@ public:
     /**
      * @brief Simulates a press on the home key.
      *
-     * @param type one of @KeyRequestType
+     * @param[in] type one of @KeyRequestType
      *
      * @return true if the press home succeeded else false
      *
@@ -190,7 +190,7 @@ public:
     /**
      * @brief Simulates a press on the menu key.
      *
-     * @param type one of @KeyRequestType
+     * @param[in] type one of @KeyRequestType
      *
      * @return true if the press menu succeeded else false
      *
@@ -201,7 +201,7 @@ public:
     /**
      * @brief Simulates a press on the volume up key.
      *
-     * @param type one of @KeyRequestType
+     * @param[in] type one of @KeyRequestType
      *
      * @return true if the press volume up succeeded else false
      *
@@ -212,7 +212,7 @@ public:
     /**
      * @brief Simulates a press on the volume down key.
      *
-     * @param type one of @KeyRequestType
+     * @param[in] type one of @KeyRequestType
      *
      * @return true if the press volume down succeeded else false
      *
@@ -223,7 +223,7 @@ public:
     /**
      * @brief Simulates a press on the power key.
      *
-     * @param type one of @KeyRequestType
+     * @param[in] type one of @KeyRequestType
      *
      * @return true if the press power succeeded else false
      *
@@ -234,8 +234,8 @@ public:
     /**
      * @brief Simulates a press on the given keycode key.
      *
-     * @param keycode keycode
-     * @param type one of @KeyRequestType
+     * @param[in] keycode keycode
+     * @param[in] type one of @KeyRequestType
      *
      * @return true if the press keycode succeeded else false
      *
@@ -246,9 +246,9 @@ public:
     /**
      * @brief Take a screenshot of current window and store it as image file.
      *
-     * @param path where the image file should be written to
-     * @param scale scale the screenshot down if needed; 1.0f for original size
-     * @param quality quality of the PNG compression; range: 0-100
+     * @param[in] path where the image file should be written to
+     * @param[in] scale scale the screenshot down if needed; 1.0f for original size
+     * @param[in] quality quality of the PNG compression; range: 0-100
      *
      * @return true if screen shot is created successfully, false otherwise
      *
@@ -259,7 +259,7 @@ public:
     /**
      * @brief Gets device system time.
      *
-     * @param type one of @TimeRequestType
+     * @param[in] type one of @TimeRequestType
      *
      * @return utc time stamp
      *
