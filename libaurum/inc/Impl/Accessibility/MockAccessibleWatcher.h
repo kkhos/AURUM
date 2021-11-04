@@ -32,32 +32,32 @@ class MockAccessibleWatcher : public AccessibleWatcher {
 public:
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     MockAccessibleWatcher();
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual ~MockAccessibleWatcher();
 
 public:
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual int getApplicationCount(void) const override;
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual std::shared_ptr<AccessibleApplication> getApplicationAt(int index) const override;
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual std::vector<std::shared_ptr<AccessibleApplication>> getApplications(void) const override;
 
@@ -72,13 +72,13 @@ public:
 public:
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     void addApplication(std::shared_ptr<AccessibleApplication> application);
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::shared_ptr<MockAccessibleApplication> addApplication(std::string pkgName, Rect<int> geometry, int ifaces, int properties);
 

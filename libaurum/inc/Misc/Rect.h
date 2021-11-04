@@ -33,7 +33,7 @@ public:
     /**
      * @brief Rect constructor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     Rect() : mTopLeft{0, 0}, mBottomRight{0, 0} {}
 
@@ -43,7 +43,7 @@ public:
      * @param[in] tl top left @Point2D
      * @param[in] br bottom right @Point2D
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     Rect(const Point2D<T> &tl, const Point2D<T> &br)
         : mTopLeft(tl), mBottomRight(br)
@@ -58,7 +58,7 @@ public:
      * @param[in] x2 bottom right x coordinate
      * @param[in] y2 bottom right y coordinate
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     Rect(const T &x1, const T &y1, const T &x2, const T &y2)
         : mTopLeft{x1, y1}, mBottomRight{x2, y2}
@@ -70,7 +70,7 @@ public:
      *
      * @param[in] src Rect source
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     Rect(const Rect<T> &src)
 
@@ -84,7 +84,7 @@ public:
      *
      * @return Point2D
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     Point2D<T> midPoint() const
     {
@@ -97,7 +97,7 @@ public:
      *
      * @return width value
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     T width() const { return mBottomRight.x - mTopLeft.x; }
 
@@ -106,7 +106,7 @@ public:
      *
      * @return height value
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     T height() const { return mBottomRight.y - mTopLeft.y; }
 
@@ -117,7 +117,7 @@ public:
      *
      * @return true if same, else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     inline bool operator==(const Rect<T>& rhs)
     {
@@ -131,7 +131,7 @@ public:
      *
      * @return true if same, else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     inline bool operator!=(const Rect<T>& rhs){
         return !(*this == rhs);

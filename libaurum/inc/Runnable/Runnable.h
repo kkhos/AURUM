@@ -31,14 +31,14 @@ public:
     /**
      * @brief Runnable destructor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual ~Runnable() { }
 
     /**
      * @brief Do given action.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual void run() const = 0;
 };

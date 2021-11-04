@@ -94,7 +94,7 @@ public:
      *
      * @return @AccessibleNode
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::shared_ptr<AccessibleNode> getAccessibleNode(void);
 

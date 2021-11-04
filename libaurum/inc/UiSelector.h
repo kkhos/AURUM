@@ -39,20 +39,20 @@ public:
     /**
      * @brief UiSelector constructor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector();
 
     /**
      * @brief UiSelector constructor with selector.
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector(UiSelector &selector);
 
     /**
      * @brief Gets Selector information as string.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::string description();
 
@@ -64,7 +64,7 @@ public:
      *
      * @return UiSelector pointer
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector *id(std::string text);
 
@@ -75,7 +75,7 @@ public:
      *
      * @return UiSelector pointer
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector *automationid(std::string text);
 
@@ -86,7 +86,7 @@ public:
      *
      * @return UiSelector class instance
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector *text(std::string text);
 
@@ -97,7 +97,7 @@ public:
      *
      * @return UiSelector class instance
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector *pkg(std::string text);
 
@@ -108,7 +108,7 @@ public:
      *
      * @return UiSelector class instance
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector *role(std::string text);
 
@@ -119,7 +119,7 @@ public:
      *
      * @return UiSelector class instance
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector *type(std::string text);
 
@@ -130,7 +130,7 @@ public:
      *
      * @return UiSelector class instance
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector *style(std::string text);
 
@@ -141,7 +141,7 @@ public:
      *
      * @return UiSelector class instance
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector *depth(int depth);
 
@@ -153,7 +153,7 @@ public:
      *
      * @return UiSelector class instance
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector *depth(int minDepth, int maxDepth);
 
@@ -164,7 +164,7 @@ public:
      *
      * @return UiSelector class instance
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector *minDepth(int depth);
 
@@ -175,7 +175,7 @@ public:
      *
      * @return UiSelector class instance
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector *maxDepth(int depth);
 
@@ -186,7 +186,7 @@ public:
      *
      * @return UiSelector class instance
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector *isChecked(bool condition);
 
@@ -197,7 +197,7 @@ public:
      *
      * @return UiSelector class instance
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector *isCheckable(bool condition);
 
@@ -208,7 +208,7 @@ public:
      *
      * @return UiSelector class instance
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector *isClickable(bool condition);
 
@@ -219,7 +219,7 @@ public:
      *
      * @return UiSelector class instance
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector *isEnabled(bool condition);
 
@@ -230,7 +230,7 @@ public:
      *
      * @return UiSelector class instance
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector *isFocused(bool condition);
 
@@ -241,7 +241,7 @@ public:
      *
      * @return UiSelector class instance
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector *isFocusable(bool condition);
 
@@ -252,7 +252,7 @@ public:
      *
      * @return UiSelector class instance
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector *isScrollable(bool condition);
 
@@ -263,7 +263,7 @@ public:
      *
      * @return UiSelector class instance
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector *isSelected(bool condition);
 
@@ -274,7 +274,7 @@ public:
      *
      * @return UiSelector class instance
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector *isShowing(bool condition);
 
@@ -285,7 +285,7 @@ public:
      *
      * @return UiSelector class instance
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector *isActive(bool condition);
 
@@ -296,7 +296,7 @@ public:
      *
      * @return UiSelector class instance
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector *isVisible(bool condition);
 
@@ -307,7 +307,7 @@ public:
      *
      * @return UiSelector class instance
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector *isSelectable(bool condition);
 
@@ -318,7 +318,7 @@ public:
      *
      * @return UiSelector class instance
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector *hasChild(std::shared_ptr<UiSelector> child);
 
@@ -329,7 +329,7 @@ public:
      *
      * @return UiSelector class instance
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiSelector *fromParent(std::shared_ptr<UiSelector> parent);
 

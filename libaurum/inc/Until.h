@@ -35,7 +35,7 @@ private:
     /**
      * @brief Until constructor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     Until();
 
@@ -44,7 +44,7 @@ private:
      *
      * @param[in] selector @UiSelector
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     Until(const std::shared_ptr<UiSelector> selector);
 
@@ -53,7 +53,7 @@ private:
      *
      * @param[in] src reference of Until source
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     Until(const Until &src);
 
@@ -62,7 +62,7 @@ private:
      *
      * @param[in] src Rvalue reference of Util source
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     Until(const Until &&src);
 
@@ -70,7 +70,7 @@ public:
     /**
      * @brief UiSelector destructor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     ~Until();
 
@@ -83,7 +83,7 @@ public:
      * @return function that performs hasObject
      *         returned function will return true if object has, else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     static std::function<bool(const ISearchable *)> hasObject(
         const std::shared_ptr<UiSelector> selector);
@@ -96,7 +96,7 @@ public:
      * @return function that performs findObject
      *         returned function will return obj if succeed, else nulltpr
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     static std::function<std::shared_ptr<UiObject>(const ISearchable *)>
                                                  findObject(const std::shared_ptr<UiSelector> selector);
@@ -109,7 +109,7 @@ public:
      * @return function that check checkable
      *         returned function will return true if checkable, else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     static std::function<bool(const UiObject *)> checkable(
         const bool isCheckable);

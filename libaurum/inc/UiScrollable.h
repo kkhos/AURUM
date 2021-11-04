@@ -22,60 +22,60 @@
 #include <memory>
 /**
  * @brief UiScrollable class
- * @since_tizen 5.5
+ * @since_tizen 6.5
  */
 class UiScrollable : public UiObject
 {
 public:
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiScrollable(std::shared_ptr<UiSelector> selector);
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiScrollable();
 
 public:
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool exists(UiObject *obj);
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool scrollToObject(UiObject *obj);
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool scrollForward();
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool scrollForward(int steps);
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool scrollBackward();
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool scrollBackward(int steps);
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool scrollToBegin();
 
