@@ -46,7 +46,7 @@ private:
      * @param[in] selector @UiSelctor
      * @param[in] earlyReturn flag for early return
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     Comparer(const std::shared_ptr<UiDevice> device, const std::shared_ptr<UiSelector> selector,
              const bool &earlyReturn);
@@ -54,7 +54,7 @@ private:
     /**
      * @brief Comparer destructor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     ~Comparer();
 
@@ -69,7 +69,7 @@ public:
      *
      * @return AccessibleNode if found, else nulltpr
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     static std::shared_ptr<AccessibleNode> findObject(const std::shared_ptr<UiDevice> device,
                                                       const std::shared_ptr<UiSelector> selector,
@@ -87,7 +87,7 @@ public:
      *
      * @return AccessibleNode if found, else nulltpr
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     static std::vector<std::shared_ptr<AccessibleNode>> findObjects(
         const std::shared_ptr<UiDevice> device, const std::shared_ptr<UiSelector> selector,
@@ -101,7 +101,7 @@ private:
      *
      * @param[in] root @AccessibleNode
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::vector<std::shared_ptr<AccessibleNode>> findObjects(const std::shared_ptr<AccessibleNode> root);
 
@@ -115,7 +115,7 @@ private:
      * @param[in] depth tree depth
      * @param[in] partialMatches @PartialMatch list
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::vector<std::shared_ptr<AccessibleNode>> findObjects(
         const std::shared_ptr<AccessibleNode> root, const int &index, const int &depth,

@@ -36,14 +36,14 @@ public:
     /**
      * @brief AccessibleApplication constructor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     AccessibleApplication(std::shared_ptr<AccessibleNode> node);
 
     /**
      * @brief AccessibleApplication destructor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual ~AccessibleApplication();
 
@@ -53,7 +53,7 @@ public:
      *
      * @return @AccessibleNode
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::shared_ptr<AccessibleNode> getAccessibleNode();
 
@@ -62,7 +62,7 @@ public:
      *
      * @return true if it actives, else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool isActive(void);
 
@@ -72,7 +72,7 @@ public:
      *
      * @return @AccessibleWindow vector
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual std::vector<std::shared_ptr<AccessibleWindow>> getWindows(void) = 0;
 
@@ -81,7 +81,7 @@ public:
      *
      * @return @AccessibleWindow vector
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual std::vector<std::shared_ptr<AccessibleWindow>> getActiveWindows(void);
 
@@ -90,7 +90,7 @@ public:
      *
      * @return string
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual std::string getPackageName(void) = 0;
 

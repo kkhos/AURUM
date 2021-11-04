@@ -41,14 +41,14 @@ public:
      * @param[in] app @AccessibleApplication
      * @param[in] node @AccessibleNode
      *
-     * @since_tizen 6.0
+     * @since_tizen 6.5
      */
     AccessibleWindow(std::shared_ptr<AccessibleApplication> app, std::shared_ptr<AccessibleNode> node);
 
     /**
      * @brief AccessibleWindow destructor.
      *
-     * @since_tizen 6.0
+     * @since_tizen 6.5
      */
     virtual ~AccessibleWindow();
 
@@ -58,7 +58,7 @@ public:
      *
      * @return string
      *
-     * @since_tizen 6.0
+     * @since_tizen 6.5
      */
     std::string getTitle(void);
 
@@ -67,7 +67,7 @@ public:
      *
      * @return true if it is showing, else false
      *
-     * @since_tizen 6.0
+     * @since_tizen 6.5
      */
     bool isShowing();
 
@@ -76,7 +76,7 @@ public:
      *
      * @return true if it actives, else false
      *
-     * @since_tizen 6.0
+     * @since_tizen 6.5
      */
     bool isActive();
 
@@ -85,7 +85,7 @@ public:
      *
      * @return @AccessibleApplication ptr
      *
-     * @since_tizen 6.0
+     * @since_tizen 6.5
      */
     std::shared_ptr<AccessibleApplication> getApplication(void);
 
@@ -94,7 +94,7 @@ public:
      *
      * @return @AccessibleNode
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::shared_ptr<AccessibleNode> getAccessibleNode(void);
 

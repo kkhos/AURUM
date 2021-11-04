@@ -129,35 +129,35 @@ protected:
     /**
      * @brief Press and release given key during duration time.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool strokeKeyCode(std::string keycode, unsigned int durationMs);
 
     /**
      * @brief Press given key.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool pressKeyCode(std::string keycode);
 
     /**
      * @brief Release given key.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool releaseKeyCode(std::string keycode);
 
     /**
      * @brief Increase touch count and return the number to manage touch count.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     int grabTouchSeqNumber();
 
     /**
      * @brief Delete given touch number.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool releaseTouchSeqNumber(int seq);
 
@@ -165,14 +165,14 @@ private:
     /**
      * @brief Timer utility.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     void startTimer(void);
 
     /**
      * @brief Timer utility.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     int stopTimer(void);
 

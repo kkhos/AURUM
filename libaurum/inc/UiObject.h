@@ -57,7 +57,7 @@ public:
     /**
      * @brief UiObject constructor with device, selector, node pointer.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiObject(const std::shared_ptr<UiDevice> device, const std::shared_ptr<UiSelector> selector,
              const AccessibleNode *node);
@@ -65,7 +65,7 @@ public:
     /**
      * @brief UiObject constructor with device, selector, node.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiObject(const std::shared_ptr<UiDevice> device, const std::shared_ptr<UiSelector> selector,
              std::shared_ptr<AccessibleNode> node);
@@ -73,21 +73,21 @@ public:
     /**
      * @brief UiObject constructor with object source.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiObject(UiObject &&src);
 
     /**
      * @brief UiObject constructor. (default constructor)
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiObject();
 
     /**
      * @brief UiObject destructor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual ~UiObject();
 
@@ -96,7 +96,7 @@ public:
      *
      * @return UiSelector pointer
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::shared_ptr<UiSelector> getSelector();
 
@@ -107,7 +107,7 @@ public:
      *
      * @return true if object exist, otherwise false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool hasObject(const std::shared_ptr<UiSelector> selector) const override;
 
@@ -118,7 +118,7 @@ public:
      *
      * @return Found UiObject pointer
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::shared_ptr<UiObject> findObject(
         const std::shared_ptr<UiSelector> selector) const override;
@@ -130,7 +130,7 @@ public:
      *
      * @return the list of found UiObject pointer vector
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::vector<std::shared_ptr<UiObject>> findObjects(
         const std::shared_ptr<UiSelector> selector) const override;
@@ -159,7 +159,7 @@ public:
      *
      * @return UiObject pointer
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiObject *getParent() const;
 
@@ -168,7 +168,7 @@ public:
      *
      * @return number of child
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     int getChildCount() const;
 
@@ -177,7 +177,7 @@ public:
      *
      * @return UiObject pointer vector
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::vector<std::shared_ptr<UiObject>> getChildren() const;
 
@@ -186,7 +186,7 @@ public:
      *
      * @return UiObject pointer
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::shared_ptr<UiObject> getChildAt(int index) const;
 
@@ -195,7 +195,7 @@ public:
      *
      * @return Node pointer vector
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::shared_ptr<Node> getDescendant();
 
@@ -204,7 +204,7 @@ public:
      *
      * @return string
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::string getApplicationPackage() const;
 
@@ -213,7 +213,7 @@ public:
      *
      * @return string
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::string getId() const;
 
@@ -222,7 +222,7 @@ public:
      *
      * @return string
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::string getAutomationId() const;
 
@@ -231,7 +231,7 @@ public:
      *
      * @return string
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::string getElementType() const;
 
@@ -240,7 +240,7 @@ public:
      *
      * @return string
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::string getElementStyle() const;
 
@@ -249,7 +249,7 @@ public:
      *
      * @return string
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::string getText() const;
 
@@ -258,7 +258,7 @@ public:
      *
      * @return string
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::string getRole() const;
 
@@ -269,7 +269,7 @@ public:
      *
      * @return string
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     void setText(std::string text);
 
@@ -278,7 +278,7 @@ public:
      *
      * @return @Rect
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     const Rect<int> getScreenBoundingBox() const;
 
@@ -287,7 +287,7 @@ public:
      *
      * @return @Rect
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     const Rect<int> getWindowBoundingBox() const;
 
@@ -296,7 +296,7 @@ public:
      *
      * @return true if checkable else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool isCheckable() const;
 
@@ -305,7 +305,7 @@ public:
      *
      * @return true if checked else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool isChecked() const;
 
@@ -314,7 +314,7 @@ public:
      *
      * @return true if clickable else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool isClickable() const;
 
@@ -323,7 +323,7 @@ public:
      *
      * @return true if enabled else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool isEnabled() const;
 
@@ -332,7 +332,7 @@ public:
      *
      * @return true if focusable else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool isFocusable() const;
 
@@ -341,7 +341,7 @@ public:
      *
      * @return true if focused else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool isFocused() const;
 
@@ -350,7 +350,7 @@ public:
      *
      * @return true if longclickable else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool isLongClickable() const;
 
@@ -359,7 +359,7 @@ public:
      *
      * @return true if scrollable else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool isScrollable() const;
 
@@ -368,7 +368,7 @@ public:
      *
      * @return true if selectable else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool isSelectable() const;
 
@@ -377,7 +377,7 @@ public:
      *
      * @return true if selected else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool isSelected() const;
 
@@ -386,7 +386,7 @@ public:
      *
      * @return true if visible else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool isVisible() const;
 
@@ -395,7 +395,7 @@ public:
      *
      * @return true if showing else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool isShowing() const;
 
@@ -404,14 +404,14 @@ public:
      *
      * @return true if active else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool isActive() const;
 
     /**
      * @brief Performs a click action on object.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     void click() const;
 
@@ -420,7 +420,7 @@ public:
      *
      * @param[in] durationMs total time to maintain down action (default = 500ms)
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     void longClick(const unsigned int durationMs = LOGNCLICK_INTERVAL) const;
 
@@ -490,7 +490,7 @@ public:
      *
      * @return true if valid else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool isValid() const;
 
@@ -499,7 +499,7 @@ public:
      *
      * @return AccessibleNode pointer
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::shared_ptr<AccessibleNode> getAccessibleNode() const;
 
