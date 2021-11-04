@@ -57,7 +57,7 @@ public:
     /**
      * @brief IEventConsumer destructor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual ~IEventConsumer() {};
 
@@ -68,7 +68,7 @@ public:
      * @param[in] type2 @ObjectEventType
      * @param[in] src source Node ptr
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual void notify(int type1, int type2, void *src) = 0;
 };

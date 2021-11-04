@@ -36,7 +36,7 @@ public:
     /**
      * @brief IEventSource destructor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual ~IEventSource() {};
 
@@ -45,7 +45,7 @@ public:
      *
      * @param[in] source @IEventConsumer
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual void attach(std::shared_ptr<IEventConsumer> source) = 0;
 
@@ -54,7 +54,7 @@ public:
      *
      * @param[in] source @IEventConsumer
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual void detach(std::shared_ptr<IEventConsumer> source) = 0;
 
@@ -65,7 +65,7 @@ public:
      * @param[in] type2 @ObjectEventType
      * @param[in] src source Node ptr
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual void notifyAll(int type1, int type2, void *src) = 0;
 };

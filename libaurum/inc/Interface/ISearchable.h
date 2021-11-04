@@ -41,7 +41,7 @@ public:
     /**
      * @brief ISearchable Destructor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual ~ISearchable() {}
 
@@ -52,7 +52,7 @@ public:
      *
      * @return true if object has, else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual bool hasObject(const std::shared_ptr<UiSelector> selector) const = 0;
 
@@ -63,7 +63,7 @@ public:
      *
      * @return UiObject if succeed, else nulltpr
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual std::shared_ptr<UiObject> findObject(
         const std::shared_ptr<UiSelector> selector) const = 0;
@@ -75,7 +75,7 @@ public:
      *
      * @return UiObject vector if succeed, else nulltpr
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual std::vector<std::shared_ptr<UiObject>> findObjects(
         const std::shared_ptr<UiSelector> selector) const = 0;

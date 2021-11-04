@@ -44,7 +44,7 @@ public:
      *
      * @return @UiSelector
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     static std::shared_ptr<UiSelector> text(std::string text);
 
@@ -55,7 +55,7 @@ public:
      *
      * @return @UiSelector
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     static std::shared_ptr<UiSelector> type(std::string type);
 
@@ -66,7 +66,7 @@ public:
      *
      * @return @UiSelector
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     static std::shared_ptr<UiSelector> style(std::string style);
 
@@ -77,7 +77,7 @@ public:
      *
      * @return @UiSelector
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     static std::shared_ptr<UiSelector> depth(int depth);
 };

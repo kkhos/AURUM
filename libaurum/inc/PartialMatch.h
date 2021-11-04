@@ -40,7 +40,7 @@ private:
     /**
      * @brief PartialMatch constructor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     PartialMatch();
 
@@ -50,7 +50,7 @@ public:
      *
      * @param[in][in] absolute depth(start from root) value
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     PartialMatch(const std::shared_ptr<UiSelector> selector, const int absDepth);
 
@@ -63,7 +63,7 @@ public:
      * @param[in] depth next depth
      * @param[in] partialMatches @PartialMatch list
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     void update(const std::shared_ptr<AccessibleNode> node, int index, int depth,
                 std::list<std::shared_ptr<PartialMatch>> &partialMatches);
@@ -73,14 +73,14 @@ public:
      *
      * @return true if matched child exist, else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool finalizeMatch();
 
     /**
      * @brief Prints selector information.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::string debugPrint();
 
@@ -97,7 +97,7 @@ public:
      *
      * @return @PartialMatch
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     static std::shared_ptr<PartialMatch> accept(const std::shared_ptr<AccessibleNode> node,
                                                 const std::shared_ptr<UiSelector> selector,
@@ -115,7 +115,7 @@ public:
      *
      * @return @PartialMatch
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     static std::shared_ptr<PartialMatch> accept(const std::shared_ptr<AccessibleNode> node,
                                                 const std::shared_ptr<UiSelector> selector,
@@ -132,7 +132,7 @@ private:
      *
      * @return ture if satisfied, else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     static bool checkCriteria(const std::shared_ptr<UiSelector> selector,
                               const std::shared_ptr<AccessibleNode> node);
@@ -145,7 +145,7 @@ private:
      *
      * @return ture if matched, else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     static bool checkCriteria(const std::string textA, const std::string textB);
 
@@ -157,7 +157,7 @@ private:
      *
      * @return ture if matched, else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     static bool checkCriteria(const bool boolA, const bool boolB);
 

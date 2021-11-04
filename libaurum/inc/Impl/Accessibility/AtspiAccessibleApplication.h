@@ -44,14 +44,14 @@ public:
      *
      * @param[in] node @AccessibleNode
      *
-     * @since_tizen 6.0
+     * @since_tizen 6.5
      */
     AtspiAccessibleApplication(std::shared_ptr<AccessibleNode> node);
 
     /**
      * @brief AtspiAccessibleApplication destructor.
      *
-     * @since_tizen 6.0
+     * @since_tizen 6.5
      */
     virtual ~AtspiAccessibleApplication();
 

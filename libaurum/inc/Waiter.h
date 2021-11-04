@@ -37,7 +37,7 @@ private:
     /**
      * @brief Waiter constructor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     Waiter();
 
@@ -48,7 +48,7 @@ public:
      * @param[in] searchableObject ISearchable pointer
      * @param[in] uiObject UiObject pointer
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     Waiter(const ISearchable *searchableObject,
            const UiObject *uiObject = nullptr);
@@ -56,7 +56,7 @@ public:
     /**
      * @brief Waiter destructor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     ~Waiter();
 
@@ -68,7 +68,7 @@ public:
      *
      * @return template
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     template <typename R>
     R waitFor(const std::function<R(const ISearchable *)> condition) const;
@@ -80,7 +80,7 @@ public:
      *
      * @return template
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     template <typename R>
     R waitFor(const std::function<R(const UiObject *)> object) const;

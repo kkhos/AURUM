@@ -41,7 +41,7 @@ namespace AurumInternal {
  *
  * @brief WindowActivateInfoType enum class.
  *
- * @since_tizen 5.5
+ * @since_tizen 6.5
  */
 enum class WindowActivateInfoType {
     DEFAULT_LABEL_ENALBED = 0x00,
@@ -54,19 +54,19 @@ enum class WindowActivateInfoType {
  * @internal
  *
  * @brief IAtspiEvents Interface
- * @since_tizen 5.5
+ * @since_tizen 6.5
  */
 class IAtspiEvents {
 public:
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual ~IAtspiEvents() {}
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual void onObjectDefunct(AtspiAccessible *node) = 0;
 };
@@ -119,7 +119,7 @@ public:
      * @param[in] event AtspiEvent
      * @param[in] watcher @AtspiAccessibleWatcher
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     static void onAtspiEvents(AtspiEvent *event, void *watcher);
 
@@ -128,7 +128,7 @@ public:
      *
      * @param[in] node @AtspiAccessible
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     void onObjectDefunct(AtspiAccessible *node) override;
 

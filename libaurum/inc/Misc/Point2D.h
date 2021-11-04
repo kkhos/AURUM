@@ -33,7 +33,7 @@ public:
     /**
      * @brief Point2D constructor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     Point2D() : x{0}, y{0} {}
 
@@ -42,7 +42,7 @@ public:
      *
      * @param[in] src Point2D source
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     Point2D(const Point2D &src)
     {
@@ -56,7 +56,7 @@ public:
      * @param[in] x x coordinate
      * @param[in] y y coordinate
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     Point2D(const T &x, const T &y)
     {
@@ -71,7 +71,7 @@ public:
      *
      * @return true if same, else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     inline bool operator==(const Point2D<T>& rhs)
     {
@@ -85,7 +85,7 @@ public:
      *
      * @return true if same, else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     inline bool operator!=(const Point2D<T>& rhs)
     {

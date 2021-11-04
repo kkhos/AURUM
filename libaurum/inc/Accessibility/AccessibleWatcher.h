@@ -48,21 +48,21 @@ public:
     /**
      * @brief AccessibleWatcher constructor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     AccessibleWatcher();
 
     /**
      * @brief AccessibleWatcher destructor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual ~AccessibleWatcher();
 
     /**
      * @brief Gets @AccessibleWatcher instance.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     static AccessibleWatcher *getInstance(AccessibleWatcher *watcherImpl = nullptr);
 
@@ -72,7 +72,7 @@ public:
      *
      * @return application count
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual int getApplicationCount(void) const = 0;
 
@@ -83,7 +83,7 @@ public:
      *
      * @return @AccessibleApplication ptr
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual std::shared_ptr<AccessibleApplication> getApplicationAt(int index) const = 0;
 
@@ -92,7 +92,7 @@ public:
      *
      * @return @AccessibleApplication vector
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual std::vector<std::shared_ptr<AccessibleApplication>> getApplications(void) const = 0;
 
@@ -123,7 +123,7 @@ public:
      *
      * @return @AccessibleApplication vector
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual std::vector<std::shared_ptr<AccessibleApplication>> getActiveApplications(void) const;
 

@@ -27,7 +27,7 @@ namespace Aurum {
 /**
  * @brief TimeRequestType enum class.
  *
- * @since_tizen 5.5
+ * @since_tizen 6.5
  */
 enum class TimeRequestType {
     WALLCLOCK, //Real time of system
@@ -37,7 +37,7 @@ enum class TimeRequestType {
 /**
  * @brief KeyRequestType enum class.
  *
- * @since_tizen 5.5
+ * @since_tizen 6.5
  */
 enum class KeyRequestType {
     STROKE,      //Key press(100ms) and release
@@ -50,14 +50,14 @@ enum class KeyRequestType {
  * @brief IDevice interface.
  *        It defines common device controls such as touch, key events
  *
- * @since_tizen 5.5
+ * @since_tizen 6.5
  */
 class IDevice {
 public:
     /**
      * @brief IDevice Destructor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual ~IDevice() {}
 
@@ -69,7 +69,7 @@ public:
      *
      * @return true if the click succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual bool click(const int x, const int y) = 0;
 
@@ -82,7 +82,7 @@ public:
      *
      * @return true if the click succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual bool click(const int x, const int y, const unsigned int durationMs) = 0;
 
@@ -99,7 +99,7 @@ public:
      *
      * @return true if the drag succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual bool drag(const int sx, const int sy, const int ex, const int ey,
                       const int steps, const int durationMs) = 0;
@@ -112,7 +112,7 @@ public:
      *
      * @return touch event number
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual int touchDown(const int x, const int y) = 0;
 
@@ -125,7 +125,7 @@ public:
      *
      * @return true if the touch move succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual bool touchMove(const int x, const int y, const int seq) = 0;
 
@@ -138,7 +138,7 @@ public:
      *
      * @return true if the touch up succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual bool touchUp(const int x, const int y, const int seq) = 0;
 
@@ -150,7 +150,7 @@ public:
      *
      * @return true if the wheel up succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual bool wheelUp(int amount, const int durationMs) = 0;
 
@@ -162,7 +162,7 @@ public:
      *
      * @return true if the wheel down succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual bool wheelDown(int amount, const int durationMs) = 0;
 
@@ -173,7 +173,7 @@ public:
      *
      * @return true if the press back succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual bool pressBack(KeyRequestType type) = 0;
 
@@ -184,7 +184,7 @@ public:
      *
      * @return true if the press home succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual bool pressHome(KeyRequestType type) = 0;
 
@@ -195,7 +195,7 @@ public:
      *
      * @return true if the press menu succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual bool pressMenu(KeyRequestType type) = 0;
 
@@ -206,7 +206,7 @@ public:
      *
      * @return true if the press volume up succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual bool pressVolUp(KeyRequestType type) = 0;
 
@@ -217,7 +217,7 @@ public:
      *
      * @return true if the press volume down succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual bool pressVolDown(KeyRequestType type) = 0;
 
@@ -228,7 +228,7 @@ public:
      *
      * @return true if the press power succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual bool pressPower(KeyRequestType type) = 0;
 
@@ -240,7 +240,7 @@ public:
      *
      * @return true if the press keycode succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual bool pressKeyCode(std::string keycode, KeyRequestType type) = 0;
 
@@ -253,7 +253,7 @@ public:
      *
      * @return true if screen shot is created successfully, false otherwise
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual bool takeScreenshot(std::string path, float scale, int quality) = 0;
 
@@ -264,7 +264,7 @@ public:
      *
      * @return utc time stamp
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual long long getSystemTime(TimeRequestType type) = 0;
 

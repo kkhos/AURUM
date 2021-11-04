@@ -41,7 +41,7 @@ public:
      *
      * @param[in] keycode keycode string
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     SendKeyRunnable(std::string keycode);
 

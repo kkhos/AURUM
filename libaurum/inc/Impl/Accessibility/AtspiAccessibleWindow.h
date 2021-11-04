@@ -41,14 +41,14 @@ public:
      * @param[in] app @AccessibleApplication
      * @param[in] node @AccessibleNode
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     AtspiAccessibleWindow(std::shared_ptr<AccessibleApplication> app, std::shared_ptr<AccessibleNode> node);
 
     /**
      * @brief AtspiAccessibleWindow desturctor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     ~AtspiAccessibleWindow();
 

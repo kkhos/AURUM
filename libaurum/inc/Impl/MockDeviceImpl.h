@@ -48,116 +48,116 @@ class MockDeviceImpl : public IDevice {
 public:
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     MockDeviceImpl();
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     ~MockDeviceImpl();
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool click(const int x, const int y) override;
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool click(const int x, const int y, const unsigned int durationMs) override;
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool drag(const int sx, const int sy, const int ex, const int ey,
               const int steps, const int durationMs) override;
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     int touchDown(const int x, const int y) override;
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool touchMove(const int x, const int y, const int seq) override;
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool touchUp(const int x, const int y, const int seq) override;
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool wheelUp(int amount, const int durationMs) override;
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool wheelDown(int amount, const int durationMs) override;
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool pressBack(KeyRequestType type) override;
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool pressHome(KeyRequestType type) override;
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool pressMenu(KeyRequestType type) override;
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool pressVolUp(KeyRequestType type) override;
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool pressVolDown(KeyRequestType type) override;
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool pressPower(KeyRequestType type) override;
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool pressKeyCode(std::string keycode, KeyRequestType type) override;
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool takeScreenshot(std::string path, float scale, int quality) override;
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     long long getSystemTime(TimeRequestType type) override;
 
@@ -170,50 +170,50 @@ public:
 protected:
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool strokeKeyCode(std::string keycode, unsigned int durationMs);
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool pressKeyCode(std::string keycode);
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool releaseKeyCode(std::string keycode);
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     int grabTouchSeqNumber();
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool releaseTouchSeqNumber(int seq);
 
 private:
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     void startTimer(void);
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     int stopTimer(void);
 
     /**
      * @brief TBD
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     long long timeStamp(void);
 

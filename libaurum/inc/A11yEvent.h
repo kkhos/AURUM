@@ -68,7 +68,7 @@ public:
     /**
      * @brief A11yEventInfo constructor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     A11yEventInfo();
 
@@ -79,7 +79,7 @@ public:
      * @param[in] name name of the ATSPI event
      * @param[in] package event occured package name
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     A11yEventInfo(A11yEvent event, std::string name = "", std::string package = "");
 
@@ -90,14 +90,14 @@ public:
      * @param[in] name name of the ATSPI event
      * @param[in] package event occured package name
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     A11yEventInfo(std::string event, std::string name = "", std::string package = "");
 
     /**
      * @brief A11yEventInfo destructor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     ~A11yEventInfo();
 
@@ -107,7 +107,7 @@ public:
      *
      * @return @A11yEvent
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     A11yEvent getEvent();
 
@@ -118,7 +118,7 @@ public:
      *
      * @return @A11yEvent
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     A11yEvent getEvent(std::string event);
 
@@ -127,7 +127,7 @@ public:
      *
      * @return name string
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::string getName();
 
@@ -136,7 +136,7 @@ public:
      *
      * @return package name string
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::string getPkg();
 

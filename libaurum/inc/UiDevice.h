@@ -55,7 +55,7 @@ public:
      *
      * @return true if the click succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool click(const int x, const int y) override;
 
@@ -68,7 +68,7 @@ public:
      *
      * @return true if the click succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool click(const int x, const int y, const unsigned int durationMs) override;
 
@@ -85,7 +85,7 @@ public:
      *
      * @return true if the drag succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool drag(const int sx, const int sy, const int ex, const int ey,
               const int steps, const int durationMs) override;
@@ -98,7 +98,7 @@ public:
      *
      * @return touch event number
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     int touchDown(const int x, const int y) override;
 
@@ -111,7 +111,7 @@ public:
      *
      * @return true if the touch move succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool touchMove(const int x, const int y, const int seq) override;
 
@@ -124,7 +124,7 @@ public:
      *
      * @return true if the touch up succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool touchUp(const int x, const int y, const int seq) override;
 
@@ -136,7 +136,7 @@ public:
      *
      * @return true if the wheel up succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool wheelUp(int amount, const int durationMs) override;
 
@@ -148,7 +148,7 @@ public:
      *
      * @return true if the wheel down succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool wheelDown(int amount, const int durationMs) override;
 
@@ -159,7 +159,7 @@ public:
      *
      * @return true if the press back succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool pressBack(KeyRequestType type) override;
 
@@ -170,7 +170,7 @@ public:
      *
      * @return true if the press home succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool pressHome(KeyRequestType type) override;
 
@@ -181,7 +181,7 @@ public:
      *
      * @return true if the press menu succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool pressMenu(KeyRequestType type) override;
 
@@ -192,7 +192,7 @@ public:
      *
      * @return true if the press volume up succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool pressVolUp(KeyRequestType type) override;
 
@@ -203,7 +203,7 @@ public:
      *
      * @return true if the press volume down succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool pressVolDown(KeyRequestType type) override;
 
@@ -214,7 +214,7 @@ public:
      *
      * @return true if the press power succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool pressPower(KeyRequestType type) override;
 
@@ -226,7 +226,7 @@ public:
      *
      * @return true if the press keycode succeeded else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool pressKeyCode(std::string keycode, KeyRequestType type) override;
 
@@ -239,7 +239,7 @@ public:
      *
      * @return true if screen shot is created successfully, false otherwise
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool takeScreenshot(std::string path, float scale, int quality) override;
 
@@ -250,7 +250,7 @@ public:
      *
      * @return utc time stamp
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     long long getSystemTime(TimeRequestType type) override;
 
@@ -271,7 +271,7 @@ public:
      *
      * @return object exist or not
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool hasObject(const std::shared_ptr<UiSelector> selector) const override;
 
@@ -282,7 +282,7 @@ public:
      *
      * @return Found UiObject ptr
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::shared_ptr<UiObject> findObject(
         const std::shared_ptr<UiSelector> selector) const override;
@@ -294,7 +294,7 @@ public:
      *
      * @return Found UiObject ptr vector
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::vector<std::shared_ptr<UiObject>> findObjects(
         const std::shared_ptr<UiSelector> selector) const override;
@@ -358,7 +358,7 @@ public:
      *
      * @return UiDevice ptr
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     static std::shared_ptr<UiDevice> getInstance(IDevice *deviceImpl = nullptr);
 
@@ -366,14 +366,14 @@ public:
      * @brief Gets currently enabled applications root window.
      *
      * @return AccessibleNode ptr vector
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::vector<std::shared_ptr<AccessibleNode>> getWindowRoot() const;
 private:
     /**
      * @brief Waits process idle.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool waitForIdle() const;
 
@@ -381,14 +381,14 @@ private:
     /**
      * @brief UiDevice Consturctor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiDevice();
 
     /**
      * @brief UiDevice Consturctor with IDevice.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     UiDevice(IDevice *impl);
 
@@ -396,7 +396,7 @@ public:
     /**
      * @brief UiDevice Destructor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual ~UiDevice();
 

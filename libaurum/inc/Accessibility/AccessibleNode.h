@@ -33,7 +33,7 @@ namespace Aurum {
 /**
  * @brief AccessibleNodeInterface enum class
  *
- * @since_tizen 5.5
+ * @since_tizen 6.5
  */
 enum class AccessibleNodeInterface {
     ACTION          = 0x0001,
@@ -57,7 +57,7 @@ enum class AccessibleNodeInterface {
 /**
  * @brief NodeFeatureProperties enum class
  *
- * @since_tizen 5.5
+ * @since_tizen 6.5
  */
 enum class NodeFeatureProperties {
     CHECKABLE       = 0x0001,
@@ -81,21 +81,21 @@ enum class NodeFeatureProperties {
 /**
  * @brief AccessibleNode Class that provides the abstracted object information to uses.
  *
- * @since_tizen 5.5
+ * @since_tizen 6.5
  */
 class AccessibleNode : public std::enable_shared_from_this<AccessibleNode>, public IEventConsumer  {
 public:
     /**
      * @brief AccessibleNode constructor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     AccessibleNode();
 
     /**
      * @brief AccessibleNode desctructor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual ~AccessibleNode();
 
@@ -104,7 +104,7 @@ public:
      *
      * @return string
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     std::string description();
 
@@ -137,14 +137,14 @@ public:
      * @param[in] type2 @ObjectEventType
      * @param[in] src Atspi Node ptr
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     void notify(int type, int type2, void *src) override;
 
     /**
      * @brief Changes Node state to invalidate.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     void invalidate();
 
@@ -265,7 +265,7 @@ public:
      *
      * @param[in] int depth
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     void print(int);
 
@@ -275,7 +275,7 @@ public:
      * @param[in] int depth
      * @param[in] int maxdepth
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     void print(int, int);
 
@@ -284,7 +284,7 @@ public:
      *
      * @return Atspi node ptr
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual void* getRawHandler(void) const = 0;
 
@@ -326,7 +326,7 @@ public:
     /**
      * @brief Updates Node information from atspi server.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual void refresh() = 0;
 
@@ -335,7 +335,7 @@ public:
      *
      * @return string vector
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual std::vector<std::string> getActions() const = 0;
 
@@ -346,7 +346,7 @@ public:
      *
      * @return true if success, else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual bool doAction(std::string action) = 0;
 
@@ -355,7 +355,7 @@ public:
      *
      * @param[in] text string
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual void setValue(std::string text) = 0;
 
@@ -364,7 +364,7 @@ public:
      *
      * @return true if valid, else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     virtual bool isValid() const;
 
@@ -376,7 +376,7 @@ public:
      *
      * @return true if supporting, else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool isSupporting(AccessibleNodeInterface thisIface) const;
 
@@ -387,7 +387,7 @@ public:
      *
      * @return true if has, else false
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     bool hasFeatureProperty(NodeFeatureProperties prop) const;
 
@@ -397,7 +397,7 @@ public:
      * @param[in] prop @NodeFeatureProperties
      * @param[in] has Node has given property ot not
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     void setFeatureProperty(NodeFeatureProperties prop, bool has);
 

@@ -29,7 +29,7 @@ namespace AurumInternal {
  * @brief AtspiAccessibleNode is inherited from AccessibleNode class.
  *        It manages object informations which from atspi server.
  *
- * @since_tizen 5.5
+ * @since_tizen 6.5
  */
 class AtspiAccessibleNode : public AccessibleNode {
 public:
@@ -38,14 +38,14 @@ public:
      *
      * @param[in] node AtspiAccessible ptr
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
     AtspiAccessibleNode(AtspiAccessible *node);
 
     /**
      * @brief AtspiAccessibleNode desctructor.
      *
-     * @since_tizen 5.5
+     * @since_tizen 6.5
      */
    ~AtspiAccessibleNode() override;
 
