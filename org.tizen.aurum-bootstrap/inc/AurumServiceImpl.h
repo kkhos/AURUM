@@ -107,6 +107,9 @@ public:
     ::grpc::Status dumpObjectTree(::grpc::ServerContext *context,
                             const ::aurum::ReqDumpObjectTree *request,
                             ::aurum::RspDumpObjectTree *response) override;
+    ::grpc::Status getScreenSize(::grpc::ServerContext *context,
+                            const ::aurum::ReqGetScreenSize *request,
+                            ::aurum::RspGetScreenSize *response) override;
 };
 
 #endif
