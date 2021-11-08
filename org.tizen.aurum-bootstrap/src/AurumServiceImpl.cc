@@ -232,3 +232,11 @@ aurumServiceImpl::~aurumServiceImpl()
     std::unique_ptr<DumpObjectTreeCommand> cmd = std::make_unique<DumpObjectTreeCommand>(request, response);
     return execute(cmd.get(), true);
 }
+
+::grpc::Status aurumServiceImpl::getScreenSize(::grpc::ServerContext *context,
+                                         const ::aurum::ReqGetScreenSize *request,
+                                         ::aurum::RspGetScreenSize *response)
+{
+    std::unique_ptr<GetScreenSizeCommand> cmd = std::make_unique<GetScreenSizeCommand>(request, response);
+    return execute(cmd.get(), true);
+}

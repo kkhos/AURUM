@@ -29,6 +29,7 @@ service Bootstrap {
    rpc sendKey(ReqKey) returns (RspKey) {}
    rpc takeScreenshot(ReqTakeScreenshot) returns (stream RspTakeScreenshot) {}
    rpc dumpObjectTree(ReqDumpObjectTree) returns (RspDumpObjectTree) {}
+   rpc getScreenSize(ReqGetScreenSize) returns (RspGetScreenSize) {}
 }
 
 // ------------------------------------ //
@@ -415,4 +416,12 @@ message ReqDumpObjectTree {
 message RspDumpObjectTree {
    RspStatus status = 1;
    repeated Element roots = 2;
+}
+
+message ReqGetScreenSize {
+}
+
+message RspGetScreenSize {
+   RspStatus status = 1;
+   Rect size = 2;
 }
