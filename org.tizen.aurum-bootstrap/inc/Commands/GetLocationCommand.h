@@ -30,6 +30,5 @@ private:
 public:
     GetLocationCommand(const ::aurum::ReqGetLocation *request,
                        ::aurum::RspGetLocation *response);
-    ;
     ::grpc::Status execute() override;
 };

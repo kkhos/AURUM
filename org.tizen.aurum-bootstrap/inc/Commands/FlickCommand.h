@@ -30,6 +30,5 @@ private:
 
 public:
     FlickCommand(const ::aurum::ReqFlick *request, ::aurum::RspFlick *response);
-    ;
     ::grpc::Status execute() override;
 };

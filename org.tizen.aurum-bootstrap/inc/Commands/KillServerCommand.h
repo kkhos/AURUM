@@ -30,6 +30,5 @@ private:
 public:
     KillServerCommand(const ::aurum::ReqEmpty *request,
                       ::aurum::RspEmpty *response);
-    ;
     ::grpc::Status execute() override;
 };

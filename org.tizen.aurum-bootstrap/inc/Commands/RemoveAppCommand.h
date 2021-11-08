@@ -30,7 +30,6 @@ private:
 public:
     RemoveAppCommand(const ::aurum::ReqRemoveApp *request,
                      ::aurum::RspRemoveApp *response);
-    ;
     ::grpc::Status execute() override;
     ::grpc::Status executePost() override;
 };
