@@ -30,6 +30,5 @@ private:
 public:
     GetSizeCommand(const ::aurum::ReqGetSize *request,
                    ::aurum::RspGetSize *response);
-    ;
     ::grpc::Status execute() override;
 };

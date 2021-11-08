@@ -30,6 +30,5 @@ private:
 public:
     GetAppInfoCommand(const ::aurum::ReqGetAppInfo *request,
                       ::aurum::RspGetAppInfo *response);
-    ;
     ::grpc::Status execute() override;
 };

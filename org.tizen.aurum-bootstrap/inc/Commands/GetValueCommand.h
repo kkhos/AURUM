@@ -30,6 +30,5 @@ private:
 public:
     GetValueCommand(const ::aurum::ReqGetValue *request,
                     ::aurum::RspGetValue *response);
-    ;
     ::grpc::Status execute() override;
 };

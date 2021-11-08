@@ -30,6 +30,5 @@ private:
 public:
     GetDeviceTimeCommand(const ::aurum::ReqGetDeviceTime *request,
                          ::aurum::RspGetDeviceTime *response);
-    ;
     ::grpc::Status execute() override;
 };
