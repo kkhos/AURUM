@@ -40,6 +40,7 @@ bootstrap_svr_src += [
    files('src/Commands/PreCommand.cc'),
    files('src/Commands/PostCommand.cc'),
    files('src/Commands/DumpObjectTreeCommand.cc'),
+   files('src/Commands/GetScreenSizeCommand.cc'),
 ]
 
 bootstrap_svr_dep = [
