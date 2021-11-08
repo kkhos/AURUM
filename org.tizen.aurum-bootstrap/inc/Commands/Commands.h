@@ -45,3 +45,4 @@
 
 #include "Commands/TakeScreenshotCommand.h"
 #include "Commands/DumpObjectTreeCommand.h"
+#include "Commands/GetScreenSizeCommand.h"
