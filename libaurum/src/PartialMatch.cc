@@ -54,9 +54,9 @@ bool PartialMatch::checkCriteria(const std::shared_ptr<UiSelector> selector,
     }
     if (selector->mMatchType || selector->mMatchAutomationId || selector->mMatchStyle) {
         node->updateAttributes();
-        if (checkCriteria(selector->mAutomationId, node->getAutomationId())) return false;
-        if (checkCriteria(selector->mType, node->getType())) return false;
-        if (checkCriteria(selector->mStyle, node->getStyle())) return false;
+        if (selector->mMatchType && checkCriteria(selector->mAutomationId, node->getAutomationId())) return false;
+        if (selector->mMatchAutomationId && checkCriteria(selector->mType, node->getType())) return false;
+        if (selector->mMatchStyle && checkCriteria(selector->mStyle, node->getStyle())) return false;
     }
     if (selector->mMatchPkg) {
         node->updateApplication();
