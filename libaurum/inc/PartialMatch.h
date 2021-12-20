@@ -142,12 +142,13 @@ private:
      *
      * @param[in] textA string
      * @param[in] textB string
+     * @param[in] hasText bool
      *
      * @return ture if matched, else false
      *
      * @since_tizen 6.5
      */
-    static bool checkCriteria(const std::string textA, const std::string textB);
+    static bool checkCriteria(const std::string textA, const std::string textB, const bool hasText);
 
     /**
      * @brief Checks boolean value matched or not.

@@ -167,7 +167,11 @@ message ReqFindElement {
       string packageName = 18;
    }
 
-   repeated ReqFindElement children = 19;
+   oneof _hastext {
+      string hasText = 19;
+   }
+
+   repeated ReqFindElement children = 20;
 }
 message RspFindElement {
    RspStatus status = 1;

@@ -93,6 +93,17 @@ public:
     UiSelector *text(std::string text);
 
     /**
+     * @brief Sets the search criteria to match the object's text has given text.
+     *
+     * @param[in] text object text
+     *
+     * @return UiSelector class instance
+     *
+     * @since_tizen 6.5
+     */
+    UiSelector *hastext(std::string text);
+
+    /**
      * @brief Sets the search criteria to match the object's package name.
      *
      * @param[in] text object package name
@@ -343,6 +354,7 @@ public:
     std::string mPkg;
     std::string mType;
     std::string mStyle;
+    std::string mHasText;
 
     bool mMatchId;
     bool mMatchAutomationId;
@@ -351,6 +363,7 @@ public:
     bool mMatchPkg;
     bool mMatchType;
     bool mMatchStyle;
+    bool mMatchHasText;
 
     bool mMatchChecked;
     bool mMatchCheckable;

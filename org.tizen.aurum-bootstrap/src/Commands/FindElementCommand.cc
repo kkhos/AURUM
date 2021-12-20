@@ -63,6 +63,7 @@ std::vector<std::shared_ptr<UiSelector>> FindElementCommand::getSelectors(void)
     if(mRequest->_mindepth_case())        sel->minDepth(mRequest->mindepth());
     if(mRequest->_maxdepth_case())        sel->maxDepth(mRequest->maxdepth());
     if(mRequest->_packagename_case())     sel->pkg(mRequest->packagename());
+    if(mRequest->_hastext_case())         sel->hastext(mRequest->hastext());
 
     return std::vector<std::shared_ptr<UiSelector>>{sel};
 }

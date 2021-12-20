@@ -41,6 +41,7 @@ std::string UiSelector::description()
     if(!this->mAutomationId.empty()) ss << "\"mAutomationId\":\"" << this->mAutomationId << "\", ";
     if(!this->mRole.empty()) ss << "\"mRole\":\"" << this->mRole << "\", ";
     if(!this->mText.empty()) ss << "\"mText\":\"" << this->mText << "\", ";
+    if(!this->mHasText.empty()) ss << "\"mHasText\":\"" << this->mHasText << "\", ";
     if(!this->mPkg.empty()) ss << "\"mPkg\":\"" << this->mPkg << "\", ";
     if(!this->mType.empty()) ss << "\"mType\":\"" << this->mType << "\", ";
     if(!this->mStyle.empty()) ss << "\"mStyle\":\"" << this->mStyle << "\", ";
@@ -48,6 +49,7 @@ std::string UiSelector::description()
     if(this->mMatchAutomationId) ss << "\"mMatchAutomationId\":\"" << ((this->mMatchAutomationId)?"true":"false") << "\", ";
     if(this->mMatchRole) ss << "\"mMatchRole\":\"" << ((this->mMatchRole)?"true":"false") << "\", ";
     if(this->mMatchText) ss << "\"mMatchText\":\"" << ((this->mMatchText)?"true":"false") << "\", ";
+    if(this->mMatchHasText) ss << "\"mMatchHasText\":\"" << ((this->mMatchHasText)?"true":"false") << "\", ";
     if(this->mMatchPkg) ss << "\"mMatchPkg\":\"" << ((this->mMatchPkg)?"true":"false") << "\", ";
     if(this->mMatchType) ss << "\"mMatchType\":\"" << ((this->mMatchType)?"true":"false") << "\", ";
     if(this->mMatchStyle) ss << "\"mMatchStyle\":\"" << ((this->mMatchStyle)?"true":"false" )<< "\", ";
@@ -83,6 +85,13 @@ UiSelector *UiSelector::text(std::string text)
 {
     this->mText = text;
     this->mMatchText = true;
+    return this;
+}
+
+UiSelector *UiSelector::hastext(std::string text)
+{
+    this->mHasText = text;
+    this->mMatchHasText = true;
     return this;
 }
 

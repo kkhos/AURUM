@@ -24,10 +24,12 @@
 
 using namespace Aurum;
 
-bool PartialMatch::checkCriteria(const std::string textA, const std::string textB)
+bool PartialMatch::checkCriteria(const std::string textA, const std::string textB, const bool hasText)
 {
     std::regex re(textA);
-    bool rst = !(!!std::regex_match(textB, re) == true);
+    bool rst;
+    if (hasText) rst = !(!!std::regex_search(textB, re) == true);
+    else rst = !(!!std::regex_match(textB, re) == true);
     return rst;
 }
 
@@ -44,27 +46,28 @@ std::string PartialMatch::debugPrint()
 bool PartialMatch::checkCriteria(const std::shared_ptr<UiSelector> selector,
                                  const std::shared_ptr<AccessibleNode> node)
 {
-    if (selector->mMatchText) {
+    if (selector->mMatchText || selector->mMatchHasText) {
         node->updateName();
-        if (checkCriteria(selector->mText, node->getText())) return false;
+        if (selector->mMatchText && checkCriteria(selector->mText, node->getText(), 0)) return false;
+        if (selector->mMatchHasText && checkCriteria(selector->mHasText, node->getText(), 1)) return false;
     }
     if (selector->mMatchId) {
         node->updateUniqueId();
-        if (checkCriteria(selector->mId, node->getId())) return false;
+        if (checkCriteria(selector->mId, node->getId(), 0)) return false;
     }
     if (selector->mMatchType || selector->mMatchAutomationId || selector->mMatchStyle) {
         node->updateAttributes();
-        if (selector->mMatchAutomationId && checkCriteria(selector->mAutomationId, node->getAutomationId())) return false;
-        if (selector->mMatchType && checkCriteria(selector->mType, node->getType())) return false;
-        if (selector->mMatchStyle && checkCriteria(selector->mStyle, node->getStyle())) return false;
+        if (selector->mMatchAutomationId && checkCriteria(selector->mAutomationId, node->getAutomationId(), 0)) return false;
+        if (selector->mMatchType && checkCriteria(selector->mType, node->getType(), 0)) return false;
+        if (selector->mMatchStyle && checkCriteria(selector->mStyle, node->getStyle(), 0)) return false;
     }
     if (selector->mMatchPkg) {
         node->updateApplication();
-         if (checkCriteria(selector->mPkg, node->getPkg())) return false;
+         if (checkCriteria(selector->mPkg, node->getPkg(), 0)) return false;
     }
     if (selector->mMatchRole) {
         node->updateRoleName();
-        if (checkCriteria(selector->mRole, node->getRole())) return false;
+        if (checkCriteria(selector->mRole, node->getRole(), 0)) return false;
     }
     if (selector->mMatchChecked && checkCriteria(selector->mIschecked, node->isChecked())) return false;
     if (selector->mMatchCheckable && checkCriteria(selector->mIscheckable, node->isCheckable())) return false;
