@@ -30,6 +30,7 @@ service Bootstrap {
    rpc takeScreenshot(ReqTakeScreenshot) returns (stream RspTakeScreenshot) {}
    rpc dumpObjectTree(ReqDumpObjectTree) returns (RspDumpObjectTree) {}
    rpc getScreenSize(ReqGetScreenSize) returns (RspGetScreenSize) {}
+   rpc actionAndWaitEvent(ReqActionAndWaitEvent) returns (RspActionAndWaitEvent) {}
 }
 
 // ------------------------------------ //
@@ -428,4 +429,27 @@ message ReqGetScreenSize {
 message RspGetScreenSize {
    RspStatus status = 1;
    Rect size = 2;
+}
+
+message ReqActionAndWaitEvent {
+   enum ActionType{
+      CLICK = 0;
+      KEY = 1;
+   }
+   enum EventType {
+      EVENT_WINDOW_ACTIVATE = 0;
+      EVENT_WINDOW_DEACTIVATE = 1;
+      EVENT_STATE_CHANGED_FOCUSED = 2;
+   }
+   ActionType type = 1;
+   oneof params {
+      string elementId = 2;
+      string XF86keyCode = 3;
+   }
+   EventType eventType = 4;
+   int32 timeoutMs = 5;
+}
+
+message RspActionAndWaitEvent {
+   RspStatus status = 1;
 }

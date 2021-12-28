@@ -11,6 +11,7 @@ bootstrap_svr_src = [
    files('src/AurumServiceImpl.cc'),
    files('src/ObjectMapper.cc'),
    files('src/Runnable/LaunchAppRunnable.cc'),
+   files('src/Runnable/ActionAndWaitEventRunnable.cc'),
 ]
 
 bootstrap_svr_src += [
@@ -41,6 +42,7 @@ bootstrap_svr_src += [
    files('src/Commands/PostCommand.cc'),
    files('src/Commands/DumpObjectTreeCommand.cc'),
    files('src/Commands/GetScreenSizeCommand.cc'),
+   files('src/Commands/ActionAndWaitEventCommand.cc'),
 ]
 
 bootstrap_svr_dep = [
