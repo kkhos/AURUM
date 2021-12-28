@@ -240,3 +240,11 @@ aurumServiceImpl::~aurumServiceImpl()
     std::unique_ptr<GetScreenSizeCommand> cmd = std::make_unique<GetScreenSizeCommand>(request, response);
     return execute(cmd.get(), true);
 }
+
+::grpc::Status aurumServiceImpl::actionAndWaitEvent(::grpc::ServerContext *context,
+                                         const ::aurum::ReqActionAndWaitEvent *request,
+                                         ::aurum::RspActionAndWaitEvent *response)
+{
+    std::unique_ptr<ActionAndWaitEventCommand> cmd = std::make_unique<ActionAndWaitEvent>(request, response);
+    return execute(cmd.get(), true);
+}
