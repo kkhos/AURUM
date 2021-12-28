@@ -110,6 +110,9 @@ public:
     ::grpc::Status getScreenSize(::grpc::ServerContext *context,
                             const ::aurum::ReqGetScreenSize *request,
                             ::aurum::RspGetScreenSize *response) override;
+    ::grpc::Status actionAndWaitEvent(::grpc::ServerContext *context,
+                                      const ::aurum::ReqActionAndWaitEvent *request,
+                                      ::aurum::RspActionAndWaitEvent *response) override;
 };
 
 #endif
