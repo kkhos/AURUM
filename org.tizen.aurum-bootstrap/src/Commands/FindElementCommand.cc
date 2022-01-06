@@ -33,7 +33,7 @@ std::shared_ptr<ISearchable> FindElementCommand::getSearchableTop(void)
 {
     std::shared_ptr<ISearchable> searchableObj{nullptr};
 
-    if (mRequest->_automationid_case() != 0) {
+    if (mRequest->_elementid_case() != 0) {
         searchableObj = mObjMap->getElement(mRequest->elementid());
     }
     if (!searchableObj) searchableObj = UiDevice::getInstance();
