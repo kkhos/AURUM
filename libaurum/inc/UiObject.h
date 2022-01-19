@@ -273,7 +273,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    void setText(std::string text);
+    bool setText(std::string text);
 
     /**
      * @brief Gets object's geometry of the screen.

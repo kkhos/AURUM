@@ -373,20 +373,23 @@ bool AtspiAccessibleNode::doAction(std::string actionName)
     return false;
 }
 
-void AtspiAccessibleNode::setValue(std::string text)
+bool AtspiAccessibleNode::setValue(std::string text)
 {
     if (!isValid()){
-        return;
+        return false;
     }
 
     AtspiEditableText *iface = AtspiWrapper::Atspi_accessible_get_editable_text(mNode);
     LOGI("set Value iface:%p obj:%p text:%s", iface, mNode, text.c_str() );
-    if (iface) {
-        int len = getText().length();
-        AtspiWrapper::Atspi_editable_text_delete_text(iface, 0, len, NULL);
-        AtspiWrapper::Atspi_editable_text_insert_text(iface, 0, text.c_str(), text.length(),
-                                        NULL);
-    }
+
+    if (!iface) return false;
+
+    refresh();
+    int len = getText().length();
+    AtspiWrapper::Atspi_editable_text_delete_text(iface, 0, len, NULL);
+    AtspiWrapper::Atspi_editable_text_insert_text(iface, 0, text.c_str(), text.length(),
+                                                  NULL);
+    return true;
 }
 
 void AtspiAccessibleNode::setFeatureProperty(AtspiStateType type)

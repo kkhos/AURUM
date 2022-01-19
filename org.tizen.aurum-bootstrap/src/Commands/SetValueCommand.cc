@@ -26,11 +26,16 @@ SetValueCommand::SetValueCommand(const ::aurum::ReqSetValue* request,
 
 ::grpc::Status SetValueCommand::execute()
 {
+    bool ret = false;
     LOGI("SetValue --------------- ");
     LOGI("text:%s", mRequest->stringvalue().c_str());
 
     ObjectMapper *mObjMap = ObjectMapper::getInstance();
     std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
-    if (obj) obj->setText(const_cast<std::string&>(mRequest->stringvalue()));
+    if (obj) ret = obj->setText(const_cast<std::string&>(mRequest->stringvalue()));
+
+    if (ret) mResponse->set_status(::aurum::RspStatus::OK);
+    else mResponse->set_status(::aurum::RspStatus::ERROR);
+
     return grpc::Status::OK;
 }
