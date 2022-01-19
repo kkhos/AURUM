@@ -134,7 +134,7 @@ public:
     /**
      * @copydoc AccessibleNode::setValue()
      */
-    void setValue(std::string text) override;
+    bool setValue(std::string text) override;
 
 private:
     using AccessibleNode::setFeatureProperty;

@@ -194,9 +194,9 @@ std::string UiObject::getRole() const
     return getAccessibleNode()->getRole();
 }
 
-void UiObject::setText(std::string text)
+bool UiObject::setText(std::string text)
 {
-    getAccessibleNode()->setValue(text);
+    return getAccessibleNode()->setValue(text);
 }
 
 bool UiObject::isCheckable() const

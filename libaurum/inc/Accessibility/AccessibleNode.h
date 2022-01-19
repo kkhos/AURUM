@@ -354,10 +354,12 @@ public:
      * @brief Sets Node's value.
      *
      * @param[in] text string
+	 *
+	 * @return true if success, else false
      *
      * @since_tizen 6.5
      */
-    virtual void setValue(std::string text) = 0;
+    virtual bool setValue(std::string text) = 0;
 
     /**
      * @brief Check object valid or not.

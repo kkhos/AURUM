@@ -128,9 +128,10 @@ bool MockAccessibleNode::doAction(std::string action)
     return false;
 }
 
-void MockAccessibleNode::setValue(std::string text)
+bool MockAccessibleNode::setValue(std::string text)
 {
     mText = text;
+    return true;
 }
 
 void MockAccessibleNode::setFeatureProperty(int type)

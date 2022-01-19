@@ -269,11 +269,11 @@ public:
      *
      * @param[in] text string
      *
-     * @return string
+     * @return true if success else false
      *
      * @since_tizen 6.5
      */
-    void setText(std::string text);
+    bool setText(std::string text);
 
     /**
      * @brief Gets object's geometry of the screen.

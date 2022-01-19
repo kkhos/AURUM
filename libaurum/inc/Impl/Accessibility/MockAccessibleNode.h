@@ -139,7 +139,7 @@ public:
      * @brief TBD
      * @since_tizen 6.5
      */
-    void setValue(std::string text) override;
+    bool setValue(std::string text) override;
 
 public:
     using AccessibleNode::setFeatureProperty;
