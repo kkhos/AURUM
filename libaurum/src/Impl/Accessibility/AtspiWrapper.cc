@@ -132,7 +132,7 @@ gboolean AtspiWrapper::Atspi_action_do_action(AtspiAction *action, int index, GE
 AtspiEditableText *AtspiWrapper::Atspi_accessible_get_editable_text(AtspiAccessible *node)
 {
     std::unique_lock<std::recursive_mutex> lock(mMutex);
-    return atspi_accessible_get_editable_text(node);
+    return atspi_accessible_get_editable_text_iface(node);
 }
 
 gboolean AtspiWrapper::Atspi_editable_text_delete_text(AtspiEditableText *iface, int start, int end, GError **error)
