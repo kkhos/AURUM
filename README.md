@@ -11,6 +11,10 @@
 
 
 ### Running on TV
+- Known issue
+
+  grpc not support environment that uses proxy on host PC
+
 - Pre-condition
 
   The TV device and Host PC should be already connected through SDB
