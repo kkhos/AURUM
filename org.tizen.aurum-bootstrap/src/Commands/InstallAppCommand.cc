@@ -47,10 +47,27 @@ InstallAppCommand::InstallAppCommand(
     package_manager_request_h pkgRequest;
     int                       id;
 
-    package_manager_request_create(&pkgRequest);
-    package_manager_request_install(pkgRequest, "/tmp/app.tpk", &id);
+    if (package_manager_request_create(&pkgRequest) != PACKAGE_MANAGER_ERROR_NONE) {
+        LOGE("Could not create install request. App: %s", chunk.package().c_str());
+        return grpc::Status::CANCELLED;;
+    }
+    if (package_manager_request_install(pkgRequest, "/tmp/app.tpk", &id) != PACKAGE_MANAGER_ERROR_NONE) {
+        LOGE("Could not install application. App: %s", chunk.package().c_str());
+        goto END;
+    }
+    if (package_manager_request_destroy(pkgRequest) != PACKAGE_MANAGER_ERROR_NONE) {
+        pkgRequest = NULL;
+        LOGE("Could not destroy install request. App: %s", chunk.package().c_str());
+        goto END;
+    }
 
     return grpc::Status::OK;
+
+END:
+    if (pkgRequest != NULL)
+        package_manager_request_destroy(pkgRequest);
+
+    return grpc::Status::CANCELLED;
 }
 
 ::grpc::Status InstallAppCommand::executePost()
