@@ -22,7 +22,7 @@
 #include <memory>
 #include <vector>
 
-#include "AccessibleNode.h"
+#include "Accessible.h"
 #include "UiSelector.h"
 
 namespace Aurum {
