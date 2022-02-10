@@ -149,6 +149,7 @@ private:
     bool addToWindowSet(AtspiAccessible *node);
     void addEventListener(AtspiEventListener *listener, A11yEvent type);
     void removeEventListener(AtspiEventListener *listener, A11yEvent type);
+    static gpointer eventThreadLoop(gpointer data);
 
 private:
     GDBusProxy *mDbusProxy;
@@ -159,6 +160,7 @@ private:
     static GThread *mEventThread;
     static std::vector<std::shared_ptr<A11yEventInfo>> mEventQueue;
     static std::mutex mMutex;
+    static GMainLoop *mLoop;
 };
 
 }
