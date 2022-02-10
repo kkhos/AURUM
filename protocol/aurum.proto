@@ -31,6 +31,7 @@ service Bootstrap {
    rpc dumpObjectTree(ReqDumpObjectTree) returns (RspDumpObjectTree) {}
    rpc getScreenSize(ReqGetScreenSize) returns (RspGetScreenSize) {}
    rpc actionAndWaitEvent(ReqActionAndWaitEvent) returns (RspActionAndWaitEvent) {}
+   rpc setFocus(ReqSetFocus) returns (RspSetFocus) {}
 }
 
 // ------------------------------------ //
@@ -451,5 +452,13 @@ message ReqActionAndWaitEvent {
 }
 
 message RspActionAndWaitEvent {
+   RspStatus status = 1;
+}
+
+message ReqSetFocus {
+   string elementId = 1;
+}
+
+message RspSetFocus {
    RspStatus status = 1;
 }

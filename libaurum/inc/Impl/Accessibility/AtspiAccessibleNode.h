@@ -117,6 +117,11 @@ public:
     void updateExtents() override;
 
     /**
+     * @copydoc UiObject::setFocus()
+     */
+    bool setFocus() override;
+
+    /**
      * @copydoc AccessibleNode::refresh()
      */
     void refresh() override;

@@ -113,6 +113,9 @@ public:
     ::grpc::Status actionAndWaitEvent(::grpc::ServerContext *context,
                                       const ::aurum::ReqActionAndWaitEvent *request,
                                       ::aurum::RspActionAndWaitEvent *response) override;
+    ::grpc::Status setFocus(::grpc::ServerContext *context,
+                            const ::aurum::ReqSetFocus *request,
+                            ::aurum::RspSetFocus *response) override;
 };
 
 #endif

@@ -158,3 +158,9 @@ void AtspiWrapper::Atspi_accessible_clear_cache (AtspiAccessible *node)
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_clear_cache(node);
 }
+
+gboolean AtspiWrapper::Atspi_component_grab_focus(AtspiComponent *obj, GError **error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_component_grab_focus(obj, error);
+}

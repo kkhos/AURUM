@@ -117,6 +117,12 @@ public:
      */
     void updateExtents() override;
 
+    /**
+     * @brief TBD
+     * @since_tizen 7.0
+     */
+    bool setFocus() override;
+
 	/**
      * @brief TBD
      * @since_tizen 6.5

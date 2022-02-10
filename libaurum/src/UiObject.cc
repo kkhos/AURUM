@@ -304,6 +304,11 @@ void UiObject::updateExtents() const
     mNode->updateExtents();
 }
 
+bool UiObject::setFocus() const
+{
+    return mNode->setFocus();
+}
+
 bool UiObject::isValid() const
 {
     return mNode->isValid();

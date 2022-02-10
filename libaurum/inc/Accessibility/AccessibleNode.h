@@ -324,6 +324,11 @@ public:
     virtual void updateExtents() = 0;
 
     /**
+     * @copydoc UiObject::setFocus()
+     */
+    virtual bool setFocus() = 0;
+
+    /**
      * @brief Updates Node information from atspi server.
      *
      * @since_tizen 6.5
