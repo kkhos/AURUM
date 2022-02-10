@@ -109,6 +109,11 @@ void MockAccessibleNode::updateExtents()
 {
 }
 
+bool MockAccessibleNode::setFocus()
+{
+    return false;
+}
+
 void MockAccessibleNode::refresh()
 {
 }
