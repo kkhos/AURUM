@@ -37,6 +37,7 @@ using namespace AurumInternal;
 std::vector<std::shared_ptr<A11yEventInfo>> AtspiAccessibleWatcher::mEventQueue;
 GThread *AtspiAccessibleWatcher::mEventThread = nullptr;
 std::mutex AtspiAccessibleWatcher::mMutex = std::mutex{};
+GMainLoop *AtspiAccessibleWatcher::mLoop = nullptr;
 
 static bool iShowingNode(AtspiAccessible *node)
 {
@@ -94,17 +95,24 @@ findActiveNode(AtspiAccessible *node, int depth,
     return ret;
 }
 
-static gpointer _event_thread_loop (gpointer data)
+gpointer AtspiAccessibleWatcher::eventThreadLoop(gpointer data)
 {
+    AtspiAccessibleWatcher *instance = (AtspiAccessibleWatcher *)data;
+    GMainContext *mContext = nullptr;
+
     LOGI("event thread start");
     AtspiEventListener *listener =
-        atspi_event_listener_new(AtspiAccessibleWatcher::onAtspiEvents, data, NULL);
+        atspi_event_listener_new(AtspiAccessibleWatcher::onAtspiEvents, instance, NULL);
 
     atspi_event_listener_register(listener, "window:", NULL);
     atspi_event_listener_register(listener, "object:", NULL);
 
-    atspi_event_main();
+    mContext = g_main_context_new();
+    g_main_context_push_thread_default(mContext);
+    atspi_set_main_context (mContext);
+    instance->mLoop = g_main_loop_new(mContext, FALSE);
 
+    g_main_loop_run(instance->mLoop);
     LOGI("event thread end");
     atspi_event_listener_deregister(listener, "object:", NULL);
     atspi_event_listener_deregister(listener, "window:", NULL);
@@ -113,16 +121,16 @@ static gpointer _event_thread_loop (gpointer data)
 
     return NULL;
 }
+
 AtspiAccessibleWatcher::AtspiAccessibleWatcher()
 : mDbusProxy{nullptr}
 {
     GVariant *result = nullptr;
     GError *error = nullptr;
 
-    atspi_set_main_context (g_main_context_default ());
     atspi_init();
 
-    mEventThread = g_thread_new("AtspiEventThread", _event_thread_loop, this);
+    mEventThread = g_thread_new("AtspiEventThread", eventThreadLoop, this);
 
     mDbusProxy = g_dbus_proxy_new_for_bus_sync(
         G_BUS_TYPE_SESSION, G_DBUS_PROXY_FLAGS_NONE,
@@ -153,7 +161,7 @@ AtspiAccessibleWatcher::~AtspiAccessibleWatcher()
     g_variant_unref(result);
     if (error) g_error_free(error);
 
-    atspi_event_quit();
+    g_main_loop_quit(mLoop);
     g_thread_join(mEventThread);
     atspi_exit();
 }
