@@ -20,7 +20,7 @@
 
 #include "config.h"
 
-#include "AccessibleNode.h"
+#include "Accessible.h"
 #include "UiDevice.h"
 #include "UiSelector.h"
 
