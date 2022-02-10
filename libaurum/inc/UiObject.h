@@ -481,6 +481,13 @@ public:
     void updateExtents() const;
 
     /**
+     * @brief Sets focus to object.
+     *
+     * @since_tizen 7.0
+     */
+    bool setFocus() const;
+
+    /**
      * @brief Updates object's information from atspi server.
      *
      * @since_tizen 6.5

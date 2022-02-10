@@ -248,3 +248,11 @@ aurumServiceImpl::~aurumServiceImpl()
     std::unique_ptr<ActionAndWaitEventCommand> cmd = std::make_unique<ActionAndWaitEventCommand>(request, response);
     return execute(cmd.get(), true);
 }
+
+::grpc::Status aurumServiceImpl::setFocus(::grpc::ServerContext *context,
+                                         const ::aurum::ReqSetFocus *request,
+                                         ::aurum::RspSetFocus *response)
+{
+    std::unique_ptr<SetFocusCommand> cmd = std::make_unique<SetFocusCommand>(request, response);
+    return execute(cmd.get(), true);
+}

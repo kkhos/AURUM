@@ -58,6 +58,7 @@ public:
     static gboolean Atspi_editable_text_insert_text(AtspiEditableText *, int pos, const gchar *text, int len, GError **error);
     static AtspiAccessible *Atspi_accessible_get_application (AtspiAccessible *node, GError **error);
     static void Atspi_accessible_clear_cache (AtspiAccessible *node);
+    static gboolean Atspi_component_grab_focus(AtspiComponent *obj, GError **error);
 
 private:
     static std::recursive_mutex mMutex;
