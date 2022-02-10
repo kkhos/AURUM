@@ -26,7 +26,7 @@
 #include "IDevice.h"
 #include "ISearchable.h"
 
-#include "AccessibleNode.h"
+#include "Accessible.h"
 #include "Waiter.h"
 
 #include "Runnable.h"
