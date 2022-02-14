@@ -27,13 +27,15 @@ SetFocusCommand::SetFocusCommand(const ::aurum::ReqSetFocus *request,
 
 ::grpc::Status SetFocusCommand::execute()
 {
+    bool ret = false;
     LOGI("SetFocus --------------- ");
 
     ObjectMapper *mObjMap = ObjectMapper::getInstance();
     std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
-    if (obj && obj->setFocus()) {
-        return grpc::Status::OK;
-    }
+    if (obj) ret = obj->setFocus();
 
-    return grpc::Status::CANCELLED;
+    if (ret) mResponse->set_status(::aurum::RspStatus::OK);
+    else mResponse->set_status(::aurum::RspStatus::ERROR);
+
+    return grpc::Status::OK;
 }
