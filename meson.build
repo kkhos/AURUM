@@ -19,6 +19,7 @@ endif
 
 root_inc = include_directories('./')
 
+subdir('pugixml')
 subdir('protocol')
 subdir('libaurum')
 if get_option('tizen') == true
