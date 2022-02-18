@@ -179,6 +179,7 @@ echo "signing %{TZ_SYS_RO_APP}/org.tizen.aurum-bootstrap"
 %defattr(-,root,root)
 %license COPYING
 %{_libdir}/libaurum.so.*
+%{_libdir}/libpugixml.so.*
 
 %files devel
 %manifest %{name}.manifest
@@ -186,6 +187,7 @@ echo "signing %{TZ_SYS_RO_APP}/org.tizen.aurum-bootstrap"
 %license COPYING
 %{_includedir}/*
 %{_libdir}/libaurum.so
+%{_libdir}/libpugixml.so
 %{_libdir}/pkgconfig/*
 
 %files bootstrap

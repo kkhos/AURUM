@@ -49,6 +49,7 @@ libaurum_dep = [
   dependency('atspi-2'),
   dependency('gio-2.0'),
   dependency('threads'),
+  libpugixml_dep,
 ]
 
 if get_option('tizen') == true
