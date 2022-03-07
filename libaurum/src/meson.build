@@ -9,6 +9,7 @@ libaurum_src += [
   files('Waiter.cc'),
   files('PartialMatch.cc'),
   files('A11yEvent.cc'),
+  files('AurumXML.cc'),
 ]
 
 subdir('Accessibility')
