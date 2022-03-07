@@ -14,6 +14,7 @@ libaurum_install_inc = [
   './inc/UiScrollable.h',
   './inc/A11yEvent.h',
   './inc/Comparer.h',
+  './inc/AurumXML.h',
   './inc/Accessibility/AccessibleNode.h',
   './inc/Accessibility/AccessibleWatcher.h',
   './inc/Accessibility/IEventSource.h',
