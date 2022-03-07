@@ -230,6 +230,16 @@ void AtspiAccessibleNode::updateExtents()
     }
 }
 
+void AtspiAccessibleNode::updateXPath()
+{
+    auto XMLDocMap = AccessibleWatcher::getInstance()->getXMLDocMap();
+    if (XMLDocMap.count(mPkg) == 0) return;
+
+    auto XMLDoc = XMLDocMap[mPkg];
+
+    mXPath = XMLDoc->getXPath(mId);
+}
+
 bool AtspiAccessibleNode::setFocus()
 {
     AtspiComponent *component = AtspiWrapper::Atspi_accessible_get_component_iface(mNode);
@@ -242,7 +252,7 @@ bool AtspiAccessibleNode::setFocus()
         return false;
 }
 
-void AtspiAccessibleNode::refresh()
+void AtspiAccessibleNode::refresh(bool updateAll)
 {
     AtspiWrapper::Atspi_accessible_clear_cache(mNode);
 
@@ -327,6 +337,8 @@ void AtspiAccessibleNode::refresh()
                 g_free(windowExtent);
             }
             g_object_unref(component);
+
+            if (updateAll) updateXPath();
         }
     } else {
         setFeatureProperty(ATSPI_STATE_INVALID);
