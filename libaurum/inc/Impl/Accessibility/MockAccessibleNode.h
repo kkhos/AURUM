@@ -116,6 +116,11 @@ public:
      * @since_tizen 6.5
      */
     void updateExtents() override;
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    void updateXPath() override;
 
     /**
      * @brief TBD
@@ -127,7 +132,7 @@ public:
      * @brief TBD
      * @since_tizen 6.5
      */
-    void refresh() override;
+    void refresh(bool updateAll = true) override;
 
     /**
      * @brief TBD

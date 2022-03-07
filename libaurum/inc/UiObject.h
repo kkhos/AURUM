@@ -481,6 +481,13 @@ public:
     void updateExtents() const;
 
     /**
+     * @brief Updates object's XPath information.
+     *
+     * @since_tizen 7.0
+     */
+    void updateXPath() const;
+
+    /**
      * @brief Sets focus to object.
      *
      * @since_tizen 7.0
