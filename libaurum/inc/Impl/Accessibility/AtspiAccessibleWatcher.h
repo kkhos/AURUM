@@ -112,6 +112,11 @@ public:
      */
     virtual std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> getActiveAppMap(void) override;
 
+    /**
+     * @copydoc @AccessibleWatcher::getXmlDocMap()
+     */
+    virtual std::map<std::string, std::shared_ptr<AurumXML>> getXMLDocMap(void) override;
+
 public:
     /**
      * @brief Listen atspi events.
@@ -157,6 +162,7 @@ private:
     std::list<AtspiAccessible *> mActivatedApplicationList;
     std::set<AtspiAccessible *> mWindowSet;
     std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> mActiveAppMap;
+    std::map<std::string, std::shared_ptr<AurumXML>> mXMLDocMap;
     static GThread *mEventThread;
     static std::vector<std::shared_ptr<A11yEventInfo>> mEventQueue;
     static std::mutex mMutex;

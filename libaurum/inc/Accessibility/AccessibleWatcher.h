@@ -24,6 +24,7 @@
 #include "IEventSource.h"
 #include "Runnable.h"
 #include "A11yEvent.h"
+#include "AurumXML.h"
 #include <atspi/atspi.h>
 
 #include <memory>
@@ -116,6 +117,14 @@ public:
      * @since_tizen 6.5
      */
     virtual std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> getActiveAppMap(void) = 0;
+
+    /**
+     * @brief Gets XML Document map.
+     *
+     * @return map (package std::string, @AurumXML)
+     * @since_tizen 7.0
+     */
+    virtual std::map<std::string, std::shared_ptr<AurumXML>> getXMLDocMap(void) = 0;
 
 public:
     /**
