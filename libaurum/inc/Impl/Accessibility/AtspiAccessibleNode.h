@@ -117,6 +117,11 @@ public:
     void updateExtents() override;
 
     /**
+     * @copydoc UiObject::updateXPath()
+     */
+    void updateXPath() override;
+
+    /**
      * @copydoc UiObject::setFocus()
      */
     bool setFocus() override;
@@ -124,7 +129,7 @@ public:
     /**
      * @copydoc AccessibleNode::refresh()
      */
-    void refresh() override;
+    void refresh(bool updateAll = true) override;
 
     /**
      * @copydoc AccessibleNode::getActions()

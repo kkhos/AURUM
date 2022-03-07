@@ -109,12 +109,16 @@ void MockAccessibleNode::updateExtents()
 {
 }
 
+void MockAccessibleNode::updateXPath()
+{
+}
+
 bool MockAccessibleNode::setFocus()
 {
     return false;
 }
 
-void MockAccessibleNode::refresh()
+void MockAccessibleNode::refresh(bool updateAll)
 {
 }
 

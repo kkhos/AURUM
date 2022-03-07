@@ -324,6 +324,11 @@ public:
     virtual void updateExtents() = 0;
 
     /**
+     * @copydoc UiObject::updateXPath()
+     */
+    virtual void updateXPath() = 0;
+
+    /**
      * @copydoc UiObject::setFocus()
      */
     virtual bool setFocus() = 0;
@@ -333,7 +338,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    virtual void refresh() = 0;
+    virtual void refresh(bool updateAll = true) = 0;
 
     /**
      * @brief Gets available atspi action name.
@@ -423,6 +428,7 @@ protected:
     std::string mAutomationId;
     std::string mType;
     std::string mStyle;
+    std::string mXPath;
     Rect<int> mScreenBoundingBox;
     Rect<int> mWindowBoundingBox;
     int mSupportingIfaces;

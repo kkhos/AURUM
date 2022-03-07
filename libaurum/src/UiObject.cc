@@ -304,6 +304,11 @@ void UiObject::updateExtents() const
     mNode->updateExtents();
 }
 
+void UiObject::updateXPath() const
+{
+    mNode->updateXPath();
+}
+
 bool UiObject::setFocus() const
 {
     return mNode->setFocus();
