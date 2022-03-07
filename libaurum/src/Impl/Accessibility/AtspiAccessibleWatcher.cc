@@ -191,6 +191,11 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
             else {
                 LOGI("app(%s) is already in map", pkg);
             }
+
+            if (!instance->mXMLDocMap.count(std::string(pkg))) {
+                instance->mXMLDocMap.insert(std::pair<std::string, std::shared_ptr<AurumXML>>(std::string(pkg),
+                                     std::make_shared<AurumXML>(std::make_shared<AtspiAccessibleNode>(app))));
+            }
         }
         else if (!strncmp(event->type, "window:deactivate", 16)) {
             LOGI("window deactivate in app(%s)", pkg);
@@ -200,6 +205,10 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
             }
             else {
                 LOGE("deactivated window's app(%s) is not in map", pkg);
+            }
+
+            if (instance->mXMLDocMap.count(std::string(pkg))) {
+                instance->mXMLDocMap.erase(std::string(pkg));
             }
 
             g_object_unref(app);
@@ -305,6 +314,11 @@ bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const 
 std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> AtspiAccessibleWatcher::getActiveAppMap(void)
 {
     return mActiveAppMap;
+}
+
+std::map<std::string, std::shared_ptr<AurumXML>> AtspiAccessibleWatcher::getXMLDocMap(void)
+{
+    return mXMLDocMap;
 }
 
 bool AtspiAccessibleWatcher::removeFromActivatedList(AtspiAccessible *node)
