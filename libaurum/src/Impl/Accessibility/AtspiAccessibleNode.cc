@@ -172,6 +172,10 @@ void AtspiAccessibleNode::updateAttributes()
         char *a = (char*)g_hash_table_lookup(attributes, "automationId");
 
         if (t) mType =  std::string(t);
+        else {
+            if (mRole.empty())updateRoleName();
+            mType = mRole;
+        }
         if (s) mStyle = std::string(s);
         if (a) mAutomationId = std::string(a);
 
@@ -283,6 +287,7 @@ void AtspiAccessibleNode::refresh()
             char *a = (char*)g_hash_table_lookup(attributes, "automationId");
 
             if (t) mType =  std::string(t);
+            else mType = mRole;
             if (s) mStyle = std::string(s);
             if (a) mAutomationId = std::string(a);
 
