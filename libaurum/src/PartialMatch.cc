@@ -26,10 +26,18 @@ using namespace Aurum;
 
 bool PartialMatch::checkCriteria(const std::string textA, const std::string textB, const bool textPartialMatch)
 {
-    std::regex re(textA);
+    if (textB.empty()) return true;
+
     bool rst;
-    if (textPartialMatch) rst = !(!!std::regex_search(textB, re) == true);
-    else rst = !(!!std::regex_match(textB, re) == true);
+    if (textPartialMatch) {
+        if (textB.find(textA) != std::string::npos) rst = false;
+        else rst = true;
+    }
+    else {
+        if (!textA.compare(textB)) rst = false;
+        else rst = true;
+    }
+
     return rst;
 }
 
