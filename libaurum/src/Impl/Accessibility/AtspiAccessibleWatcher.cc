@@ -181,6 +181,7 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
     {
         pkg = AtspiWrapper::Atspi_accessible_get_name(app, NULL);
         if (!strncmp(event->type, "window:activate", 15)) {
+            AtspiWrapper::Atspi_accessible_set_cache_mask(app, ATSPI_CACHE_ALL);
             LOGI("window activated in app(%s)", pkg);
             if (!instance->mActiveAppMap.count(app)) {
                 LOGI("add activated window's app in map");
