@@ -1,0 +1,15 @@
+{
+  "name": "ua-node-example",
+  "version": "0.2.0",
+  "type": "module",
+  "scripts": {
+    "test": "mocha ./*.js"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.4.4",
+    "@grpc/proto-loader": "^0.5.5",
+    "assert": "^2.0.0",
+    "google-protobuf": "^3.13.0",
+    "mocha": "^9.2.2"
+  }
+}
