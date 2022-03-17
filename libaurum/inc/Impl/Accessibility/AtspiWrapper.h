@@ -59,6 +59,7 @@ public:
     static AtspiAccessible *Atspi_accessible_get_application (AtspiAccessible *node, GError **error);
     static void Atspi_accessible_clear_cache (AtspiAccessible *node);
     static gboolean Atspi_component_grab_focus(AtspiComponent *obj, GError **error);
+    static void Atspi_accessible_set_cache_mask(AtspiAccessible *node, AtspiCache mask);
 
 private:
     static std::recursive_mutex mMutex;

@@ -164,3 +164,9 @@ gboolean AtspiWrapper::Atspi_component_grab_focus(AtspiComponent *obj, GError **
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_component_grab_focus(obj, error);
 }
+
+void AtspiWrapper::Atspi_accessible_set_cache_mask(AtspiAccessible *node, AtspiCache mask)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_accessible_set_cache_mask (node, mask);
+}
