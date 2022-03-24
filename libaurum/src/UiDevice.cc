@@ -30,14 +30,19 @@
 #include <algorithm>
 #include <iostream>
 
+#include "ScreenAnalyzerWatcher.h"
+
 using namespace Aurum;
 using namespace AurumInternal;
+
+std::shared_ptr<ScreenAnalyzerWatcher> scw;
 
 UiDevice::UiDevice() : UiDevice(nullptr) {}
 
 UiDevice::UiDevice(IDevice *impl)
     : mDeviceImpl(impl), mWaiter(new Waiter{this})
 {
+    scw = std::make_shared<ScreenAnalyzerWatcher>();
 }
 
 UiDevice::~UiDevice()
@@ -267,7 +272,13 @@ bool UiDevice::pressKeyCode(std::string keycode, KeyRequestType type)
 
 bool UiDevice::takeScreenshot(std::string path, float scale, int quality)
 {
-    return mDeviceImpl->takeScreenshot(path, scale, quality);
+    LOGE("WCC Start ScreenShot %s", path.c_str());
+    int ret = false;
+    ret = mDeviceImpl->takeScreenshot(path, scale, quality);
+
+    scw->PublishData(path, mDeviceImpl->getScreenSize());
+    LOGE("WCC cobalt app %d ", AccessibleWatcher::getInstance()->getExternalAppLaunched());
+    return ret;
 }
 
 long long UiDevice::getSystemTime(TimeRequestType type)

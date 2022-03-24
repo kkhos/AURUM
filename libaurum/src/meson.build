@@ -12,5 +12,6 @@ libaurum_src += [
 ]
 
 subdir('Accessibility')
+subdir('ScreenAnalyzer')
 subdir('Impl')
 subdir('Runnable')

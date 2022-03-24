@@ -92,6 +92,7 @@ public:
      */
     virtual int getApplicationCount(void) const override;
 
+    virtual bool getExternalAppLaunched(void) const override;
     /**
      * @copydoc @AccessibleWatcher::getApplicationAt()
      */
@@ -161,6 +162,7 @@ private:
     static std::vector<std::shared_ptr<A11yEventInfo>> mEventQueue;
     static std::mutex mMutex;
     static GMainLoop *mLoop;
+    bool mCobaltAppLaunched;
 };
 
 }

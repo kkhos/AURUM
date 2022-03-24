@@ -182,6 +182,10 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
         pkg = AtspiWrapper::Atspi_accessible_get_name(app, NULL);
         if (!strncmp(event->type, "window:activate", 15)) {
             LOGI("window activated in app(%s)", pkg);
+            if (!strncmp(pkg, "cobalt", 6)) {
+                instance->mCobaltAppLaunched = true;
+                LOGE("WCC cobalt app launched");
+            }
             if (!instance->mActiveAppMap.count(app)) {
                 LOGI("add activated window's app in map");
                 instance->mActiveAppMap.insert(std::pair<AtspiAccessible *, std::shared_ptr<AccessibleApplication>>(app,
@@ -193,6 +197,10 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
         }
         else if (!strncmp(event->type, "window:deactivate", 16)) {
             LOGI("window deactivate in app(%s)", pkg);
+            if (!strncmp(pkg, "cobalt", 6)) {
+                instance->mCobaltAppLaunched = false;
+                LOGE("WCC cobalt app terminated");
+            }
             if (instance->mActiveAppMap.count(app)) {
                 LOGI("window deactivated delete app(%s) in map", pkg);
                 instance->mActiveAppMap.erase(app);
@@ -234,6 +242,13 @@ int AtspiAccessibleWatcher::getApplicationCount(void) const
     if (nchild <= 0) return 0;
     return nchild;
 }
+
+bool AtspiAccessibleWatcher::getExternalAppLaunched(void) const
+{
+    LOGE("WCC return %d", mCobaltAppLaunched);
+    return mCobaltAppLaunched;
+}
+
 
 std::shared_ptr<AccessibleApplication> AtspiAccessibleWatcher::getApplicationAt(int index) const
 {

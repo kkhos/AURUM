@@ -21,6 +21,7 @@ libaurum_install_inc = [
   './inc/Accessibility/IEventConsumer.h',
   './inc/Accessibility/AccessibleApplication.h',
   './inc/Accessibility/Accessible.h',
+  './inc/ScreenAnalyzer/ScreenAnalyzerWatcher.h',
   './inc/Runnable/Runnable.h',
   './inc/Runnable/Runnables.h',
   './inc/Runnable/SendKeyRunnable.h',
@@ -34,6 +35,7 @@ libaurum_install_inc = [
 libaurum_inc = [
   include_directories('./inc'),
   include_directories('./inc/Accessibility'),
+  include_directories('./inc/ScreenAnalyzer'),
   include_directories('./inc/Impl'),
   include_directories('./inc/Impl/Accessibility'),
   include_directories('./inc/Misc'),
@@ -58,6 +60,8 @@ if get_option('tizen') == true
     dependency('dlog'),
     dependency('elementary'),
     dependency('libtdm'),
+	dependency('libmosquitto'),
+	dependency('jsoncpp'),
   ]
 endif
 
