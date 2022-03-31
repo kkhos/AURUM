@@ -265,6 +265,15 @@ public:
     std::string getRole() const;
 
     /**
+     * @brief Gets object's XPath.
+     *
+     * @return string
+     *
+     * @since_tizen 7.0
+     */
+    std::string getXPath() const;
+
+    /**
      * @brief Sets object's text.
      *
      * @param[in] text string

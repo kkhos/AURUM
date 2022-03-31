@@ -59,6 +59,7 @@ void DumpObjectTreeCommand::traverse(::aurum::Element *root, std::shared_ptr<Nod
     root->set_widget_style(obj->getElementStyle());
 
     root->set_text(obj->getText());
+    root->set_xpath(obj->getXPath());
     root->set_automationid(obj->getAutomationId());
     root->set_package(obj->getApplicationPackage());
     root->set_role(obj->getRole());
