@@ -194,6 +194,11 @@ std::string UiObject::getRole() const
     return getAccessibleNode()->getRole();
 }
 
+std::string UiObject::getXPath() const
+{
+    return getAccessibleNode()->getXPath();
+}
+
 bool UiObject::setText(std::string text)
 {
     return getAccessibleNode()->setValue(text);

@@ -183,6 +183,10 @@ public:
      * @copydoc UiObject::getStyle()
      */
     std::string getStyle() const;
+    /**
+     * @copydoc UiObject::getXPath()
+     */
+    std::string getXPath() const;
 
     /**
      * @copydoc UiObject::getScreenBoundingBox()

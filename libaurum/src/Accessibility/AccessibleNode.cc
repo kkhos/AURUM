@@ -150,6 +150,11 @@ std::string AccessibleNode::getStyle() const
     return mStyle;
 }
 
+std::string AccessibleNode::getXPath() const
+{
+    return mXPath;
+}
+
 Rect<int> AccessibleNode::getScreenBoundingBox() const
 {
     return mScreenBoundingBox;
