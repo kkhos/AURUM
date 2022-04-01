@@ -57,6 +57,22 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(const std::sh
         return merged;
     }
 
+    if (selector->mMatchXPath) {
+        std::vector<std::shared_ptr<AccessibleNode>> merged{};
+
+        auto XMLDocMap = AccessibleWatcher::getInstance()->getXMLDocMap();
+        std::string pkg = root->getPkg();
+
+        if (XMLDocMap.count(pkg) == 0) return merged;
+
+        auto XMLDoc = XMLDocMap[pkg];
+        
+        auto tmp = XMLDoc->findObjects(selector->mXPath);
+        std::move(std::begin(tmp), std::end(tmp), std::back_inserter(merged));
+
+        return merged;
+    }
+
     return comparer.findObjects(root);
 }
 
