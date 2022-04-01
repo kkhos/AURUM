@@ -42,6 +42,9 @@ void AurumXML::traverse(xml_node element, std::shared_ptr<AccessibleNode> node)
     else
         name = node->getType();
 
+    if (!name.compare("application"))
+        name = node->getPkg();
+
     // Remove white spaces.
     name.erase(remove(name.begin(), name.end(), ' '), name.end());
 
@@ -71,6 +74,8 @@ void AurumXML::traverse(xml_node element, std::shared_ptr<AccessibleNode> node)
     element.append_attribute("active") = node->isActive();
     element.append_attribute("visible") = node->isVisible();
     element.append_attribute("selectable") = node->isSelectable();
+
+    mXNodeMap[node->getId()] = node;
 
     int childCnt = node->getChildCount();
     for (int i = 0; i < childCnt; i++) {
@@ -180,4 +185,20 @@ std::string AurumXML::getXPath(std::string id)
     }
 
     return "NotSupported";
+}
+
+std::vector<std::shared_ptr<AccessibleNode>> AurumXML::findObjects(std::string xpath)
+{
+    std::vector<std::shared_ptr<AccessibleNode>> ret;
+    xpath_node_set results = mDoc->select_nodes(xpath.c_str());
+
+    for (xpath_node_set::const_iterator it = results.begin(); it != results.end(); ++it)
+    {
+        auto node = (*it).node();
+        std::string id(node.attribute("id").value());
+
+        if (mXNodeMap.count(id) > 0) ret.push_back(mXNodeMap[id]);
+    }
+
+    return ret;
 }
