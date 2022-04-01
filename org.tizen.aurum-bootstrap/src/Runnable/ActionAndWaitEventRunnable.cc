@@ -39,9 +39,19 @@ void ActionAndWaitEventRunnable::run() const
         else
             LOGE("Object Id(%s) is invalid or not exist on view", mElementId.c_str());
     }
-    else {
+    else if (mType == 1) {
         LOGD("Send KeyEvent(%s)", mKeyCode.c_str());
         std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();
         mDevice->pressKeyCode(mKeyCode, KeyRequestType::STROKE);
+    }
+    else if (mType == 2) {
+        ObjectMapper *mObjMap = ObjectMapper::getInstance();
+        std::shared_ptr<UiObject> obj = mObjMap->getElement(mElementId);
+        if (obj) {
+            LOGD("SetFocus Object Id(%s)", mElementId.c_str());
+            obj->setFocus();
+        }
+        else
+            LOGE("Object Id(%s) is invalid or not exist on view", mElementId.c_str());
     }
 }
