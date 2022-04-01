@@ -73,6 +73,17 @@ public:
      */
     std::string getXPath(std::string id);
 
+    /**
+     * @brief Finds that objects that satisfied with the xpath in the object tree.
+     *
+     * @param xpath
+     *
+     * @return the list of found AccessibleNode vector
+     *
+     * @since_tizen 7.0
+     */
+    std::vector<std::shared_ptr<AccessibleNode>> findObjects(std::string xpath);
+
 private:
     /**
      * @internal
@@ -106,6 +117,7 @@ private:
     xml_document                                *mDoc;
     std::shared_ptr<AccessibleNode>              mRoot;
     std::unordered_map<std::string, std::string> mXPathMap;
+    std::unordered_map<std::string, std::shared_ptr<AccessibleNode>> mXNodeMap;
 };
 }  // namespace Aurum
 
