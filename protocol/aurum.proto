@@ -174,7 +174,11 @@ message ReqFindElement {
       string textPartialMatch = 19;
    }
 
-   repeated ReqFindElement children = 20;
+   oneof _xpath {
+      string xpath = 20;
+   }
+
+   repeated ReqFindElement children = 21;
 }
 message RspFindElement {
    RspStatus status = 1;

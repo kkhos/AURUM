@@ -64,6 +64,7 @@ std::vector<std::shared_ptr<UiSelector>> FindElementCommand::getSelectors(void)
     if(mRequest->_maxdepth_case())         sel->maxDepth(mRequest->maxdepth());
     if(mRequest->_packagename_case())      sel->pkg(mRequest->packagename());
     if(mRequest->_textpartialmatch_case()) sel->textPartialMatch(mRequest->textpartialmatch());
+    if(mRequest->_xpath_case())            sel->xpath(mRequest->xpath());
 
     return std::vector<std::shared_ptr<UiSelector>>{sel};
 }
@@ -112,6 +113,7 @@ std::vector<std::shared_ptr<UiSelector>> FindElementCommand::getSelectors(void)
             elm->set_widget_style(obj->getElementStyle());
 
             elm->set_text(obj->getText());
+            elm->set_xpath(obj->getXPath());
             elm->set_automationid(obj->getAutomationId());
             elm->set_package(obj->getApplicationPackage());
             elm->set_role(obj->getRole());
