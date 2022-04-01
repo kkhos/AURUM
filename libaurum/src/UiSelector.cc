@@ -23,8 +23,8 @@ using namespace Aurum;
 
 UiSelector::UiSelector()
 : mId{}, mAutomationId{}, mRole{}, mText{}, mTextPartialMatch{}, mPkg{}, mType{}, mStyle{},
-  mMatchId{}, mMatchAutomationId{}, mMatchRole{}, mMatchText{}, mMatchTextPartialMatch{}, mMatchPkg{}, mMatchType{},
-  mMatchStyle{}, mMatchChecked{}, mMatchCheckable{}, mMatchClickable{}, mMatchEnabled{}, mMatchFocused{},
+  mMatchId{}, mMatchAutomationId{}, mMatchRole{}, mMatchText{}, mMatchTextPartialMatch{}, mMatchXPath{}, mMatchPkg{},
+  mMatchType{}, mMatchStyle{}, mMatchChecked{}, mMatchCheckable{}, mMatchClickable{}, mMatchEnabled{}, mMatchFocused{},
   mMatchFocusable{}, mMatchScrollable{}, mMatchSelected{}, mMatchShowing{}, mMatchActive{}, mMatchVisible{},
   mMatchSelectable{}, mMinDepth{}, mMaxDepth{}, mIschecked{}, mIscheckable{}, mIsclickable{}, mIsenabled{},
   mIsfocused{}, mIsfocusable{}, mIsscrollable{}, mIsselected{}, mIsshowing{}, mIsactive{}, mIsvisible{},
@@ -41,6 +41,7 @@ std::string UiSelector::description()
     if(!this->mRole.empty()) ss << "\"mRole\":\"" << this->mRole << "\", ";
     if(!this->mText.empty()) ss << "\"mText\":\"" << this->mText << "\", ";
     if(!this->mTextPartialMatch.empty()) ss << "\"mTextPartialMatch\":\"" << this->mTextPartialMatch << "\", ";
+    if(!this->mXPath.empty()) ss << "\"mXPath\":\"" << this->mXPath << "\", ";
     if(!this->mPkg.empty()) ss << "\"mPkg\":\"" << this->mPkg << "\", ";
     if(!this->mType.empty()) ss << "\"mType\":\"" << this->mType << "\", ";
     if(!this->mStyle.empty()) ss << "\"mStyle\":\"" << this->mStyle << "\", ";
@@ -49,6 +50,7 @@ std::string UiSelector::description()
     if(this->mMatchRole) ss << "\"mMatchRole\":\"" << ((this->mMatchRole)?"true":"false") << "\", ";
     if(this->mMatchText) ss << "\"mMatchText\":\"" << ((this->mMatchText)?"true":"false") << "\", ";
     if(this->mMatchTextPartialMatch) ss << "\"mMatchTextPartialMatch\":\"" << ((this->mMatchTextPartialMatch)?"true":"false") << "\", ";
+    if(this->mMatchXPath) ss << "\"mMatchXPath\":\"" << ((this->mMatchXPath)?"true":"false") << "\", ";
     if(this->mMatchPkg) ss << "\"mMatchPkg\":\"" << ((this->mMatchPkg)?"true":"false") << "\", ";
     if(this->mMatchType) ss << "\"mMatchType\":\"" << ((this->mMatchType)?"true":"false") << "\", ";
     if(this->mMatchStyle) ss << "\"mMatchStyle\":\"" << ((this->mMatchStyle)?"true":"false" )<< "\", ";
@@ -112,6 +114,13 @@ UiSelector *UiSelector::automationid(std::string text)
 {
     this->mAutomationId = text;
     this->mMatchAutomationId = true;
+    return this;
+}
+
+UiSelector *UiSelector::xpath(std::string xpath)
+{
+    this->mXPath = xpath;
+    this->mMatchXPath = true;
     return this;
 }
 

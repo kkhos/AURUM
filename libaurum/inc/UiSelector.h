@@ -346,6 +346,17 @@ public:
      */
     UiSelector *fromParent(std::shared_ptr<UiSelector> parent);
 
+    /**
+     * @brief Sets the search criteria to match the object's XPath.
+     *
+     * @param[in] xpath object XPath
+     *
+     * @return UiSelector class instance
+     *
+     * @since_tizen 7.0
+     */
+    UiSelector *xpath(std::string xpath);
+
 public:
     std::string mId;
     std::string mAutomationId;
@@ -355,6 +366,7 @@ public:
     std::string mType;
     std::string mStyle;
     std::string mTextPartialMatch;
+    std::string mXPath;
 
     bool mMatchId;
     bool mMatchAutomationId;
@@ -364,6 +376,7 @@ public:
     bool mMatchType;
     bool mMatchStyle;
     bool mMatchTextPartialMatch;
+    bool mMatchXPath;
 
     bool mMatchChecked;
     bool mMatchCheckable;
