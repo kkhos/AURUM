@@ -39,6 +39,10 @@ public:
                                const ::aurum::ReqFindElement *request,
                                ::aurum::RspFindElement *response) override;
 
+    ::grpc::Status findElements(::grpc::ServerContext *context,
+                                const ::aurum::ReqFindElements *request,
+                                ::aurum::RspFindElements *response) override;
+
     ::grpc::Status getValue(::grpc::ServerContext *context,
                             const ::aurum::ReqGetValue *request,
                             ::aurum::RspGetValue *response) override;

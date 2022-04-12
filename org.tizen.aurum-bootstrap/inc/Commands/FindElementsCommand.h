@@ -22,19 +22,19 @@
 #include <aurum.grpc.pb.h>
 #include "config.h"
 
-class FindElementCommand : public Command {
+class FindElementsCommand : public Command {
 protected:
-    const ::aurum::ReqFindElement *mRequest;
-    ::aurum::RspFindElement *mResponse;
+    const ::aurum::ReqFindElements *mRequest;
+    ::aurum::RspFindElements *mResponse;
 
 protected:
     ObjectMapper *mObjMap;
 
 public:
-    FindElementCommand(const ::aurum::ReqFindElement *request,
-                       ::aurum::RspFindElement *response);
+    FindElementsCommand(const ::aurum::ReqFindElements *request,
+                       ::aurum::RspFindElements *response);
     ::grpc::Status execute() override;
 protected:
     virtual std::shared_ptr<ISearchable> getSearchableTop(void);
-    virtual std::shared_ptr<UiSelector> getSelector(void);
+    virtual std::vector<std::shared_ptr<UiSelector>> getSelectors(void);
 };
