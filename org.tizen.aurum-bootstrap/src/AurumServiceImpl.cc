@@ -64,6 +64,14 @@ aurumServiceImpl::~aurumServiceImpl()
     return execute(cmd.get(), true);
 }
 
+::grpc::Status aurumServiceImpl::aurumServiceImpl::findElements(
+    ::grpc::ServerContext *context, const ::aurum::ReqFindElements *request,
+    ::aurum::RspFindElements *response)
+{
+    std::unique_ptr<FindElementsCommand> cmd = std::make_unique<FindElementsCommand>(request, response);
+    return execute(cmd.get(), true);
+}
+
 ::grpc::Status aurumServiceImpl::aurumServiceImpl::click(
     ::grpc::ServerContext *context, const ::aurum::ReqClick *request,
     ::aurum::RspClick *response)
