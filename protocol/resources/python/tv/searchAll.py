@@ -11,8 +11,8 @@ import time
 # Find TextField and input "Movie" text
 def SearchTestWithText(stub):
     response = stub.findElement(ReqFindElement(widgetType='TextField'))
-    if len(response.elements) <= 0: return False
-    targetObj = response.elements[0].elementId
+    if response.element is None: return False
+    targetObj = response.element.elementId
     testString = 'Movie'
     stub.setValue(ReqSetValue(elementId=targetObj, stringValue=testString))
 
@@ -24,16 +24,16 @@ def SearchTestWithText(stub):
 # Find Foused item and move focus to right then compare focused item with previous one
 def SearchFocusedObject(stub):
     response = stub.findElement(ReqFindElement(isFocused=True))
-    if len(response.elements) <= 0: return False
+    if response.elements is None: return False
 
-    prevObj = response.elements[0].elementId
+    prevObj = response.element.elementId
     stub.sendKey(ReqKey(type='XF86', actionType='LONG_STROKE', XF86keyCode='Right'))
     time.sleep(1)
 
     response = stub.findElement(ReqFindElement(isFocused=True))
-    if len(response.elements) <= 0: return False
+    if response.elements is None: return False
 
-    if prevObj != response.elements[0].elementId:
+    if prevObj != response.element.elementId:
         return True
 
     return False
