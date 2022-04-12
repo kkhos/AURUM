@@ -19,6 +19,7 @@ bootstrap_svr_src += [
    files('src/Commands/ClickCommand.cc'),
    files('src/Commands/CloseAppCommand.cc'),
    files('src/Commands/FindElementCommand.cc'),
+   files('src/Commands/FindElementsCommand.cc'),
    files('src/Commands/FlickCommand.cc'),
    files('src/Commands/GetAttributeCommand.cc'),
    files('src/Commands/GetDeviceTimeCommand.cc'),
