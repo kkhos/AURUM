@@ -70,10 +70,9 @@ describe("Aurum Nodejs Test", function () {
           console.log(err);
 	        done(err);
         } else {
-          let returnList = response.elements;
-          assert.ok(returnList.length > 0);
-	        
-          textField = returnList[0];
+          let textField = response.element;
+          assert.null(textField);
+
           assert.strictEqual(textField.widget_type, "TextField");
           done();
         }
