@@ -42,42 +42,40 @@ describe("Aurum Nodejs Test", function () {
         }
       });
     });
-    
-    /*it("Find SearchAll Window", function (done) {      
+
+    /*it("Find SearchAll Window", function (done) {
       this.timeout(15000);
       client.findElement({ maxDepth: 1, packageName: "com.samsung.tv.searchall", isActive: true, isShowing: true }, (err, response) => {
         if (err) {
           console.log(err);
-	        done(err);
+          done(err);
         } else {
           let returnList = response.elements;
           assert.ok(returnList.length > 0);
-	        
           console.log(returnList[0]);
           searchAll = returnList[0];
           assert.strictEqual(searchAll.package, "com.samsung.tv.searchall");
           done();
         }
-      });      
-    });*/
+      });
+  });*/
 
-    it("Find TextField", function (done) {      
+    it("Find TextField", function (done) {
       this.timeout(15000);
       // assert.notEqual(searchAll, undefined);
 
       client.findElement({ widgetType: "TextField", packageName: "com.samsung.tv.searchall" }, (err, response) => {
         if (err) {
           console.log(err);
-	        done(err);
+          done(err);
         } else {
-          let returnList = response.elements;
-          assert.ok(returnList.length > 0);
-	        
-          textField = returnList[0];
+          let textField = response.element;
+          assert.null(textField);
+
           assert.strictEqual(textField.widget_type, "TextField");
           done();
         }
-      });      
+      });
     });
 
     it("Set Text", function (done) {
@@ -86,12 +84,12 @@ describe("Aurum Nodejs Test", function () {
       client.setValue({ elementId: textField.elementId, type: 0, stringValue: "Movie" }, (err, response) => {
         if (err) {
           console.log(err);
-	        done(err);
+          done(err);
         } else {
           assert.strictEqual(response.status, "OK");
           done();
         }
-      });      
+      });
     })
   });
 });

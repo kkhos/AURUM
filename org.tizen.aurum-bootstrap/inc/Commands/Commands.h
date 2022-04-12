@@ -17,6 +17,7 @@
 
 #include "Commands/KillServerCommand.h"
 #include "Commands/FindElementCommand.h"
+#include "Commands/FindElementsCommand.h"
 
 #include "Commands/GetAttributeCommand.h"
 #include "Commands/GetValueCommand.h"
