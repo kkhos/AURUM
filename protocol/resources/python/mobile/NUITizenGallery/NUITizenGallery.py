@@ -24,23 +24,23 @@ def inScreen(size):
 def PickerExecuteTestWithText(stub):
     # 1
     response = stub.findElement(ReqFindElement(widgetType='TextField'))
-    if len(response.elements) <= 0: return False
+    if response.element is None: return False
     # 2
-    targetObj = response.elements[0].elementId
+    targetObj = response.element.elementId
     testString = 'Picker'
     stub.setValue(ReqSetValue(elementId=targetObj, stringValue=testString))
     # 3
     response = stub.findElement(ReqFindElement(textField='Run'))
-    if len(response.elements) <= 0: return False
-    targetObj = response.elements[0].elementId
+    if response.element is None: return False
+    targetObj = response.element.elementId
     stub.click(ReqClick(type='ELEMENTID', elementId=targetObj))
     # 4
     response = stub.findElement(ReqFindElement(textField='PickerTest1'))
-    if len(response.elements) <= 0: return False
-    targetObj = response.elements[0].elementId
+    if response.element is None: return False
+    targetObj = response.element.elementId
     stub.click(ReqClick(type='ELEMENTID', elementId=targetObj))
     # 5
-    response = stub.findElement(ReqFindElement(textField='Black'))
+    response = stub.findElements(ReqFindElements(textField='Black'))
     if len(response.elements) <= 0: return False
 
     return True
@@ -53,8 +53,8 @@ def PickerExecuteTest(stub):
         # 1
         stub.flick(ReqFlick(startPoint=Point(x=300, y=750), endPoint=Point(x=300, y=200), durationMs=150))
         response = stub.findElement(ReqFindElement(textField='PickerTest1'))
-        if len(response.elements) <= 0: continue
-        targetObj = response.elements[0].elementId
+        if response.element is None: continue
+        targetObj = response.element.elementId
         response = stub.getSize(ReqGetSize(elementId=targetObj))
         if inScreen(response.size):
             # 2
@@ -62,7 +62,7 @@ def PickerExecuteTest(stub):
             break
 
     # 3
-    response = stub.findElement(ReqFindElement(textField='Black'))
+    response = stub.findElements(ReqFindElements(textField='Black'))
     if len(response.elements) <= 0: return False
     return True
 
@@ -72,21 +72,21 @@ def PickerExecuteTest(stub):
 # 4. Check the loop works well while changing the picker item by flick event
 def PickerScrollTest(stub):
     # 1
-    response = stub.findElement(ReqFindElement(widgetType='PickerScroller'))
+    response = stub.findElements(ReqFindElements(widgetType='PickerScroller'))
     if len(response.elements) <= 0: return False
     # 2
     responseText = stub.findElement(ReqFindElement(textField='Black'))
-    if len(response.elements) <= 0: return False
+    if response.element is None: return False
     # 3
-    pickerCenterX = response.elements[0].geometry.x + (response.elements[0].geometry.width / 2)
-    pickerCenterY = response.elements[0].geometry.y + (response.elements[0].geometry.height / 2)
+    pickerCenterX = response.element.geometry.x + (response.element.geometry.width / 2)
+    pickerCenterY = response.element.geometry.y + (response.element.geometry.height / 2)
 
     for tryCnt in range(30):
         # 4
         stub.flick(ReqFlick(startPoint=Point(x=int(pickerCenterX), y=int(pickerCenterY)), endPoint=Point(x=int(pickerCenterX), y=int(pickerCenterY-70)), durationMs=100))
         response = stub.findElement(ReqFindElement(textField='Black'))
-        if len(response.elements) > 0:
-            if response.elements[0].elementId == responseText.elements[0].elementId:
+        if response.element:
+            if response.element.elementId == responseText.element.elementId:
                 return True
 
     return False

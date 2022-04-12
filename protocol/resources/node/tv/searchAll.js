@@ -52,16 +52,15 @@ describe("Aurum Nodejs Test", function () {
         } else {
           let returnList = response.elements;
           assert.ok(returnList.length > 0);
-	        
           console.log(returnList[0]);
           searchAll = returnList[0];
           assert.strictEqual(searchAll.package, "com.samsung.tv.searchall");
           done();
         }
-      });      
-    });*/
+      });
+  });*/
 
-    it("Find TextField", function (done) {      
+    it("Find TextField", function (done) {
       this.timeout(15000);
       // assert.notEqual(searchAll, undefined);
 
@@ -70,14 +69,13 @@ describe("Aurum Nodejs Test", function () {
           console.log(err);
 	        done(err);
         } else {
-          let returnList = response.elements;
-          assert.ok(returnList.length > 0);
-	        
-          textField = returnList[0];
+          let textField = response.element;
+          assert.null(textField);
+
           assert.strictEqual(textField.widget_type, "TextField");
           done();
         }
-      });      
+      });
     });
 
     it("Set Text", function (done) {

@@ -2,7 +2,6 @@ from __future__ import print_function
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.dirname(__file__)))))
-from __future__ import print_function
 from aurum_pb2 import *
 from aurum_pb2_grpc import BootstrapStub
 import logging
@@ -11,12 +10,11 @@ import time
 
 def findElementTest(stub):
     response = stub.findElement(ReqFindElement(isClickable=True))
-    for el in response.elements:
-        return True
+    if response.element: return True
     return False
 
 def getValueTest(stub):
-    response = stub.findElement(ReqFindElement(textField='Button'))
+    response = stub.findElements(ReqFindElements(textField='Button'))
     print("els", response)
     for el in response.elements:
         response = stub.getValue(ReqGetValue(elementId=el.elementId))
@@ -34,8 +32,8 @@ def setValueClearTest(stub):
     for tryCnt in range(10):
         stub.flick(ReqFlick(startPoint=Point(x=160, y=350), endPoint=Point(x=160, y=10), durationMs=500))
         response = stub.findElement(ReqFindElement(textField='Entry'))
-        if len(response.elements) <= 0: continue
-        targetObj = response.elements[0].elementId
+        if response.element is None: continue
+        targetObj = response.element.elementId
         response = stub.getSize(ReqGetSize(elementId=targetObj))
         if inScreen(response.size):
             stub.click(ReqClick(type='ELEMENTID', elementId=targetObj))
@@ -44,8 +42,8 @@ def setValueClearTest(stub):
     for tryCnt in range(10):
         stub.flick(ReqFlick(startPoint=Point(x=160, y=350), endPoint=Point(x=160, y=10), durationMs=500))
         response = stub.findElement(ReqFindElement(textField='Singleline Entry'))
-        if len(response.elements) <= 0: continue
-        targetObj = response.elements[0].elementId
+        if response.element is None: continue
+        targetObj = response.element.elementId
         response = stub.getSize(ReqGetSize(elementId=targetObj))
         isShowing = stub.getAttribute(ReqGetAttribute(elementId=targetObj, attribute='SHOWING')).boolValue
         if inScreen(response.size) or isShowing:
@@ -53,8 +51,8 @@ def setValueClearTest(stub):
             break
 
     response = stub.findElement(ReqFindElement(widgetType='Elm_Entry'))
-    if len(response.elements) <= 0: return False
-    targetObj = response.elements[0].elementId
+    if response.element is None: return False
+    targetObj = response.element.elementId
 
     testString = 'set test string by calling SetValue Method'
     stub.setValue(ReqSetValue(elementId=targetObj, stringValue=testString))
@@ -71,7 +69,7 @@ def setValueClearTest(stub):
     return True
 
 def getSizeTest(stub):
-    response = stub.findElement(ReqFindElement(textField='Button'))
+    response = stub.findElements(ReqFindElements(textField='Button'))
     print("els", response)
     for el in response.elements:
         response = stub.getSize(ReqGetSize(elementId=el.elementId))
@@ -80,7 +78,7 @@ def getSizeTest(stub):
     return False
 
 def getAttributeTest(stub):
-    response = stub.findElement(ReqFindElement(textField='Button'))
+    response = stub.findElements(ReqFindElements(textField='Button'))
     if len(response.elements) <= 0: return False
 
     checkList = [
@@ -104,7 +102,7 @@ def getAttributeTest(stub):
 
     if isFailed == True: return False
 
-    response = stub.findElement(ReqFindElement(textField='Check'))
+    response = stub.findElements(ReqFindElements(textField='Check'))
     if len(response.elements) <= 0: return False
 
     checkList = [
@@ -129,19 +127,19 @@ def getAttributeTest(stub):
     return isFailed == False
 
 def clickTest(stub):
-    response = stub.findElement(ReqFindElement(textField='Accessibility'))
+    response = stub.findElements(ReqFindElements(textField='Accessibility'))
     if len(response.elements) <= 0: return False
 
     for el in response.elements:
         stub.click(ReqClick(elementId=el.elementId, type='ELEMENTID'))
 
-    response = stub.findElement(ReqFindElement(textField='Screen Reader'))
+    response = stub.findElements(ReqFindElements(textField='Screen Reader'))
     if len(response.elements) <= 0: return False
 
     for el in response.elements:
         stub.click(ReqClick(coordination=Point(x=320, y=130), type='COORD'))
 
-    response = stub.findElement(ReqFindElement(textField='UI Descriptions'))
+    response = stub.findElements(ReqFindElements(textField='UI Descriptions'))
     if len(response.elements) <= 0: return False
 
     return True
@@ -154,13 +152,13 @@ def longClickTest(stub):
 
 def flickTest(stub):
     response = stub.findElement(ReqFindElement(textField='Bg', isShowing=True))
-    if len(response.elements) <= 0: return False
-    targetObj = response.elements[0].elementId
+    if response.element is None: return False
+    targetObj = response.element.elementId
 
     for tryCnt in range(10):
         print('Flick to bottom to find "Spinner" item @ tries:', tryCnt)
         stub.flick(ReqFlick(startPoint=Point(x=160, y=359), endPoint=Point(x=160, y=1), durationMs=110))
-        response = stub.findElement(ReqFindElement(textField='Spinner'))
+        response = stub.findElements(ReqFindElements(textField='Spinner'))
         time.sleep(0.01)
         print(response)
         if len(response.elements) > 0:

@@ -12,10 +12,10 @@ import time
 # Please refer key codes below page
 # https://code.sec.samsung.net/confluence/display/GFX/VD+Key+Code+Table
 def MultiViewSizeTest(stub):
-    response = stub.findElement(ReqFindElement(textField='VSComponent2'))
+    response = stub.findElements(ReqFindElements(textField='VSComponent2'))
     if len(response.elements) <= 0: return False
 
-    responseGuide = stub.findElement(ReqFindElement(textField='Guide TextBox'))
+    responseGuide = stub.findElements(ReqFindElements(textField='Guide TextBox'))
     if len(response.elements) <= 0:
         stub.sendKey(ReqKey(type='XF86', actionType='STROKE', XF86keyCode='Return'))
 
@@ -26,9 +26,9 @@ def MultiViewSizeTest(stub):
     time.sleep(1)
 
     responseAfter = stub.findElement(ReqFindElement(textField='VSComponent2'))
-    if len(responseAfter.elements) <= 0: return False
+    if responseAfter.element is None: return False
 
-    if response.elements[0].geometry.width < responseAfter.elements[0].geometry.width:
+    if response.element.geometry.width < responseAfter.element.geometry.width:
         return True
 
     return False
@@ -43,7 +43,7 @@ def MultiViewContentsTest(stub):
     time.sleep(10)
 
     # It fails if there is a View
-    response= stub.findElement(ReqFindElement(textField='VSComponent2'))
+    response= stub.findElements(ReqFindElements(textField='VSComponent2'))
     if len(response.elements) > 0: return False
 
     stub.sendKey(ReqKey(type='XF86', actionType='LONG_STROKE', XF86keyCode='XF86Back'))
