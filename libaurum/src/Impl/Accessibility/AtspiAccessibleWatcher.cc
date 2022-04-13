@@ -27,6 +27,7 @@
 #include <chrono>
 #include <thread>
 #include <iostream>
+#include <system_info.h>
 
 using namespace Aurum;
 using namespace AurumInternal;
@@ -145,6 +146,21 @@ AtspiAccessibleWatcher::AtspiAccessibleWatcher()
 
     g_variant_unref(result);
     if (error) g_error_free(error);
+
+    int vconfRet;
+    char *value;
+
+    vconfRet = system_info_get_platform_string("http://tizen.org/feature/profile", &value);
+    if (vconfRet != SYSTEM_INFO_ERROR_NONE) LOGE("Fail to get system profile infomation");
+    else {
+        if (!strncmp("tv", value, 2)) {
+            LOGI("Aurum is working on TV profile");
+            isTv = true;
+        }
+        else isTv = false;
+
+        free(value);
+    }
 }
 
 AtspiAccessibleWatcher::~AtspiAccessibleWatcher()
@@ -166,6 +182,43 @@ AtspiAccessibleWatcher::~AtspiAccessibleWatcher()
     atspi_exit();
 }
 
+void AtspiAccessibleWatcher::appendApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg)
+{
+    AtspiWrapper::Atspi_accessible_set_cache_mask(app, ATSPI_CACHE_ALL);
+    LOGI("window activated in app(%s)", pkg);
+    if (!instance->mActiveAppMap.count(app)) {
+        LOGI("add activated window's app in map");
+        instance->mActiveAppMap.insert(std::pair<AtspiAccessible *, std::shared_ptr<AccessibleApplication>>(app,
+                std::make_shared<AtspiAccessibleApplication>(std::make_shared<AtspiAccessibleNode>(app))));
+    }
+    else {
+        LOGI("app(%s) is already in map", pkg);
+    }
+
+    if (!instance->mXMLDocMap.count(std::string(pkg))) {
+        instance->mXMLDocMap.insert(std::pair<std::string, std::shared_ptr<AurumXML>>(std::string(pkg),
+                             std::make_shared<AurumXML>(std::make_shared<AtspiAccessibleNode>(app))));
+    }
+}
+
+void AtspiAccessibleWatcher::removeApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg)
+{
+    LOGI("window deactivate in app(%s)", pkg);
+    if (instance->mActiveAppMap.count(app)) {
+        LOGI("window deactivated delete app(%s) in map", pkg);
+        instance->mActiveAppMap.erase(app);
+    }
+    else {
+        LOGE("deactivated window's app(%s) is not in map", pkg);
+    }
+
+    if (instance->mXMLDocMap.count(std::string(pkg))) {
+        instance->mXMLDocMap.erase(std::string(pkg));
+    }
+
+    g_object_unref(app);
+}
+
 void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
 {
     if (!event->source)
@@ -177,41 +230,18 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
     name = AtspiWrapper::Atspi_accessible_get_name(event->source, NULL);
 
     AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(event->source, NULL);
-    if (app)
+    if (name && app)
     {
         pkg = AtspiWrapper::Atspi_accessible_get_name(app, NULL);
-        if (!strncmp(event->type, "window:activate", 15)) {
-            AtspiWrapper::Atspi_accessible_set_cache_mask(app, ATSPI_CACHE_ALL);
-            LOGI("window activated in app(%s)", pkg);
-            if (!instance->mActiveAppMap.count(app)) {
-                LOGI("add activated window's app in map");
-                instance->mActiveAppMap.insert(std::pair<AtspiAccessible *, std::shared_ptr<AccessibleApplication>>(app,
-                                     std::make_shared<AtspiAccessibleApplication>(std::make_shared<AtspiAccessibleNode>(app))));
-            }
-            else {
-                LOGI("app(%s) is already in map", pkg);
-            }
+        if (!strncmp(event->type, "window:activate", 15)) instance->appendApp(instance, app, pkg);
+        else if (!strncmp(event->type, "window:deactivate", 16)) instance->removeApp(instance, app, pkg);
 
-            if (!instance->mXMLDocMap.count(std::string(pkg))) {
-                instance->mXMLDocMap.insert(std::pair<std::string, std::shared_ptr<AurumXML>>(std::string(pkg),
-                                     std::make_shared<AurumXML>(std::make_shared<AtspiAccessibleNode>(app))));
-            }
-        }
-        else if (!strncmp(event->type, "window:deactivate", 16)) {
-            LOGI("window deactivate in app(%s)", pkg);
-            if (instance->mActiveAppMap.count(app)) {
-                LOGI("window deactivated delete app(%s) in map", pkg);
-                instance->mActiveAppMap.erase(app);
-            }
-            else {
-                LOGE("deactivated window's app(%s) is not in map", pkg);
-            }
-
-            if (instance->mXMLDocMap.count(std::string(pkg))) {
-                instance->mXMLDocMap.erase(std::string(pkg));
-            }
-
-            g_object_unref(app);
+        // To support focus skipped window
+        if (instance->isTv) {
+            if (!strncmp(event->type, "window:restore", 14) && (!strncmp(name, "volume-app", 10) || !strncmp(name, "tv-viewer", 9)))
+                instance->appendApp(instance, app, pkg);
+            else if (!strncmp(event->type, "window:minimize", 15) && (!strncmp(name, "volume-app", 10) || !strncmp(name, "tv-viewer", 9)))
+                instance->removeApp(instance, app, pkg);
         }
     }
     else

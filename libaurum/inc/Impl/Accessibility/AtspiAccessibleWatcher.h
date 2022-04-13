@@ -155,6 +155,8 @@ private:
     void addEventListener(AtspiEventListener *listener, A11yEvent type);
     void removeEventListener(AtspiEventListener *listener, A11yEvent type);
     static gpointer eventThreadLoop(gpointer data);
+    void appendApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg);
+    void removeApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg);
 
 private:
     GDBusProxy *mDbusProxy;
@@ -167,6 +169,7 @@ private:
     static std::vector<std::shared_ptr<A11yEventInfo>> mEventQueue;
     static std::mutex mMutex;
     static GMainLoop *mLoop;
+    bool isTv;
 };
 
 }
