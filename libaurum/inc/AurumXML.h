@@ -82,7 +82,7 @@ public:
      *
      * @since_tizen 7.0
      */
-    std::vector<std::shared_ptr<AccessibleNode>> findObjects(std::string xpath);
+    std::vector<std::shared_ptr<AccessibleNode>> findObjects(std::string xpath, bool earlyReturn = false);
 
 private:
     /**
@@ -113,10 +113,22 @@ private:
      */
     std::string getOptimalXPath(xml_document *doc, xml_node node);
 
+    /**
+     * @internal
+     *
+     * @brief Check xml_node exists or not
+     *
+     * @param string id
+     *
+     * @return xml_node
+     *
+     * @since_tizen 7.0
+     */
+    xml_node checkNode(std::string id);
+
 private:
     xml_document                                *mDoc;
     std::shared_ptr<AccessibleNode>              mRoot;
-    std::unordered_map<std::string, std::string> mXPathMap;
     std::unordered_map<std::string, std::shared_ptr<AccessibleNode>> mXNodeMap;
 };
 }  // namespace Aurum

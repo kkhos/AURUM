@@ -67,7 +67,7 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(const std::sh
 
         auto XMLDoc = XMLDocMap[pkg];
 
-        auto tmp = XMLDoc->findObjects(selector->mXPath);
+        auto tmp = XMLDoc->findObjects(selector->mXPath, earlyReturn);
         std::move(std::begin(tmp), std::end(tmp), std::back_inserter(merged));
 
         return merged;
