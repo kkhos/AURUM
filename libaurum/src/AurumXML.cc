@@ -42,8 +42,7 @@ void AurumXML::traverse(xml_node element, std::shared_ptr<AccessibleNode> node)
     else
         name = node->getType();
 
-    if (!name.compare("application"))
-        name = node->getPkg();
+    if (!name.compare("application")) name = node->getPkg();
 
     // Remove white spaces.
     name.erase(remove(name.begin(), name.end(), ' '), name.end());
@@ -160,44 +159,72 @@ std::string AurumXML::getOptimalXPath(xml_document *doc, xml_node node)
     return getOptimalXPath(doc, parent).append(xpath);
 }
 
-std::string AurumXML::getXPath(std::string id)
+std::string makeQuery(std::string id)
 {
-    if (mXPathMap.count(id) > 0) return mXPathMap[id];
-
     std::string query;
     query += "//*[@id=\"";
     query += id;
     query += "\"]";
 
+    return query;
+}
+
+xml_node AurumXML::checkNode(std::string id)
+{
+    xml_node node;
     try {
-        auto node = mDoc->select_node(query.c_str()).node();
+        std::string query = makeQuery(id);
+        node = mDoc->select_node(query.c_str()).node();
 
-        if (!node) createXMLtree();
-
-        if (node) {
-            std::string xpath = getOptimalXPath(mDoc, node);
-            mXPathMap[id] = xpath;
-            return xpath;
+        if (!node) {
+            createXMLtree();
+            node = mDoc->select_node(query.c_str()).node();
         }
-
     } catch (const xpath_exception &e) {
         LOGI("getXPath Error: %s", e.what());
+    }
+    return node;
+}
+
+std::string AurumXML::getXPath(std::string id)
+{
+    xml_node node = checkNode(id);
+
+    if (node) {
+        std::string xpath = getOptimalXPath(mDoc, node);
+        return xpath;
     }
 
     return "NotSupported";
 }
 
-std::vector<std::shared_ptr<AccessibleNode>> AurumXML::findObjects(std::string xpath)
+std::vector<std::shared_ptr<AccessibleNode>> AurumXML::findObjects(
+    std::string xpath, bool earlyReturn)
 {
     std::vector<std::shared_ptr<AccessibleNode>> ret;
-    xpath_node_set results = mDoc->select_nodes(xpath.c_str());
 
-    for (xpath_node_set::const_iterator it = results.begin(); it != results.end(); ++it)
-    {
-        auto node = (*it).node();
-        std::string id(node.attribute("id").value());
+    createXMLtree();
 
-        if (mXNodeMap.count(id) > 0) ret.push_back(mXNodeMap[id]);
+    LOGI("xpath %s earlyReturn %d", xpath.c_str(), earlyReturn);
+    try {
+        if (earlyReturn) {
+            xml_node    node = mDoc->select_node(xpath.c_str()).node();
+            std::string id(node.attribute("id").value());
+            if (mXNodeMap.count(id) > 0) ret.push_back(mXNodeMap[id]);
+
+        } else {
+            xpath_node_set results = mDoc->select_nodes(xpath.c_str());
+
+            for (xpath_node_set::const_iterator it = results.begin();
+                 it != results.end(); ++it) {
+                auto        node = (*it).node();
+                std::string id(node.attribute("id").value());
+
+                if (mXNodeMap.count(id) > 0) ret.push_back(mXNodeMap[id]);
+            }
+        }
+    } catch (const xpath_exception &e) {
+        LOGI("findObjects Error: %s", e.what());
     }
 
     return ret;
