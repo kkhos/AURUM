@@ -194,9 +194,10 @@ void AtspiAccessibleWatcher::appendApp(AtspiAccessibleWatcher *instance, AtspiAc
         LOGI("app(%s) is already in map", pkg);
     }
 
-    if (!instance->mXMLDocMap.count(std::string(pkg))) {
-        instance->mXMLDocMap.insert(std::pair<std::string, std::shared_ptr<AurumXML>>(std::string(pkg),
-                             std::make_shared<AurumXML>(std::make_shared<AtspiAccessibleNode>(app))));
+    std::string package(pkg);
+    if (!package.empty()) {
+        instance->mXMLDocMap.insert(std::pair<std::string, std::shared_ptr<AurumXML>>(package,
+                std::make_shared<AurumXML>(std::make_shared<AtspiAccessibleNode>(app))));
     }
 }
 
