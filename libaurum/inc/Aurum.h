@@ -60,5 +60,7 @@
 #include "Comparer.h"
 #include "A11yEvent.h"
 #include "Runnables.h"
+#include "ScreenAnalyzerWatcher.h"
+
 
 #endif
