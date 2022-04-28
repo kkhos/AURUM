@@ -30,6 +30,8 @@ BuildRequires: pkgconfig(libtzplatform-config)
 BuildRequires: pkgconfig(capi-system-system-settings)
 BuildRequires: pkgconfig(capi-base-utils-i18n)
 BuildRequires: pkgconfig(vconf)
+BuildRequires: pkgconfig(libmosquitto)
+BuildRequires: pkgconfig(jsoncpp)
 
 %if 0%{?gendoc:1}
 BuildRequires:  doxygen
