@@ -3,6 +3,7 @@ pkgconfig = import('pkgconfig')
 libaurum_install_inc = [
   './inc/UiDevice.h',
   './inc/UiObject.h',
+  './inc/SaObject.h',
   './inc/UiSelector.h',
   './inc/Sel.h',
   './inc/Until.h',
