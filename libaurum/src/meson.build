@@ -3,6 +3,7 @@ libaurum_src += [
   files('Sel.cc'),
   files('UiDevice.cc'),
   files('UiObject.cc'),
+  files('SaObject.cc'),
   files('UiSelector.cc'),
   files('Comparer.cc'),
   files('Until.cc'),

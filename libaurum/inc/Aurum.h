@@ -46,6 +46,7 @@
 
 #include "UiDevice.h"
 #include "UiObject.h"
+#include "SaObject.h"
 #include "UiSelector.h"
 #include "Sel.h"
 #include "Until.h"
