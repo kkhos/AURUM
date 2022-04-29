@@ -236,8 +236,24 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
     if (name && app)
     {
         pkg = AtspiWrapper::Atspi_accessible_get_name(app, NULL);
-        if (!strncmp(event->type, "window:activate", 15)) instance->appendApp(instance, app, pkg);
-        else if (!strncmp(event->type, "window:deactivate", 16)) instance->removeApp(instance, app, pkg);
+        if (!strncmp(event->type, "window:activate", 15))
+        {
+            if (!strncmp(pkg, "cobalt", 6)) {
+                instance->mCobaltAppLaunched = true;
+                LOGI("cobalt app launched");
+            }
+
+            instance->appendApp(instance, app, pkg);
+        }
+        else if (!strncmp(event->type, "window:deactivate", 16))
+        {
+            if (!strncmp(pkg, "cobalt", 6)) {
+                instance->mCobaltAppLaunched = false;
+                LOGI("cobalt app terminated");
+            }
+
+            instance->removeApp(instance, app, pkg);
+        }
 
         // To support focus skipped window
         if (instance->isTv) {
@@ -276,6 +292,11 @@ int AtspiAccessibleWatcher::getApplicationCount(void) const
 
     if (nchild <= 0) return 0;
     return nchild;
+}
+
+bool AtspiAccessibleWatcher::getExternalAppLaunched(void) const
+{
+    return mCobaltAppLaunched;
 }
 
 std::shared_ptr<AccessibleApplication> AtspiAccessibleWatcher::getApplicationAt(int index) const
