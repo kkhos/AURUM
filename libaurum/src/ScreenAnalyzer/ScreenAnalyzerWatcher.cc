@@ -26,6 +26,7 @@
 
 using namespace Aurum;
 
+std::vector<std::shared_ptr<SaObject>> ScreenAnalyzerWatcher::saObjects;
 bool ScreenAnalyzerWatcher::doneLoad;
 
 void onConnect(struct mosquitto *mosq, void *obj, int ret)
@@ -58,8 +59,42 @@ void ScreenAnalyzerWatcher::onMessage(struct mosquitto *mosq, void *obj, const s
 {
     LOGI("Mosquitto onMessage called");
     std::string txt((char *)msg->payload);
+    saObjects.clear();
 
-    LOGI("Mosquitto onMessage finished");
+    Json::Reader reader;
+    Json::Value root;
+    bool ret = reader.parse(txt, root);
+    if (!ret) LOGE("Json parse fail");
+
+    const Json::Value objs = root["objects"];
+
+    std::string id;
+    std::string type;
+    Rect<int> geometry;
+    std::string ocrText;
+    std::vector<std::string> states{};
+    for (int idx = 0; idx < objs.size(); ++idx)
+    {
+        states.clear();
+        id = objs[idx]["id"].asString();
+
+        type = objs[idx]["type"].asString();
+
+        const Json::Value geo = objs[idx]["geometry"];
+        geometry = {geo[0].asInt(), geo[1].asInt(), geo[2].asInt(), geo[3].asInt()};
+
+        ocrText = objs[idx]["ocrText"].asString();
+
+        const Json::Value sta = objs[idx]["states"];
+        for (int sidx = 0; sidx < sta.size(); ++sidx) {
+            states.push_back(sta[sidx].asString());
+        }
+
+        saObjects.push_back(std::make_shared<Aurum::SaObject>(id, type, geometry, ocrText, states));
+    }
+
+    LOGI("Mosquitto onMessage finished %d objects are initialized",  saObjects.size());
+
     doneLoad = true;
 
 }
@@ -105,6 +140,93 @@ ScreenAnalyzerWatcher::~ScreenAnalyzerWatcher()
 void ScreenAnalyzerWatcher::PublishData(std::string path, const Size2D<int> screenSize)
 {
     LOGI("Mosquitto publish data start file path : " path.c_str());
+    int size = screenSize.width * screenSize.height;
+    char buf[size];
 
-    LOGI("Mosquitto publish data finish");
+    doneLoad = false;
+
+    std::ifstream ifs(path, std::ifstream::binary);
+    memset(buf, 0, size);
+    ifs.read(buf, size);
+    int rc;
+    rc = mosquitto_publish(mosq, NULL, "screen_analyzer/image", size, buf, 2, false);
+    if(rc != MOSQ_ERR_SUCCESS) {
+        LOGE("Mosquitto publish fail");
+    }
+    ifs.close();
+
+    while(!doneLoad) {
+        std::this_thread::sleep_for(std::chrono::milliseconds{10});
+    }
+
+    LOGI("Mosuqitto publish data finish");
+}
+
+std::vector<std::shared_ptr<Aurum::SaObject>> ScreenAnalyzerWatcher::GetSaObjects()
+{
+    return saObjects;
+}
+
+void ScreenAnalyzerWatcher::SetJsonText(std::string text)
+{
+    jsontext = text;
+}
+
+
+bool ScreenAnalyzerWatcher::checkCriteria(const std::string textA, const std::string textB, const bool textPartialMatch)
+{
+    if (textB.empty()) return true;
+
+    bool rst;
+    if (textPartialMatch) {
+        if (textB.find(textA) != std::string::npos) rst = false;
+        else rst = true;
+    }
+    else {
+        if (!textA.compare(textB)) rst = false;
+        else rst = true;
+    }
+
+    return rst;
+}
+
+bool ScreenAnalyzerWatcher::checkCriteria(const bool boolA, const bool boolB)
+{
+    return boolA != boolB;
+}
+
+bool ScreenAnalyzerWatcher::checkCriteria(const std::shared_ptr<UiSelector> selector,
+                                 const std::shared_ptr<Aurum::SaObject> node)
+{
+    if (selector->mMatchText || selector->mMatchTextPartialMatch) {
+        if (selector->mMatchText && checkCriteria(selector->mText, node->getOcrText(), 0)) return false;
+        if (selector->mMatchTextPartialMatch && checkCriteria(selector->mTextPartialMatch, node->getOcrText(), 1)) return false;
+    }
+    if (selector->mMatchId) {
+        if (checkCriteria(selector->mId, node->getId(), 0)) return false;
+    }
+    if (selector->mMatchType) {
+        if (selector->mMatchType && checkCriteria(selector->mType, node->getElementType(), 0)) return false;
+    }
+    if (selector->mMatchClickable && checkCriteria(selector->mIsclickable, node->isClickable())) return false;
+    if (selector->mMatchFocused && checkCriteria(selector->mIsfocused, node->isFocused())) return false;
+    if (selector->mMatchFocusable && checkCriteria(selector->mIsfocusable, node->isFocusable())) return false;
+
+    return true;
+}
+
+
+std::vector<std::shared_ptr<Aurum::SaObject>> ScreenAnalyzerWatcher::findSaObjects(const std::shared_ptr<UiSelector> selector)
+{
+    std::vector<std::shared_ptr<Aurum::SaObject>> rets{};
+
+    LOGI("FindSaObject start");
+    for (auto saObj : saObjects) {
+        if (checkCriteria(selector, saObj)) {
+            LOGI("saObj(%s) found", saObj->getId().c_str());
+            rets.push_back(saObj);
+        }
+    }
+
+    return rets;
 }
