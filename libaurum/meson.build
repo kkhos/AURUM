@@ -60,6 +60,7 @@ if get_option('tizen') == true
     dependency('dlog'),
     dependency('elementary'),
     dependency('libtdm'),
+	dependency('video-capture'),
   ]
 endif
 

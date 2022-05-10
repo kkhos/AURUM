@@ -267,7 +267,10 @@ bool UiDevice::pressKeyCode(std::string keycode, KeyRequestType type)
 
 bool UiDevice::takeScreenshot(std::string path, float scale, int quality)
 {
-    return mDeviceImpl->takeScreenshot(path, scale, quality);
+    LOGE("WCC screen captrue start");
+    bool ret = mDeviceImpl->takeScreenshot(path, scale, quality);
+    LOGE("WCC screen captrue finish");
+    return ret;
 }
 
 long long UiDevice::getSystemTime(TimeRequestType type)

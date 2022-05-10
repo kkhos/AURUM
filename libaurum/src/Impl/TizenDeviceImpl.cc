@@ -31,6 +31,7 @@
 #include <tdm_helper.h>
 #include <tbm_surface.h>
 #include <system_info.h>
+#include <capi-video-capture.h>
 
 using namespace Aurum;
 using namespace AurumInternal;
@@ -272,10 +273,12 @@ bool TizenDeviceImpl::releaseKeyCode(std::string keycode)
 
 bool TizenDeviceImpl::takeScreenshot(std::string path, float scale, int quality)
 {
+	
     efl_util_screenshot_h screenshot = NULL;
     tbm_surface_h tbm_surface = NULL;
 
-    screenshot = efl_util_screenshot_initialize(mScreenSize.width, mScreenSize.height);
+    //screenshot = efl_util_screenshot_initialize(mScreenSize.width, mScreenSize.height);
+    screenshot = efl_util_screenshot_initialize(720, 540);
 
     if (screenshot) {
         tbm_surface = efl_util_screenshot_take_tbm_surface(screenshot);
@@ -292,6 +295,43 @@ bool TizenDeviceImpl::takeScreenshot(std::string path, float scale, int quality)
     }
 
     return true;
+	
+/*
+	const int WIDTH = 720;
+const int HEIGHT = 540;
+unsigned char ybuff[768*576] = {0}; //for post secure capture (720x576 size fix) -> for mtk h/w 32bit spec (768X576)
+unsigned char cbuff[768*576] = {0}; //for post secure capture (720x576 size fix) -> for mtk h/w 32bit spec (768X576)
+struct secvideo_capture_param capture_param;
+
+capture_param.uYSize = 768*576;
+capture_param.uCSize = 768*576;
+capture_param.pYAddr = (char*)ybuff;
+capture_param.pCAddr = (char*)cbuff;
+capture_param.ret_width  = 0;
+capture_param.ret_height = 0;
+capture_param.no_lock_no_copy = 0;
+
+
+	int retry = 0;
+
+	while(retry < 2) {
+		int ret = secvideo_api_capture_screen(WIDTH, HEIGHT, &capture_param);
+		if (ret != 0) {
+			LOGE("fail");
+		}
+		else {
+			LOGE("success");
+			return true;
+		}
+
+		retry++;
+		sleep(2);
+	}
+
+
+	return false;
+*/
+
 }
 
 class Clock {
