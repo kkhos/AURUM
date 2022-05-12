@@ -282,6 +282,7 @@ bool TizenDeviceImpl::takeScreenshot(std::string path, float scale, int quality)
         if (tbm_surface) {
             tdm_helper_dump_buffer(tbm_surface, path.c_str());
             sync();
+	    tbm_surface_destroy(tbm_surface);
         } else {
             efl_util_screenshot_deinitialize(screenshot);
             return false;
