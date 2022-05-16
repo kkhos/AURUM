@@ -21,6 +21,7 @@
 #include <fstream>
 #include <json/json.h>
 #include <sstream>
+#include "SaObject.h"
 #include <time.h>
 #include <thread>
 
@@ -171,7 +172,6 @@ void ScreenAnalyzerWatcher::SetJsonText(std::string text)
 {
     jsontext = text;
 }
-
 
 bool ScreenAnalyzerWatcher::checkCriteria(const std::string textA, const std::string textB, const bool textPartialMatch)
 {
