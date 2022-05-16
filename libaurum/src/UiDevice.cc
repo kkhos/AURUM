@@ -30,14 +30,19 @@
 #include <algorithm>
 #include <iostream>
 
+#include "ScreenAnalyzerWatcher.h"
+
 using namespace Aurum;
 using namespace AurumInternal;
+
+std::shared_ptr<ScreenAnalyzerWatcher> scw;
 
 UiDevice::UiDevice() : UiDevice(nullptr) {}
 
 UiDevice::UiDevice(IDevice *impl)
     : mDeviceImpl(impl), mWaiter(new Waiter{this})
 {
+    scw = std::make_shared<ScreenAnalyzerWatcher>();
 }
 
 UiDevice::~UiDevice()
@@ -278,4 +283,28 @@ long long UiDevice::getSystemTime(TimeRequestType type)
 const Size2D<int> UiDevice::getScreenSize()
 {
     return mDeviceImpl->getScreenSize();
+}
+
+std::vector<std::shared_ptr<SaObject>> UiDevice::getSaObject()
+{
+    return scw->GetSaObjects();
+}
+
+std::shared_ptr<ScreenAnalyzerWatcher> UiDevice::getScw()
+{
+    return scw;
+}
+
+void UiDevice::RequestScreenAnalyze(std::string path)
+{
+    int ret = false;
+    ret = mDeviceImpl->takeScreenshot(path, 1.0, 1);
+    scw->PublishData(path, mDeviceImpl->getScreenSize());
+
+	return ret;
+}
+
+bool UiDevice::getExternalAppLaunched()
+{
+    return AccessibleWatcher::getInstance()->getExternalAppLaunched();
 }
