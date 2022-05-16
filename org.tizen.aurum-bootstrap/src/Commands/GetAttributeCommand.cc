@@ -38,32 +38,42 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
     ::aurum::ReqGetAttribute_RequestType type = request->attribute();
     LOGI("type : %d", type);
 
-    if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_VISIBLE)
-        return std::make_unique<GetVisibleAttributeCommand>(request, response);
-    else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_FOCUSABLE)
-        return std::make_unique<GetFocusableAttributeCommand>(request, response);
-    else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_FOCUSED)
-        return std::make_unique<GetFocusedAttributeCommand>(request, response);
-    else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_ENABLED)
-        return std::make_unique<GetEnabledAttributeCommand>(request, response);
-    else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_CLICKABLE)
-        return std::make_unique<GetClickableAttributeCommand>(request, response);
-    else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_SCROLLABLE)
-        return std::make_unique<GetScrollableAttributeCommand>(request, response);
-    else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_CHECKABLE)
-        return std::make_unique<GetCheckableAttributeCommand>(request, response);
-    else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_CHECKED)
-        return std::make_unique<GetCheckedAttributeCommand>(request, response);
-    else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_SELECTED)
-        return std::make_unique<GetSelectedAttributeCommand>(request, response);
-    else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_SELECTABLE)
-        return std::make_unique<GetSelectableAttributeCommand>(request, response);
-    else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_SHOWING)
-        return std::make_unique<GetShowingAttributeCommand>(request, response);
-    else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_ACTIVE)
-        return std::make_unique<GetActiveAttributeCommand>(request, response);
+    if (mDevice->getExternalAppLaunched()) 
+    {
+        //TBD
+    }
     else
-        return std::make_unique<GetAttributeCommand>(request, response);
+    {
+        ::aurum::ReqGetAttribute_RequestType type = request->attribute();
+        LOGI("type : %d", type);
+
+        if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_VISIBLE)
+            return std::make_unique<GetVisibleAttributeCommand>(request, response);
+        else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_FOCUSABLE)
+            return std::make_unique<GetFocusableAttributeCommand>(request, response);
+        else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_FOCUSED)
+            return std::make_unique<GetFocusedAttributeCommand>(request, response);
+        else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_ENABLED)
+            return std::make_unique<GetEnabledAttributeCommand>(request, response);
+        else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_CLICKABLE)
+            return std::make_unique<GetClickableAttributeCommand>(request, response);
+        else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_SCROLLABLE)
+            return std::make_unique<GetScrollableAttributeCommand>(request, response);
+        else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_CHECKABLE)
+            return std::make_unique<GetCheckableAttributeCommand>(request, response);
+        else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_CHECKED)
+            return std::make_unique<GetCheckedAttributeCommand>(request, response);
+        else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_SELECTED)
+            return std::make_unique<GetSelectedAttributeCommand>(request, response);
+        else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_SELECTABLE)
+            return std::make_unique<GetSelectableAttributeCommand>(request, response);
+        else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_SHOWING)
+            return std::make_unique<GetShowingAttributeCommand>(request, response);
+        else if (type == ::aurum::ReqGetAttribute_RequestType::ReqGetAttribute_RequestType_ACTIVE)
+            return std::make_unique<GetActiveAttributeCommand>(request, response);
+        else
+            return std::make_unique<GetAttributeCommand>(request, response);
+    }
 }
 
 ::grpc::Status GetVisibleAttributeCommand::execute()
