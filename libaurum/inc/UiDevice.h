@@ -35,6 +35,9 @@
 #include <functional>
 #include <string>
 
+#include "SaObject.h"
+#include "ScreenAnalyzerWatcher.h"
+
 namespace Aurum {
 
 /**
@@ -369,6 +372,14 @@ public:
      * @since_tizen 6.5
      */
     std::vector<std::shared_ptr<AccessibleNode>> getWindowRoot() const;
+
+    std::vector<std::shared_ptr<SaObject>> getSaObject();
+
+    std::shared_ptr<ScreenAnalyzerWatcher> getScw();
+
+    void RequestScreenAnalyze(std::string path);
+
+    bool getExternalAppLaunched();
 private:
     /**
      * @brief Waits process idle.
