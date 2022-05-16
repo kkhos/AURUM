@@ -29,27 +29,64 @@ GetSizeCommand::GetSizeCommand(const ::aurum::ReqGetSize *request,
 {
     LOGI("GetSize --------------- ");
 
-    ::aurum::ReqGetSize_CoordType type = mRequest->type();
-    ObjectMapper *mObjMap = ObjectMapper::getInstance();
-    std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
-    if (obj) {
-        obj->updateExtents();
-        ::aurum::Rect *rect = mResponse->mutable_size();
-        if (type == ::aurum::ReqGetSize_CoordType::ReqGetSize_CoordType_SCREEN) {
-            const Rect<int> &size = obj->getScreenBoundingBox();
-            rect->set_x(size.mTopLeft.x);
-            rect->set_y(size.mTopLeft.y);
-            rect->set_width(size.width());
-            rect->set_height(size.height());
+    if (mDevice->getExternalAppLaunched()) 
+    {
+        struct tm timeinfo;
+        time_t now = time(0);
+        if (!localtime_r(&now, &timeinfo)) {
+            LOGE("fail to get localtime. Screenshot cancelled");
+            return grpc::Status::CANCELLED;
         }
-        else {
-            const Rect<int> &windowRelativeSize = obj->getWindowBoundingBox();
-            rect->set_x(windowRelativeSize.mTopLeft.x);
-            rect->set_y(windowRelativeSize.mTopLeft.y);
-            rect->set_width(windowRelativeSize.width());
-            rect->set_height(windowRelativeSize.height());
+        char name[128];
+        std::snprintf(name, 128, "/tmp/screenshot-%d-%d-%d-%d:%d:%d.png",
+                                (timeinfo.tm_year + 1900), (timeinfo.tm_mon + 1), timeinfo.tm_mday,
+                                timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec);
+        std::string path(name);
+        std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();
+        mDevice->RequestScreenAnalyze(path);
+
+        auto sel = std::make_shared<UiSelector>();
+        LOGE("WCC Search Object start");
+        for ( auto &sel : selectors ) {
+            auto ret = mDevice->getScw()->findSaObjects(sel);
+            std::move(std::begin(ret), std::end(ret), std::back_inserter(founds));
+        }
+        if (founds.size() > 0) {
+            for (auto& found : founds) {
+                SaObject *obj = found.get();
+                ::aurum::Rect *rect = mResponse->mutable_size();
+                const Rect<int> &size = obj->getScreenBoundingBox();
+                rect->set_x(size.mTopLeft.x);
+                rect->set_y(size.mTopLeft.y);
+                rect->set_width(size.width());
+                rect->set_height(size.height());
+            }
         }
     }
-
+    else
+    {
+        ::aurum::ReqGetSize_CoordType type = mRequest->type();
+        ObjectMapper *mObjMap = ObjectMapper::getInstance();
+        std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
+        if (obj) {
+            obj->updateExtents();
+            ::aurum::Rect *rect = mResponse->mutable_size();
+            if (type == ::aurum::ReqGetSize_CoordType::ReqGetSize_CoordType_SCREEN) {
+                const Rect<int> &size = obj->getScreenBoundingBox();
+                rect->set_x(size.mTopLeft.x);
+                rect->set_y(size.mTopLeft.y);
+                rect->set_width(size.width());
+                rect->set_height(size.height());
+            }
+            else {
+                const Rect<int> &windowRelativeSize = obj->getWindowBoundingBox();
+                rect->set_x(windowRelativeSize.mTopLeft.x);
+                rect->set_y(windowRelativeSize.mTopLeft.y);
+                rect->set_width(windowRelativeSize.width());
+                rect->set_height(windowRelativeSize.height());
+            }
+        }
+    }
+    
     return grpc::Status::OK;
 }
