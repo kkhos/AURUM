@@ -23,6 +23,7 @@
 
 #include <set>
 #include <efl_util.h>
+#include <shared_mutex>
 
 using namespace Aurum;
 
@@ -200,6 +201,7 @@ private:
      * @brief TBD
      */
     Size2D<int> mScreenSize;
+    static std::mutex CaptureMutex;
 };
 
 }

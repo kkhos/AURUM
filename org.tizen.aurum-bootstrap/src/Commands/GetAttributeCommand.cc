@@ -35,9 +35,8 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
                                                                         ::aurum::RspGetAttribute*response)
 {
     LOGI("GetAttribute --------------- ");
-    ::aurum::ReqGetAttribute_RequestType type = request->attribute();
-    LOGI("type : %d", type);
 
+    std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();
     if (mDevice->getExternalAppLaunched()) 
     {
         //TBD
