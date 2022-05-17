@@ -18,6 +18,11 @@
 #include "bootstrap.h"
 #include "GetValueCommand.h"
 #include "UiObject.h"
+#include "UiDevice.h"
+#include "SaObject.h"
+#include "UiSelector.h"
+#include "Sel.h"
+#include "ISearchable.h"
 
 GetValueCommand::GetValueCommand(const ::aurum::ReqGetValue *request,
                                  ::aurum::RspGetValue *response)
@@ -29,6 +34,7 @@ GetValueCommand::GetValueCommand(const ::aurum::ReqGetValue *request,
 {
     LOGI("GetValue --------------- ");
 
+    std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();
     if (mDevice->getExternalAppLaunched()) 
     {
         LOGE("WCC Capture prepare");
@@ -43,10 +49,15 @@ GetValueCommand::GetValueCommand(const ::aurum::ReqGetValue *request,
                                 (timeinfo.tm_year + 1900), (timeinfo.tm_mon + 1), timeinfo.tm_mday,
                                 timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec);
         std::string path(name);
-        std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();
         mDevice->RequestScreenAnalyze(path);
 
-        auto sel = std::make_shared<UiSelector>();
+        std::vector<std::shared_ptr<SaObject>> founds = {};
+
+        auto tempSel = std::make_shared<UiSelector>();
+        tempSel->id(mRequest->elementid());
+        auto selectors  = std::vector<std::shared_ptr<UiSelector>>{tempSel};
+
+        LOGE("WCC Search Object start");
         for ( auto &sel : selectors ) {
             auto ret = mDevice->getScw()->findSaObjects(sel);
             std::move(std::begin(ret), std::end(ret), std::back_inserter(founds));

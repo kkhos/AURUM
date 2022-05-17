@@ -74,6 +74,14 @@ void ScreenAnalyzerWatcher::onMessage(struct mosquitto *mosq, void *obj, const s
     Rect<int> geometry;
     std::string ocrText;
     std::vector<std::string> states{};
+
+    id = "1004";
+    type = "window";
+    geometry = {0, 0, 1920, 1080};
+    states.push_back("active");
+    ocrText = "Cobalt-app";
+    saObjects.push_back(std::make_shared<Aurum::SaObject>(id, type, geometry, ocrText, states));
+
     for (int idx = 0; idx < objs.size(); ++idx)
     {
         states.clear();
@@ -211,6 +219,8 @@ bool ScreenAnalyzerWatcher::checkCriteria(const std::shared_ptr<UiSelector> sele
     if (selector->mMatchClickable && checkCriteria(selector->mIsclickable, node->isClickable())) return false;
     if (selector->mMatchFocused && checkCriteria(selector->mIsfocused, node->isFocused())) return false;
     if (selector->mMatchFocusable && checkCriteria(selector->mIsfocusable, node->isFocusable())) return false;
+    if (selector->mMatchActive && checkCriteria(selector->mIsactive, node->isActive())) return false;
+    if (selector->mMatchShowing && checkCriteria(selector->mIsshowing, node->isShowing())) return false;
 
     return true;
 }

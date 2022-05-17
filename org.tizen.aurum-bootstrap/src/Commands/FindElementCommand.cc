@@ -76,6 +76,7 @@ std::shared_ptr<UiSelector> FindElementCommand::getSelector(void)
     auto searchableObj = getSearchableTop();
     auto selector     = getSelector();
 
+    std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();
     if (mDevice->getExternalAppLaunched())
     {
         struct tm timeinfo;
@@ -89,7 +90,6 @@ std::shared_ptr<UiSelector> FindElementCommand::getSelector(void)
                                 (timeinfo.tm_year + 1900), (timeinfo.tm_mon + 1), timeinfo.tm_mday,
                                 timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec);
         std::string path(name);
-        std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();
         mDevice->RequestScreenAnalyze(path);
 
         std::vector<std::shared_ptr<SaObject>> founds = {};
@@ -119,8 +119,8 @@ std::shared_ptr<UiSelector> FindElementCommand::getSelector(void)
                 elm->set_isclickable(obj->isClickable());
                 elm->set_isfocused(obj->isFocused());
                 elm->set_isfocusable(obj->isFocusable());
+                elm->set_isactive(obj->isActive());
                 elm->set_isshowing(true);
-                elm->set_isactive(true);
                 elm->set_isvisible(true);
             }
                 mResponse->set_status(::aurum::RspStatus::OK);
@@ -128,8 +128,7 @@ std::shared_ptr<UiSelector> FindElementCommand::getSelector(void)
     }
     else
     {
-        auto searchableObj = getSearchableTop();
-        auto selectors     = getSelectors();
+        std::vector<std::shared_ptr<UiObject>> founds = {};
 
         for ( auto &sel : selectors ) {
             auto ret = searchableObj->findObjects(sel);

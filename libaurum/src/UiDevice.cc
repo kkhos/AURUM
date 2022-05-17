@@ -300,8 +300,6 @@ void UiDevice::RequestScreenAnalyze(std::string path)
     int ret = false;
     ret = mDeviceImpl->takeScreenshot(path, 1.0, 1);
     scw->PublishData(path, mDeviceImpl->getScreenSize());
-
-	return ret;
 }
 
 bool UiDevice::getExternalAppLaunched()
