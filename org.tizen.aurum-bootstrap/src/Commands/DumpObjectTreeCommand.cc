@@ -91,11 +91,8 @@ void DumpObjectTreeCommand::traverse(::aurum::Element *root, std::shared_ptr<Nod
 ::grpc::Status DumpObjectTreeCommand::execute()
 {
     LOGI("DumpObjectTree --------------- ");
-    LOGI("elementid : %s", mRequest->elementid().c_str());
-    if (mRequest->elementid().length()) {
-        auto obj = mObjMap->getElement(mRequest->elementid());
-        if (!obj) return grpc::Status::OK;;
 
+    std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();
     if (mDevice->getExternalAppLaunched())
     {
         struct tm timeinfo;
@@ -109,11 +106,10 @@ void DumpObjectTreeCommand::traverse(::aurum::Element *root, std::shared_ptr<Nod
                                 (timeinfo.tm_year + 1900), (timeinfo.tm_mon + 1), timeinfo.tm_mday,
                                  timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec);
         std::string path(name);
-        std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();
         mDevice->takeScreenshot(path, 1.0, 1);
 
         auto objs = mDevice->getScw()->GetSaObjects();
-
+/*
         ::aurum::Element *root = mResponse->add_roots();
         root->set_elementid("Root");
         ::aurum::Rect *rect = root->mutable_geometry();
@@ -122,31 +118,53 @@ void DumpObjectTreeCommand::traverse(::aurum::Element *root, std::shared_ptr<Nod
         rect->set_width(1920);
         rect->set_height(1080);
         root->set_widget_type("window");
+        root->set_text("Cobalt-app");
         root->set_isshowing(true);
         root->set_isactive(true);
         root->set_isvisible(true);
-
+*/
+        ::aurum::Element *root;
+        int idx = 0;
         for (auto obj : objs) {
-            ::aurum::Element *elm = root->add_child();
-            elm->set_elementid(obj->getId());
+            if (!idx) {
+                root = mResponse->add_roots();
+                root->set_elementid(obj->getId());
+                root->set_widget_type(obj->getElementType());
+                root->set_text(obj->getOcrText());
+                root->set_isclickable(obj->isClickable());
+                root->set_isfocused(obj->isFocused());
+                root->set_isfocusable(obj->isFocusable());
+                root->set_isactive(obj->isActive());
+                root->set_isshowing(true);
+                root->set_isvisible(true);
+                ::aurum::Rect *rect = root->mutable_geometry();
+                const Rect<int> &size = obj->getScreenBoundingBox();
+                rect->set_x(size.mTopLeft.x);
+                rect->set_y(size.mTopLeft.y);
+                rect->set_width(size.width());
+                rect->set_height(size.height());
+            }
+            else {
+                ::aurum::Element *elm = root->add_child();
+                elm->set_elementid(obj->getId());
+                elm->set_widget_type(obj->getElementType());
+                elm->set_text(obj->getOcrText());
+                elm->set_isclickable(obj->isClickable());
+                elm->set_isfocused(obj->isFocused());
+                elm->set_isfocusable(obj->isFocusable());
+                elm->set_isactive(obj->isActive());
+                elm->set_isshowing(true);
+                elm->set_isvisible(true);
 
-            ::aurum::Rect *rect = elm->mutable_geometry();
-            const Rect<int> &size = obj->getScreenBoundingBox();
-            rect->set_x(size.mTopLeft.x);
-            rect->set_y(size.mTopLeft.y);
-            rect->set_width(size.width());
-            rect->set_height(size.height());
+                ::aurum::Rect *rect = elm->mutable_geometry();
+                const Rect<int> &size = obj->getScreenBoundingBox();
+                rect->set_x(size.mTopLeft.x);
+                rect->set_y(size.mTopLeft.y);
+                rect->set_width(size.width());
+                rect->set_height(size.height());
+            }
 
-            elm->set_widget_type(obj->getElementType());
-
-            elm->set_text(obj->getOcrText());
-
-            elm->set_isclickable(obj->isClickable());
-            elm->set_isfocused(obj->isFocused());
-            elm->set_isfocusable(obj->isFocusable());
-            elm->set_isshowing(true);
-            elm->set_isactive(true);
-            elm->set_isvisible(true);
+            idx++;
         }
 
         LOGE("WCC DumpObject Finish");

@@ -35,6 +35,8 @@ public:
     bool isFocusable();
     bool isFocused();
     bool isClickable();
+    bool isActive();
+    bool isShowing();
 
 private:
     std::string mId;
@@ -44,6 +46,7 @@ private:
     bool mIsFocusable;
     bool mIsFocused;
     bool mIsClickable;
+    bool mIsActive;
 };
 
 }

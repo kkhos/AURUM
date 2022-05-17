@@ -38,6 +38,9 @@ using namespace AurumInternal;
 #define NANO_SEC 1000000000.0
 #define MICRO_SEC 1000000
 
+
+std::mutex TizenDeviceImpl::CaptureMutex = std::mutex{};
+
 TizenDeviceImpl::TizenDeviceImpl()
 : mFakeTouchHandle{0}, mFakeKeyboardHandle{0}, mFakeWheelHandle{0}, tStart{}, isTimerStarted{false}, mTouchSeq{}
 {
@@ -275,6 +278,7 @@ bool TizenDeviceImpl::takeScreenshot(std::string path, float scale, int quality)
     efl_util_screenshot_h screenshot = NULL;
     tbm_surface_h tbm_surface = NULL;
 
+    CaptureMutex.lock();
     screenshot = efl_util_screenshot_initialize(mScreenSize.width, mScreenSize.height);
 
     if (screenshot) {
@@ -285,13 +289,15 @@ bool TizenDeviceImpl::takeScreenshot(std::string path, float scale, int quality)
             tbm_surface_destroy(tbm_surface);
         } else {
             efl_util_screenshot_deinitialize(screenshot);
+            CaptureMutex.unlock();
             return false;
         }
         efl_util_screenshot_deinitialize(screenshot);
     } else {
+        CaptureMutex.unlock();
         return false;
     }
-
+    CaptureMutex.unlock();
     return true;
 }
 
