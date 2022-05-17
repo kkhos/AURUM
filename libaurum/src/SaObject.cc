@@ -34,11 +34,13 @@ SaObject::SaObject(std::string id, std::string type, Rect<int> geometry, std::st
     mIsFocusable = false;
     mIsFocused = false;
     mIsClickable = false;
+    mIsActive = false;
     for (auto state : states)
     {
         if (state == "clickable") mIsClickable = true;
         else if (state == "focused") mIsFocused = true;
         else if (state == "focusable") mIsFocusable = true;
+        else if (state == "active") mIsActive = true;
     }
 }
 
@@ -80,4 +82,14 @@ bool SaObject::isFocused()
 bool SaObject::isClickable()
 {
     return mIsClickable;
+}
+
+bool SaObject::isActive()
+{
+    return mIsActive;
+}
+
+bool SaObject::isShowing()
+{
+    return true;
 }

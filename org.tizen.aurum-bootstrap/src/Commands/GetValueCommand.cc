@@ -18,6 +18,11 @@
 #include "bootstrap.h"
 #include "GetValueCommand.h"
 #include "UiObject.h"
+#include "UiDevice.h"
+#include "SaObject.h"
+#include "UiSelector.h"
+#include "Sel.h"
+#include "ISearchable.h"
 
 GetValueCommand::GetValueCommand(const ::aurum::ReqGetValue *request,
                                  ::aurum::RspGetValue       *response)
@@ -33,7 +38,6 @@ GetValueCommand::GetValueCommand(const ::aurum::ReqGetValue *request,
         ObjectMapper             *mObjMap = ObjectMapper::getInstance();
         std::shared_ptr<UiObject> obj =
             mObjMap->getElement(mRequest->elementid());
-
         if (obj) {
             obj->updateName();
             std::string text = obj->getText();
