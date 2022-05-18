@@ -170,3 +170,39 @@ void AtspiWrapper::Atspi_accessible_set_cache_mask(AtspiAccessible *node, AtspiC
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_set_cache_mask (node, mask);
 }
+
+AtspiValue *AtspiWrapper::Atspi_accessible_get_value(AtspiAccessible *node)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_accessible_get_value_iface(node);
+}
+
+gdouble AtspiWrapper::Atspi_value_get_minimum_value(AtspiValue *iface, GError **error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_value_get_minimum_value(iface, error);
+}
+
+gdouble AtspiWrapper::Atspi_value_get_current_value(AtspiValue *iface, GError **error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_value_get_current_value(iface, error);
+}
+
+gdouble AtspiWrapper::Atspi_value_get_maximum_value(AtspiValue *iface, GError **error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_value_get_maximum_value(iface, error);
+}
+
+gboolean AtspiWrapper::Atspi_value_set_current_value(AtspiValue *iface, gdouble value, GError **error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_value_set_current_value(iface, value, error);
+}
+
+gdouble AtspiWrapper::Atspi_value_get_minimum_increment(AtspiValue *iface, GError **error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_value_get_minimum_increment(iface, error);
+}

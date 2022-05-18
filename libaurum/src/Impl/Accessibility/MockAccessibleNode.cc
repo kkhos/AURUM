@@ -113,6 +113,10 @@ void MockAccessibleNode::updateXPath()
 {
 }
 
+void MockAccessibleNode::updateValue()
+{
+}
+
 bool MockAccessibleNode::setFocus()
 {
     return false;
@@ -140,6 +144,11 @@ bool MockAccessibleNode::doAction(std::string action)
 bool MockAccessibleNode::setValue(std::string text)
 {
     mText = text;
+    return true;
+}
+
+bool MockAccessibleNode::setValue(double value)
+{
     return true;
 }
 

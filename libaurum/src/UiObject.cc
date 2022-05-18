@@ -199,6 +199,31 @@ std::string UiObject::getXPath() const
     return getAccessibleNode()->getXPath();
 }
 
+const double UiObject::getMinValue() const
+{
+    return getAccessibleNode()->getMinValue();
+}
+
+const double UiObject::getMaxValue() const
+{
+    return getAccessibleNode()->getMaxValue();
+}
+
+const double UiObject::getValue() const
+{
+    return getAccessibleNode()->getValue();
+}
+
+const double UiObject::getIncrement() const
+{
+    return getAccessibleNode()->getIncrement();
+}
+
+bool UiObject::setValue(double value)
+{
+    return getAccessibleNode()->setValue(value);
+}
+
 bool UiObject::setText(std::string text)
 {
     return getAccessibleNode()->setValue(text);
@@ -312,6 +337,11 @@ void UiObject::updateExtents() const
 void UiObject::updateXPath() const
 {
     mNode->updateXPath();
+}
+
+void UiObject::updateValue() const
+{
+    mNode->updateValue();
 }
 
 bool UiObject::setFocus() const
