@@ -14,7 +14,8 @@ libpugixml_dep = declare_dependency(
 )
 
 install_headers('pugixml.hpp',
-		'pugiconfig.hpp')
+                'pugixml.cpp',
+                'pugiconfig.hpp')
 
 pkgconfig.generate(
     libpugixml_lib,
