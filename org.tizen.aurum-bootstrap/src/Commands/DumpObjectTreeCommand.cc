@@ -77,6 +77,11 @@ void DumpObjectTreeCommand::traverse(::aurum::Element *root, std::shared_ptr<Nod
     root->set_isvisible(obj->isVisible());
     root->set_isselectable(obj->isSelectable());
 
+    root->set_minvalue(obj->getMinValue());
+    root->set_maxvalue(obj->getMaxValue());
+    root->set_value(obj->getValue());
+    root->set_increment(obj->getIncrement());
+
     for( auto && childNode : node->mChildren) {
         ::aurum::Element *child = root->add_child();
         traverse(child, childNode, depth+1);

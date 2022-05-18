@@ -60,6 +60,12 @@ public:
     static void Atspi_accessible_clear_cache (AtspiAccessible *node);
     static gboolean Atspi_component_grab_focus(AtspiComponent *obj, GError **error);
     static void Atspi_accessible_set_cache_mask(AtspiAccessible *node, AtspiCache mask);
+    static AtspiValue *Atspi_accessible_get_value(AtspiAccessible *node);
+    static gdouble Atspi_value_get_minimum_value(AtspiValue *iface, GError **error);
+    static gdouble Atspi_value_get_current_value(AtspiValue *iface, GError **error);
+    static gdouble Atspi_value_get_maximum_value(AtspiValue *iface, GError **error);
+    static gboolean Atspi_value_set_current_value(AtspiValue *iface, gdouble value, GError **error);
+    static gdouble Atspi_value_get_minimum_increment(AtspiValue *iface, GError **error);
 
 private:
     static std::recursive_mutex mMutex;

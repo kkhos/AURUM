@@ -125,6 +125,11 @@ std::shared_ptr<UiSelector> FindElementCommand::getSelector(void)
         elm->set_isvisible(obj->isVisible());
         elm->set_isselectable(obj->isSelectable());
 
+        elm->set_minvalue(obj->getMinValue());
+        elm->set_maxvalue(obj->getMaxValue());
+        elm->set_value(obj->getValue());
+        elm->set_increment(obj->getIncrement());
+
         mResponse->set_status(::aurum::RspStatus::OK);
     } else {
         mResponse->set_status(::aurum::RspStatus::ERROR);

@@ -240,6 +240,20 @@ void AtspiAccessibleNode::updateXPath()
     mXPath = XMLDoc->getXPath(mId);
 }
 
+void AtspiAccessibleNode::updateValue()
+{
+    AtspiWrapper::Atspi_accessible_clear_cache(mNode);
+
+    AtspiValue *value = AtspiWrapper::Atspi_accessible_get_value(mNode);
+    if (value) {
+        mMinValue= AtspiWrapper::Atspi_value_get_minimum_value(value, NULL);
+        mMaxValue= AtspiWrapper::Atspi_value_get_maximum_value(value, NULL);
+        mValue= AtspiWrapper::Atspi_value_get_current_value(value, NULL);
+        mIncrement= AtspiWrapper::Atspi_value_get_minimum_increment(value, NULL);
+        g_object_unref(value);
+    }
+}
+
 bool AtspiAccessibleNode::setFocus()
 {
     AtspiComponent *component = AtspiWrapper::Atspi_accessible_get_component_iface(mNode);
@@ -337,9 +351,19 @@ void AtspiAccessibleNode::refresh(bool updateAll)
                 g_free(windowExtent);
             }
             g_object_unref(component);
-
-            if (updateAll) updateXPath();
         }
+
+        AtspiValue *value = AtspiWrapper::Atspi_accessible_get_value(mNode);
+        if (value) {
+            mMinValue= AtspiWrapper::Atspi_value_get_minimum_value(value, NULL);
+            mMaxValue= AtspiWrapper::Atspi_value_get_maximum_value(value, NULL);
+            mValue= AtspiWrapper::Atspi_value_get_current_value(value, NULL);
+            mIncrement= AtspiWrapper::Atspi_value_get_minimum_increment(value, NULL);
+            g_object_unref(value);
+        }
+
+        if (updateAll) updateXPath();
+
     } else {
         setFeatureProperty(ATSPI_STATE_INVALID);
     }
@@ -413,11 +437,29 @@ bool AtspiAccessibleNode::setValue(std::string text)
 
     if (!iface) return false;
 
-    refresh();
+    updateName();
     int len = getText().length();
     AtspiWrapper::Atspi_editable_text_delete_text(iface, 0, len, NULL);
     AtspiWrapper::Atspi_editable_text_insert_text(iface, 0, text.c_str(), text.length(),
                                                   NULL);
+    g_object_unref(iface);
+
+    return true;
+}
+
+bool AtspiAccessibleNode::setValue(double value)
+{
+    if (!isValid()){
+        return false;
+    }
+
+    AtspiValue *iface = AtspiWrapper::Atspi_accessible_get_value(mNode);
+    LOGI("set Value iface:%p obj:%p value:%lf",iface, mNode, value);
+
+    if (!iface) return false;
+
+    updateValue();
+    AtspiWrapper::Atspi_value_set_current_value(iface, value, NULL);
     g_object_unref(iface);
 
     return true;

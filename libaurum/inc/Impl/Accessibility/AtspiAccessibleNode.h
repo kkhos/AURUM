@@ -122,6 +122,11 @@ public:
     void updateXPath() override;
 
     /**
+     * @copydoc UiObject::updateValue()
+     */
+    void updateValue() override;
+
+    /**
      * @copydoc UiObject::setFocus()
      */
     bool setFocus() override;
@@ -145,6 +150,11 @@ public:
      * @copydoc AccessibleNode::setValue()
      */
     bool setValue(std::string text) override;
+
+    /**
+     * @copydoc AccessibleNode::setValue()
+     */
+    bool setValue(double value) override;
 
 private:
     using AccessibleNode::setFeatureProperty;
