@@ -22,9 +22,9 @@
 using namespace Aurum;
 
 UiSelector::UiSelector()
-: mId{}, mAutomationId{}, mRole{}, mText{}, mTextPartialMatch{}, mPkg{}, mType{}, mStyle{},
-  mMatchId{}, mMatchAutomationId{}, mMatchRole{}, mMatchText{}, mMatchTextPartialMatch{}, mMatchXPath{}, mMatchPkg{},
-  mMatchType{}, mMatchStyle{}, mMatchChecked{}, mMatchCheckable{}, mMatchClickable{}, mMatchEnabled{}, mMatchFocused{},
+: mId{}, mAutomationId{}, mRole{}, mText{}, mPkg{}, mType{}, mStyle{}, mTextPartialMatch{}, mXPath{},
+  mMatchId{}, mMatchAutomationId{}, mMatchRole{}, mMatchText{}, mMatchPkg{}, mMatchType{}, mMatchStyle{},
+  mMatchTextPartialMatch{}, mMatchXPath{}, mMatchChecked{}, mMatchCheckable{}, mMatchClickable{}, mMatchEnabled{}, mMatchFocused{},
   mMatchFocusable{}, mMatchScrollable{}, mMatchSelected{}, mMatchShowing{}, mMatchActive{}, mMatchVisible{},
   mMatchSelectable{}, mMinDepth{}, mMaxDepth{}, mIschecked{}, mIscheckable{}, mIsclickable{}, mIsenabled{},
   mIsfocused{}, mIsfocusable{}, mIsscrollable{}, mIsselected{}, mIsshowing{}, mIsactive{}, mIsvisible{},
