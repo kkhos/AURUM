@@ -183,6 +183,7 @@ public:
      * @copydoc UiObject::getStyle()
      */
     std::string getStyle() const;
+
     /**
      * @copydoc UiObject::getXPath()
      */
@@ -197,6 +198,30 @@ public:
      * @copydoc UiObject::getWindowBoundingBox()
      */
     Rect<int> getWindowBoundingBox() const;
+
+    /**
+     * @copydoc UiObject::getMinValue()
+     *
+     */
+    double getMinValue() const;
+
+    /**
+     * @copydoc UiObject::getMaxValue()
+     *
+     */
+    double getMaxValue() const;
+
+    /**
+     * @copydoc UiObject::getValue()
+     *
+     */
+    double getValue() const;
+
+    /**
+     * @copydoc UiObject::getIncrement()
+     *
+     */
+    double getIncrement() const;
 
     /**
      * @copydoc UiObject::isCheckable()
@@ -333,6 +358,11 @@ public:
     virtual void updateXPath() = 0;
 
     /**
+     * @copydoc UiObject::updateValue()
+     */
+    virtual void updateValue() = 0;
+
+    /**
      * @copydoc UiObject::setFocus()
      */
     virtual bool setFocus() = 0;
@@ -374,6 +404,17 @@ public:
      * @since_tizen 6.5
      */
     virtual bool setValue(std::string text) = 0;
+
+    /**
+     * @brief Sets Node's value.
+     *
+     * @param[in] value double
+	 *
+	 * @return true if success, else false
+     *
+     * @since_tizen 7.0
+     */
+    virtual bool setValue(double value) = 0;
 
     /**
      * @brief Check object valid or not.
@@ -437,6 +478,10 @@ protected:
     Rect<int> mWindowBoundingBox;
     int mSupportingIfaces;
     int mFeatureProperty;
+    double mMinValue;
+    double mMaxValue;
+    double mValue;
+    double mIncrement;
 
 private:
     bool mValid;

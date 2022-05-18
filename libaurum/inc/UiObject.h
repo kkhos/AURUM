@@ -303,6 +303,53 @@ public:
     const Rect<int> getWindowBoundingBox() const;
 
     /**
+     * @brief Gets object's minimum value.
+     *
+     * @return double
+     *
+     * @since_tizen 7.0
+     */
+    const double getMinValue() const;
+
+    /**
+     * @brief Gets object's maximum value.
+     *
+     * @return double
+     *
+     * @since_tizen 7.0
+     */
+    const double getMaxValue() const;
+
+    /**
+     * @brief Gets object's current value.
+     *
+     * @return double
+     *
+     * @since_tizen 7.0
+     */
+    const double getValue() const;
+
+    /**
+     * @brief Gets object's current increment.
+     *
+     * @return double
+     *
+     * @since_tizen 7.0
+     */
+    const double getIncrement() const;
+
+    /**
+     * @brief Sets object's value.
+     *
+     * @param[in] double value
+     *
+     * @return true if success else false
+     *
+     * @since_tizen 7.0
+     */
+    bool setValue(double value);
+
+    /**
      * @brief Gets object's checkable property.
      *
      * @return true if checkable else false
@@ -495,6 +542,13 @@ public:
      * @since_tizen 7.0
      */
     void updateXPath() const;
+
+    /**
+     * @brief Updates object's value information from atspi server.
+     *
+     * @since_tizen 7.0
+     */
+    void updateValue() const;
 
     /**
      * @brief Sets focus to object.

@@ -15,12 +15,13 @@
  *
  */
 
-#include "bootstrap.h"
 #include "GetValueCommand.h"
+
 #include "UiObject.h"
+#include "bootstrap.h"
 
 GetValueCommand::GetValueCommand(const ::aurum::ReqGetValue *request,
-                                 ::aurum::RspGetValue *response)
+                                 ::aurum::RspGetValue       *response)
     : mRequest{request}, mResponse{response}
 {
 }
@@ -28,14 +29,41 @@ GetValueCommand::GetValueCommand(const ::aurum::ReqGetValue *request,
 ::grpc::Status GetValueCommand::execute()
 {
     LOGI("GetValue --------------- ");
-    ObjectMapper *mObjMap = ObjectMapper::getInstance();
-    std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
+    ::aurum::ParamType param_type = mRequest->type();
+    if (param_type == ::aurum::STRING) {
+        ObjectMapper             *mObjMap = ObjectMapper::getInstance();
+        std::shared_ptr<UiObject> obj =
+            mObjMap->getElement(mRequest->elementid());
 
-    if (obj) {
-        obj->updateName();
-        std::string text = obj->getText();
-        mResponse->set_stringvalue(text.c_str());
-        mResponse->set_status(::aurum::RspStatus::OK);
+        if (obj) {
+            obj->updateName();
+            std::string text = obj->getText();
+            mResponse->set_type(::aurum::STRING);
+            mResponse->set_stringvalue(text.c_str());
+            mResponse->set_status(::aurum::RspStatus::OK);
+        } else {
+            mResponse->set_status(::aurum::RspStatus::ERROR);
+        }
+    } else if (param_type == ::aurum::INT) {
+        LOGI("Integer is not supported.");
+        mResponse->set_status(::aurum::RspStatus::ERROR);
+    } else if (param_type == ::aurum::DOUBLE) {
+        ObjectMapper             *mObjMap = ObjectMapper::getInstance();
+        std::shared_ptr<UiObject> obj =
+            mObjMap->getElement(mRequest->elementid());
+
+        if (obj) {
+            obj->updateValue();
+            double value = obj->getValue();
+            mResponse->set_type(::aurum::DOUBLE);
+            mResponse->set_doublevalue(value);
+            mResponse->set_status(::aurum::RspStatus::OK);
+        } else {
+            mResponse->set_status(::aurum::RspStatus::ERROR);
+        }
+    } else if (param_type == ::aurum::BOOL) {
+        LOGI("Boolean is not supported.");
+        mResponse->set_status(::aurum::RspStatus::ERROR);
     }
 
     return grpc::Status::OK;

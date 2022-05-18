@@ -78,6 +78,11 @@ message Element {
    bool isActive = 21;
    bool isVisible = 22;
    bool isSelectable = 23;
+
+   double minValue = 24;
+   double maxValue = 25;
+   double value = 26;
+   double increment = 27;
 }
 
 message Point {
@@ -279,6 +284,7 @@ message RspFindElements {
 
 message ReqGetValue {
    string elementId = 1;
+   ParamType type  = 2;
    // TODO : text, widgetstyle, widgettype, automationid
 }
 message RspGetValue {
