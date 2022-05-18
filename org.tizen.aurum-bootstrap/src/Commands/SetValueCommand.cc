@@ -14,7 +14,6 @@
  *  limitations under the License.
  *
  */
-
 #include "bootstrap.h"
 #include "SetValueCommand.h"
 
@@ -28,14 +27,33 @@ SetValueCommand::SetValueCommand(const ::aurum::ReqSetValue* request,
 {
     bool ret = false;
     LOGI("SetValue --------------- ");
-    LOGI("text:%s", mRequest->stringvalue().c_str());
+    ::aurum::ParamType param_type = mRequest->type();
+    if (param_type == ::aurum::STRING) {
+        LOGI("text:%s", mRequest->stringvalue().c_str());
 
-    ObjectMapper *mObjMap = ObjectMapper::getInstance();
-    std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
-    if (obj) ret = obj->setText(const_cast<std::string&>(mRequest->stringvalue()));
+        ObjectMapper*             mObjMap = ObjectMapper::getInstance();
+        std::shared_ptr<UiObject> obj =
+            mObjMap->getElement(mRequest->elementid());
+        if (obj)
+            ret =
+                obj->setText(const_cast<std::string&>(mRequest->stringvalue()));
+    } else if (param_type == ::aurum::INT) {
+        LOGI("Integer is not supported.");
+    } else if (param_type == ::aurum::DOUBLE) {
+        LOGI("value:%lf", mRequest->doublevalue());
+        ObjectMapper*             mObjMap = ObjectMapper::getInstance();
+        std::shared_ptr<UiObject> obj =
+            mObjMap->getElement(mRequest->elementid());
+        if (obj) ret = obj->setValue(mRequest->doublevalue());
 
-    if (ret) mResponse->set_status(::aurum::RspStatus::OK);
-    else mResponse->set_status(::aurum::RspStatus::ERROR);
+    } else if (param_type == ::aurum::BOOL) {
+        LOGI("Boolean is not supported.");
+    }
+
+    if (ret)
+        mResponse->set_status(::aurum::RspStatus::OK);
+    else
+        mResponse->set_status(::aurum::RspStatus::ERROR);
 
     return grpc::Status::OK;
 }

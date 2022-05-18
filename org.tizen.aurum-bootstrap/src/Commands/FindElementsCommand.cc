@@ -130,6 +130,11 @@ std::vector<std::shared_ptr<UiSelector>> FindElementsCommand::getSelectors(void)
             elm->set_isactive(obj->isActive());
             elm->set_isvisible(obj->isVisible());
             elm->set_isselectable(obj->isSelectable());
+
+            elm->set_minvalue(obj->getMinValue());
+            elm->set_maxvalue(obj->getMaxValue());
+            elm->set_value(obj->getValue());
+            elm->set_increment(obj->getIncrement());
         }
         mResponse->set_status(::aurum::RspStatus::OK);
     } else {

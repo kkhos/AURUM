@@ -116,11 +116,18 @@ public:
      * @since_tizen 6.5
      */
     void updateExtents() override;
+
     /**
      * @brief TBD
      * @since_tizen 6.5
      */
     void updateXPath() override;
+
+    /**
+     * @brief TBD
+     * @since_tizen 7.0
+     */
+    void updateValue() override;
 
     /**
      * @brief TBD
@@ -151,6 +158,12 @@ public:
      * @since_tizen 6.5
      */
     bool setValue(std::string text) override;
+
+    /**
+     * @brief TBD
+     * @since_tizen 7.0
+     */
+    bool setValue(double value) override;
 
 public:
     using AccessibleNode::setFeatureProperty;
