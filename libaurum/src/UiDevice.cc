@@ -304,5 +304,6 @@ void UiDevice::RequestScreenAnalyze(std::string path)
 
 bool UiDevice::getExternalAppLaunched()
 {
-    return AccessibleWatcher::getInstance()->getExternalAppLaunched();
+    auto ret = this->getWindowRoot();
+    return (ret.size() > 0) ? false : true;
 }

@@ -55,7 +55,6 @@ public:
      */
     virtual int getApplicationCount(void) const override;
 
-    virtual bool getExternalAppLaunched(void) const override;
     /**
      * @brief TBD
      * @since_tizen 6.5

@@ -36,11 +36,6 @@ int MockAccessibleWatcher::getApplicationCount(void) const
     return mApplicationList.size();
 }
 
-bool MockAccessibleWatcher::getExternalAppLaunched(void) const
-{
-    return false;
-}
-
 std::shared_ptr<AccessibleApplication> MockAccessibleWatcher::getApplicationAt(int index) const
 {
     return mApplicationList.at(index);
