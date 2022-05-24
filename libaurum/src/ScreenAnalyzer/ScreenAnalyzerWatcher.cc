@@ -24,11 +24,13 @@
 #include "SaObject.h"
 #include <time.h>
 #include <thread>
+#include <app_manager_extension.h>
 
 using namespace Aurum;
 
 std::vector<std::shared_ptr<SaObject>> ScreenAnalyzerWatcher::saObjects;
 bool ScreenAnalyzerWatcher::doneLoad;
+std::string ScreenAnalyzerWatcher::pkgName;
 
 void onConnect(struct mosquitto *mosq, void *obj, int ret)
 {
@@ -75,11 +77,11 @@ void ScreenAnalyzerWatcher::onMessage(struct mosquitto *mosq, void *obj, const s
     std::string ocrText;
     std::vector<std::string> states{};
 
-    id = "1004";
+    id = "9999";
     type = "window";
     geometry = {0, 0, 1920, 1080};
     states.push_back("active");
-    ocrText = "Cobalt-app";
+    ocrText = pkgName;
     saObjects.push_back(std::make_shared<Aurum::SaObject>(id, type, geometry, ocrText, states));
 
     for (int idx = 0; idx < objs.size(); ++idx)
@@ -153,7 +155,8 @@ void ScreenAnalyzerWatcher::PublishData(std::string path, const Size2D<int> scre
     char buf[size];
 
     doneLoad = false;
-
+    pkgName = this->GetFocusedAppId();
+   
     std::ifstream ifs(path, std::ifstream::binary);
     memset(buf, 0, size);
     ifs.read(buf, size);
@@ -239,4 +242,37 @@ std::vector<std::shared_ptr<Aurum::SaObject>> ScreenAnalyzerWatcher::findSaObjec
     }
 
     return rets;
+}
+
+std::string ScreenAnalyzerWatcher::GetFocusedAppId()
+{
+	int return_val = APP_MANAGER_ERROR_NONE;
+
+	app_context_h app_context;
+	char *app_id = NULL;
+
+	return_val  = app_manager_get_focused_app_context(&app_context);
+	if (return_val != APP_MANAGER_ERROR_NONE) {
+		LOGE("failed to get app-context");
+		return NULL;
+	}
+
+	return_val = app_context_get_app_id(app_context, &app_id);
+	if (return_val != APP_MANAGER_ERROR_NONE) {
+		LOGE("failed to get app_id");
+		app_context_destroy(app_context);
+		return NULL;
+	}
+
+	LOGI("focused app_id = %s", app_id);
+
+	return_val = app_context_destroy(app_context);
+	if (return_val != APP_MANAGER_ERROR_NONE) {
+        LOGE("failed to destroy app-context");
+        return NULL;
+    }
+
+    app_context = NULL;
+
+    return app_id;
 }

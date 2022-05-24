@@ -77,8 +77,6 @@ public:
      */
     virtual int getApplicationCount(void) const = 0;
 
-    virtual bool getExternalAppLaunched(void) const = 0;
-
     /**
      * @brief Gets application class at specific index.
      *
