@@ -34,12 +34,14 @@ public:
     bool checkCriteria(const bool boolA, const bool boolB);
     bool checkCriteria(const std::shared_ptr<UiSelector> selector, const std::shared_ptr<SaObject> node);
     std::vector<std::shared_ptr<Aurum::SaObject>> findSaObjects(const std::shared_ptr<UiSelector> selector);
+    std::string GetFocusedAppId();
 private:
     const std::string serverAddress = "10.113.16.21";
     struct mosquitto *mosq;
     static std::vector<std::shared_ptr<SaObject>> saObjects;
     std::string jsontext;
     static bool doneLoad;
+    static std::string pkgName;
 };
 
 }
