@@ -46,9 +46,11 @@ CloseAppCommand::CloseAppCommand(const ::aurum::ReqCloseApp *request,
     if (ret) {
         LOGI("Terminate Failed(2/2) Err Code : %d", ret);
         mResponse->set_status(::aurum::RspStatus::ERROR);
+        app_context_destroy(app_context);
         return grpc::Status::OK;
     }
 
+    app_context_destroy(app_context);
     return grpc::Status::OK;
 }
 

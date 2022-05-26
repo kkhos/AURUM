@@ -58,6 +58,7 @@ GetAppInfoCommand::GetAppInfoCommand(const ::aurum::ReqGetAppInfo *request,
             mResponse->set_isfocused(appState & APP_STATE_FOREGROUND);
             mResponse->set_isrunning(!(appState & APP_STATE_TERMINATED));
         }
+        app_context_destroy(app_context);
     }
 
     return grpc::Status::OK;
