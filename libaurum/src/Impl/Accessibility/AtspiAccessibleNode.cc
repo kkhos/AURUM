@@ -440,11 +440,11 @@ bool AtspiAccessibleNode::setValue(std::string text)
     updateName();
     int len = getText().length();
     AtspiWrapper::Atspi_editable_text_delete_text(iface, 0, len, NULL);
-    AtspiWrapper::Atspi_editable_text_insert_text(iface, 0, text.c_str(), text.length(),
-                                                  NULL);
+    bool ret = AtspiWrapper::Atspi_editable_text_insert_text(iface, 0, text.c_str(), text.length(),
+                                                             NULL);
     g_object_unref(iface);
 
-    return true;
+    return ret;
 }
 
 bool AtspiAccessibleNode::setValue(double value)
