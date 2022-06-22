@@ -22,6 +22,7 @@
 
 #include "Accessible.h"
 #include "ISearchable.h"
+#include "IObject.h"
 #include "UiSelector.h"
 #include "Waiter.h"
 
@@ -54,7 +55,7 @@ public:
  *        such as object's properties, states, geometry information.
  *        also user can send and receive event via this class.
  */
-class UiObject : public ISearchable , public std::enable_shared_from_this<UiObject> {
+class UiObject : public ISearchable , public std::enable_shared_from_this<UiObject>,  public IObject {
 public:
     /**
      * @brief UiObject constructor with device, selector, node pointer.
@@ -157,6 +158,52 @@ public:
 
 public:
     /**
+     * @copydoc UiObject::getId()
+     */
+    std::string getId() const override;
+
+    /**
+     * @copydoc UiObject::getType()
+     */
+    std::string getType() const override;
+
+    /**
+     * @copydoc UiObject::getScreenBoundingBox()
+     */
+    Rect<int> getScreenBoundingBox() const override;
+
+    /**
+     * @copydoc UiObject::getOcrText()
+     */
+    std::string getOcrText() const override;
+
+    /**
+     * @copydoc UiObject::isFocusable()
+     */
+    bool isFocusable() const override;
+
+    /**
+     * @copydoc UiObject::isFocused()
+     */
+    bool isFocused() const override;
+
+    /**
+     * @copydoc UiObject::isClickable()
+     */
+    bool isClickable() const override;
+
+    /**
+     * @copydoc UiObject::isActive()
+     */
+    bool isActive() const override;
+
+    /**
+     * @copydoc UiObject::isShowing()
+     */
+    bool isShowing() const override;
+
+public:
+    /**
      * @brief Gets object's parent.
      *
      * @return UiObject pointer
@@ -211,15 +258,6 @@ public:
     std::string getApplicationPackage() const;
 
     /**
-     * @brief Gets object's Id.
-     *
-     * @return string
-     *
-     * @since_tizen 6.5
-     */
-    std::string getId() const;
-
-    /**
      * @brief Gets object's automation Id.
      *
      * @return string
@@ -227,15 +265,6 @@ public:
      * @since_tizen 6.5
      */
     std::string getAutomationId() const;
-
-    /**
-     * @brief Gets object's type.
-     *
-     * @return string
-     *
-     * @since_tizen 6.5
-     */
-    std::string getElementType() const;
 
     /**
      * @brief Gets object's style.
@@ -285,13 +314,15 @@ public:
     bool setText(std::string text);
 
     /**
-     * @brief Gets object's geometry of the screen.
+     * @brief Sets object's ocr text.
      *
-     * @return @Rect
+     * @param[in] text string
      *
-     * @since_tizen 6.5
+     * @return true if success else false
+     *
+     * @since_tizen 7.0
      */
-    const Rect<int> getScreenBoundingBox() const;
+    void setOcrText(std::string text);
 
     /**
      * @brief Gets object's geometry of the window.
@@ -368,15 +399,6 @@ public:
     bool isChecked() const;
 
     /**
-     * @brief Gets object's clickable property.
-     *
-     * @return true if clickable else false
-     *
-     * @since_tizen 6.5
-     */
-    bool isClickable() const;
-
-    /**
      * @brief Gets object's enabled property. (to get object enabled. disabled state)
      *
      * @return true if enabled else false
@@ -384,24 +406,6 @@ public:
      * @since_tizen 6.5
      */
     bool isEnabled() const;
-
-    /**
-     * @brief Gets object's focusable property.
-     *
-     * @return true if focusable else false
-     *
-     * @since_tizen 6.5
-     */
-    bool isFocusable() const;
-
-    /**
-     * @brief Gets object's focused property.
-     *
-     * @return true if focused else false
-     *
-     * @since_tizen 6.5
-     */
-    bool isFocused() const;
 
     /**
      * @brief Gets object's longclickable property.
@@ -447,24 +451,6 @@ public:
      * @since_tizen 6.5
      */
     bool isVisible() const;
-
-    /**
-     * @brief Gets object's showing property.
-     *
-     * @return true if showing else false
-     *
-     * @since_tizen 6.5
-     */
-    bool isShowing() const;
-
-    /**
-     * @brief Gets object's active property.
-     *
-     * @return true if active else false
-     *
-     * @since_tizen 6.5
-     */
-    bool isActive() const;
 
     /**
      * @brief Performs a click action on object.

@@ -174,7 +174,7 @@ std::string UiObject::getAutomationId() const
     return getAccessibleNode()->getAutomationId();
 }
 
-std::string UiObject::getElementType() const
+std::string UiObject::getType() const
 {
     return getAccessibleNode()->getType();
 }
@@ -187,6 +187,21 @@ std::string UiObject::getElementStyle() const
 std::string UiObject::getText() const
 {
     return getAccessibleNode()->getText();
+}
+
+std::string UiObject::getOcrText() const
+{
+    return getAccessibleNode()->getOcrText();
+}
+
+bool UiObject::setText(std::string text)
+{
+    return getAccessibleNode()->setValue(text);
+}
+
+void UiObject::setOcrText(std::string text)
+{
+    return getAccessibleNode()->setOcrText(text);
 }
 
 std::string UiObject::getRole() const
@@ -354,12 +369,12 @@ bool UiObject::isValid() const
     return mNode->isValid();
 }
 
-const Rect<int> UiObject::getScreenBoundingBox() const
+Rect<int> UiObject::getScreenBoundingBox() const
 {
     return mNode->getScreenBoundingBox();
 }
 
-const Rect<int> UiObject::getWindowBoundingBox() const
+Rect<int> UiObject::getWindowBoundingBox() const
 {
     return mNode->getWindowBoundingBox();
 }

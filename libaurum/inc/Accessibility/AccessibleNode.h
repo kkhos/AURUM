@@ -25,6 +25,7 @@
 #include <mutex>
 
 #include "IEventConsumer.h"
+#include "IObject.h"
 #include "Rect.h"
 #include "config.h"
 
@@ -83,7 +84,7 @@ enum class NodeFeatureProperties {
  *
  * @since_tizen 6.5
  */
-class AccessibleNode : public std::enable_shared_from_this<AccessibleNode>, public IEventConsumer  {
+class AccessibleNode : public std::enable_shared_from_this<AccessibleNode>, public IEventConsumer, public IObject {
 public:
     /**
      * @brief AccessibleNode constructor.
@@ -150,19 +151,70 @@ public:
 
 public:
     /**
+     * @copydoc UiObject::getId()
+     */
+    std::string getId() const override;
+
+    /**
+     * @copydoc UiObject::getType()
+     */
+    std::string getType() const override;
+
+    /**
+     * @copydoc UiObject::getScreenBoundingBox()
+     */
+    Rect<int> getScreenBoundingBox() const override;
+
+    /**
+     * @copydoc UiObject::getOcrText()
+     */
+    std::string getOcrText() const override;
+
+    /**
+     * @copydoc UiObject::isFocusable()
+     */
+    bool isFocusable() const override;
+
+    /**
+     * @copydoc UiObject::isFocused()
+     */
+    bool isFocused() const override;
+
+    /**
+     * @copydoc UiObject::isClickable()
+     */
+    bool isClickable() const override;
+
+    /**
+     * @copydoc UiObject::isActive()
+     */
+    bool isActive() const override;
+
+    /**
+     * @copydoc UiObject::isShowing()
+     */
+    bool isShowing() const override;
+
+public:
+    /**
      * @copydoc UiObject::getText()
      */
     std::string getText() const;
 
     /**
+     * @copydoc UiObject::setText()
+     */
+    void setText(std::string text);
+
+    /**
+     * @copydoc UiObject::setOcrText()
+     */
+    void setOcrText(std::string text);
+
+    /**
      * @copydoc UiObject::getPkg()
      */
     std::string getPkg() const;
-
-    /**
-     * @copydoc UiObject::getId()
-     */
-    std::string getId() const;
 
     /**
      * @copydoc UiObject::getAutomationId()
@@ -175,24 +227,14 @@ public:
     std::string getRole() const;
 
     /**
-     * @copydoc UiObject::getType()
-     */
-    std::string getType() const;
-
-    /**
      * @copydoc UiObject::getStyle()
      */
     std::string getStyle() const;
 
     /**
-     * @copydoc UiObject::getXPath()
+     * @copydoc UiObject::getToolkitName()
      */
-    std::string getXPath() const;
-
-    /**
-     * @copydoc UiObject::getScreenBoundingBox()
-     */
-    Rect<int> getScreenBoundingBox() const;
+    std::string getToolkitName() const;
 
     /**
      * @copydoc UiObject::getWindowBoundingBox()
@@ -200,28 +242,9 @@ public:
     Rect<int> getWindowBoundingBox() const;
 
     /**
-     * @copydoc UiObject::getMinValue()
-     *
+     * @copydoc UiObject::isChecked()
      */
-    double getMinValue() const;
-
-    /**
-     * @copydoc UiObject::getMaxValue()
-     *
-     */
-    double getMaxValue() const;
-
-    /**
-     * @copydoc UiObject::getValue()
-     *
-     */
-    double getValue() const;
-
-    /**
-     * @copydoc UiObject::getIncrement()
-     *
-     */
-    double getIncrement() const;
+    bool isChecked() const;
 
     /**
      * @copydoc UiObject::isCheckable()
@@ -229,29 +252,9 @@ public:
     bool isCheckable() const;
 
     /**
-     * @copydoc UiObject::isChecked()
-     */
-    bool isChecked() const;
-
-    /**
-     * @copydoc UiObject::isClickable()
-     */
-    bool isClickable() const;
-
-    /**
      * @copydoc UiObject::isEnabled()
      */
     bool isEnabled() const;
-
-    /**
-     * @copydoc UiObject::isFocusable()
-     */
-    bool isFocusable() const;
-
-    /**
-     * @copydoc UiObject::isFocused()
-     */
-    bool isFocused() const;
 
     /**
      * @copydoc UiObject::isLongClickable()
@@ -277,16 +280,6 @@ public:
      * @copydoc UiObject::isVisible()
      */
     bool isVisible() const;
-
-    /**
-     * @copydoc UiObject::isShowing()
-     */
-    bool isShowing() const;
-
-    /**
-     * @copydoc UiObject::isActive()
-     */
-    bool isActive() const;
 
 public:
     /**
@@ -361,6 +354,11 @@ public:
      * @copydoc UiObject::updateValue()
      */
     virtual void updateValue() = 0;
+
+    /**
+     * @copydoc UiObject::updateToolkitName()
+     */
+    virtual void updateToolkitName() = 0;
 
     /**
      * @copydoc UiObject::setFocus()
@@ -467,6 +465,7 @@ public:
 
 protected:
     std::string mText;
+    std::string mOcrText;
     std::string mPkg;
     std::string mRole;
     std::string mId;
@@ -474,6 +473,7 @@ protected:
     std::string mType;
     std::string mStyle;
     std::string mXPath;
+    std::string mToolkitName;
     Rect<int> mScreenBoundingBox;
     Rect<int> mWindowBoundingBox;
     int mSupportingIfaces;

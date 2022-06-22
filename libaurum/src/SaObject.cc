@@ -49,47 +49,47 @@ SaObject::~SaObject()
 
 }
 
-std::string SaObject::getId()
+std::string SaObject::getId() const
 {
     return mId;
 }
 
-std::string SaObject::getElementType()
+std::string SaObject::getType() const
 {
     return mElementType;
 }
 
-const Rect<int> SaObject::getScreenBoundingBox()
+Rect<int> SaObject::getScreenBoundingBox() const
 {
     return mScreenBoundingBox;
 }
 
-std::string SaObject::getOcrText()
+std::string SaObject::getOcrText() const
 {
     return mOcrText;
 }
 
-bool SaObject::isFocusable()
+bool SaObject::isFocusable() const
 {
     return mIsFocusable;
 }
 
-bool SaObject::isFocused()
+bool SaObject::isFocused() const
 {
     return mIsFocused;
 }
 
-bool SaObject::isClickable()
+bool SaObject::isClickable() const
 {
     return mIsClickable;
 }
 
-bool SaObject::isActive()
+bool SaObject::isActive() const
 {
     return mIsActive;
 }
 
-bool SaObject::isShowing()
+bool SaObject::isShowing() const
 {
     return true;
 }
