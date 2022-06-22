@@ -295,11 +295,9 @@ std::shared_ptr<ScreenAnalyzerWatcher> UiDevice::getScw()
     return scw;
 }
 
-void UiDevice::RequestScreenAnalyze(std::string path)
+void UiDevice::RequestScreenAnalyze()
 {
-    int ret = false;
-    ret = mDeviceImpl->takeScreenshot(path, 1.0, 1);
-    scw->PublishData(path, mDeviceImpl->getScreenSize());
+    scw->PublishData();
 }
 
 bool UiDevice::getExternalAppLaunched()
