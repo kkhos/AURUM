@@ -23,20 +23,55 @@
 
 namespace Aurum {
 
-class SaObject : public std::enable_shared_from_this<SaObject> {
+class SaObject : public IObject, public std::enable_shared_from_this<SaObject> {
 public:
     SaObject(std::string id, std::string type, Rect<int> geometry, std::string ocrText, std::vector<std::string> states);
     ~SaObject();
 
-    std::string getId();
-    std::string getElementType();
-    const Rect<int> getScreenBoundingBox();
-    std::string getOcrText();
-    bool isFocusable();
-    bool isFocused();
-    bool isClickable();
-    bool isActive();
-    bool isShowing();
+    /**
+     * @copydoc UiObject::getId()
+     */
+    std::string getId() const override;
+
+    /**
+     * @copydoc UiObject::getType()
+     */
+    std::string getType() const override;
+
+    /**
+     * @copydoc UiObject::getScreenBoundingBox()
+     */
+    Rect<int> getScreenBoundingBox() const override;
+
+    /**
+     * @copydoc UiObject::getOcrText()
+     */
+    std::string getOcrText() const override;
+
+    /**
+     * @copydoc UiObject::isFocusable()
+     */
+    bool isFocusable() const override;
+
+    /**
+     * @copydoc UiObject::isFocused()
+     */
+    bool isFocused() const override;
+
+    /**
+     * @copydoc UiObject::isClickable()
+     */
+    bool isClickable() const override;
+
+    /**
+     * @copydoc UiObject::isActive()
+     */
+    bool isActive() const override;
+
+    /**
+     * @copydoc UiObject::isShowing()
+     */
+    bool isShowing() const override;
 
 private:
     std::string mId;
