@@ -25,12 +25,14 @@
 #include <time.h>
 #include <thread>
 #include <app_manager_extension.h>
+#include <capi-video-capture.h>
 
 using namespace Aurum;
 
 std::vector<std::shared_ptr<SaObject>> ScreenAnalyzerWatcher::saObjects;
 bool ScreenAnalyzerWatcher::doneLoad;
 std::string ScreenAnalyzerWatcher::pkgName;
+std::vector<unsigned char> YC;
 
 void onConnect(struct mosquitto *mosq, void *obj, int ret)
 {
@@ -148,24 +150,50 @@ ScreenAnalyzerWatcher::~ScreenAnalyzerWatcher()
     mosquitto_lib_cleanup();
 }
 
-void ScreenAnalyzerWatcher::PublishData(std::string path, const Size2D<int> screenSize)
+void ScreenAnalyzerWatcher::PublishData()
 {
-    LOGI("Mosquitto publish data start file path : " path.c_str());
-    int size = screenSize.width * screenSize.height;
-    char buf[size];
-
+    LOGI("PublishData Start");
     doneLoad = false;
-    pkgName = this->GetFocusedAppId();
-   
-    std::ifstream ifs(path, std::ifstream::binary);
-    memset(buf, 0, size);
-    ifs.read(buf, size);
-    int rc;
-    rc = mosquitto_publish(mosq, NULL, "screen_analyzer/image", size, buf, 2, false);
+    YC.clear();
+
+    const int WIDTH = 720;
+    const int HEIGHT = 576;
+    int len = WIDTH * HEIGHT;
+    YC.resize(2 * len);
+
+    secvideo_capture_param capture_param;
+    capture_param.uYSize = len;
+    capture_param.uCSize = len;
+    capture_param.pYAddr = (char*)YC.data();
+    capture_param.pCAddr = (char*)(YC.data() + len);
+    capture_param.ret_width  = 0;
+    capture_param.ret_height = 0;
+    capture_param.no_lock_no_copy = 0;
+
+	int ret = secvideo_api_capture_screen(WIDTH, HEIGHT, &capture_param);
+
+    // retry with disabling capture protection
+	if (ret != 0) {
+		system("/usr/bin/capture-tool -d > /dev/null 2>&1");
+		ret = secvideo_api_capture_screen(WIDTH, HEIGHT, &capture_param);
+	}
+
+
+    int ret_width = capture_param.ret_width;
+	int ret_height = capture_param.ret_height;
+
+	if (HEIGHT != ret_height || WIDTH != ret_width) {
+		unsigned char* C = YC.data() + ret_width * ret_height;
+		int C_len = ret_width * ret_height / 2;
+		for (int i = 0; i < C_len; ++i)
+			C[i] = capture_param.pCAddr[i];
+	}
+
+    int payloadlen = ret_height  * ret_width / 2 * 3;
+    int rc = mosquitto_publish(mosq, NULL, "screen_analyzer/image_aurum", payloadlen , YC.data(), 2, false);
     if(rc != MOSQ_ERR_SUCCESS) {
-        LOGE("Mosquitto publish fail");
+        LOGI("mosquitto publish fail");
     }
-    ifs.close();
 
     while(!doneLoad) {
         std::this_thread::sleep_for(std::chrono::milliseconds{10});

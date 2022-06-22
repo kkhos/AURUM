@@ -32,6 +32,7 @@ BuildRequires: pkgconfig(capi-base-utils-i18n)
 BuildRequires: pkgconfig(vconf)
 BuildRequires: pkgconfig(libmosquitto)
 BuildRequires: pkgconfig(jsoncpp)
+BuildRequires: pkgconfig(video-capture)
 
 %if 0%{?gendoc:1}
 BuildRequires:  doxygen
