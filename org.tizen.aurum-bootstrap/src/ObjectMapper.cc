@@ -42,13 +42,17 @@ std::string ObjectMapper::addElement(std::shared_ptr<UiObject> object)
 std::shared_ptr<UiObject> ObjectMapper::getElement(std::string elementId)
 {
     LOGI("getElement for elementId(%s)", elementId.c_str());
-    if (mObjectMap.count(elementId)) {
-        std::shared_ptr<UiObject> obj = mObjectMap[elementId];
+
+    std::shared_ptr<UiObject> obj;
+    obj = mObjectMap[elementId];
+    if (obj) {
         LOGI("Object find succeeded");
         return obj;
     }
-    LOGI("Id(%s) is not exist in mObjectMap", elementId.c_str());
-    return nullptr;
+    else {
+        LOGI("Object find fail");
+        return nullptr;
+    }
 }
 
 bool ObjectMapper::removeElement(const std::string elementId)
