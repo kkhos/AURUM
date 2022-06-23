@@ -79,7 +79,7 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(const std::sh
 std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(const std::shared_ptr<AccessibleNode> root)
 {
     std::list<std::shared_ptr<PartialMatch>> partialList{};
-    std::vector<std::shared_ptr<AccessibleNode>> ret = findObjects(root, 0, 0, partialList);
+    std::vector<std::shared_ptr<AccessibleNode>> ret = findObjects(root, 0, 1, partialList);
     LOGI("%d object(s) found", (int)ret.size());
     return ret;
 }

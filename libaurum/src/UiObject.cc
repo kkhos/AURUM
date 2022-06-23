@@ -144,7 +144,7 @@ std::shared_ptr<UiObject> UiObject::getChildAt(int index) const {
 
 std::vector<std::shared_ptr<UiObject>> UiObject::getChildren() const
 {
-    auto sel = Sel::depth(1);
+    auto sel = Sel::depth(2);
     return this->findObjects(sel);
 }
 
