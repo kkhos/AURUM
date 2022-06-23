@@ -33,6 +33,7 @@ service Bootstrap {
    rpc actionAndWaitEvent(ReqActionAndWaitEvent) returns (RspActionAndWaitEvent) {}
    rpc setFocus(ReqSetFocus) returns (RspSetFocus) {}
    rpc findElements(ReqFindElements) returns (RspFindElements) {}
+   rpc getActiveAppToolkitName(ReqGetActiveAppToolkitName) returns (RspGetActiveAppToolkitName) {}
 }
 
 // ------------------------------------ //
@@ -65,6 +66,7 @@ message Element {
    string automationId = 9;
    string package = 10;
    string role = 11;
+   string toolkit = 12;
 
    bool isChecked = 12;
    bool isCheckable = 13;
@@ -564,3 +566,12 @@ message ReqSetFocus {
 message RspSetFocus {
    RspStatus status = 1;
 }
+
+message ReqGetActiveAppToolkitName {
+}
+
+message RspGetActiveAppToolkitName {
+   RspStatus status = 1;
+   string toolkitName = 2;
+}
+

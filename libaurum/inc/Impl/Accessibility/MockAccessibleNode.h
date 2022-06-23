@@ -131,6 +131,12 @@ public:
 
     /**
      * @brief TBD
+     * @since_tizen 6.5
+     */
+    void updateToolkitName() override;
+
+    /**
+     * @brief TBD
      * @since_tizen 7.0
      */
     bool setFocus() override;

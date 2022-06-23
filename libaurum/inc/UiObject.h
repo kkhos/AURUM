@@ -303,6 +303,15 @@ public:
     std::string getXPath() const;
 
     /**
+     * @brief Gets object's Toolkit name.
+     *
+     * @return string
+     *
+     * @since_tizen 6.5
+     */
+    std::string getToolkitName() const;
+
+    /**
      * @brief Sets object's text.
      *
      * @param[in] text string
@@ -535,6 +544,13 @@ public:
      * @since_tizen 7.0
      */
     void updateValue() const;
+
+    /**
+     * @brief Updates object's toolkit name information from atspi server.
+     *
+     * @since_tizen 6.5
+     */
+    void updateToolkitName() const;
 
     /**
      * @brief Sets focus to object.

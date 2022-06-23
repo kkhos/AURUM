@@ -49,3 +49,4 @@
 #include "Commands/GetScreenSizeCommand.h"
 #include "Commands/ActionAndWaitEventCommand.h"
 #include "Commands/SetFocusCommand.h"
+#include "Commands/GetActiveAppToolkitNameCommand.h"
