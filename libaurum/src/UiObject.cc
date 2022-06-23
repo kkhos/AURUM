@@ -194,6 +194,12 @@ std::string UiObject::getOcrText() const
     return getAccessibleNode()->getOcrText();
 }
 
+std::string UiObject::getToolkitName() const
+{
+    getAccessibleNode()->updateToolkitName();
+    return getAccessibleNode()->getToolkitName();
+}
+
 bool UiObject::setText(std::string text)
 {
     return getAccessibleNode()->setValue(text);
@@ -357,6 +363,11 @@ void UiObject::updateXPath() const
 void UiObject::updateValue() const
 {
     mNode->updateValue();
+}
+
+void UiObject::updateToolkitName() const
+{
+    mNode->updateToolkitName();
 }
 
 bool UiObject::setFocus() const

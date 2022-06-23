@@ -171,6 +171,11 @@ std::string AccessibleNode::getXPath() const
     return mXPath;
 }
 
+std::string AccessibleNode::getToolkitName() const
+{
+    return mToolkitName;
+}
+
 Rect<int> AccessibleNode::getScreenBoundingBox() const
 {
     return mScreenBoundingBox;

@@ -93,6 +93,17 @@ public:
     UiSelector *text(std::string text);
 
     /**
+     * @brief Sets the search criteria to match the object's text.
+     *
+     * @param[in] text object text
+     *
+     * @return UiSelector class instance
+     *
+     * @since_tizen 6.5
+     */
+    UiSelector *ocrText(std::string text);
+
+    /**
      * @brief Sets the search criteria to match the object's text has given text.
      *
      * @param[in] text object text
@@ -367,6 +378,7 @@ public:
     std::string mStyle;
     std::string mTextPartialMatch;
     std::string mXPath;
+    std::string mOcrText;
 
     bool mMatchId;
     bool mMatchAutomationId;
@@ -377,6 +389,7 @@ public:
     bool mMatchStyle;
     bool mMatchTextPartialMatch;
     bool mMatchXPath;
+    bool mMatchOcrText;
 
     bool mMatchChecked;
     bool mMatchCheckable;
