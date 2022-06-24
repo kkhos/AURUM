@@ -66,6 +66,7 @@ public:
     static gdouble Atspi_value_get_maximum_value(AtspiValue *iface, GError **error);
     static gboolean Atspi_value_set_current_value(AtspiValue *iface, gdouble value, GError **error);
     static gdouble Atspi_value_get_minimum_increment(AtspiValue *iface, GError **error);
+    static gchar *Atspi_accessible_get_toolkit_name(AtspiAccessible *node, GError **error);
 
 private:
     static std::recursive_mutex mMutex;

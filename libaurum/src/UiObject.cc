@@ -245,11 +245,6 @@ bool UiObject::setValue(double value)
     return getAccessibleNode()->setValue(value);
 }
 
-bool UiObject::setText(std::string text)
-{
-    return getAccessibleNode()->setValue(text);
-}
-
 bool UiObject::isCheckable() const
 {
     return getAccessibleNode()->isCheckable();

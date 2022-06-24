@@ -26,6 +26,10 @@
 #include <thread>
 #include <app_manager_extension.h>
 #include <capi-video-capture.h>
+#include <tdm_helper.h>
+#include <tbm_surface.h>
+#include <system_info.h>
+#include <efl_util.h>
 
 using namespace Aurum;
 
@@ -91,15 +95,27 @@ void ScreenAnalyzerWatcher::onMessage(struct mosquitto *mosq, void *obj, const s
         states.clear();
         id = objs[idx]["id"].asString();
 
+        LOGD("objs[%d] = TYPE : %s", idx, objs[idx]["type"].asString().c_str());
         type = objs[idx]["type"].asString();
 
+        LOGD("objs[%d] = GEOMETRY : ", idx);
         const Json::Value geo = objs[idx]["geometry"];
-        geometry = {geo[0].asInt(), geo[1].asInt(), geo[2].asInt(), geo[3].asInt()};
+        for (int gidx = 0; gidx < geo.size(); ++gidx) {
+            LOGD("objs[%d] = %d", idx, geo[gidx].asInt());
+        }
+        double x_scale = 2.666666;
+        double y_scale = 1.875;
 
+        LOGD("geometry = %d %d %d %d", (int)(geo[0].asInt() * x_scale), (int)(geo[1].asInt() * y_scale), (int)(geo[2].asInt() * x_scale), (int)(geo[3].asInt() * y_scale));
+        geometry = { (int)(geo[0].asInt() * x_scale), (int)(geo[1].asInt() * y_scale), (int)(geo[2].asInt() * x_scale), (int)(geo[3].asInt() * y_scale) };
+
+        LOGD("objs[%d] = OCRTEXT : %s", idx, objs[idx]["ocrText"].asString().c_str());
         ocrText = objs[idx]["ocrText"].asString();
 
+        LOGD("objs[%d] = STATES :", idx);
         const Json::Value sta = objs[idx]["states"];
         for (int sidx = 0; sidx < sta.size(); ++sidx) {
+            //LOGE("WCC objs[%d] = %s", idx, sta[sidx].asString().c_str());
             states.push_back(sta[sidx].asString());
         }
 
@@ -154,6 +170,68 @@ void ScreenAnalyzerWatcher::PublishData()
 {
     LOGI("PublishData Start");
     doneLoad = false;
+    void *ptr = NULL;
+    unsigned char *src = NULL;
+    unsigned char *dst = NULL;
+
+    efl_util_screenshot_h screenshot = NULL;
+    tbm_surface_h tbm_surface = NULL;
+    tbm_surface_info_s info;
+    const int WIDTH = 1920;
+    const int HEIGHT = 1080;
+
+    screenshot = efl_util_screenshot_initialize(WIDTH, HEIGHT);
+
+    if (screenshot)
+    {
+        tbm_surface = efl_util_screenshot_take_tbm_surface(screenshot);
+        if (tbm_surface)
+        {
+            tbm_surface_map(tbm_surface, TBM_SURF_OPTION_READ, &info);
+
+            LOGE("WCC w = %d, h = %d ", info.width, info.height);
+            ptr = malloc( WIDTH * HEIGHT * 4 );
+
+            src = (unsigned char *)info.planes[0].ptr;
+            dst = (unsigned char *)ptr;
+            int src_stride = info.planes[0].stride;
+            int dst_stride = info.width * 4;
+
+            memcpy(dst, src, WIDTH * HEIGHT * 4);
+            LOGE("WCC %d %d ", src_stride, dst_stride);
+            /*
+            for (int i = 0; i < HEIGHT; i++)
+            {
+                memcpy (dst, src, dst_stride);
+                src += src_stride;
+                dst += dst_stride;
+            }
+            */
+            LOGE("WCC end of memcpy %s", dst);
+        }
+        else
+        {
+            efl_util_screenshot_deinitialize(screenshot);
+            return;
+        }
+
+        int payloadlen = WIDTH * HEIGHT * 4;
+
+        LOGE("WCC publish start");
+        int rc = mosquitto_publish(mosq, NULL, "screen_analyzer/image_aurum", payloadlen , ptr, 2, false);
+        if(rc != MOSQ_ERR_SUCCESS) {
+            LOGE("WCC client mosquitto publish fail");
+        }
+
+        efl_util_screenshot_deinitialize(screenshot);
+    }
+    else
+    {
+        LOGE("Screen shot fail");
+        return;
+    }
+
+/*
     YC.clear();
 
     const int WIDTH = 720;
@@ -194,9 +272,15 @@ void ScreenAnalyzerWatcher::PublishData()
     if(rc != MOSQ_ERR_SUCCESS) {
         LOGI("mosquitto publish fail");
     }
-
+*/
     while(!doneLoad) {
         std::this_thread::sleep_for(std::chrono::milliseconds{10});
+    }
+
+    if (tbm_surface) {
+	free(ptr);
+        tbm_surface_unmap(tbm_surface);
+        tbm_surface_destroy(tbm_surface);
     }
 
     LOGI("Mosuqitto publish data finish");
@@ -245,7 +329,7 @@ bool ScreenAnalyzerWatcher::checkCriteria(const std::shared_ptr<UiSelector> sele
         if (checkCriteria(selector->mId, node->getId(), 0)) return false;
     }
     if (selector->mMatchType) {
-        if (selector->mMatchType && checkCriteria(selector->mType, node->getElementType(), 0)) return false;
+        if (selector->mMatchType && checkCriteria(selector->mType, node->getType(), 0)) return false;
     }
     if (selector->mMatchClickable && checkCriteria(selector->mIsclickable, node->isClickable())) return false;
     if (selector->mMatchFocused && checkCriteria(selector->mIsfocused, node->isFocused())) return false;
@@ -264,12 +348,25 @@ std::vector<std::shared_ptr<Aurum::SaObject>> ScreenAnalyzerWatcher::findSaObjec
     LOGI("FindSaObject start");
     for (auto saObj : saObjects) {
         if (checkCriteria(selector, saObj)) {
-            LOGI("saObj(%s) found", saObj->getId().c_str());
+            LOGI("saObj(%s) pushed", saObj->getId().c_str());
             rets.push_back(saObj);
         }
     }
 
     return rets;
+}
+
+std::shared_ptr<Aurum::SaObject> ScreenAnalyzerWatcher::findSaObject(const std::shared_ptr<UiSelector> selector)
+{
+    LOGI("FindSaObject start");
+    for (auto saObj : saObjects) {
+        if (checkCriteria(selector, saObj)) {
+            LOGI("saObj(%s) pushed", saObj->getId().c_str());
+            return saObj;
+        }
+    }
+
+    return nullptr;
 }
 
 std::string ScreenAnalyzerWatcher::GetFocusedAppId()

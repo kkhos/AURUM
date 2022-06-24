@@ -38,18 +38,7 @@ GetSizeCommand::GetSizeCommand(const ::aurum::ReqGetSize *request,
 
     if (mDevice->getExternalAppLaunched()) 
     {
-        struct tm timeinfo;
-        time_t now = time(0);
-        if (!localtime_r(&now, &timeinfo)) {
-            LOGE("fail to get localtime. Screenshot cancelled");
-            return grpc::Status::CANCELLED;
-        }
-        char name[128];
-        std::snprintf(name, 128, "/tmp/screenshot-%d-%d-%d-%d:%d:%d.png",
-                                (timeinfo.tm_year + 1900), (timeinfo.tm_mon + 1), timeinfo.tm_mday,
-                                timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec);
-        std::string path(name);
-        mDevice->RequestScreenAnalyze(path);
+        mDevice->RequestScreenAnalyze();
 
         std::vector<std::shared_ptr<SaObject>> founds = {};
 
@@ -57,7 +46,6 @@ GetSizeCommand::GetSizeCommand(const ::aurum::ReqGetSize *request,
         tempSel->id(mRequest->elementid());
         auto selectors  = std::vector<std::shared_ptr<UiSelector>>{tempSel};
 
-        LOGE("WCC Search Object start");
         for ( auto &sel : selectors ) {
             auto ret = mDevice->getScw()->findSaObjects(sel);
             std::move(std::begin(ret), std::end(ret), std::back_inserter(founds));

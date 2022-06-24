@@ -340,7 +340,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    const Rect<int> getWindowBoundingBox() const;
+    Rect<int> getWindowBoundingBox() const;
 
     /**
      * @brief Gets object's minimum value.

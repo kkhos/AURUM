@@ -109,7 +109,7 @@ std::vector<std::shared_ptr<UiSelector>> FindElementsCommand::getSelectors(void)
             windowRect->set_width(windowRelativeSize.width());
             windowRect->set_height(windowRelativeSize.height());
 
-            elm->set_widget_type(obj->getElementType());
+            elm->set_widget_type(obj->getType());
             elm->set_widget_style(obj->getElementStyle());
 
             elm->set_text(obj->getText());
