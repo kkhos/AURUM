@@ -377,9 +377,13 @@ public:
 
     std::shared_ptr<ScreenAnalyzerWatcher> getScw();
 
-    void RequestScreenAnalyze(std::string path);
+    void RequestScreenAnalyze();
 
     bool getExternalAppLaunched();
+
+    void setWithScreenAnalyzer(bool withScreenAnalyzer);
+
+    bool getWithScreenAnalyzer();
 private:
     /**
      * @brief Waits process idle.
@@ -414,6 +418,7 @@ public:
 private:
     IDevice *mDeviceImpl;
     const Waiter *mWaiter;
+    bool mIsWithSA;
 };
 
 }

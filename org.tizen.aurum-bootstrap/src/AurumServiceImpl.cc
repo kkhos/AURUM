@@ -272,3 +272,19 @@ aurumServiceImpl::~aurumServiceImpl()
     std::unique_ptr<GetActiveAppToolkitNameCommand> cmd = std::make_unique<GetActiveAppToolkitNameCommand>(request, response);
     return execute(cmd.get(), true);
 }
+
+::grpc::Status aurumServiceImpl::enableScreenAnalyzer(::grpc::ServerContext *context,
+                                    const ::aurum::ReqEnableScreenAnalyzer *request,
+                                    ::aurum::RspEnableScreenAnalyzer *response)
+{
+    std::unique_ptr<EnableScreenAnalyzerCommand> cmd = std::make_unique<EnableScreenAnalyzerCommand>(request, response);
+    return execute(cmd.get(), true);
+}
+
+::grpc::Status aurumServiceImpl::goToKey(::grpc::ServerContext *context,
+                       const ::aurum::ReqGoToKey *request,
+                       ::aurum::RspGoToKey *response)
+{
+    std::unique_ptr<GoToKeyCommand> cmd = std::make_unique<GoToKeyCommand>(request, response);
+    return execute(cmd.get(), true);
+}

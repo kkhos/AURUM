@@ -46,6 +46,8 @@ bootstrap_svr_src += [
    files('src/Commands/ActionAndWaitEventCommand.cc'),
    files('src/Commands/SetFocusCommand.cc'),
    files('src/Commands/GetActiveAppToolkitNameCommand.cc'),
+   files('src/Commands/EnableScreenAnalyzerCommand.cc'),
+   files('src/Commands/GoToKeyCommand.cc'),
 ]
 
 bootstrap_svr_dep = [

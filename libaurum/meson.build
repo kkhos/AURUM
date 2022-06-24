@@ -67,6 +67,7 @@ if get_option('tizen') == true
     dependency('libtdm'),
     dependency('libmosquitto'),
     dependency('jsoncpp'),
+    dependency('video-capture'),
   ]
 endif
 

@@ -79,58 +79,38 @@ std::shared_ptr<UiSelector> FindElementCommand::getSelector(void)
     std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();
     if (mDevice->getExternalAppLaunched())
     {
-        struct tm timeinfo;
-        time_t now = time(0);
-        if (!localtime_r(&now, &timeinfo)) {
-            LOGE("fail to get localtime. Screenshot cancelled");
-            return grpc::Status::CANCELLED;
+        mDevice->RequestScreenAnalyze();
+
+        LOGD("Search Object start");
+
+		auto found = mDevice->getScw()->findSaObject(selector);
+		if (found != nullptr) {
+			SaObject *obj = found.get();
+			::aurum::Element *elm = mResponse->mutable_element();
+			elm->set_elementid(obj->getId());
+
+			::aurum::Rect *rect = elm->mutable_geometry();
+			const Rect<int> &size = obj->getScreenBoundingBox();
+			rect->set_x(size.mTopLeft.x);
+			rect->set_y(size.mTopLeft.y);
+			rect->set_width(size.width());
+			rect->set_height(size.height());
+
+			elm->set_widget_type(obj->getType());
+
+			elm->set_text(obj->getOcrText());
+
+			elm->set_isclickable(obj->isClickable());
+			elm->set_isfocused(obj->isFocused());
+			elm->set_isfocusable(obj->isFocusable());
+			elm->set_isactive(obj->isActive());
+			elm->set_isshowing(true);
+			elm->set_isvisible(true);
         }
-        char name[128];
-        std::snprintf(name, 128, "/tmp/screenshot-%d-%d-%d-%d:%d:%d.png",
-                                (timeinfo.tm_year + 1900), (timeinfo.tm_mon + 1), timeinfo.tm_mday,
-                                timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec);
-        std::string path(name);
-        mDevice->RequestScreenAnalyze(path);
-
-        std::vector<std::shared_ptr<SaObject>> founds = {};
-
-        LOGE("WCC Search Object start");
-        for ( auto &sel : selectors ) {
-            auto ret = mDevice->getScw()->findSaObjects(sel);
-            std::move(std::begin(ret), std::end(ret), std::back_inserter(founds));
-        }
-        if (founds.size() > 0) {
-            for (auto& found : founds) {
-                SaObject *obj = found.get();
-                ::aurum::Element *elm = mResponse->add_elements();
-                elm->set_elementid(obj->getId());
-
-                ::aurum::Rect *rect = elm->mutable_geometry();
-                const Rect<int> &size = obj->getScreenBoundingBox();
-                rect->set_x(size.mTopLeft.x);
-                rect->set_y(size.mTopLeft.y);
-                rect->set_width(size.width());
-                rect->set_height(size.height());
-
-                elm->set_widget_type(obj->getElementType());
-
-                elm->set_text(obj->getOcrText());
-
-                elm->set_isclickable(obj->isClickable());
-                elm->set_isfocused(obj->isFocused());
-                elm->set_isfocusable(obj->isFocusable());
-                elm->set_isactive(obj->isActive());
-                elm->set_isshowing(true);
-                elm->set_isvisible(true);
-            }
-                mResponse->set_status(::aurum::RspStatus::OK);
-        }
+        mResponse->set_status(::aurum::RspStatus::OK);
     }
 	else
 	{
-		auto searchableObj = getSearchableTop();
-		auto selectors     = getSelectors();
-
 		auto found = searchableObj->findObject(selector);
 
 		if (found != nullptr) {
@@ -159,7 +139,7 @@ std::shared_ptr<UiSelector> FindElementCommand::getSelector(void)
 			windowRect->set_width(windowRelativeSize.width());
 			windowRect->set_height(windowRelativeSize.height());
 
-			elm->set_widget_type(obj->getElementType());
+			elm->set_widget_type(obj->getType());
 			elm->set_widget_style(obj->getElementStyle());
 
 			elm->set_text(obj->getText());

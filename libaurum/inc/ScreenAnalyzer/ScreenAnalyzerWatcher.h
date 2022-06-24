@@ -27,13 +27,15 @@ public:
     ScreenAnalyzerWatcher();
     ~ScreenAnalyzerWatcher();
     static void onMessage(struct mosquitto *mosq, void *obj, const struct mosquitto_message *msg);
-    void PublishData(std::string path, const Size2D<int> screenSize);
+    void PublishData();
     std::vector<std::shared_ptr<Aurum::SaObject>> GetSaObjects();
     void SetJsonText(std::string);
     bool checkCriteria(const std::string textA, const std::string textB, const bool textPartialMatch);
     bool checkCriteria(const bool boolA, const bool boolB);
     bool checkCriteria(const std::shared_ptr<UiSelector> selector, const std::shared_ptr<SaObject> node);
     std::vector<std::shared_ptr<Aurum::SaObject>> findSaObjects(const std::shared_ptr<UiSelector> selector);
+    std::shared_ptr<Aurum::SaObject> findSaObject(const std::shared_ptr<UiSelector> selector);
+
     std::string GetFocusedAppId();
 private:
     const std::string serverAddress = "10.113.16.21";
@@ -42,6 +44,7 @@ private:
     std::string jsontext;
     static bool doneLoad;
     static std::string pkgName;
+    std::vector<unsigned char> YC;
 };
 
 }

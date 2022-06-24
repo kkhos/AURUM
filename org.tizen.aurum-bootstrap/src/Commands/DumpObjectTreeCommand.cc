@@ -55,7 +55,7 @@ void DumpObjectTreeCommand::traverse(::aurum::Element *root, std::shared_ptr<Nod
     windowRect->set_width(windowSize.width());
     windowRect->set_height(windowSize.height());
 
-    root->set_widget_type(obj->getElementType());
+    root->set_widget_type(obj->getType());
     root->set_widget_style(obj->getElementStyle());
 
     root->set_text(obj->getText());
@@ -95,41 +95,17 @@ void DumpObjectTreeCommand::traverse(::aurum::Element *root, std::shared_ptr<Nod
     std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();
     if (mDevice->getExternalAppLaunched())
     {
-        struct tm timeinfo;
-        time_t now = time(0);
-        if (!localtime_r(&now, &timeinfo)) {
-            LOGE("fail to get localtime. Screenshot cancelled");
-            return grpc::Status::CANCELLED;
-        }
-        char name[128];
-        std::snprintf(name, 128, "/tmp/screenshot-%d-%d-%d-%d:%d:%d.png",
-                                (timeinfo.tm_year + 1900), (timeinfo.tm_mon + 1), timeinfo.tm_mday,
-                                 timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec);
-        std::string path(name);
-        mDevice->takeScreenshot(path, 1.0, 1);
+		mDevice->RequestScreenAnalyze();
 
         auto objs = mDevice->getScw()->GetSaObjects();
-/*
-        ::aurum::Element *root = mResponse->add_roots();
-        root->set_elementid("Root");
-        ::aurum::Rect *rect = root->mutable_geometry();
-        rect->set_x(0);
-        rect->set_y(0);
-        rect->set_width(1920);
-        rect->set_height(1080);
-        root->set_widget_type("window");
-        root->set_text("Cobalt-app");
-        root->set_isshowing(true);
-        root->set_isactive(true);
-        root->set_isvisible(true);
-*/
-        ::aurum::Element *root;
+
+		::aurum::Element *root;
         int idx = 0;
         for (auto obj : objs) {
             if (!idx) {
                 root = mResponse->add_roots();
                 root->set_elementid(obj->getId());
-                root->set_widget_type(obj->getElementType());
+                root->set_widget_type(obj->getType());
                 root->set_text(obj->getOcrText());
                 root->set_isclickable(obj->isClickable());
                 root->set_isfocused(obj->isFocused());
@@ -147,7 +123,7 @@ void DumpObjectTreeCommand::traverse(::aurum::Element *root, std::shared_ptr<Nod
             else {
                 ::aurum::Element *elm = root->add_child();
                 elm->set_elementid(obj->getId());
-                elm->set_widget_type(obj->getElementType());
+                elm->set_widget_type(obj->getType());
                 elm->set_text(obj->getOcrText());
                 elm->set_isclickable(obj->isClickable());
                 elm->set_isfocused(obj->isFocused());

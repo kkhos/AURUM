@@ -123,6 +123,12 @@ public:
     ::grpc::Status getActiveAppToolkitName(::grpc::ServerContext *context,
                                            const ::aurum::ReqGetActiveAppToolkitName *request,
                                            ::aurum::RspGetActiveAppToolkitName *response) override;
+    ::grpc::Status enableScreenAnalyzer(::grpc::ServerContext *context,
+                                           const ::aurum::ReqEnableScreenAnalyzer *request,
+                                           ::aurum::RspEnableScreenAnalyzer *response) override;
+    ::grpc::Status goToKey(::grpc::ServerContext *context,
+                           const ::aurum::ReqGoToKey *request,
+                           ::aurum::RspGoToKey *response) override;
 };
 
 #endif

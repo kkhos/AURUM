@@ -242,6 +242,35 @@ public:
     Rect<int> getWindowBoundingBox() const;
 
     /**
+     * @copydoc UiObject::getXPath()
+     */
+    std::string getXPath() const;
+
+    /**
+     * @copydoc UiObject::getMinValue()
+     *
+     */
+    double getMinValue() const;
+
+    /**
+     * @copydoc UiObject::getMaxValue()
+     *
+     */
+    double getMaxValue() const;
+
+    /**
+     * @copydoc UiObject::getValue()
+     *
+     */
+    double getValue() const;
+
+    /**
+     * @copydoc UiObject::getIncrement()
+     *
+     */
+    double getIncrement() const;
+
+    /**
      * @copydoc UiObject::isChecked()
      */
     bool isChecked() const;
