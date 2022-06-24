@@ -17,6 +17,13 @@ if get_option('tizen_gcov') == true
   config_h.set10('TIZEN_GCOV', true)
 endif
 
+if get_option('screen_analyzer') == true
+  config_h.set10('GSA', true)
+else
+  config_h.set10('GSA', false)
+endif
+
+
 root_inc = include_directories('./')
 
 subdir('pugixml')

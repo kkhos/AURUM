@@ -69,7 +69,7 @@ bool PartialMatch::checkCriteria(const std::shared_ptr<UiSelector> selector,
                    ((objBoundingBox.width() * objBoundingBox.height() * 1.5) > (saObj->getScreenBoundingBox().width() * saObj->getScreenBoundingBox().height())) &&
                    ((objBoundingBox.width() * objBoundingBox.height() < (saObj->getScreenBoundingBox().width() * saObj->getScreenBoundingBox().height() * 1.5)))) 
                 {
-                    LOGE("Text Set! saObj %s ", saObj->getOcrText().c_str());
+                    LOGI("Text Set! saObj %s ", saObj->getOcrText().c_str());
                     node->setOcrText(saObj->getOcrText());
                 }
             }

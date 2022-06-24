@@ -31,7 +31,7 @@ AccessibleNode::~AccessibleNode()
 }
 
 AccessibleNode::AccessibleNode()
-: mText{""}, mPkg{""}, mRole{""}, mId{""}, mAutomationId{""}, mType{""}, mStyle{""}, mXPath{""}, mOcrText{""},
+: mText{""}, mOcrText{""}, mPkg{""}, mRole{""}, mId{""}, mAutomationId{""}, mType{""}, mStyle{""}, mXPath{""}, mToolkitName{""},
   mScreenBoundingBox{0,0,0,0}, mWindowBoundingBox{0,0,0,0}, mSupportingIfaces(0), mFeatureProperty(0), mMinValue{0.0}, mMaxValue{0.0}, mValue{0.0}, mIncrement{0.0}, mValid{true}, mLock{}
 {
 }
@@ -48,6 +48,8 @@ std::string AccessibleNode::description() {
     ss << "\"mPkg\":\"" << this->mPkg << "\", ";
     ss << "\"mType\":\"" << this->mType << "\", ";
     ss << "\"mStyle\":\"" << this->mStyle << "\", ";
+    ss << "\"mXPath\":\"" << this->mXPath << "\", ";
+    ss << "\"mToolkitName\":\"" << this->mToolkitName << "\", ";
     ss << "}";
 
     return ss.str();

@@ -50,18 +50,17 @@ std::shared_ptr<UiObject> GoToKeyCommand::searchFocusedObject(void)
     std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
 
     obj->updateExtents();
-    LOGE("WCC fobj (%d %d %d %d)", obj->getScreenBoundingBox().mTopLeft.x, obj->getScreenBoundingBox().mTopLeft.y, obj->getScreenBoundingBox().width(), obj->getScreenBoundingBox().height());
+    LOGI("fobj (%d %d %d %d)", obj->getScreenBoundingBox().mTopLeft.x, obj->getScreenBoundingBox().mTopLeft.y, obj->getScreenBoundingBox().width(), obj->getScreenBoundingBox().height());
     if (obj) {
-        LOGE("obj exist in map");
+        LOGI("obj exist in map");
 
         while(1)
         {
             auto fobj = searchFocusedObject();
             fobj->updateExtents();
-            LOGE("WCC fobj (%d %d %d %d)", fobj->getScreenBoundingBox().mTopLeft.x, fobj->getScreenBoundingBox().mTopLeft.y, fobj->getScreenBoundingBox().width(), fobj->getScreenBoundingBox().height());
+            LOGI("fobj (%d %d %d %d)", fobj->getScreenBoundingBox().mTopLeft.x, fobj->getScreenBoundingBox().mTopLeft.y, fobj->getScreenBoundingBox().width(), fobj->getScreenBoundingBox().height());
             if (fobj->getScreenBoundingBox().isInRect(obj->getScreenBoundingBox().midPoint()))
             {
-                LOGE("WCC found! ");
                 break;
             }
 

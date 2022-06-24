@@ -43,13 +43,13 @@ void onConnect(struct mosquitto *mosq, void *obj, int ret)
     LOGI("Mosquitto on connected");
 
     if(ret != 0) {
-        LOGE("Mosquitto  connect error : %d", ret);
+        LOGI("Mosquitto  connect error : %d", ret);
         mosquitto_disconnect(mosq);
     }
     int rc;
     rc = mosquitto_subscribe(mosq, NULL, "screen_analyzer/json", 1);
     if(rc != MOSQ_ERR_SUCCESS) {
-        LOGE("Mosquitto subscribe fail");
+        LOGI("Mosquitto subscribe fail");
         mosquitto_disconnect(mosq);
     }
 }
@@ -70,10 +70,11 @@ void ScreenAnalyzerWatcher::onMessage(struct mosquitto *mosq, void *obj, const s
     std::string txt((char *)msg->payload);
     saObjects.clear();
 
+    //FIXME: Json::Reader has been deprecated. replace it.
     Json::Reader reader;
     Json::Value root;
     bool ret = reader.parse(txt, root);
-    if (!ret) LOGE("Json parse fail");
+    if (!ret) LOGI("Json parse fail");
 
     const Json::Value objs = root["objects"];
 
@@ -90,7 +91,7 @@ void ScreenAnalyzerWatcher::onMessage(struct mosquitto *mosq, void *obj, const s
     ocrText = pkgName;
     saObjects.push_back(std::make_shared<Aurum::SaObject>(id, type, geometry, ocrText, states));
 
-    for (int idx = 0; idx < objs.size(); ++idx)
+    for (unsigned int idx = 0; idx < objs.size(); ++idx)
     {
         states.clear();
         id = objs[idx]["id"].asString();
@@ -115,7 +116,7 @@ void ScreenAnalyzerWatcher::onMessage(struct mosquitto *mosq, void *obj, const s
         LOGD("objs[%d] = STATES :", idx);
         const Json::Value sta = objs[idx]["states"];
         for (int sidx = 0; sidx < sta.size(); ++sidx) {
-            //LOGE("WCC objs[%d] = %s", idx, sta[sidx].asString().c_str());
+            LOGI("objs[%d] = %s", idx, sta[sidx].asString().c_str());
             states.push_back(sta[sidx].asString());
         }
 
@@ -134,7 +135,7 @@ ScreenAnalyzerWatcher::ScreenAnalyzerWatcher()
     mosquitto_lib_init();
     mosq = mosquitto_new(NULL, true, NULL);
     if(mosq == NULL){
-        LOGE("Mosquitto initialize fail");
+        LOGI("Mosquitto initialize fail");
         return;
     }
 
@@ -147,13 +148,13 @@ ScreenAnalyzerWatcher::ScreenAnalyzerWatcher()
     rc = mosquitto_connect(mosq, serverAddress.c_str(), 1883, 60);
     if(rc != MOSQ_ERR_SUCCESS){
         mosquitto_destroy(mosq);
-        LOGE("Mosquitto connect fail");
+        LOGI("Mosquitto connect fail");
         return;
     }
     rc = mosquitto_loop_start(mosq);
     if(rc != MOSQ_ERR_SUCCESS){
         mosquitto_destroy(mosq);
-        LOGE("Mosquitto loop start fail");
+        LOGI("Mosquitto loop start fail");
         return;
     }
 }
@@ -168,6 +169,7 @@ ScreenAnalyzerWatcher::~ScreenAnalyzerWatcher()
 
 void ScreenAnalyzerWatcher::PublishData()
 {
+    //FIXME: Creation image API not fixed yet.
     LOGI("PublishData Start");
     doneLoad = false;
     void *ptr = NULL;
@@ -189,7 +191,7 @@ void ScreenAnalyzerWatcher::PublishData()
         {
             tbm_surface_map(tbm_surface, TBM_SURF_OPTION_READ, &info);
 
-            LOGE("WCC w = %d, h = %d ", info.width, info.height);
+            LOGI("Image w = %d, h = %d ", info.width, info.height);
             ptr = malloc( WIDTH * HEIGHT * 4 );
 
             src = (unsigned char *)info.planes[0].ptr;
@@ -198,7 +200,6 @@ void ScreenAnalyzerWatcher::PublishData()
             int dst_stride = info.width * 4;
 
             memcpy(dst, src, WIDTH * HEIGHT * 4);
-            LOGE("WCC %d %d ", src_stride, dst_stride);
             /*
             for (int i = 0; i < HEIGHT; i++)
             {
@@ -207,7 +208,6 @@ void ScreenAnalyzerWatcher::PublishData()
                 dst += dst_stride;
             }
             */
-            LOGE("WCC end of memcpy %s", dst);
         }
         else
         {
@@ -217,17 +217,17 @@ void ScreenAnalyzerWatcher::PublishData()
 
         int payloadlen = WIDTH * HEIGHT * 4;
 
-        LOGE("WCC publish start");
+        LOGI("publish start");
         int rc = mosquitto_publish(mosq, NULL, "screen_analyzer/image_aurum", payloadlen , ptr, 2, false);
         if(rc != MOSQ_ERR_SUCCESS) {
-            LOGE("WCC client mosquitto publish fail");
+            LOGI("client mosquitto publish fail");
         }
 
         efl_util_screenshot_deinitialize(screenshot);
     }
     else
     {
-        LOGE("Screen shot fail");
+        LOGI("Screen shot fail");
         return;
     }
 
@@ -378,13 +378,13 @@ std::string ScreenAnalyzerWatcher::GetFocusedAppId()
 
 	return_val  = app_manager_get_focused_app_context(&app_context);
 	if (return_val != APP_MANAGER_ERROR_NONE) {
-		LOGE("failed to get app-context");
+		LOGI("failed to get app-context");
 		return NULL;
 	}
 
 	return_val = app_context_get_app_id(app_context, &app_id);
 	if (return_val != APP_MANAGER_ERROR_NONE) {
-		LOGE("failed to get app_id");
+		LOGI("failed to get app_id");
 		app_context_destroy(app_context);
 		return NULL;
 	}
@@ -393,7 +393,7 @@ std::string ScreenAnalyzerWatcher::GetFocusedAppId()
 
 	return_val = app_context_destroy(app_context);
 	if (return_val != APP_MANAGER_ERROR_NONE) {
-        LOGE("failed to destroy app-context");
+        LOGI("failed to destroy app-context");
         return NULL;
     }
 

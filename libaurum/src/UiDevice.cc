@@ -304,8 +304,6 @@ bool UiDevice::getExternalAppLaunched()
 {
     auto ret = this->getWindowRoot();
     return (ret.size() > 0) ? false : true;
-
-    //return true;
 }
 
 void UiDevice::setWithScreenAnalyzer(bool withScreenAnalyzer)
