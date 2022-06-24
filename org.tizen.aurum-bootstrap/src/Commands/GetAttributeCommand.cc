@@ -37,9 +37,11 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
     LOGI("GetAttribute --------------- ");
 
     std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();
+
     if (mDevice->getExternalAppLaunched()) 
     {
         //TBD
+        return nullptr;
     }
     else
     {

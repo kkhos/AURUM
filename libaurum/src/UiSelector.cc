@@ -22,13 +22,13 @@
 using namespace Aurum;
 
 UiSelector::UiSelector()
-: mId{}, mAutomationId{}, mRole{}, mText{}, mPkg{}, mType{}, mStyle{}, mTextPartialMatch{}, mXPath{},
+: mId{}, mAutomationId{}, mRole{}, mText{}, mPkg{}, mType{}, mStyle{}, mTextPartialMatch{}, mXPath{}, mOcrText{},
   mMatchId{}, mMatchAutomationId{}, mMatchRole{}, mMatchText{}, mMatchPkg{}, mMatchType{}, mMatchStyle{},
-  mMatchTextPartialMatch{}, mMatchXPath{}, mMatchChecked{}, mMatchCheckable{}, mMatchClickable{}, mMatchEnabled{}, mMatchFocused{},
+  mMatchTextPartialMatch{}, mMatchXPath{}, mMatchOcrText{}, mMatchChecked{}, mMatchCheckable{}, mMatchClickable{}, mMatchEnabled{}, mMatchFocused{},
   mMatchFocusable{}, mMatchScrollable{}, mMatchSelected{}, mMatchShowing{}, mMatchActive{}, mMatchVisible{},
   mMatchSelectable{}, mMinDepth{}, mMaxDepth{}, mIschecked{}, mIscheckable{}, mIsclickable{}, mIsenabled{},
   mIsfocused{}, mIsfocusable{}, mIsscrollable{}, mIsselected{}, mIsshowing{}, mIsactive{}, mIsvisible{},
-  mIsselectable{}, mChild{}, mParent{}, mOcrText{}, mMatchOcrText{}
+  mIsselectable{}, mChild{}, mParent{}
 {
 }
 

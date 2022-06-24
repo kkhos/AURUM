@@ -143,7 +143,7 @@ void DumpObjectTreeCommand::traverse(::aurum::Element *root, std::shared_ptr<Nod
             idx++;
         }
 
-        LOGE("WCC DumpObject Finish");
+        LOGI("DumpObject Finish");
     }
     else
     {

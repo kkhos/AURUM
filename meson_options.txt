@@ -26,3 +26,9 @@ option('enable_documentation',
   value: false,
   description: 'enable generating documentation by using doxygen'
 )
+
+option('screen_analyzer',
+  type: 'boolean',
+  value: false,
+  description: 'enable screen analyzer to analyze 3rd party app'
+)
