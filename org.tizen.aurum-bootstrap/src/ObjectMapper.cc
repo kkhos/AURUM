@@ -51,6 +51,7 @@ std::shared_ptr<UiObject> ObjectMapper::getElement(std::string elementId)
     }
     else {
         LOGI("Object find fail");
+        mObjectMap.erase(elementId);
         return nullptr;
     }
 }
