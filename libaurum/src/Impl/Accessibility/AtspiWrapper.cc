@@ -206,3 +206,10 @@ gdouble AtspiWrapper::Atspi_value_get_minimum_increment(AtspiValue *iface, GErro
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_value_get_minimum_increment(iface, error);
 }
+
+guint AtspiWrapper::Atspi_accessible_get_process_id(AtspiAccessible *node, GError **error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_accessible_get_process_id(node, error);
+
+}
