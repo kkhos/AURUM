@@ -29,6 +29,7 @@
 #include <thread>
 #include <algorithm>
 #include <iostream>
+#include <gio/gio.h>
 
 using namespace Aurum;
 using namespace AurumInternal;
@@ -66,8 +67,145 @@ std::shared_ptr<UiDevice> UiDevice::getInstance(IDevice *deviceImpl)
     return device;
 }
 
+#define WM_BUS_NAME	"org.enlightenment.wm"
+#define WM_OBJECT_PATH	"/org/enlightenment/wm"
+#define WM_INTERFACE_NAME	"org.enlightenment.wm.proc"
+#define WM_METHOD_NAME_INFO	"GetVisibleWinInfo_v2"
+
+typedef struct _window_info {
+	int pid;
+	int x;
+	int y;
+	int w;
+	int h;
+	gboolean transformed;
+	gboolean alpha;
+	int opaque;
+	int visibility;
+	gboolean focused;
+	gboolean mapped;
+	int layer;
+	char *name;
+} window_info;
+
+static GDBusConnection *system_conn;
+
+int aul_window_stack_get()
+{
+	GError *err = NULL;
+	GDBusMessage *msg;
+	GDBusMessage *reply;
+	GDBusConnection *conn;
+	int res = 0;
+	window_info *wi;
+	GVariant *body;
+	GVariantIter *iter = NULL;
+	GList *list = NULL;
+    int idx = 0;
+
+    LOGE("bus get sync");
+	if (system_conn == NULL) {
+		conn = g_bus_get_sync(G_BUS_TYPE_SYSTEM, NULL, &err);
+		if (conn == NULL) {
+			LOGE("g_bus_get_sync() is failed. %s", err->message);
+			g_error_free(err);
+			return -1;
+		}
+		system_conn = conn;
+	}
+
+    LOGE("bus message call");
+	msg = g_dbus_message_new_method_call(WM_BUS_NAME,
+						                 WM_OBJECT_PATH,
+						                 WM_INTERFACE_NAME,
+						                 WM_METHOD_NAME_INFO);
+	if (msg == NULL) {
+		LOGE("g_dbus_message_new_method_call() is failed.");
+		return -1;
+	}
+
+    LOGE("bus reply sync");
+	reply = g_dbus_connection_send_message_with_reply_sync(system_conn, msg,
+			G_DBUS_SEND_MESSAGE_FLAGS_NONE, -1, NULL, NULL, &err);
+
+	if (!reply) {
+		if (err != NULL) {
+			LOGE("Failed to get info [%s]", err->message);
+			g_error_free(err);
+		}
+		res = -1;
+		goto out;
+	}
+
+    LOGE("bus get body");
+	body = g_dbus_message_get_body(reply);
+	if (!body) {
+		res = -1;
+		goto out;
+	}
+
+	wi = (window_info *)malloc(sizeof(window_info));
+	if (wi == NULL) {
+		LOGE("Out of memory");
+		res = -1;
+		goto out;
+	}
+
+    LOGE("bus get values %s" , g_variant_get_type_string(body));
+	g_variant_get(body, "(a(iiiiibbiibbis))", &iter);
+    LOGE("bus variant loop start iter %d", g_variant_iter_n_children(iter));
+
+	int pid;
+	int x;
+	int y;
+	int w;
+	int h;
+	gboolean transformed;
+	gboolean alpha;
+	int opaque;
+	int visibility;
+	gboolean focused;
+	gboolean mapped;
+	int layer;
+	char *name;
+
+    LOGE("%-3s | %-6s | %-4s | %-4s | %-4s | %-4s | %-5s | %-5s | %-6s | %-3s | %-7s | %-6s | %-5s | %-20s", "No" ,"PID", "X", "Y", "W", "H", "Trans", "Alpha", "Opaque", "Vis", "Focused", "Mapped", "Layer", "Name");
+	while (g_variant_iter_loop(iter, "(iiiiibbiibbis)",
+			&pid,
+			&x,
+			&y,
+			&w,
+			&h,
+			&transformed,
+			&alpha,
+			&opaque,
+			&visibility,
+			&focused,
+			&mapped,
+			&layer,
+            &name)) {
+		//list = g_list_append(list, wi);
+        LOGE("%-3d | %-6d | %-4d | %-4d | %-4d | %-4d | %-5d | %-5d | %-6d | %-3d | %-7d | %-6d | %-5d | %-20s", idx++, pid, x,y,w,h, transformed, alpha, opaque, visibility, focused, mapped, layer, name);
+
+		//wi = (window_info *)malloc(sizeof(window_info));
+	}
+    LOGE("bus variant loop finish");
+	free(wi);
+	if (iter)
+		g_variant_iter_free(iter);
+out:
+	if (msg)
+		g_object_unref(msg);
+	if (reply)
+		g_object_unref(reply);
+
+	return res;
+}
 std::vector<std::shared_ptr<AccessibleNode>> UiDevice::getWindowRoot() const
 {
+    LOGE("Start get window stack");
+    aul_window_stack_get();
+    LOGE("Start get window stack finish");
     std::vector<std::shared_ptr<AccessibleNode>> ret{};
 
     auto appsMap = AccessibleWatcher::getInstance()->getActiveAppMap();
