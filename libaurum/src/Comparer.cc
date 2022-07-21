@@ -103,7 +103,7 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(
         int childCnt = root->getChildCount();
         for (int i = 0; i < childCnt; i++) {
             std::shared_ptr<AccessibleNode> childNode = root->getChildAt(i);
-            if (childNode == nullptr) continue;
+            if (childNode->getRawHandler() == nullptr) continue;
 
             std::vector<std::shared_ptr<AccessibleNode>> childret =
                 findObjects(childNode, i, depth + 1, partialMatches);

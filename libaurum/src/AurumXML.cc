@@ -79,7 +79,7 @@ void AurumXML::traverse(xml_node element, std::shared_ptr<AccessibleNode> node)
     int childCnt = node->getChildCount();
     for (int i = 0; i < childCnt; i++) {
         std::shared_ptr<AccessibleNode> childNode = node->getChildAt(i);
-        if (childNode == nullptr) continue;
+        if (childNode->getRawHandler() == nullptr) continue;
 
         xml_node childElement = element.append_child("");
         traverse(childElement, childNode);
