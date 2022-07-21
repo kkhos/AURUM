@@ -185,7 +185,7 @@ private:
     efl_util_inputgen_h mFakeKeyboardHandle;
     efl_util_inputgen_h mFakeWheelHandle;
     static const int INTV_CLICK = 5;
-    static const int INTV_SHORTSTROKE = 100;
+    static const int INTV_SHORTSTROKE = 10;
     static const int INTV_LONGSTROKE = 2000;
     static const int INTV_MINIMUM_DRAG_MS = 25;
     static const int INTV_MINIMUM_USLEEP = 1000;

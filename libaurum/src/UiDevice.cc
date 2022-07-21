@@ -261,7 +261,6 @@ bool UiDevice::pressPower(KeyRequestType type)
 bool UiDevice::pressKeyCode(std::string keycode, KeyRequestType type)
 {
     bool result =  mDeviceImpl->pressKeyCode(keycode, type);
-    waitForIdle();
     return result;
 }
 
