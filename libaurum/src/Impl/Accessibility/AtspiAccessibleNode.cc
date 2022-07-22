@@ -254,6 +254,13 @@ void AtspiAccessibleNode::updateValue()
     }
 }
 
+void AtspiAccessibleNode::updatePid()
+{
+    AtspiWrapper::Atspi_accessible_clear_cache(mNode);
+
+    mPid = AtspiWrapper::Atspi_accessible_get_process_id(mNode, NULL);
+}
+
 bool AtspiAccessibleNode::setFocus()
 {
     AtspiComponent *component = AtspiWrapper::Atspi_accessible_get_component_iface(mNode);
