@@ -127,6 +127,11 @@ public:
     void updateValue() override;
 
     /**
+     * @copydoc UiObject::updatePid()
+     */
+    void updatePid() override;
+
+    /**
      * @copydoc UiObject::setFocus()
      */
     bool setFocus() override;

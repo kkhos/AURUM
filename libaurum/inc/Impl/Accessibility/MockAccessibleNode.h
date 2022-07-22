@@ -133,6 +133,12 @@ public:
      * @brief TBD
      * @since_tizen 7.0
      */
+    void updatePid() override;
+
+    /**
+     * @brief TBD
+     * @since_tizen 7.0
+     */
     bool setFocus() override;
 
 	/**

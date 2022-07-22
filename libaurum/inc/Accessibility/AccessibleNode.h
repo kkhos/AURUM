@@ -218,6 +218,12 @@ public:
     double getValue() const;
 
     /**
+     * @copydoc UiObject::getPid()
+     *
+     */
+    int getPid() const;
+
+    /**
      * @copydoc UiObject::getIncrement()
      *
      */
@@ -363,6 +369,11 @@ public:
     virtual void updateValue() = 0;
 
     /**
+     * @copydoc UiObject::updatePid()
+     */
+    virtual void updatePid() = 0;
+
+    /**
      * @copydoc UiObject::setFocus()
      */
     virtual bool setFocus() = 0;
@@ -478,6 +489,7 @@ protected:
     Rect<int> mWindowBoundingBox;
     int mSupportingIfaces;
     int mFeatureProperty;
+    int mPid;
     double mMinValue;
     double mMaxValue;
     double mValue;
