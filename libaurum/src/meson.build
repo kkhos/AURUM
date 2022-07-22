@@ -10,6 +10,7 @@ libaurum_src += [
   files('PartialMatch.cc'),
   files('A11yEvent.cc'),
   files('AurumXML.cc'),
+  files('TizenWindow.cc'),
 ]
 
 subdir('Accessibility')

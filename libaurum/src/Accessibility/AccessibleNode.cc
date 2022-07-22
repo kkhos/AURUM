@@ -249,3 +249,8 @@ double AccessibleNode::getIncrement() const
 {
     return mIncrement;
 }
+
+int AccessibleNode::getPid() const
+{
+    return mPid;
+}
