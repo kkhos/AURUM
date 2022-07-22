@@ -344,6 +344,11 @@ void UiObject::updateValue() const
     mNode->updateValue();
 }
 
+void UiObject::updatePid() const
+{
+    mNode->updatePid();
+}
+
 bool UiObject::setFocus() const
 {
     return mNode->setFocus();

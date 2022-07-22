@@ -330,6 +330,15 @@ public:
     const double getValue() const;
 
     /**
+     * @brief Gets object's process id.
+     *
+     * @return int
+     *
+     * @since_tizen 7.0
+     */
+    const int getPid() const;
+
+    /**
      * @brief Gets object's current increment.
      *
      * @return double
@@ -549,6 +558,13 @@ public:
      * @since_tizen 7.0
      */
     void updateValue() const;
+
+    /**
+     * @brief Updates object's process id.
+     *
+     * @since_tizen 7.0
+     */
+    void updatePid() const;
 
     /**
      * @brief Sets focus to object.
