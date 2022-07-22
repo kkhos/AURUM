@@ -29,9 +29,18 @@
 #include <thread>
 #include <algorithm>
 #include <iostream>
+#include <gio/gio.h>
 
 using namespace Aurum;
 using namespace AurumInternal;
+
+#define WM_BUS_NAME "org.enlightenment.wm"
+#define WM_OBJECT_PATH "/org/enlightenment/wm"
+#define WM_INTERFACE_NAME "org.enlightenment.wm.proc"
+#define WM_METHOD_NAME_INFO "GetVisibleWinInfo_v2"
+
+std::vector<std::shared_ptr<TizenWindow>> UiDevice::mTizenWindows;
+static GDBusConnection *system_conn;
 
 UiDevice::UiDevice() : UiDevice(nullptr) {}
 
@@ -66,21 +75,138 @@ std::shared_ptr<UiDevice> UiDevice::getInstance(IDevice *deviceImpl)
     return device;
 }
 
+std::vector<std::shared_ptr<TizenWindow>> UiDevice::getTizenWindowInfo() const
+{
+    GError *err = NULL;
+    GDBusMessage *msg;
+    GDBusMessage *reply;
+    GDBusConnection *conn;
+    GVariant *body;
+    GVariantIter *iter = NULL;
+    int idx = 0;
+    int pid;
+    int x;
+    int y;
+    int w;
+    int h;
+    gboolean transformed;
+    gboolean alpha;
+    int opaque;
+    int visibility;
+    gboolean focused;
+    gboolean mapped;
+    int layer;
+    char *name;
+
+    mTizenWindows.clear();
+
+    if (system_conn == NULL) {
+        conn = g_bus_get_sync(G_BUS_TYPE_SYSTEM, NULL, &err);
+        if (conn == NULL) {
+            LOGE("g_bus_get_sync() is failed. %s", err->message);
+            g_error_free(err);
+            return mTizenWindows;
+        }
+        system_conn = conn;
+    }
+
+    msg = g_dbus_message_new_method_call(WM_BUS_NAME,
+            WM_OBJECT_PATH,
+            WM_INTERFACE_NAME,
+            WM_METHOD_NAME_INFO);
+    if (msg == NULL) {
+        LOGE("g_dbus_message_new_method_call() is failed.");
+        return mTizenWindows;
+    }
+
+    reply = g_dbus_connection_send_message_with_reply_sync(system_conn, msg,
+            G_DBUS_SEND_MESSAGE_FLAGS_NONE, -1, NULL, NULL, &err);
+
+    if (!reply) {
+        if (err != NULL) {
+            LOGE("Failed to get info [%s]", err->message);
+            g_error_free(err);
+        }
+        goto out;
+    }
+
+    body = g_dbus_message_get_body(reply);
+    if (!body) {
+        LOGE("Failed to get body");
+        goto out;
+    }
+
+    g_variant_get(body, "(a(iiiiibbiibbis))", &iter);
+
+    LOGI("%-3s | %-6s | %-4s | %-4s | %-4s | %-4s | %-5s | %-5s | %-6s | %-3s | %-7s | %-6s | %-5s | %-20s", "No" ,"PID", "X", "Y", "W", "H", "Trans", "Alpha", "Opaque", "Vis", "Focused", "Mapped", "Layer", "Name");
+    while (g_variant_iter_loop(iter, "(iiiiibbiibbis)",
+                &pid,
+                &x,
+                &y,
+                &w,
+                &h,
+                &transformed,
+                &alpha,
+                &opaque,
+                &visibility,
+                &focused,
+                &mapped,
+                &layer,
+                &name)) {
+        LOGI("%-3d | %-6d | %-4d | %-4d | %-4d | %-4d | %-5d | %-5d | %-6d | %-3d | %-7d | %-6d | %-5d | %-20s", idx++, pid, x,y,w,h, transformed, alpha, opaque, visibility, focused, mapped, layer, name);
+        if (visibility == 0 && pid > 0)
+        {
+            Rect<int> geometry = {x,  y, w, h};
+            std::string winName(name);
+            mTizenWindows.push_back(std::make_shared<Aurum::TizenWindow>(pid, geometry, transformed, alpha, opaque, visibility, focused, mapped, layer, winName));
+        }
+    }
+
+    if (iter)
+        g_variant_iter_free(iter);
+out:
+    if (msg)
+        g_object_unref(msg);
+    if (reply)
+        g_object_unref(reply);
+
+    return mTizenWindows;
+}
+
 std::vector<std::shared_ptr<AccessibleNode>> UiDevice::getWindowRoot() const
 {
+    LOGI("Request window info");
+    getTizenWindowInfo();
+
     std::vector<std::shared_ptr<AccessibleNode>> ret{};
 
-    auto appsMap = AccessibleWatcher::getInstance()->getActiveAppMap();
-    LOGI("activeAppMap.size: %d" , (int)appsMap.size());
-    for (auto itr = appsMap.begin(); itr != appsMap.end(); itr++)
+    auto apps = AccessibleWatcher::getInstance()->getApplications();
+    for (auto app : apps)
     {
-        auto activeWindows = itr->second->getActiveWindows();
-        std::transform(activeWindows.begin(), activeWindows.end(), std::back_inserter(ret),
-            [&](std::shared_ptr<AccessibleWindow> window){
-                LOGI("active pkg: %s, window: %s", window->getAccessibleNode()->getPkg().c_str(), window->getTitle().c_str());
-                return window->getAccessibleNode();
+        app->getAccessibleNode()->updateName();
+        app->getAccessibleNode()->updatePid();
+        LOGI("App(%s) Pid(%d)", app->getPackageName().c_str(), app->getAccessibleNode()->getPid());
+    }
+
+    for (auto tWin : mTizenWindows)
+    {
+        LOGI("Visible win (%d) (%d %d %d %d) (%s)", tWin->getPid(), tWin->getWindowGeometry().mTopLeft.x, tWin->getWindowGeometry().mTopLeft.y, tWin->getWindowGeometry().width(),
+            tWin->getWindowGeometry().height(), tWin->getName().c_str());
+
+        for (auto app : apps)
+        {
+            if (app->getAccessibleNode()->getPid() == tWin->getPid())
+            {
+                LOGI("Actvie App : (%s) (%d)", tWin->getName().c_str(), tWin->getPid());
+                auto wins = app->getWindows();
+                std::transform(wins.begin(), wins.end(), std::back_inserter(ret),
+                    [&](std::shared_ptr<AccessibleWindow> window){
+                        LOGI("Target window add pkg: (%s), name (%s)", window->getAccessibleNode()->getPkg().c_str(), window->getTitle().c_str());
+                        return window->getAccessibleNode();
+                    }
+                );
             }
-        );
+        }
     }
 
     return ret;
@@ -143,19 +269,19 @@ bool UiDevice::waitForIdle() const
 }
 
 bool UiDevice::waitForEvents(
-	const A11yEvent type, const int timeout) const
+    const A11yEvent type, const int timeout) const
 {
     return executeAndWaitForEvents(NULL, type, timeout);
 }
 
 bool UiDevice::executeAndWaitForEvents(
-	const Runnable *cmd, const A11yEvent type, const int timeout) const
+    const Runnable *cmd, const A11yEvent type, const int timeout) const
 {
     return AccessibleWatcher::getInstance()->executeAndWaitForEvents(cmd, type, timeout);
 }
 
 bool UiDevice::sendKeyAndWaitForEvents(
-	const std::string keycode, const A11yEvent type, const int timeout) const
+    const std::string keycode, const A11yEvent type, const int timeout) const
 {
     std::unique_ptr<SendKeyRunnable> cmd = std::make_unique<SendKeyRunnable>(keycode);
     return executeAndWaitForEvents(cmd.get(), type, timeout);
