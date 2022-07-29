@@ -47,11 +47,13 @@ public:
      *
      * @param[in] searchableObject ISearchable pointer
      * @param[in] uiObject UiObject pointer
+     * @param[in] timeout timeout value
      *
      * @since_tizen 6.5
      */
     Waiter(const ISearchable *searchableObject,
-           const UiObject *uiObject = nullptr);
+           const UiObject *uiObject = nullptr,
+           const int timeout = 5000);
 
     /**
      * @brief Waiter destructor.
@@ -84,6 +86,18 @@ public:
      */
     template <typename R>
     R waitFor(const std::function<R(const UiObject *)> object) const;
+
+    /**
+     * @brief wait for condition satisfied.
+     *
+     * @param[in] condition @ISearchable
+     *
+     * @return template vector
+     *
+     * @since_tizen 7.0
+     */
+    template <typename R>
+    std::vector<R> waitFor(const std::function<std::vector<R>(const ISearchable *)> condition) const;
 
 private:
     const ISearchable *mSearchableObject;

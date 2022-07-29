@@ -46,3 +46,13 @@ std::function<bool(const UiObject *)> Until::checkable(const bool isCheckable)
         return object->isClickable() == isCheckable;
     };
 }
+
+std::function<std::vector<std::shared_ptr<UiObject>>(const ISearchable *)> Until::findObjects(
+    const std::shared_ptr<UiSelector> selector)
+{
+    return [=](const ISearchable *searchable) -> std::vector<std::shared_ptr<UiObject>> {
+        LOGI("findObjects search:%p", searchable);
+        std::vector<std::shared_ptr<UiObject>> result = searchable->findObjects(selector);
+        return result;
+    };
+}

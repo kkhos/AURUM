@@ -36,6 +36,7 @@ service Bootstrap {
    rpc getActiveAppToolkitName(ReqGetActiveAppToolkitName) returns (RspGetActiveAppToolkitName) {}
    rpc enableScreenAnalyzer(ReqEnableScreenAnalyzer) returns (RspEnableScreenAnalyzer) {}
    rpc getTextMinBoundingRect(ReqGetTextMinBoundingRect) returns (RspGetTextMinBoundingRect) {}
+   rpc setTimeout(ReqSetTimeout) returns (RspSetTimeout) {}
 }
 
 // ------------------------------------ //
@@ -609,4 +610,12 @@ message ReqGetTextMinBoundingRect {
 message RspGetTextMinBoundingRect {
    RspStatus status = 1;
    Rect size = 2;
+}
+
+message ReqSetTimeout {
+   int32 timeout = 1;
+}
+
+message RspSetTimeout {
+   RspStatus status = 1;
 }

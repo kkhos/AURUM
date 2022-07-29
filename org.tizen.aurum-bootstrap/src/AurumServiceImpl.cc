@@ -29,6 +29,7 @@ using namespace grpc;
 using namespace aurum;
 
 aurumServiceImpl::aurumServiceImpl()
+    : WAIT_TIMEOUT_MS{0}
 {
     LOGI("creates watcher instance (start to look up at_spi server)");
     AccessibleWatcher::getInstance();
@@ -60,7 +61,7 @@ aurumServiceImpl::~aurumServiceImpl()
     ::grpc::ServerContext *context, const ::aurum::ReqFindElement *request,
     ::aurum::RspFindElement *response)
 {
-    std::unique_ptr<FindElementCommand> cmd = std::make_unique<FindElementCommand>(request, response);
+    std::unique_ptr<FindElementCommand> cmd = std::make_unique<FindElementCommand>(request, response, WAIT_TIMEOUT_MS);
     return execute(cmd.get(), true);
 }
 
@@ -68,7 +69,7 @@ aurumServiceImpl::~aurumServiceImpl()
     ::grpc::ServerContext *context, const ::aurum::ReqFindElements *request,
     ::aurum::RspFindElements *response)
 {
-    std::unique_ptr<FindElementsCommand> cmd = std::make_unique<FindElementsCommand>(request, response);
+    std::unique_ptr<FindElementsCommand> cmd = std::make_unique<FindElementsCommand>(request, response, WAIT_TIMEOUT_MS);
     return execute(cmd.get(), true);
 }
 
@@ -287,4 +288,15 @@ aurumServiceImpl::~aurumServiceImpl()
 {
     std::unique_ptr<GetTextMinBoundingRectCommand> cmd = std::make_unique<GetTextMinBoundingRectCommand>(request, response);
     return execute(cmd.get(), true);
+}
+
+::grpc::Status aurumServiceImpl::setTimeout(::grpc::ServerContext *context,
+                                            const ::aurum::ReqSetTimeout *request,
+                                            ::aurum::RspSetTimeout *response)
+{
+    WAIT_TIMEOUT_MS = request->timeout();
+    LOGI("setTimeout: %d", WAIT_TIMEOUT_MS);
+
+    response->set_status(::aurum::RspStatus::OK);
+    return ::grpc::Status::OK;
 }

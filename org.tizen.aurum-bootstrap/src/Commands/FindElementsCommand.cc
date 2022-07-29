@@ -25,10 +25,12 @@
 #ifdef MQTT_ENABLED
 #include "SaObject.h"
 #endif
+#include "Until.h"
 
 FindElementsCommand::FindElementsCommand(const ::aurum::ReqFindElements *request,
-                                       ::aurum::RspFindElements *response)
-    : mRequest{request}, mResponse{response}
+                                       ::aurum::RspFindElements *response,
+                                       int timeout)
+    : mRequest{request}, mResponse{response}, mTimeout{timeout}
 {
     mObjMap = ObjectMapper::getInstance();
 }
@@ -134,8 +136,10 @@ std::vector<std::shared_ptr<UiSelector>> FindElementsCommand::getSelectors(void)
 
         std::vector<std::shared_ptr<UiObject>> founds = {};
 
+        auto waiter = new Waiter(searchableObj.get(), nullptr, mTimeout);
+
         for ( auto &sel : selectors ) {
-            auto ret = searchableObj->findObjects(sel);
+            auto ret = waiter->waitFor(Until::findObjects(sel));
             std::move(std::begin(ret), std::end(ret), std::back_inserter(founds));
         }
 
