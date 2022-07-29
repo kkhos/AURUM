@@ -115,6 +115,19 @@ public:
      */
     static std::function<bool(const UiObject *)> checkable(
         const bool isCheckable);
+
+    /**
+     * @brief Checks that there are objects that are satisfied with selector condition.
+     *
+     * @param[in] selector @UiSelctor
+     *
+     * @return function that performs findObjects
+     *         returned function will return vector if succeed, else vector size is zero
+     *
+     * @since_tizen 7.0
+     */
+    static std::function<std::vector<std::shared_ptr<UiObject>>(const ISearchable *)>
+                                                 findObjects(const std::shared_ptr<UiSelector> selector);
 };
 
 }

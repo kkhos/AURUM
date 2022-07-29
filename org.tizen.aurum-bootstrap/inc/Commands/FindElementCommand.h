@@ -26,13 +26,15 @@ class FindElementCommand : public Command {
 protected:
     const ::aurum::ReqFindElement *mRequest;
     ::aurum::RspFindElement *mResponse;
+    int mTimeout;
 
 protected:
     ObjectMapper *mObjMap;
 
 public:
     FindElementCommand(const ::aurum::ReqFindElement *request,
-                       ::aurum::RspFindElement *response);
+                       ::aurum::RspFindElement *response,
+                       int timeout = 0);
     ::grpc::Status execute() override;
 protected:
     virtual std::shared_ptr<ISearchable> getSearchableTop(void);

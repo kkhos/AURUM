@@ -26,11 +26,11 @@ Waiter::Waiter() : Waiter(nullptr) {}
 
 Waiter::~Waiter() {}
 
-Waiter::Waiter(const ISearchable *searchableObject, const UiObject *uiObject)
+Waiter::Waiter(const ISearchable *searchableObject, const UiObject *uiObject, const int timeout)
     : mSearchableObject{searchableObject},
       mUiObject{uiObject},
-      WAIT_INTERVAL_MS{500},
-      WAIT_TIMEOUT_MS{5000}
+      WAIT_INTERVAL_MS{100},
+      WAIT_TIMEOUT_MS{timeout}
 {
 }
 
@@ -43,6 +43,10 @@ template std::shared_ptr<UiObject> Waiter::waitFor(
 
 template bool Waiter::waitFor(
     const std::function<bool(const UiObject *)> condition) const;
+
+template std::vector<std::shared_ptr<UiObject>> Waiter::waitFor(
+    const std::function<std::vector<std::shared_ptr<UiObject>> (const ISearchable *)>
+        condition) const;
 
 template <typename R>
 R Waiter::waitFor(const std::function<R(const ISearchable *)> condition) const
@@ -81,4 +85,22 @@ R Waiter::waitFor(const std::function<R(const UiObject *)> condition) const
         return result;
     }
     return R();
+}
+
+template <typename R>
+std::vector<R> Waiter::waitFor(const std::function<std::vector<R>(const ISearchable *)> condition) const
+{
+    LOGI("waitFor ISearchable");
+    std::chrono::system_clock::time_point start =
+        std::chrono::system_clock::now();
+    std::vector<R> result = condition(mSearchableObject);
+    while (result.empty()) {
+        if ((std::chrono::system_clock::now() - start) >
+            std::chrono::milliseconds{WAIT_TIMEOUT_MS})
+            break;
+        std::this_thread::sleep_for(
+            std::chrono::milliseconds{WAIT_INTERVAL_MS});
+        result = condition(mSearchableObject);
+    }
+    return result;
 }
