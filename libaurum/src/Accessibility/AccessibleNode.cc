@@ -32,7 +32,7 @@ AccessibleNode::~AccessibleNode()
 
 AccessibleNode::AccessibleNode()
 : mText{""}, mPkg{""}, mRole{""}, mId{""}, mAutomationId{""}, mType{""}, mStyle{""}, mXPath{""},
-  mScreenBoundingBox{0,0,0,0}, mWindowBoundingBox{0,0,0,0}, mSupportingIfaces(0), mFeatureProperty(0), mMinValue{0.0}, mMaxValue{0.0}, mValue{0.0}, mIncrement{0.0}, mValid{true}, mLock{}
+  mScreenBoundingBox{0,0,0,0}, mWindowBoundingBox{0,0,0,0}, mSupportingIfaces(0), mFeatureProperty(0), mPid(0), mMinValue{0.0}, mMaxValue{0.0}, mValue{0.0}, mIncrement{0.0}, mValid{true}, mLock{}
 {
 }
 
