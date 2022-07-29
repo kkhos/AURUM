@@ -22,10 +22,12 @@
 #include "UiSelector.h"
 #include "Sel.h"
 #include "ISearchable.h"
+#include "Until.h"
 
 FindElementCommand::FindElementCommand(const ::aurum::ReqFindElement *request,
-                                       ::aurum::RspFindElement *response)
-    : mRequest{request}, mResponse{response}
+                                       ::aurum::RspFindElement *response,
+                                       int timeout)
+    : mRequest{request}, mResponse{response}, mTimeout(timeout)
 {
     mObjMap = ObjectMapper::getInstance();
 }
@@ -75,7 +77,8 @@ std::shared_ptr<UiSelector> FindElementCommand::getSelector(void)
     auto searchableObj = getSearchableTop();
     auto selector     = getSelector();
 
-    auto found = searchableObj->findObject(selector);
+    auto waiter = new Waiter(searchableObj.get(), nullptr, mTimeout);
+    auto found = waiter->waitFor(Until::findObject(selector));
 
     if (found != nullptr) {
         UiObject *obj = found.get();

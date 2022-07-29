@@ -33,6 +33,7 @@ service Bootstrap {
    rpc actionAndWaitEvent(ReqActionAndWaitEvent) returns (RspActionAndWaitEvent) {}
    rpc setFocus(ReqSetFocus) returns (RspSetFocus) {}
    rpc findElements(ReqFindElements) returns (RspFindElements) {}
+   rpc setTimeout(ReqSetTimeout) returns (RspSetTimeout) {}
 }
 
 // ------------------------------------ //
@@ -564,3 +565,12 @@ message ReqSetFocus {
 message RspSetFocus {
    RspStatus status = 1;
 }
+
+message ReqSetTimeout {
+   int32 timeout = 1;
+}
+
+message RspSetTimeout {
+   RspStatus status = 1;
+}
+
