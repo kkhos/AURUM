@@ -162,6 +162,9 @@ install -m 0644 gcov-obj/* %{buildroot}%{_datadir}/gcov/obj
 %post
 sbin/ldconfig
 
+echo -e ' Debug option enalbed for give AppDebugging Privilege '
+tpk-backend --preload -G -y org.tizen.aurum-bootstrap
+
 %postun
 sbin/ldconfig
 
