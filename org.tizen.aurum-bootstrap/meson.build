@@ -45,6 +45,8 @@ bootstrap_svr_src += [
    files('src/Commands/GetScreenSizeCommand.cc'),
    files('src/Commands/ActionAndWaitEventCommand.cc'),
    files('src/Commands/SetFocusCommand.cc'),
+   files('src/Commands/GetActiveAppToolkitNameCommand.cc'),
+   files('src/Commands/EnableScreenAnalyzerCommand.cc'),
 ]
 
 bootstrap_svr_dep = [
