@@ -144,6 +144,17 @@ void AtspiAccessibleNode::updateName()
     }
 }
 
+void AtspiAccessibleNode::updateToolkitName()
+{
+    AtspiWrapper::Atspi_accessible_clear_cache(mNode);
+
+    gchar *toolkitName = AtspiWrapper::Atspi_accessible_get_toolkit_name(mNode, NULL);
+    if (toolkitName) {
+        mToolkitName = toolkitName;
+        g_free(toolkitName);
+    }
+}
+
 void AtspiAccessibleNode::updateApplication()
 {
     AtspiWrapper::Atspi_accessible_clear_cache(mNode);
@@ -297,6 +308,12 @@ void AtspiAccessibleNode::refresh(bool updateAll)
         if (name) {
             mText = name;
             g_free(name);
+        }
+
+        gchar *toolkitName = AtspiWrapper::Atspi_accessible_get_toolkit_name(mNode, NULL);
+        if (toolkitName) {
+            mToolkitName = toolkitName;
+            g_free(toolkitName);
         }
 
         AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(mNode, NULL);

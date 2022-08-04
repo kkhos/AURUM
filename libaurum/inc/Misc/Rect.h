@@ -113,6 +113,22 @@ public:
     T height() const { return mBottomRight.y - mTopLeft.y; }
 
     /**
+     * @brief Checks whether the given point in the rect or not.
+     *
+     * @return true if point located in rect, otherwise false
+     *
+     * @since_tizen 7.0
+     */
+    bool isInRect(const Point2D<T> &point) const
+    {
+        if (point.x >= mTopLeft.x && point.x <= mBottomRight.x
+            && point.y >= mTopLeft.y && point.y <= mBottomRight.y)
+            return true;
+
+        return false;
+    }
+
+    /**
      * @brief Checks given Rect is same as this or not.
      *
      * @param[in] rhs @Rect

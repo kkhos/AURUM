@@ -129,13 +129,15 @@ private:
      *
      * @param[in] selector @UiSelector
      * @param[in] node @AccessibleNode target node
+     * @param[in] device @UiDevice
      *
-     * @return ture if satisfied, else false
+     * @return true if satisfied, else false
      *
      * @since_tizen 6.5
      */
     static bool checkCriteria(const std::shared_ptr<UiSelector> selector,
-                              const std::shared_ptr<AccessibleNode> node);
+                              const std::shared_ptr<AccessibleNode> node,
+                              std::shared_ptr<UiDevice> device);
 
     /**
      * @brief Checks text matched or not.

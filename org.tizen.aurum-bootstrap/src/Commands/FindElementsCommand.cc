@@ -22,6 +22,9 @@
 #include "UiSelector.h"
 #include "Sel.h"
 #include "ISearchable.h"
+#ifdef MQTT_ENABLED
+#include "SaObject.h"
+#endif
 
 FindElementsCommand::FindElementsCommand(const ::aurum::ReqFindElements *request,
                                        ::aurum::RspFindElements *response)
@@ -65,6 +68,7 @@ std::vector<std::shared_ptr<UiSelector>> FindElementsCommand::getSelectors(void)
     if(mRequest->_packagename_case())      sel->pkg(mRequest->packagename());
     if(mRequest->_textpartialmatch_case()) sel->textPartialMatch(mRequest->textpartialmatch());
     if(mRequest->_xpath_case())            sel->xpath(mRequest->xpath());
+    if(mRequest->_ocrtext_case())          sel->ocrText(mRequest->ocrtext());
 
     return std::vector<std::shared_ptr<UiSelector>>{sel};
 }
@@ -74,71 +78,125 @@ std::vector<std::shared_ptr<UiSelector>> FindElementsCommand::getSelectors(void)
     LOGI("findElements --------------- ");
     auto searchableObj = getSearchableTop();
     auto selectors     = getSelectors();
+    std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();
 
-    std::vector<std::shared_ptr<UiObject>> founds = {};
+#ifdef MQTT_ENABLED
+    if (mDevice->getExternalAppLaunched())
+    {
+        mDevice->RequestScreenAnalyze();
 
-    for ( auto &sel : selectors ) {
-        auto ret = searchableObj->findObjects(sel);
-        std::move(std::begin(ret), std::end(ret), std::back_inserter(founds));
-    }
+        std::vector<std::shared_ptr<SaObject>> founds = {};
 
-    if (founds.size() > 0) {
-        for (auto& found : founds) {
-            UiObject *obj = found.get();
-            obj->refresh();
-            if (mObjMap->getElement(obj->getId()) == nullptr)
-                mObjMap->addElement(std::move(found));
-
-            LOGI("found object : %p elementId:%s", obj, obj->getId().c_str());
-
-            ::aurum::Element *elm = mResponse->add_elements();
-            elm->set_elementid(obj->getId());
-            elm->set_package(obj->getApplicationPackage());
-
-            ::aurum::Rect *rect = elm->mutable_geometry();
-            const Rect<int> &size = obj->getScreenBoundingBox();
-            rect->set_x(size.mTopLeft.x);
-            rect->set_y(size.mTopLeft.y);
-            rect->set_width(size.width());
-            rect->set_height(size.height());
-
-            ::aurum::Rect *windowRect = elm->mutable_window_relative_geometry();
-            const Rect<int> &windowRelativeSize = obj->getWindowBoundingBox();
-            windowRect->set_x(windowRelativeSize.mTopLeft.x);
-            windowRect->set_y(windowRelativeSize.mTopLeft.y);
-            windowRect->set_width(windowRelativeSize.width());
-            windowRect->set_height(windowRelativeSize.height());
-
-            elm->set_widget_type(obj->getElementType());
-            elm->set_widget_style(obj->getElementStyle());
-
-            elm->set_text(obj->getText());
-            elm->set_xpath(obj->getXPath());
-            elm->set_automationid(obj->getAutomationId());
-            elm->set_package(obj->getApplicationPackage());
-            elm->set_role(obj->getRole());
-
-            elm->set_ischecked(obj->isChecked());
-            elm->set_ischeckable(obj->isCheckable());
-            elm->set_isclickable(obj->isClickable());
-            elm->set_isenabled(obj->isEnabled());
-            elm->set_isfocused(obj->isFocused());
-            elm->set_isfocusable(obj->isFocusable());
-            elm->set_isscrollable(obj->isScrollable());
-            elm->set_isselected(obj->isSelected());
-            elm->set_isshowing(obj->isShowing());
-            elm->set_isactive(obj->isActive());
-            elm->set_isvisible(obj->isVisible());
-            elm->set_isselectable(obj->isSelectable());
-
-            elm->set_minvalue(obj->getMinValue());
-            elm->set_maxvalue(obj->getMaxValue());
-            elm->set_value(obj->getValue());
-            elm->set_increment(obj->getIncrement());
+        for ( auto &sel : selectors ) {
+            auto ret = mDevice->getSAWatcher()->findSaObjects(sel);
+            std::move(std::begin(ret), std::end(ret), std::back_inserter(founds));
         }
-        mResponse->set_status(::aurum::RspStatus::OK);
-    } else {
-        mResponse->set_status(::aurum::RspStatus::ERROR);
+        if (founds.size() > 0) {
+            for (auto& found : founds) {
+                SaObject *obj = found.get();
+                ::aurum::Element *elm = mResponse->add_elements();
+                elm->set_elementid(obj->getId());
+
+                ::aurum::Rect *rect = elm->mutable_geometry();
+                const Rect<int> &size = obj->getScreenBoundingBox();
+                rect->set_x(size.mTopLeft.x);
+                rect->set_y(size.mTopLeft.y);
+                rect->set_width(size.width());
+                rect->set_height(size.height());
+
+                elm->set_widget_type(obj->getType());
+
+                elm->set_text(obj->getOcrText());
+                elm->set_toolkit("External");
+
+                elm->set_isclickable(obj->isClickable());
+                elm->set_isfocused(obj->isFocused());
+                elm->set_isfocusable(obj->isFocusable());
+                elm->set_isactive(obj->isActive());
+                elm->set_isshowing(true);
+                elm->set_isvisible(true);
+            }
+                mResponse->set_status(::aurum::RspStatus::OK);
+        }
+        else {
+            mResponse->set_status(::aurum::RspStatus::ERROR);
+        }
+    }
+    else
+#endif
+    {
+        if (mDevice->getWithScreenAnalyzer())
+        {
+            LOGI("Find object with SA information");
+            mDevice->RequestScreenAnalyze();
+        }
+
+        std::vector<std::shared_ptr<UiObject>> founds = {};
+
+        for ( auto &sel : selectors ) {
+            auto ret = searchableObj->findObjects(sel);
+            std::move(std::begin(ret), std::end(ret), std::back_inserter(founds));
+        }
+
+        if (founds.size() > 0) {
+            for (auto& found : founds) {
+                UiObject *obj = found.get();
+                obj->refresh();
+                if (mObjMap->getElement(obj->getId()) == nullptr)
+                    mObjMap->addElement(std::move(found));
+
+                LOGI("found object : %p elementId:%s", obj, obj->getId().c_str());
+
+                ::aurum::Element *elm = mResponse->add_elements();
+                elm->set_elementid(obj->getId());
+                elm->set_package(obj->getApplicationPackage());
+
+                ::aurum::Rect *rect = elm->mutable_geometry();
+                const Rect<int> &size = obj->getScreenBoundingBox();
+                rect->set_x(size.mTopLeft.x);
+                rect->set_y(size.mTopLeft.y);
+                rect->set_width(size.width());
+                rect->set_height(size.height());
+
+                ::aurum::Rect *windowRect = elm->mutable_window_relative_geometry();
+                const Rect<int> &windowRelativeSize = obj->getWindowBoundingBox();
+                windowRect->set_x(windowRelativeSize.mTopLeft.x);
+                windowRect->set_y(windowRelativeSize.mTopLeft.y);
+                windowRect->set_width(windowRelativeSize.width());
+                windowRect->set_height(windowRelativeSize.height());
+
+                elm->set_widget_type(obj->getType());
+                elm->set_widget_style(obj->getElementStyle());
+
+                elm->set_text(obj->getText());
+                elm->set_xpath(obj->getXPath());
+                elm->set_ocrtext(obj->getOcrText());
+                elm->set_automationid(obj->getAutomationId());
+                elm->set_package(obj->getApplicationPackage());
+                elm->set_role(obj->getRole());
+
+                elm->set_ischecked(obj->isChecked());
+                elm->set_ischeckable(obj->isCheckable());
+                elm->set_isclickable(obj->isClickable());
+                elm->set_isenabled(obj->isEnabled());
+                elm->set_isfocused(obj->isFocused());
+                elm->set_isfocusable(obj->isFocusable());
+                elm->set_isscrollable(obj->isScrollable());
+                elm->set_isselected(obj->isSelected());
+                elm->set_isshowing(obj->isShowing());
+                elm->set_isactive(obj->isActive());
+                elm->set_isvisible(obj->isVisible());
+                elm->set_isselectable(obj->isSelectable());
+
+                elm->set_minvalue(obj->getMinValue());
+                elm->set_maxvalue(obj->getMaxValue());
+                elm->set_value(obj->getValue());
+                elm->set_increment(obj->getIncrement());
+            }
+            mResponse->set_status(::aurum::RspStatus::OK);
+        } else {
+            mResponse->set_status(::aurum::RspStatus::ERROR);
+        }
     }
 
     return grpc::Status::OK;

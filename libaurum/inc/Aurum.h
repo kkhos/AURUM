@@ -53,6 +53,7 @@
 #include "Waiter.h"
 #include "ISearchable.h"
 #include "IDevice.h"
+#include "IObject.h"
 #include "Accessible.h"
 #include "Point2D.h"
 #include "Size2D.h"
@@ -61,5 +62,9 @@
 #include "Comparer.h"
 #include "A11yEvent.h"
 #include "Runnables.h"
+#ifdef MQTT_ENABLED
+#include "ScreenAnalyzerWatcher.h"
+#include "SaObject.h"
+#endif
 
 #endif

@@ -46,7 +46,7 @@ std::vector<std::shared_ptr<AccessibleWindow>> AccessibleApplication::getActiveW
     auto children = getWindows();
 
     children.erase(std::remove_if(children.begin(), children.end(), [](auto child){
-                        return !(child->isShowing()); // Active, Showing are same meaning currently
+                        return !(child->isActive() && child->isShowing() && (child->getAccessibleNode()->getChildCount() > 0));
                     }), children.end());
 
     return children;
