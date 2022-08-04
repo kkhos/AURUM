@@ -33,6 +33,8 @@ service Bootstrap {
    rpc actionAndWaitEvent(ReqActionAndWaitEvent) returns (RspActionAndWaitEvent) {}
    rpc setFocus(ReqSetFocus) returns (RspSetFocus) {}
    rpc findElements(ReqFindElements) returns (RspFindElements) {}
+   rpc getActiveAppToolkitName(ReqGetActiveAppToolkitName) returns (RspGetActiveAppToolkitName) {}
+   rpc enableScreenAnalyzer(ReqEnableScreenAnalyzer) returns (RspEnableScreenAnalyzer) {}
 }
 
 // ------------------------------------ //
@@ -62,27 +64,29 @@ message Element {
 
    string text = 7;
    string xpath = 8;
-   string automationId = 9;
-   string package = 10;
-   string role = 11;
+   string ocrText = 9;
+   string automationId = 10;
+   string package = 11;
+   string role = 12;
+   string toolkit = 13;
 
-   bool isChecked = 12;
-   bool isCheckable = 13;
-   bool isClickable = 14;
-   bool isEnabled = 15;
-   bool isFocused = 16;
-   bool isFocusable = 17;
-   bool isScrollable = 18;
-   bool isSelected = 19;
-   bool isShowing = 20;
-   bool isActive = 21;
-   bool isVisible = 22;
-   bool isSelectable = 23;
+   bool isChecked = 14;
+   bool isCheckable = 15;
+   bool isClickable = 16;
+   bool isEnabled = 17;
+   bool isFocused = 18;
+   bool isFocusable = 19;
+   bool isScrollable = 20;
+   bool isSelected = 21;
+   bool isShowing = 22;
+   bool isActive = 23;
+   bool isVisible = 24;
+   bool isSelectable = 25;
 
-   double minValue = 24;
-   double maxValue = 25;
-   double value = 26;
-   double increment = 27;
+   double minValue = 26;
+   double maxValue = 27;
+   double value = 28;
+   double increment = 29;
 }
 
 message Point {
@@ -184,7 +188,11 @@ message ReqFindElement {
       string xpath = 20;
    }
 
-   repeated ReqFindElement children = 21;
+   oneof _ocrtext {
+      string ocrText = 21;
+   }
+
+   repeated ReqFindElement children = 22;
 }
 
 message RspFindElement {
@@ -272,7 +280,10 @@ message ReqFindElements {
       string xpath = 20;
    }
 
-   repeated ReqFindElements children = 21;
+   oneof _ocrtext {
+      string ocrText = 21;
+   }
+   repeated ReqFindElements children = 22;
 }
 
 message RspFindElements {
@@ -564,3 +575,21 @@ message ReqSetFocus {
 message RspSetFocus {
    RspStatus status = 1;
 }
+
+message ReqGetActiveAppToolkitName {
+}
+
+message RspGetActiveAppToolkitName {
+   RspStatus status = 1;
+   string toolkitName = 2;
+}
+
+message ReqEnableScreenAnalyzer {
+   bool enable = 1;
+   string serverIp = 2;
+}
+
+message RspEnableScreenAnalyzer {
+   RspStatus status = 1;
+}
+
