@@ -31,7 +31,7 @@ AccessibleNode::~AccessibleNode()
 }
 
 AccessibleNode::AccessibleNode()
-: mText{""}, mPkg{""}, mRole{""}, mId{""}, mAutomationId{""}, mType{""}, mStyle{""}, mXPath{""},
+: mText{""}, mOcrText{""}, mPkg{""}, mRole{""}, mId{""}, mAutomationId{""}, mType{""}, mStyle{""}, mXPath{""}, mToolkitName{""},
   mScreenBoundingBox{0,0,0,0}, mWindowBoundingBox{0,0,0,0}, mSupportingIfaces(0), mFeatureProperty(0), mPid(0), mMinValue{0.0}, mMaxValue{0.0}, mValue{0.0}, mIncrement{0.0}, mValid{true}, mLock{}
 {
 }
@@ -44,6 +44,7 @@ std::string AccessibleNode::description() {
     ss << "\"mAutomationId\":\"" << this->mAutomationId << "\", ";
     ss << "\"mRole\":\"" << this->mRole << "\", ";
     ss << "\"mText\":\"" << this->mText << "\", ";
+    ss << "\"mOcrText\":\"" << this->mOcrText << "\", ";
     ss << "\"mPkg\":\"" << this->mPkg << "\", ";
     ss << "\"mType\":\"" << this->mType << "\", ";
     ss << "\"mStyle\":\"" << this->mStyle << "\", ";
@@ -120,6 +121,16 @@ std::string AccessibleNode::getText() const
     return mText;
 }
 
+std::string AccessibleNode::getOcrText() const
+{
+    return mOcrText;
+}
+
+void AccessibleNode::setOcrText(std::string text)
+{
+    mOcrText = text;
+}
+
 std::string AccessibleNode::getPkg() const
 {
     return mPkg;
@@ -155,12 +166,17 @@ std::string AccessibleNode::getXPath() const
     return mXPath;
 }
 
-Rect<int> AccessibleNode::getScreenBoundingBox() const
+std::string AccessibleNode::getToolkitName() const
+{
+    return mToolkitName;
+}
+
+const Rect<int> AccessibleNode::getScreenBoundingBox() const
 {
     return mScreenBoundingBox;
 }
 
-Rect<int> AccessibleNode::getWindowBoundingBox() const
+const Rect<int> AccessibleNode::getWindowBoundingBox() const
 {
     return mWindowBoundingBox;
 }

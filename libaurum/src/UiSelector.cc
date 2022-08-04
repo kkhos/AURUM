@@ -22,10 +22,10 @@
 using namespace Aurum;
 
 UiSelector::UiSelector()
-: mId{}, mAutomationId{}, mRole{}, mText{}, mPkg{}, mType{}, mStyle{}, mTextPartialMatch{}, mXPath{},
+: mId{}, mAutomationId{}, mRole{}, mText{}, mPkg{}, mType{}, mStyle{}, mTextPartialMatch{}, mXPath{}, mOcrText{},
   mMatchId{}, mMatchAutomationId{}, mMatchRole{}, mMatchText{}, mMatchPkg{}, mMatchType{}, mMatchStyle{},
-  mMatchTextPartialMatch{}, mMatchXPath{}, mMatchChecked{}, mMatchCheckable{}, mMatchClickable{}, mMatchEnabled{}, mMatchFocused{},
-  mMatchFocusable{}, mMatchScrollable{}, mMatchSelected{}, mMatchShowing{}, mMatchActive{}, mMatchVisible{},
+  mMatchTextPartialMatch{}, mMatchXPath{}, mMatchOcrText{}, mMatchChecked{}, mMatchCheckable{}, mMatchClickable{}, mMatchEnabled{},
+  mMatchFocused{}, mMatchFocusable{}, mMatchScrollable{}, mMatchSelected{}, mMatchShowing{}, mMatchActive{}, mMatchVisible{},
   mMatchSelectable{}, mMinDepth{}, mMaxDepth{}, mIschecked{}, mIscheckable{}, mIsclickable{}, mIsenabled{},
   mIsfocused{}, mIsfocusable{}, mIsscrollable{}, mIsselected{}, mIsshowing{}, mIsactive{}, mIsvisible{},
   mIsselectable{}, mChild{}, mParent{}
@@ -40,6 +40,7 @@ std::string UiSelector::description()
     if(!this->mAutomationId.empty()) ss << "\"mAutomationId\":\"" << this->mAutomationId << "\", ";
     if(!this->mRole.empty()) ss << "\"mRole\":\"" << this->mRole << "\", ";
     if(!this->mText.empty()) ss << "\"mText\":\"" << this->mText << "\", ";
+    if(!this->mOcrText.empty()) ss << "\"mOcrText\":\"" << this->mOcrText << "\", ";
     if(!this->mTextPartialMatch.empty()) ss << "\"mTextPartialMatch\":\"" << this->mTextPartialMatch << "\", ";
     if(!this->mXPath.empty()) ss << "\"mXPath\":\"" << this->mXPath << "\", ";
     if(!this->mPkg.empty()) ss << "\"mPkg\":\"" << this->mPkg << "\", ";
@@ -49,6 +50,7 @@ std::string UiSelector::description()
     if(this->mMatchAutomationId) ss << "\"mMatchAutomationId\":\"" << ((this->mMatchAutomationId)?"true":"false") << "\", ";
     if(this->mMatchRole) ss << "\"mMatchRole\":\"" << ((this->mMatchRole)?"true":"false") << "\", ";
     if(this->mMatchText) ss << "\"mMatchText\":\"" << ((this->mMatchText)?"true":"false") << "\", ";
+    if(this->mMatchOcrText) ss << "\"mMatchOcrText\":\"" << ((this->mMatchOcrText)?"true":"false") << "\", ";
     if(this->mMatchTextPartialMatch) ss << "\"mMatchTextPartialMatch\":\"" << ((this->mMatchTextPartialMatch)?"true":"false") << "\", ";
     if(this->mMatchXPath) ss << "\"mMatchXPath\":\"" << ((this->mMatchXPath)?"true":"false") << "\", ";
     if(this->mMatchPkg) ss << "\"mMatchPkg\":\"" << ((this->mMatchPkg)?"true":"false") << "\", ";
@@ -86,6 +88,13 @@ UiSelector *UiSelector::text(std::string text)
 {
     this->mText = text;
     this->mMatchText = true;
+    return this;
+}
+
+UiSelector *UiSelector::ocrText(std::string text)
+{
+    this->mOcrText = text;
+    this->mMatchOcrText = true;
     return this;
 }
 

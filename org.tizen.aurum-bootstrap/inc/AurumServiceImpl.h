@@ -120,6 +120,12 @@ public:
     ::grpc::Status setFocus(::grpc::ServerContext *context,
                             const ::aurum::ReqSetFocus *request,
                             ::aurum::RspSetFocus *response) override;
+    ::grpc::Status getActiveAppToolkitName(::grpc::ServerContext *context,
+                                           const ::aurum::ReqGetActiveAppToolkitName *request,
+                                           ::aurum::RspGetActiveAppToolkitName *response) override;
+    ::grpc::Status enableScreenAnalyzer(::grpc::ServerContext *context,
+                                           const ::aurum::ReqEnableScreenAnalyzer *request,
+                                           ::aurum::RspEnableScreenAnalyzer *response) override;
 };
 
 #endif

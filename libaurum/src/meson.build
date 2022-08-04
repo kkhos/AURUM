@@ -13,6 +13,15 @@ libaurum_src += [
   files('TizenWindow.cc'),
 ]
 
+if get_option('mqtt_enabled') == true
+  libaurum_src += [
+    files('SaObject.cc'),
+  ]
+endif
+
 subdir('Accessibility')
+if get_option('mqtt_enabled') == true
+  subdir('ScreenAnalyzer')
+endif
 subdir('Impl')
 subdir('Runnable')

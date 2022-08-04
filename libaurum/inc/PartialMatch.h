@@ -135,7 +135,8 @@ private:
      * @since_tizen 6.5
      */
     static bool checkCriteria(const std::shared_ptr<UiSelector> selector,
-                              const std::shared_ptr<AccessibleNode> node);
+                              const std::shared_ptr<AccessibleNode> node,
+                              std::shared_ptr<UiDevice> mDevice);
 
     /**
      * @brief Checks text matched or not.
