@@ -112,6 +112,15 @@ public:
      */
     T height() const { return mBottomRight.y - mTopLeft.y; }
 
+    bool isInRect(const Point2D<T> &point) const
+    {
+        if (point.x >= mTopLeft.x && point.x <= mBottomRight.x
+            && point.y >= mTopLeft.y && point.y <= mBottomRight.y)
+            return true;
+
+        return false;
+    }
+
     /**
      * @brief Checks given Rect is same as this or not.
      *
