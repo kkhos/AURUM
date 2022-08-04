@@ -212,3 +212,9 @@ guint AtspiWrapper::Atspi_accessible_get_process_id(AtspiAccessible *node, GErro
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_get_process_id(node, error);
 }
+
+gchar *AtspiWrapper::Atspi_accessible_get_toolkit_name(AtspiAccessible *node, GError **error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_accessible_get_toolkit_name(node, error);
+}

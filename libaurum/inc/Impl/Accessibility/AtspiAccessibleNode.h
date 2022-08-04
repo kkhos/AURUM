@@ -122,6 +122,11 @@ public:
     void updateXPath() override;
 
     /**
+     * @copydoc UiObject::updateToolkitName()
+     */
+    void updateToolkitName() override;
+
+    /**
      * @copydoc UiObject::updateValue()
      */
     void updateValue() override;

@@ -36,6 +36,11 @@
 #include <functional>
 #include <string>
 
+#ifdef MQTT_ENABLED
+#include "SaObject.h"
+#include "ScreenAnalyzerWatcher.h"
+#endif
+
 namespace Aurum {
 
 /**
@@ -379,6 +384,19 @@ public:
      */
     std::vector<std::shared_ptr<TizenWindow>> getTizenWindowInfo() const;
 
+#ifdef MQTT_ENABLED
+    std::vector<std::shared_ptr<SaObject>> getSaObject();
+
+    std::shared_ptr<ScreenAnalyzerWatcher> getSAWatcher();
+#endif
+    void RequestScreenAnalyze();
+
+    bool getExternalAppLaunched();
+
+    void setWithScreenAnalyzer(bool withScreenAnalyzer);
+
+    bool getWithScreenAnalyzer();
+
 private:
     /**
      * @brief Waits process idle.
@@ -414,6 +432,10 @@ private:
     IDevice *mDeviceImpl;
     const Waiter *mWaiter;
     static std::vector<std::shared_ptr<TizenWindow>> mTizenWindows;
+    bool mIsWithSA;
+#ifdef MQTT_ENABLED
+    static std::shared_ptr<ScreenAnalyzerWatcher> mSAWatcher;
+#endif
 };
 
 }
