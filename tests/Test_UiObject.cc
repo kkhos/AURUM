@@ -189,11 +189,11 @@ TEST_F(AurumTestUiObject, getAutomationId)
     ASSERT_EQ(parent->getAutomationId(), "");
 }
 
-TEST_F(AurumTestUiObject, getElementType_P1)
+TEST_F(AurumTestUiObject, getType_P1)
 {
     auto obj = UiDevice::getInstance();
     auto parent = obj->findObject(Sel::text("test2"));
-    ASSERT_EQ(parent->getElementType(), "type");
+    ASSERT_EQ(parent->getType(), "type");
 }
 
 TEST_F(AurumTestUiObject, getElementStyle_P1)

@@ -185,7 +185,7 @@ TEST_F(AurumTestUiSelector, Selector_Advanced_P1)
     sel->text("win1");
 
     auto found = UiDevice::getInstance()->findObject(sel);
-    ASSERT_EQ(found->getElementType(), "Elm_Win");
+    ASSERT_EQ(found->getType(), "Elm_Win");
     auto children = found->getChildren();
     ASSERT_EQ(children.size(), 4);
 
@@ -205,7 +205,7 @@ TEST_F(AurumTestUiSelector, Selector_Advanced_P2)
     sel->text("win1");
 
     auto found = UiDevice::getInstance()->findObject(sel);
-    ASSERT_EQ(found->getElementType(), "Elm_Win");
+    ASSERT_EQ(found->getType(), "Elm_Win");
     auto children = found->getChildren();
     ASSERT_EQ(children.size(), 4);
 
@@ -282,7 +282,7 @@ TEST_F(AurumTestUiSelector, Selector_Advanced_N1)
     sel->text("win1");
 
     auto found = UiDevice::getInstance()->findObject(sel);
-    ASSERT_EQ(found->getElementType(), "Elm_Win");
+    ASSERT_EQ(found->getType(), "Elm_Win");
     auto children = found->getChildren();
     ASSERT_EQ(children.size(), 4);
 

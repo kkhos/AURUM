@@ -52,8 +52,37 @@ std::string PartialMatch::debugPrint()
 }
 
 bool PartialMatch::checkCriteria(const std::shared_ptr<UiSelector> selector,
-                                 const std::shared_ptr<AccessibleNode> node)
+                                 const std::shared_ptr<AccessibleNode> node,
+                                 std::shared_ptr<UiDevice> mDevice)
 {
+#ifdef MQTT_ENABLED
+    if (selector->mMatchOcrText)
+    {
+        if (!mDevice->getWithScreenAnalyzer() || !node->isShowing() || !(node->getText().size() == 0)) return false;
+        //FIXME: getSaObjectHasText();
+        auto saObjs = mDevice->getSAWatcher()->GetSaObjects();
+
+        node->updateExtents();
+        auto objBoundingBox = node->getScreenBoundingBox();
+        for (auto saObj : saObjs) {
+            if (saObj->getOcrText().size() != 0) {
+                if (objBoundingBox.isInRect(saObj->getScreenBoundingBox().midPoint()) &&
+                   ((objBoundingBox.width() * objBoundingBox.height() * 1.5) > (saObj->getScreenBoundingBox().width() * saObj->getScreenBoundingBox().height())) &&
+                   ((objBoundingBox.width() * objBoundingBox.height() < (saObj->getScreenBoundingBox().width() * saObj->getScreenBoundingBox().height() * 1.5))))
+                {
+                    LOGE("Text Set! saObj %s ", saObj->getOcrText().c_str());
+                    node->setOcrText(saObj->getOcrText());
+                }
+            }
+        }
+
+        if (node->getOcrText().size() == 0) return false;
+        if (checkCriteria(selector->mOcrText, node->getOcrText(), 1)) return false;
+
+        LOGI("node ocr = %s, selector ocr = %s",node->getOcrText().c_str(), selector->mOcrText.c_str());
+    }
+#endif
+
     if (selector->mMatchText || selector->mMatchTextPartialMatch) {
         node->updateName();
         if (selector->mMatchText && checkCriteria(selector->mText, node->getText(), 0)) return false;
@@ -115,12 +144,13 @@ std::shared_ptr<PartialMatch> PartialMatch::accept(const std::shared_ptr<Accessi
                                                    int relativeDepth)
 {
     PartialMatch *match = nullptr;
+    std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();
 
     if ((selector->mMinDepth && relativeDepth < selector->mMinDepth) ||
         (selector->mMaxDepth && relativeDepth > selector->mMaxDepth)) {
         return std::shared_ptr<PartialMatch>(nullptr);
     }
-    if (PartialMatch::checkCriteria(selector, node))
+    if (PartialMatch::checkCriteria(selector, node, mDevice))
         match = new PartialMatch(selector, absoluteDepth);
     return std::shared_ptr<PartialMatch>(match);
 }

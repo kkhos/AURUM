@@ -18,6 +18,14 @@
 #include "bootstrap.h"
 #include "GetSizeCommand.h"
 #include "UiObject.h"
+#include "UiDevice.h"
+#include "UiSelector.h"
+#include "Sel.h"
+#include "ISearchable.h"
+#ifdef MQTT_ENABLED
+#include "SaObject.h"
+#endif
+
 
 GetSizeCommand::GetSizeCommand(const ::aurum::ReqGetSize *request,
                                ::aurum::RspGetSize *response)
@@ -29,25 +37,61 @@ GetSizeCommand::GetSizeCommand(const ::aurum::ReqGetSize *request,
 {
     LOGI("GetSize --------------- ");
 
-    ::aurum::ReqGetSize_CoordType type = mRequest->type();
-    ObjectMapper *mObjMap = ObjectMapper::getInstance();
-    std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
-    if (obj) {
-        obj->updateExtents();
-        ::aurum::Rect *rect = mResponse->mutable_size();
-        if (type == ::aurum::ReqGetSize_CoordType::ReqGetSize_CoordType_SCREEN) {
-            const Rect<int> &size = obj->getScreenBoundingBox();
-            rect->set_x(size.mTopLeft.x);
-            rect->set_y(size.mTopLeft.y);
-            rect->set_width(size.width());
-            rect->set_height(size.height());
+    std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();
+
+#ifdef MQTT_ENABLED
+    if (mDevice->getExternalAppLaunched())
+    {
+        LOGE("WCC Capture prepare");
+
+        mDevice->RequestScreenAnalyze();
+
+        std::vector<std::shared_ptr<SaObject>> founds = {};
+
+        auto tempSel = std::make_shared<UiSelector>();
+        tempSel->id(mRequest->elementid());
+        auto selectors  = std::vector<std::shared_ptr<UiSelector>>{tempSel};
+
+        LOGE("WCC Search Object start");
+        for ( auto &sel : selectors ) {
+            auto ret = mDevice->getSAWatcher()->findSaObjects(sel);
+            std::move(std::begin(ret), std::end(ret), std::back_inserter(founds));
         }
-        else {
-            const Rect<int> &windowRelativeSize = obj->getWindowBoundingBox();
-            rect->set_x(windowRelativeSize.mTopLeft.x);
-            rect->set_y(windowRelativeSize.mTopLeft.y);
-            rect->set_width(windowRelativeSize.width());
-            rect->set_height(windowRelativeSize.height());
+        if (founds.size() > 0) {
+            for (auto& found : founds) {
+                SaObject *obj = found.get();
+                ::aurum::Rect *rect = mResponse->mutable_size();
+                const Rect<int> &size = obj->getScreenBoundingBox();
+                rect->set_x(size.mTopLeft.x);
+                rect->set_y(size.mTopLeft.y);
+                rect->set_width(size.width());
+                rect->set_height(size.height());
+            }
+        }
+    }
+    else
+#endif
+    {
+        ::aurum::ReqGetSize_CoordType type = mRequest->type();
+        ObjectMapper *mObjMap = ObjectMapper::getInstance();
+        std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
+        if (obj) {
+            obj->updateExtents();
+            ::aurum::Rect *rect = mResponse->mutable_size();
+            if (type == ::aurum::ReqGetSize_CoordType::ReqGetSize_CoordType_SCREEN) {
+                const Rect<int> &size = obj->getScreenBoundingBox();
+                rect->set_x(size.mTopLeft.x);
+                rect->set_y(size.mTopLeft.y);
+                rect->set_width(size.width());
+                rect->set_height(size.height());
+            }
+            else {
+                const Rect<int> &windowRelativeSize = obj->getWindowBoundingBox();
+                rect->set_x(windowRelativeSize.mTopLeft.x);
+                rect->set_y(windowRelativeSize.mTopLeft.y);
+                rect->set_width(windowRelativeSize.width());
+                rect->set_height(windowRelativeSize.height());
+            }
         }
     }
 

@@ -174,7 +174,7 @@ std::string UiObject::getAutomationId() const
     return getAccessibleNode()->getAutomationId();
 }
 
-std::string UiObject::getElementType() const
+std::string UiObject::getType() const
 {
     return getAccessibleNode()->getType();
 }
@@ -227,6 +227,22 @@ bool UiObject::setValue(double value)
 bool UiObject::setText(std::string text)
 {
     return getAccessibleNode()->setValue(text);
+}
+
+std::string UiObject::getOcrText() const
+{
+    return getAccessibleNode()->getOcrText();
+}
+
+std::string UiObject::getToolkitName() const
+{
+    getAccessibleNode()->updateToolkitName();
+    return getAccessibleNode()->getToolkitName();
+}
+
+void UiObject::setOcrText(std::string text)
+{
+    getAccessibleNode()->setOcrText(text);
 }
 
 bool UiObject::isCheckable() const
@@ -347,6 +363,11 @@ void UiObject::updateValue() const
 void UiObject::updatePid() const
 {
     mNode->updatePid();
+}
+
+void UiObject::updateToolkitName() const
+{
+    mNode->updateToolkitName();
 }
 
 bool UiObject::setFocus() const
