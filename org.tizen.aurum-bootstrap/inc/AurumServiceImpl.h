@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2022 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -120,6 +120,9 @@ public:
     ::grpc::Status setFocus(::grpc::ServerContext *context,
                             const ::aurum::ReqSetFocus *request,
                             ::aurum::RspSetFocus *response) override;
+    ::grpc::Status getTextMBR(::grpc::ServerContext *context,
+                            const ::aurum::ReqGetTextMBR *request,
+                            ::aurum::RspGetTextMBR *response) override;
 };
 
 #endif

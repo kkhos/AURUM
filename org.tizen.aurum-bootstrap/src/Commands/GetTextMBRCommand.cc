@@ -1,0 +1,50 @@
+/*
+ * Copyright (c) 2022 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *               http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
+#include "bootstrap.h"
+#include "GetTextMBRCommand.h"
+#include "UiObject.h"
+
+GetTextMBRCommand::GetTextMBRCommand(const ::aurum::ReqGetTextMBR *request,
+                               ::aurum::RspGetTextMBR *response)
+    : mRequest{request}, mResponse{response}
+{
+}
+
+::grpc::Status GetTextMBRCommand::execute()
+{
+    LOGI("GetTextMBR --------------- ");
+
+    ObjectMapper *mObjMap = ObjectMapper::getInstance();
+    std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
+    if (obj) {
+        obj->updateTextMBR();
+        ::aurum::Rect *rect = mResponse->mutable_size();
+        const Rect<int> &size = obj->getTextMBR();
+
+        rect->set_x(size.mTopLeft.x);
+        rect->set_y(size.mTopLeft.y);
+        rect->set_width(size.width());
+        rect->set_height(size.height());
+
+        mResponse->set_status(::aurum::RspStatus::OK);
+    }
+    else
+        mResponse->set_status(::aurum::RspStatus::ERROR);
+
+    return grpc::Status::OK;
+}

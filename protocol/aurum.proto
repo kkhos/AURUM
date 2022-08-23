@@ -33,6 +33,7 @@ service Bootstrap {
    rpc actionAndWaitEvent(ReqActionAndWaitEvent) returns (RspActionAndWaitEvent) {}
    rpc setFocus(ReqSetFocus) returns (RspSetFocus) {}
    rpc findElements(ReqFindElements) returns (RspFindElements) {}
+   rpc getTextMBR(ReqGetTextMBR) returns (RspGetTextMBR) {}
 }
 
 // ------------------------------------ //
@@ -563,4 +564,13 @@ message ReqSetFocus {
 
 message RspSetFocus {
    RspStatus status = 1;
+}
+
+message ReqGetTextMBR {
+   string elementId = 1;
+}
+
+message RspGetTextMBR {
+   RspStatus status = 1;
+   Rect size = 2;
 }

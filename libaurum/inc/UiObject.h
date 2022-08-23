@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2022 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -348,6 +348,15 @@ public:
     const double getIncrement() const;
 
     /**
+     * @brief Gets text object's MBR.
+     *
+     * @return Rect
+     *
+     * @since_tizen 7.0
+     */
+    const Rect<int> getTextMBR() const;
+
+    /**
      * @brief Sets object's value.
      *
      * @param[in] double value
@@ -566,6 +575,12 @@ public:
      */
     void updatePid() const;
 
+    /**
+     * @brief Updates text object's MBR.
+     *
+     * @since_tizen 7.0
+     */
+    void updateTextMBR() const;
     /**
      * @brief Sets focus to object.
      *

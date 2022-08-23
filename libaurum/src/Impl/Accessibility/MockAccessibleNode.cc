@@ -126,6 +126,10 @@ bool MockAccessibleNode::setFocus()
     return false;
 }
 
+void MockAccessibleNode::updateTextMBR()
+{
+}
+
 void MockAccessibleNode::refresh(bool updateAll)
 {
 }

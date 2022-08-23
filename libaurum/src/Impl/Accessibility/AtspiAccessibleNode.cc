@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2022 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -259,6 +259,27 @@ void AtspiAccessibleNode::updatePid()
     AtspiWrapper::Atspi_accessible_clear_cache(mNode);
 
     mPid = AtspiWrapper::Atspi_accessible_get_process_id(mNode, NULL);
+}
+
+void AtspiAccessibleNode::updateTextMBR()
+{
+    AtspiWrapper::Atspi_accessible_clear_cache(mNode);
+
+    AtspiText *text = atspi_accessible_get_text_iface(mNode);
+    if (text)
+    {
+        gint cc = atspi_text_get_character_count(text, NULL);
+        AtspiRect *textMBRExtent = AtspiWrapper::Atspi_text_get_minimum_bounding_rectangles(text, 0, cc, ATSPI_COORD_TYPE_WINDOW, NULL);
+
+        if (textMBRExtent) {
+            mTextMBR =
+                Rect<int>{textMBRExtent->x, textMBRExtent->y, textMBRExtent->x + textMBRExtent->width,
+                    textMBRExtent->y + textMBRExtent->height};
+            g_free(textMBRExtent);
+        }
+
+        g_object_unref(text);
+    }
 }
 
 bool AtspiAccessibleNode::setFocus()

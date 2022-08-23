@@ -141,6 +141,8 @@ public:
      */
     bool setFocus() override;
 
+    void updateTextMBR() override;
+
 	/**
      * @brief TBD
      * @since_tizen 6.5
