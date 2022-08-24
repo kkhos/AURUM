@@ -47,6 +47,7 @@ bootstrap_svr_src += [
    files('src/Commands/SetFocusCommand.cc'),
    files('src/Commands/GetActiveAppToolkitNameCommand.cc'),
    files('src/Commands/EnableScreenAnalyzerCommand.cc'),
+   files('src/Commands/GetTextMinBoundingRectCommand.cc'),
 ]
 
 bootstrap_svr_dep = [

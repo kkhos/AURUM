@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2022 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -277,6 +277,12 @@ public:
     double getIncrement() const;
 
     /**
+     * @copydoc UiObject::getTextMinBoundingRect()
+     *
+     */
+    Rect<int> getTextMinBoundingRect() const;
+
+    /**
      * @copydoc UiObject::isCheckable()
      */
     bool isCheckable() const;
@@ -406,6 +412,11 @@ public:
     virtual bool setFocus() = 0;
 
     /**
+     * @copydoc UIObject::updateTextMinBoundingRect()
+     */
+    virtual void updateTextMinBoundingRect() = 0;
+
+    /**
      * @brief Updates Node information from atspi server.
      *
      * @since_tizen 6.5
@@ -516,6 +527,7 @@ protected:
     std::string mToolkitName;
     Rect<int> mScreenBoundingBox;
     Rect<int> mWindowBoundingBox;
+    Rect<int> mTextMinBoundingRect;
     int mSupportingIfaces;
     int mFeatureProperty;
     int mPid;

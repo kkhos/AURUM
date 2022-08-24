@@ -35,6 +35,7 @@ service Bootstrap {
    rpc findElements(ReqFindElements) returns (RspFindElements) {}
    rpc getActiveAppToolkitName(ReqGetActiveAppToolkitName) returns (RspGetActiveAppToolkitName) {}
    rpc enableScreenAnalyzer(ReqEnableScreenAnalyzer) returns (RspEnableScreenAnalyzer) {}
+   rpc getTextMinBoundingRect(ReqGetTextMinBoundingRect) returns (RspGetTextMinBoundingRect) {}
 }
 
 // ------------------------------------ //
@@ -591,5 +592,14 @@ message ReqEnableScreenAnalyzer {
 
 message RspEnableScreenAnalyzer {
    RspStatus status = 1;
+}
+
+message ReqGetTextMinBoundingRect {
+   string elementId = 1;
+}
+
+message RspGetTextMinBoundingRect {
+   RspStatus status = 1;
+   Rect size = 2;
 }
 

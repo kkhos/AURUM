@@ -218,3 +218,10 @@ gchar *AtspiWrapper::Atspi_accessible_get_toolkit_name(AtspiAccessible *node, GE
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_get_toolkit_name(node, error);
 }
+
+AtspiRect *AtspiWrapper::Atspi_text_get_minimum_bounding_rectangles(AtspiText* obj, gint start_offset, gint end_offset, AtspiCoordType type, GError** error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_text_get_range_extents(obj, start_offset, end_offset, type, error);
+}
+

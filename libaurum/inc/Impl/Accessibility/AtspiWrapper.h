@@ -68,6 +68,7 @@ public:
     static gdouble Atspi_value_get_minimum_increment(AtspiValue *iface, GError **error);
     static guint Atspi_accessible_get_process_id(AtspiAccessible *node, GError **error);
     static gchar *Atspi_accessible_get_toolkit_name(AtspiAccessible *node, GError **error);
+    static AtspiRect *Atspi_text_get_minimum_bounding_rectangles(AtspiText* obj, gint start_offset, gint end_offset, AtspiCoordType type, GError** error);
 
 private:
     static std::recursive_mutex mMutex;
