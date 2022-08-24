@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2022 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -264,3 +264,12 @@ aurumServiceImpl::~aurumServiceImpl()
     std::unique_ptr<SetFocusCommand> cmd = std::make_unique<SetFocusCommand>(request, response);
     return execute(cmd.get(), true);
 }
+
+::grpc::Status aurumServiceImpl::getTextMinBoundingRect(::grpc::ServerContext *context,
+                                         const ::aurum::ReqGetTextMinBoundingRect *request,
+                                         ::aurum::RspGetTextMinBoundingRect *response)
+{
+    std::unique_ptr<GetTextMinBoundingRectCommand> cmd = std::make_unique<GetTextMinBoundingRectCommand>(request, response);
+    return execute(cmd.get(), true);
+}
+

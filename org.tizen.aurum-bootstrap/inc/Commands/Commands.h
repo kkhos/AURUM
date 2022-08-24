@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2022 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -49,3 +49,5 @@
 #include "Commands/GetScreenSizeCommand.h"
 #include "Commands/ActionAndWaitEventCommand.h"
 #include "Commands/SetFocusCommand.h"
+
+#include "Commands/GetTextMinBoundingRectCommand.h"

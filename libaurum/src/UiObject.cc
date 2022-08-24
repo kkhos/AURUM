@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2022 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -219,6 +219,11 @@ const double UiObject::getIncrement() const
     return getAccessibleNode()->getIncrement();
 }
 
+const Rect<int> UiObject::getTextMinBoundingRect() const
+{
+    return getAccessibleNode()->getTextMinBoundingRect();
+}
+
 bool UiObject::setValue(double value)
 {
     return getAccessibleNode()->setValue(value);
@@ -347,6 +352,11 @@ void UiObject::updateValue() const
 void UiObject::updatePid() const
 {
     mNode->updatePid();
+}
+
+void UiObject::updateTextMinBoundingRect() const
+{
+    mNode->updateTextMinBoundingRect();
 }
 
 bool UiObject::setFocus() const

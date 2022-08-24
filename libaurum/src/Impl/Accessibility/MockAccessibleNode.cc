@@ -126,6 +126,10 @@ bool MockAccessibleNode::setFocus()
     return false;
 }
 
+void MockAccessibleNode::updateTextMinBoundingRect()
+{
+}
+
 void MockAccessibleNode::refresh(bool updateAll)
 {
 }
