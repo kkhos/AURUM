@@ -16,28 +16,35 @@
  */
 
 #include "MockAccessibleNode.h"
-#include "AccessibleWatcher.h"
 
 #include <algorithm>
 #include <iostream>
 
+#include "AccessibleWatcher.h"
+
 using namespace Aurum;
 using namespace AurumInternal::Mock;
 
-MockAccessibleNode::MockAccessibleNode(std::shared_ptr<AccessibleNode> parent, std::string text, std::string pkg, std::string role, std::string res, std::string type, std::string style,std::string automationId,  Rect<int> screenBoundingBox, int supportingIfaces,int featureProperty)
-: mParentNode(parent), mChildrenList{}, mActionSet{}
+MockAccessibleNode::MockAccessibleNode(
+    std::shared_ptr<AccessibleNode> parent, std::string text, std::string pkg,
+    std::string role, std::string res, std::string type, std::string style,
+    std::string automationId, Rect<int> screenBoundingBox, int supportingIfaces,
+    int featureProperty)
+    : mParentNode(parent), mChildrenList{}, mActionSet{}
 {
-    printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
-    const auto trickDontRemove = std::shared_ptr<MockAccessibleNode>( this, [](MockAccessibleNode *){} );
+    printf("%s:%d / %s\n", __FILE__, __LINE__, __PRETTY_FUNCTION__);
+    const auto trickDontRemove =
+        std::shared_ptr<MockAccessibleNode>(this, [](MockAccessibleNode*) {});
 
-    setProperties(text,pkg,role,res,type,style,automationId, screenBoundingBox, supportingIfaces, featureProperty);
+    setProperties(text, pkg, role, res, type, style, automationId,
+                  screenBoundingBox, supportingIfaces, featureProperty);
     auto watcher = AccessibleWatcher::getInstance();
     watcher->attach(shared_from_this());
 }
 
 MockAccessibleNode::~MockAccessibleNode()
 {
-    printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
+    printf("%s:%d / %s\n", __FILE__, __LINE__, __PRETTY_FUNCTION__);
     auto watcher = AccessibleWatcher::getInstance();
     watcher->detach(shared_from_this());
 }
@@ -51,7 +58,8 @@ std::shared_ptr<AccessibleNode> MockAccessibleNode::getChildAt(int index) const
 {
     return mChildrenList.at(index);
 }
-std::vector<std::shared_ptr<AccessibleNode>> MockAccessibleNode::getChildren() const
+std::vector<std::shared_ptr<AccessibleNode>> MockAccessibleNode::getChildren()
+    const
 {
     return mChildrenList;
 }
@@ -63,11 +71,14 @@ std::shared_ptr<AccessibleNode> MockAccessibleNode::getParent() const
 
 void* MockAccessibleNode::getRawHandler(void) const
 {
-    printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
+    printf("%s:%d / %s\n", __FILE__, __LINE__, __PRETTY_FUNCTION__);
     return (void*)1;
 }
 
-void MockAccessibleNode::setProperties(std::string text,std::string pkg,std::string role,std::string id,std::string type,std::string style,std::string automationId, Rect<int> screenBoundingBox,int supportingIfaces,int featureProperty)
+void MockAccessibleNode::setProperties(
+    std::string text, std::string pkg, std::string role, std::string id,
+    std::string type, std::string style, std::string automationId,
+    Rect<int> screenBoundingBox, int supportingIfaces, int featureProperty)
 {
     mText = text;
     mPkg = pkg;
@@ -81,61 +92,40 @@ void MockAccessibleNode::setProperties(std::string text,std::string pkg,std::str
     mFeatureProperty = featureProperty;
 }
 
-void MockAccessibleNode::updateRoleName()
-{
-}
+void MockAccessibleNode::updateRoleName() {}
 
-void MockAccessibleNode::updateUniqueId()
-{
-}
+void MockAccessibleNode::updateUniqueId() {}
 
-void MockAccessibleNode::updateName()
-{
-}
+void MockAccessibleNode::updateName() {}
 
-void MockAccessibleNode::updateApplication()
-{
-}
+void MockAccessibleNode::updateApplication() {}
 
-void MockAccessibleNode::updateAttributes()
-{
-}
+void MockAccessibleNode::updateAttributes() {}
 
-void MockAccessibleNode::updateStates()
-{
-}
+void MockAccessibleNode::updateStates() {}
 
-void MockAccessibleNode::updateExtents()
-{
-}
+void MockAccessibleNode::updateExtents() {}
 
-void MockAccessibleNode::updateXPath()
-{
-}
+void MockAccessibleNode::updateXPath() {}
 
-void MockAccessibleNode::updateValue()
-{
-}
+void MockAccessibleNode::updateValue() {}
 
-void MockAccessibleNode::updatePid()
-{
-}
+void MockAccessibleNode::updatePid() {}
 
 bool MockAccessibleNode::setFocus()
 {
     return false;
 }
 
-void MockAccessibleNode::refresh(bool updateAll)
-{
-}
+void MockAccessibleNode::updateTextMinBoundingRect() {}
+
+void MockAccessibleNode::refresh(bool updateAll) {}
 
 std::vector<std::string> MockAccessibleNode::getActions() const
 {
     std::vector<std::string> ret{};
-    std::transform(mActionSet.begin(), mActionSet.end(), std::back_inserter(ret), [](auto action){
-        return action;
-    });
+    std::transform(mActionSet.begin(), mActionSet.end(),
+                   std::back_inserter(ret), [](auto action) { return action; });
     return ret;
 }
 
@@ -158,44 +148,44 @@ bool MockAccessibleNode::setValue(double value)
 
 void MockAccessibleNode::setFeatureProperty(int type)
 {
-    switch(type) {
-        case 1:
-            setFeatureProperty(NodeFeatureProperties::CHECKED, true);
-            break;
-        case 2:
-            setFeatureProperty(NodeFeatureProperties::CHECKABLE, true);
-            break;
-        case 3:
-            setFeatureProperty(NodeFeatureProperties::ENABLED, true);
-            break;
-        case 4:
-            setFeatureProperty(NodeFeatureProperties::FOCUSABLE, true);
-            break;
-        case 5:
-            setFeatureProperty(NodeFeatureProperties::FOCUSED, true);
-            break;
-        case 6:
-            setFeatureProperty(NodeFeatureProperties::SELECTABLE, true);
-            break;
-        case 7:
-            setFeatureProperty(NodeFeatureProperties::SELECTED, true);
-            break;
-        case 8:
-            setFeatureProperty(NodeFeatureProperties::SHOWING, true);
-            break;
-        case 9:
-            setFeatureProperty(NodeFeatureProperties::VISIBLE, true);
-            break;
-        case 10:
-            setFeatureProperty(NodeFeatureProperties::ACTIVE, true);
-            break;
-        case 11:
-            setFeatureProperty(NodeFeatureProperties::CLICKABLE, true);
-            break;
-        case 12:
-        case 13:
-            setFeatureProperty(NodeFeatureProperties::INVALID, true);
-            break;
+    switch (type) {
+    case 1:
+        setFeatureProperty(NodeFeatureProperties::CHECKED, true);
+        break;
+    case 2:
+        setFeatureProperty(NodeFeatureProperties::CHECKABLE, true);
+        break;
+    case 3:
+        setFeatureProperty(NodeFeatureProperties::ENABLED, true);
+        break;
+    case 4:
+        setFeatureProperty(NodeFeatureProperties::FOCUSABLE, true);
+        break;
+    case 5:
+        setFeatureProperty(NodeFeatureProperties::FOCUSED, true);
+        break;
+    case 6:
+        setFeatureProperty(NodeFeatureProperties::SELECTABLE, true);
+        break;
+    case 7:
+        setFeatureProperty(NodeFeatureProperties::SELECTED, true);
+        break;
+    case 8:
+        setFeatureProperty(NodeFeatureProperties::SHOWING, true);
+        break;
+    case 9:
+        setFeatureProperty(NodeFeatureProperties::VISIBLE, true);
+        break;
+    case 10:
+        setFeatureProperty(NodeFeatureProperties::ACTIVE, true);
+        break;
+    case 11:
+        setFeatureProperty(NodeFeatureProperties::CLICKABLE, true);
+        break;
+    case 12:
+    case 13:
+        setFeatureProperty(NodeFeatureProperties::INVALID, true);
+        break;
     }
 }
 
@@ -204,9 +194,14 @@ void MockAccessibleNode::addChild(std::shared_ptr<AccessibleNode> child)
     mChildrenList.push_back(child);
 }
 
-std::shared_ptr<MockAccessibleNode> MockAccessibleNode::addChild(std::string text, std::string pkg, std::string role, std::string res, std::string type, std::string style, std::string automationId, Rect<int> geometry, int ifaces, int properties)
+std::shared_ptr<MockAccessibleNode> MockAccessibleNode::addChild(
+    std::string text, std::string pkg, std::string role, std::string res,
+    std::string type, std::string style, std::string automationId,
+    Rect<int> geometry, int ifaces, int properties)
 {
-    auto node = std::make_shared<MockAccessibleNode>(shared_from_this(), text, pkg, role, res, type, style, automationId, geometry, ifaces, properties);
+    auto node = std::make_shared<MockAccessibleNode>(
+        shared_from_this(), text, pkg, role, res, type, style, automationId,
+        geometry, ifaces, properties);
     this->addChild(node);
     return node;
 }

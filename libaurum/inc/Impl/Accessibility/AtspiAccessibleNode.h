@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2022 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,8 +18,9 @@
 #ifndef _ATSPI_ACCESSIBLE_NODE_H_
 #define _ATSPI_ACCESSIBLE_NODE_H_
 
-#include "AccessibleNode.h"
 #include <atspi/atspi.h>
+
+#include "AccessibleNode.h"
 
 using namespace Aurum;
 
@@ -47,7 +48,7 @@ public:
      *
      * @since_tizen 6.5
      */
-   ~AtspiAccessibleNode() override;
+    ~AtspiAccessibleNode() override;
 
 public:
     /**
@@ -79,7 +80,7 @@ public:
     /**
      * @copydoc AccessibleNode::getRawHandler()
      */
-    void* getRawHandler(void) const override;
+    void *getRawHandler(void) const override;
 
     /**
      * @copydoc UiObject::updateRoleName()
@@ -132,6 +133,11 @@ public:
     void updatePid() override;
 
     /**
+     * @copydoc UiObject::updateTextMinBoundingRect()
+     */
+    void updateTextMinBoundingRect() override;
+
+    /**
      * @copydoc UiObject::setFocus()
      */
     bool setFocus() override;
@@ -173,6 +179,6 @@ private:
     AtspiAccessible *mNode;
 };
 
-}
+}  // namespace AurumInternal
 
 #endif

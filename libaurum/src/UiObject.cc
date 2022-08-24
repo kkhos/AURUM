@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2022 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,13 +15,12 @@
  *
  */
 
-#include "Aurum.h"
-
+#include <chrono>
 #include <iostream>
+#include <thread>
 #include <utility>
 
-#include <chrono>
-#include <thread>
+#include "Aurum.h"
 
 using namespace Aurum;
 
@@ -32,17 +31,20 @@ UiObject::~UiObject()
     if (mWaiter) delete mWaiter;
 }
 
-UiObject::UiObject(const std::shared_ptr<UiDevice> device, const std::shared_ptr<UiSelector> selector,
-                   const AccessibleNode *node)
+UiObject::UiObject(const std::shared_ptr<UiDevice>   device,
+                   const std::shared_ptr<UiSelector> selector,
+                   const AccessibleNode             *node)
     : mDevice(device),
       mSelector(selector),
-      mNode(std::shared_ptr<AccessibleNode>(const_cast<AccessibleNode *>(node))),
+      mNode(
+          std::shared_ptr<AccessibleNode>(const_cast<AccessibleNode *>(node))),
       mWaiter(new Waiter{this, this})
 {
 }
 
-UiObject::UiObject(const std::shared_ptr<UiDevice> device, const std::shared_ptr<UiSelector> selector,
-                   std::shared_ptr<AccessibleNode> node)
+UiObject::UiObject(const std::shared_ptr<UiDevice>   device,
+                   const std::shared_ptr<UiSelector> selector,
+                   std::shared_ptr<AccessibleNode>   node)
     : mDevice(device),
       mSelector(selector),
       mNode(std::move(node)),
@@ -78,7 +80,8 @@ bool UiObject::hasObject(const std::shared_ptr<UiSelector> selector) const
     return false;
 }
 
-std::shared_ptr<UiObject> UiObject::findObject(const std::shared_ptr<UiSelector> selector) const
+std::shared_ptr<UiObject> UiObject::findObject(
+    const std::shared_ptr<UiSelector> selector) const
 {
     std::shared_ptr<AccessibleNode> node =
         Comparer::findObject(mDevice, selector, getAccessibleNode());
@@ -93,12 +96,13 @@ std::vector<std::shared_ptr<UiObject>> UiObject::findObjects(
 {
     std::vector<std::shared_ptr<UiObject>> result{};
     auto nodes = Comparer::findObjects(mDevice, selector, getAccessibleNode());
-    for ( auto& node : nodes) {
+    for (auto &node : nodes) {
         if (!node) {
             LOGI("Skipped! (node == nullptr)");
             continue;
         }
-        result.push_back(std::make_shared<UiObject>(mDevice, selector, std::move(node)));
+        result.push_back(
+            std::make_shared<UiObject>(mDevice, selector, std::move(node)));
     }
     return result;
 }
@@ -134,7 +138,8 @@ int UiObject::getChildCount() const
     return getAccessibleNode()->getChildCount();
 }
 
-std::shared_ptr<UiObject> UiObject::getChildAt(int index) const {
+std::shared_ptr<UiObject> UiObject::getChildAt(int index) const
+{
     auto childNode = getAccessibleNode()->getChildAt(index);
     if (childNode) {
         return std::make_shared<UiObject>(mDevice, mSelector, childNode);
@@ -217,6 +222,11 @@ const double UiObject::getValue() const
 const double UiObject::getIncrement() const
 {
     return getAccessibleNode()->getIncrement();
+}
+
+const Rect<int> UiObject::getTextMinBoundingRect() const
+{
+    return getAccessibleNode()->getTextMinBoundingRect();
 }
 
 bool UiObject::setValue(double value)
@@ -349,6 +359,11 @@ void UiObject::updatePid() const
     mNode->updatePid();
 }
 
+void UiObject::updateTextMinBoundingRect() const
+{
+    mNode->updateTextMinBoundingRect();
+}
+
 bool UiObject::setFocus() const
 {
     return mNode->setFocus();
@@ -372,7 +387,7 @@ const Rect<int> UiObject::getWindowBoundingBox() const
 void UiObject::click() const
 {
     mNode->updateExtents();
-    const Rect<int> rect = mNode->getScreenBoundingBox();
+    const Rect<int>    rect = mNode->getScreenBoundingBox();
     const Point2D<int> midPoint = rect.midPoint();
     mDevice->click(midPoint.x, midPoint.y);
 }
@@ -380,7 +395,7 @@ void UiObject::click() const
 void UiObject::longClick(const unsigned int durationMs) const
 {
     mNode->updateExtents();
-    const Rect<int> rect = mNode->getScreenBoundingBox();
+    const Rect<int>    rect = mNode->getScreenBoundingBox();
     const Point2D<int> midPoint = rect.midPoint();
     mDevice->click(midPoint.x, midPoint.y, durationMs);
 }
@@ -389,7 +404,6 @@ bool UiObject::DoAtspiActivate() const
 {
     return mNode->doAction("activate");
 }
-
 
 std::shared_ptr<AccessibleNode> UiObject::getAccessibleNode() const
 {

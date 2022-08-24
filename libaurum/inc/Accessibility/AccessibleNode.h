@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2022 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20,9 +20,9 @@
 
 #include <map>
 #include <memory>
+#include <mutex>
 #include <string>
 #include <vector>
-#include <mutex>
 
 #include "IEventConsumer.h"
 #include "Rect.h"
@@ -36,22 +36,22 @@ namespace Aurum {
  * @since_tizen 6.5
  */
 enum class AccessibleNodeInterface {
-    ACTION          = 0x0001,
-    COLLECTION      = 0X0002,
-    COMPONENT       = 0X0004,
-    DOCUMENT        = 0X0008,
+    ACTION = 0x0001,
+    COLLECTION = 0X0002,
+    COMPONENT = 0X0004,
+    DOCUMENT = 0X0008,
 
-    EDITABLETEXT    = 0X0010,
-    HYPERTEXT       = 0X0020,
-    IMAGE           = 0X0040,
-    SELECTION       = 0X0080,
+    EDITABLETEXT = 0X0010,
+    HYPERTEXT = 0X0020,
+    IMAGE = 0X0040,
+    SELECTION = 0X0080,
 
-    TEXT            = 0X0100,
-    VALUE           = 0X0200,
-    ACCESSIBLE      = 0X0400,
-    TABLE           = 0X0800,
+    TEXT = 0X0100,
+    VALUE = 0X0200,
+    ACCESSIBLE = 0X0400,
+    TABLE = 0X0800,
 
-    TABLECELL       = 0X1000,
+    TABLECELL = 0X1000,
 };
 
 /**
@@ -60,30 +60,32 @@ enum class AccessibleNodeInterface {
  * @since_tizen 6.5
  */
 enum class NodeFeatureProperties {
-    CHECKABLE       = 0x0001,
-    CHECKED         = 0X0002,
-    CLICKABLE       = 0X0004,
-    ENABLED         = 0X0008,
+    CHECKABLE = 0x0001,
+    CHECKED = 0X0002,
+    CLICKABLE = 0X0004,
+    ENABLED = 0X0008,
 
-    FOCUSABLE       = 0X0010,
-    FOCUSED         = 0X0020,
-    LONGCLICKABLE   = 0X0040,
-    SCROLLABLE      = 0X0080,
+    FOCUSABLE = 0X0010,
+    FOCUSED = 0X0020,
+    LONGCLICKABLE = 0X0040,
+    SCROLLABLE = 0X0080,
 
-    SELECTABLE      = 0X0100,
-    SELECTED        = 0X0200,
-    VISIBLE         = 0X0400,
-    SHOWING         = 0X0800,
-    ACTIVE          = 0X1000,
-    INVALID         = 0X2000,
+    SELECTABLE = 0X0100,
+    SELECTED = 0X0200,
+    VISIBLE = 0X0400,
+    SHOWING = 0X0800,
+    ACTIVE = 0X1000,
+    INVALID = 0X2000,
 };
 
 /**
- * @brief AccessibleNode Class that provides the abstracted object information to uses.
+ * @brief AccessibleNode Class that provides the abstracted object information
+ * to uses.
  *
  * @since_tizen 6.5
  */
-class AccessibleNode : public std::enable_shared_from_this<AccessibleNode>, public IEventConsumer  {
+class AccessibleNode : public std::enable_shared_from_this<AccessibleNode>,
+                       public IEventConsumer {
 public:
     /**
      * @brief AccessibleNode constructor.
@@ -122,7 +124,8 @@ public:
     /**
      * @copydoc UiObject::getChildren()
      */
-    virtual std::vector<std::shared_ptr<AccessibleNode>> getChildren() const = 0;
+    virtual std::vector<std::shared_ptr<AccessibleNode>> getChildren()
+        const = 0;
 
     /**
      * @copydoc UiObject::getParent()
@@ -131,7 +134,8 @@ public:
 
     /**
      * @brief Called by @AccessibleWatcher::notifyAll.
-     *        Changes Node property If it's @EventType, @ObjectEventType are matches.
+     *        Changes Node property If it's @EventType, @ObjectEventType are
+     * matches.
      *
      * @param[in] type @EventType
      * @param[in] type2 @ObjectEventType
@@ -139,7 +143,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    void notify(int type, int type2, void *src) override;
+    void notify(int type, int type2, void* src) override;
 
     /**
      * @brief Changes Node state to invalidate.
@@ -228,6 +232,12 @@ public:
      *
      */
     double getIncrement() const;
+
+    /**
+     * @copydoc UiObject::getTextMinBoundingRect()
+     *
+     */
+    Rect<int> getTextMinBoundingRect() const;
 
     /**
      * @copydoc UiObject::isCheckable()
@@ -379,6 +389,11 @@ public:
     virtual bool setFocus() = 0;
 
     /**
+     * @copydoc UIObject::updateTextMinBoundingRect()
+     */
+    virtual void updateTextMinBoundingRect() = 0;
+
+    /**
      * @brief Updates Node information from atspi server.
      *
      * @since_tizen 6.5
@@ -409,8 +424,8 @@ public:
      * @brief Sets Node's value.
      *
      * @param[in] text string
-	 *
-	 * @return true if success, else false
+     *
+     * @return true if success, else false
      *
      * @since_tizen 6.5
      */
@@ -485,21 +500,22 @@ protected:
     std::string mType;
     std::string mStyle;
     std::string mXPath;
-    Rect<int> mScreenBoundingBox;
-    Rect<int> mWindowBoundingBox;
-    int mSupportingIfaces;
-    int mFeatureProperty;
-    int mPid;
-    double mMinValue;
-    double mMaxValue;
-    double mValue;
-    double mIncrement;
+    Rect<int>   mScreenBoundingBox;
+    Rect<int>   mWindowBoundingBox;
+    Rect<int>   mTextMinBoundingRect;
+    int         mSupportingIfaces;
+    int         mFeatureProperty;
+    int         mPid;
+    double      mMinValue;
+    double      mMaxValue;
+    double      mValue;
+    double      mIncrement;
 
 private:
-    bool mValid;
+    bool               mValid;
     mutable std::mutex mLock;
 };
 
-}
+}  // namespace Aurum
 
 #endif

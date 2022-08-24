@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2022 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,15 +18,14 @@
 #ifndef _UI_OBJECT_H_
 #define _UI_OBJECT_H_
 
-#include "config.h"
+#include <memory>
+#include <vector>
 
 #include "Accessible.h"
 #include "ISearchable.h"
 #include "UiSelector.h"
 #include "Waiter.h"
-
-#include <memory>
-#include <vector>
+#include "config.h"
 
 namespace Aurum {
 
@@ -37,10 +36,13 @@ class UiDevice;
  */
 class Node : public std::enable_shared_from_this<Node> {
 public:
-    Node(std::shared_ptr<UiObject> node, std::vector<std::shared_ptr<Node>> children)
-    :mNode{node}, mChildren{children}{}
+    Node(std::shared_ptr<UiObject>          node,
+         std::vector<std::shared_ptr<Node>> children)
+        : mNode{node}, mChildren{children}
+    {
+    }
 
-    std::shared_ptr<UiObject> mNode;
+    std::shared_ptr<UiObject>          mNode;
     std::vector<std::shared_ptr<Node>> mChildren;
 };
 
@@ -50,27 +52,30 @@ public:
  * @ingroup aurum
  *
  * @brief A UiObject is a representation of a actual object in view.
- *        As a class that abstracts the actual object, it has the information of the object
- *        such as object's properties, states, geometry information.
- *        also user can send and receive event via this class.
+ *        As a class that abstracts the actual object, it has the information of
+ * the object such as object's properties, states, geometry information. also
+ * user can send and receive event via this class.
  */
-class UiObject : public ISearchable , public std::enable_shared_from_this<UiObject> {
+class UiObject : public ISearchable,
+                 public std::enable_shared_from_this<UiObject> {
 public:
     /**
      * @brief UiObject constructor with device, selector, node pointer.
      *
      * @since_tizen 6.5
      */
-    UiObject(const std::shared_ptr<UiDevice> device, const std::shared_ptr<UiSelector> selector,
-             const AccessibleNode *node);
+    UiObject(const std::shared_ptr<UiDevice>   device,
+             const std::shared_ptr<UiSelector> selector,
+             const AccessibleNode             *node);
 
     /**
      * @brief UiObject constructor with device, selector, node.
      *
      * @since_tizen 6.5
      */
-    UiObject(const std::shared_ptr<UiDevice> device, const std::shared_ptr<UiSelector> selector,
-             std::shared_ptr<AccessibleNode> node);
+    UiObject(const std::shared_ptr<UiDevice>   device,
+             const std::shared_ptr<UiSelector> selector,
+             std::shared_ptr<AccessibleNode>   node);
 
     /**
      * @brief UiObject constructor with object source.
@@ -103,7 +108,8 @@ public:
     std::shared_ptr<UiSelector> getSelector();
 
     /**
-     * @brief Checks that there is object that satisfied with the selector condition in the object tree.
+     * @brief Checks that there is object that satisfied with the selector
+     * condition in the object tree.
      *
      * @param[in] selector @UiSelector
      *
@@ -114,7 +120,8 @@ public:
     bool hasObject(const std::shared_ptr<UiSelector> selector) const override;
 
     /**
-     * @brief Finds that object that satisfied with the selector condition in the object tree.
+     * @brief Finds that object that satisfied with the selector condition in
+     * the object tree.
      *
      * @param[in] selector @UiSelector
      *
@@ -126,7 +133,8 @@ public:
         const std::shared_ptr<UiSelector> selector) const override;
 
     /**
-     * @brief Finds that objects that satisfied with the selector condition in the object tree.
+     * @brief Finds that objects that satisfied with the selector condition in
+     * the object tree.
      *
      * @param[in] selector @UiSelector
      *
@@ -348,6 +356,16 @@ public:
     const double getIncrement() const;
 
     /**
+     * @brief Gets text object's minimum bounding rectangle(MBR).
+     *        It works only for NUI Text Object.
+     *
+     * @return Rect
+     *
+     * @since_tizen 7.0
+     */
+    const Rect<int> getTextMinBoundingRect() const;
+
+    /**
      * @brief Sets object's value.
      *
      * @param[in] double value
@@ -386,7 +404,8 @@ public:
     bool isClickable() const;
 
     /**
-     * @brief Gets object's enabled property. (to get object enabled. disabled state)
+     * @brief Gets object's enabled property. (to get object enabled. disabled
+     * state)
      *
      * @return true if enabled else false
      *
@@ -485,7 +504,8 @@ public:
     /**
      * @brief Performs a long click action on object.
      *
-     * @param[in] durationMs total time to maintain down action (default = 500ms)
+     * @param[in] durationMs total time to maintain down action (default =
+     * 500ms)
      *
      * @since_tizen 6.5
      */
@@ -567,6 +587,14 @@ public:
     void updatePid() const;
 
     /**
+     * @brief Updates text object's minimum bounding rectangle(MBR).
+     *        It works only for NUI Text Object.
+     *
+     * @since_tizen 7.0
+     */
+    void updateTextMinBoundingRect() const;
+
+    /**
      * @brief Sets focus to object.
      *
      * @since_tizen 7.0
@@ -599,13 +627,13 @@ public:
     std::shared_ptr<AccessibleNode> getAccessibleNode() const;
 
 private:
-    std::shared_ptr<UiDevice> mDevice;
-    std::shared_ptr<UiSelector>  mSelector;
+    std::shared_ptr<UiDevice>       mDevice;
+    std::shared_ptr<UiSelector>     mSelector;
     std::shared_ptr<AccessibleNode> mNode;
-    const Waiter *mWaiter;
-    static const unsigned int LOGNCLICK_INTERVAL = 500;
+    const Waiter                   *mWaiter;
+    static const unsigned int       LOGNCLICK_INTERVAL = 500;
 };
 
-}
+}  // namespace Aurum
 
 #endif

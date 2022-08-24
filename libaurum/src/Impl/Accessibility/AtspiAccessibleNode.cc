@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2022 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,20 +15,20 @@
  *
  */
 
-#include "Aurum.h"
-
 #include "AtspiAccessibleNode.h"
-#include "AtspiWrapper.h"
 
 #include <gio/gio.h>
+
+#include "AtspiWrapper.h"
+#include "Aurum.h"
 
 using namespace Aurum;
 using namespace AurumInternal;
 
-AtspiAccessibleNode::AtspiAccessibleNode(AtspiAccessible *node)
-: mNode{node}
+AtspiAccessibleNode::AtspiAccessibleNode(AtspiAccessible *node) : mNode{node}
 {
-    const auto trickDontRemove = std::shared_ptr<AtspiAccessibleNode>( this, [](AtspiAccessibleNode *){} );
+    const auto trickDontRemove = std::shared_ptr<AtspiAccessibleNode>(
+        this, [](AtspiAccessibleNode *) {});
     auto watcher = AccessibleWatcher::getInstance();
     watcher->attach(shared_from_this());
 
@@ -45,7 +45,7 @@ AtspiAccessibleNode::~AtspiAccessibleNode()
 {
     auto watcher = AccessibleWatcher::getInstance();
     watcher->detach(shared_from_this());
-    if(mNode) g_object_unref(mNode);
+    if (mNode) g_object_unref(mNode);
 }
 
 int AtspiAccessibleNode::getChildCount() const
@@ -63,14 +63,16 @@ std::shared_ptr<AccessibleNode> AtspiAccessibleNode::getChildAt(int index) const
     if (!isValid()) {
         return std::make_shared<AtspiAccessibleNode>(nullptr);
     }
-    AtspiAccessible *rawChild = AtspiWrapper::Atspi_accessible_get_child_at_index(mNode, index, NULL);
+    AtspiAccessible *rawChild =
+        AtspiWrapper::Atspi_accessible_get_child_at_index(mNode, index, NULL);
     return std::make_shared<AtspiAccessibleNode>(rawChild);
 }
 
-std::vector<std::shared_ptr<AccessibleNode>> AtspiAccessibleNode::getChildren() const
+std::vector<std::shared_ptr<AccessibleNode>> AtspiAccessibleNode::getChildren()
+    const
 {
     std::vector<std::shared_ptr<AccessibleNode>> ret{};
-    int nchild = this->getChildCount();
+    int                                          nchild = this->getChildCount();
     for (int i = 0; i < nchild; i++) {
         auto child = getChildAt(i);
         if (child) ret.push_back(child);
@@ -83,13 +85,14 @@ std::shared_ptr<AccessibleNode> AtspiAccessibleNode::getParent() const
     if (!isValid()) {
         return std::make_shared<AtspiAccessibleNode>(nullptr);
     }
-    AtspiAccessible *rawParent = AtspiWrapper::Atspi_accessible_get_parent(mNode, NULL);
+    AtspiAccessible *rawParent =
+        AtspiWrapper::Atspi_accessible_get_parent(mNode, NULL);
     return std::make_shared<AtspiAccessibleNode>(rawParent);
 }
 
 bool AtspiAccessibleNode::isValid() const
 {
-    if(!AccessibleNode::isValid())  return false;
+    if (!AccessibleNode::isValid()) return false;
 
     AtspiStateSet *st = AtspiWrapper::Atspi_accessible_get_state_set(mNode);
     if (!st) return false;
@@ -102,7 +105,7 @@ bool AtspiAccessibleNode::isValid() const
     return true;
 }
 
-void* AtspiAccessibleNode::getRawHandler(void) const
+void *AtspiAccessibleNode::getRawHandler(void) const
 {
     return static_cast<void *>(mNode);
 }
@@ -122,15 +125,15 @@ void AtspiAccessibleNode::updateUniqueId()
 {
     AtspiWrapper::Atspi_accessible_clear_cache(mNode);
 
-    #ifdef TIZEN
+#ifdef TIZEN
     gchar *uID = AtspiWrapper::Atspi_accessible_get_unique_id(mNode, NULL);
     if (uID) {
         mId = uID;
         g_free(uID);
     }
-    #else
-        mId = std::string{"N/A"};
-    #endif
+#else
+    mId = std::string{"N/A"};
+#endif
 }
 
 void AtspiAccessibleNode::updateName()
@@ -148,7 +151,8 @@ void AtspiAccessibleNode::updateApplication()
 {
     AtspiWrapper::Atspi_accessible_clear_cache(mNode);
 
-    AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(mNode, NULL);
+    AtspiAccessible *app =
+        AtspiWrapper::Atspi_accessible_get_application(mNode, NULL);
     if (app) {
         gchar *pkg = AtspiWrapper::Atspi_accessible_get_name(app, NULL);
         if (pkg) {
@@ -163,17 +167,19 @@ void AtspiAccessibleNode::updateAttributes()
 {
     AtspiWrapper::Atspi_accessible_clear_cache(mNode);
 
-    GHashTable *attributes = AtspiWrapper::Atspi_accessible_get_attributes(mNode, NULL);
+    GHashTable *attributes =
+        AtspiWrapper::Atspi_accessible_get_attributes(mNode, NULL);
     if (attributes) {
-        char *t = (char*)g_hash_table_lookup(attributes, "type");
-        if (!t) t = (char*)g_hash_table_lookup(attributes, "t");
-        if (!t) t = (char*)g_hash_table_lookup(attributes, "class");
-        char *s = (char*)g_hash_table_lookup(attributes, "style");
-        char *a = (char*)g_hash_table_lookup(attributes, "automationId");
+        char *t = (char *)g_hash_table_lookup(attributes, "type");
+        if (!t) t = (char *)g_hash_table_lookup(attributes, "t");
+        if (!t) t = (char *)g_hash_table_lookup(attributes, "class");
+        char *s = (char *)g_hash_table_lookup(attributes, "style");
+        char *a = (char *)g_hash_table_lookup(attributes, "automationId");
 
-        if (t) mType =  std::string(t);
+        if (t)
+            mType = std::string(t);
         else {
-            if (mRole.empty())updateRoleName();
+            if (mRole.empty()) updateRoleName();
             mType = mRole;
         }
         if (s) mStyle = std::string(s);
@@ -207,14 +213,16 @@ void AtspiAccessibleNode::updateExtents()
 {
     AtspiWrapper::Atspi_accessible_clear_cache(mNode);
 
-    AtspiComponent *component = AtspiWrapper::Atspi_accessible_get_component_iface(mNode);
+    AtspiComponent *component =
+        AtspiWrapper::Atspi_accessible_get_component_iface(mNode);
     if (component) {
         AtspiRect *screenExtent = AtspiWrapper::Atspi_component_get_extents(
             component, ATSPI_COORD_TYPE_SCREEN, NULL);
         if (screenExtent) {
             mScreenBoundingBox =
-                Rect<int>{screenExtent->x, screenExtent->y, screenExtent->x + screenExtent->width,
-                        screenExtent->y + screenExtent->height};\
+                Rect<int>{screenExtent->x, screenExtent->y,
+                          screenExtent->x + screenExtent->width,
+                          screenExtent->y + screenExtent->height};
             g_free(screenExtent);
         }
 
@@ -222,8 +230,9 @@ void AtspiAccessibleNode::updateExtents()
             component, ATSPI_COORD_TYPE_WINDOW, NULL);
         if (windowExtent) {
             mWindowBoundingBox =
-                Rect<int>{windowExtent->x, windowExtent->y, windowExtent->x + windowExtent->width,
-                        windowExtent->y + windowExtent->height};\
+                Rect<int>{windowExtent->x, windowExtent->y,
+                          windowExtent->x + windowExtent->width,
+                          windowExtent->y + windowExtent->height};
             g_free(windowExtent);
         }
         g_object_unref(component);
@@ -246,10 +255,11 @@ void AtspiAccessibleNode::updateValue()
 
     AtspiValue *value = AtspiWrapper::Atspi_accessible_get_value(mNode);
     if (value) {
-        mMinValue= AtspiWrapper::Atspi_value_get_minimum_value(value, NULL);
-        mMaxValue= AtspiWrapper::Atspi_value_get_maximum_value(value, NULL);
-        mValue= AtspiWrapper::Atspi_value_get_current_value(value, NULL);
-        mIncrement= AtspiWrapper::Atspi_value_get_minimum_increment(value, NULL);
+        mMinValue = AtspiWrapper::Atspi_value_get_minimum_value(value, NULL);
+        mMaxValue = AtspiWrapper::Atspi_value_get_maximum_value(value, NULL);
+        mValue = AtspiWrapper::Atspi_value_get_current_value(value, NULL);
+        mIncrement =
+            AtspiWrapper::Atspi_value_get_minimum_increment(value, NULL);
         g_object_unref(value);
     }
 }
@@ -261,15 +271,39 @@ void AtspiAccessibleNode::updatePid()
     mPid = AtspiWrapper::Atspi_accessible_get_process_id(mNode, NULL);
 }
 
+void AtspiAccessibleNode::updateTextMinBoundingRect()
+{
+    AtspiWrapper::Atspi_accessible_clear_cache(mNode);
+
+    AtspiText *text = atspi_accessible_get_text_iface(mNode);
+    if (text) {
+        gint       cc = atspi_text_get_character_count(text, NULL);
+        AtspiRect *textMinBoundingRectExtent =
+            AtspiWrapper::Atspi_text_get_minimum_bounding_rectangles(
+                text, 0, cc, ATSPI_COORD_TYPE_WINDOW, NULL);
+
+        if (textMinBoundingRectExtent) {
+            mTextMinBoundingRect = Rect<int>{
+                textMinBoundingRectExtent->x, textMinBoundingRectExtent->y,
+                textMinBoundingRectExtent->x + textMinBoundingRectExtent->width,
+                textMinBoundingRectExtent->y +
+                    textMinBoundingRectExtent->height};
+            g_free(textMinBoundingRectExtent);
+        }
+
+        g_object_unref(text);
+    }
+}
+
 bool AtspiAccessibleNode::setFocus()
 {
-    AtspiComponent *component = AtspiWrapper::Atspi_accessible_get_component_iface(mNode);
+    AtspiComponent *component =
+        AtspiWrapper::Atspi_accessible_get_component_iface(mNode);
     if (component) {
         bool ret = AtspiWrapper::Atspi_component_grab_focus(component, NULL);
         g_object_unref(component);
         return ret;
-    }
-    else
+    } else
         return false;
 }
 
@@ -278,20 +312,21 @@ void AtspiAccessibleNode::refresh(bool updateAll)
     AtspiWrapper::Atspi_accessible_clear_cache(mNode);
 
     if (isValid()) {
-        gchar *rolename = AtspiWrapper::Atspi_accessible_get_role_name(mNode, NULL);
+        gchar *rolename =
+            AtspiWrapper::Atspi_accessible_get_role_name(mNode, NULL);
         if (rolename) {
             mRole = rolename;
             g_free(rolename);
         }
-    #ifdef TIZEN
+#ifdef TIZEN
         gchar *uID = AtspiWrapper::Atspi_accessible_get_unique_id(mNode, NULL);
         if (uID) {
             mId = uID;
             g_free(uID);
         }
-    #else
+#else
         mId = std::string{"N/A"};
-    #endif
+#endif
 
         gchar *name = AtspiWrapper::Atspi_accessible_get_name(mNode, NULL);
         if (name) {
@@ -299,7 +334,8 @@ void AtspiAccessibleNode::refresh(bool updateAll)
             g_free(name);
         }
 
-        AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(mNode, NULL);
+        AtspiAccessible *app =
+            AtspiWrapper::Atspi_accessible_get_application(mNode, NULL);
         if (app) {
             gchar *pkg = AtspiWrapper::Atspi_accessible_get_name(app, NULL);
             if (pkg) {
@@ -309,16 +345,19 @@ void AtspiAccessibleNode::refresh(bool updateAll)
             g_object_unref(app);
         }
 
-        GHashTable *attributes = AtspiWrapper::Atspi_accessible_get_attributes(mNode, NULL);
+        GHashTable *attributes =
+            AtspiWrapper::Atspi_accessible_get_attributes(mNode, NULL);
         if (attributes) {
-            char *t = (char*)g_hash_table_lookup(attributes, "type");
-            if (!t) t = (char*)g_hash_table_lookup(attributes, "t");
-            if (!t) t = (char*)g_hash_table_lookup(attributes, "class");
-            char *s = (char*)g_hash_table_lookup(attributes, "style");
-            char *a = (char*)g_hash_table_lookup(attributes, "automationId");
+            char *t = (char *)g_hash_table_lookup(attributes, "type");
+            if (!t) t = (char *)g_hash_table_lookup(attributes, "t");
+            if (!t) t = (char *)g_hash_table_lookup(attributes, "class");
+            char *s = (char *)g_hash_table_lookup(attributes, "style");
+            char *a = (char *)g_hash_table_lookup(attributes, "automationId");
 
-            if (t) mType =  std::string(t);
-            else mType = mRole;
+            if (t)
+                mType = std::string(t);
+            else
+                mType = mRole;
             if (s) mStyle = std::string(s);
             if (a) mAutomationId = std::string(a);
 
@@ -338,14 +377,16 @@ void AtspiAccessibleNode::refresh(bool updateAll)
             }
             g_object_unref(st);
         }
-        AtspiComponent *component = AtspiWrapper::Atspi_accessible_get_component_iface(mNode);
+        AtspiComponent *component =
+            AtspiWrapper::Atspi_accessible_get_component_iface(mNode);
         if (component) {
             AtspiRect *screenExtent = AtspiWrapper::Atspi_component_get_extents(
                 component, ATSPI_COORD_TYPE_SCREEN, NULL);
             if (screenExtent) {
                 mScreenBoundingBox =
-                    Rect<int>{screenExtent->x, screenExtent->y, screenExtent->x + screenExtent->width,
-                            screenExtent->y + screenExtent->height};\
+                    Rect<int>{screenExtent->x, screenExtent->y,
+                              screenExtent->x + screenExtent->width,
+                              screenExtent->y + screenExtent->height};
                 g_free(screenExtent);
             }
 
@@ -353,8 +394,9 @@ void AtspiAccessibleNode::refresh(bool updateAll)
                 component, ATSPI_COORD_TYPE_WINDOW, NULL);
             if (windowExtent) {
                 mWindowBoundingBox =
-                    Rect<int>{windowExtent->x, windowExtent->y, windowExtent->x + windowExtent->width,
-                            windowExtent->y + windowExtent->height};\
+                    Rect<int>{windowExtent->x, windowExtent->y,
+                              windowExtent->x + windowExtent->width,
+                              windowExtent->y + windowExtent->height};
                 g_free(windowExtent);
             }
             g_object_unref(component);
@@ -362,10 +404,13 @@ void AtspiAccessibleNode::refresh(bool updateAll)
 
         AtspiValue *value = AtspiWrapper::Atspi_accessible_get_value(mNode);
         if (value) {
-            mMinValue= AtspiWrapper::Atspi_value_get_minimum_value(value, NULL);
-            mMaxValue= AtspiWrapper::Atspi_value_get_maximum_value(value, NULL);
-            mValue= AtspiWrapper::Atspi_value_get_current_value(value, NULL);
-            mIncrement= AtspiWrapper::Atspi_value_get_minimum_increment(value, NULL);
+            mMinValue =
+                AtspiWrapper::Atspi_value_get_minimum_value(value, NULL);
+            mMaxValue =
+                AtspiWrapper::Atspi_value_get_maximum_value(value, NULL);
+            mValue = AtspiWrapper::Atspi_value_get_current_value(value, NULL);
+            mIncrement =
+                AtspiWrapper::Atspi_value_get_minimum_increment(value, NULL);
             g_object_unref(value);
         }
 
@@ -379,7 +424,7 @@ void AtspiAccessibleNode::refresh(bool updateAll)
 std::vector<std::string> AtspiAccessibleNode::getActions() const
 {
     std::vector<std::string> result{};
-    AtspiAction *action;
+    AtspiAction             *action;
     if (!isValid()) {
         return result;
     }
@@ -390,7 +435,8 @@ std::vector<std::string> AtspiAccessibleNode::getActions() const
         int n_actions = AtspiWrapper::Atspi_action_get_n_actions(action, NULL);
 
         for (a = 0; a < n_actions; a++) {
-            char *action_name = AtspiWrapper::Atspi_action_get_action_name(action, a, NULL);
+            char *action_name =
+                AtspiWrapper::Atspi_action_get_action_name(action, a, NULL);
             if (!action_name) continue;
             result.push_back(std::string{action_name});
             g_free(action_name);
@@ -415,9 +461,10 @@ bool AtspiAccessibleNode::doAction(std::string actionName)
         int n_actions = AtspiWrapper::Atspi_action_get_n_actions(action, NULL);
 
         for (a = 0; a < n_actions; a++) {
-            char *action_name = AtspiWrapper::Atspi_action_get_action_name(action, a, NULL);
+            char *action_name =
+                AtspiWrapper::Atspi_action_get_action_name(action, a, NULL);
             if (!action_name) {
-                 return false;
+                return false;
             }
 
             if (!strcmp(actionName.c_str(), action_name)) {
@@ -435,20 +482,21 @@ bool AtspiAccessibleNode::doAction(std::string actionName)
 
 bool AtspiAccessibleNode::setValue(std::string text)
 {
-    if (!isValid()){
+    if (!isValid()) {
         return false;
     }
 
-    AtspiEditableText *iface = AtspiWrapper::Atspi_accessible_get_editable_text(mNode);
-    LOGI("set Value iface:%p obj:%p text:%s", iface, mNode, text.c_str() );
+    AtspiEditableText *iface =
+        AtspiWrapper::Atspi_accessible_get_editable_text(mNode);
+    LOGI("set Value iface:%p obj:%p text:%s", iface, mNode, text.c_str());
 
     if (!iface) return false;
 
     updateName();
     int len = getText().length();
     AtspiWrapper::Atspi_editable_text_delete_text(iface, 0, len, NULL);
-    bool ret = AtspiWrapper::Atspi_editable_text_insert_text(iface, 0, text.c_str(), text.length(),
-                                                             NULL);
+    bool ret = AtspiWrapper::Atspi_editable_text_insert_text(
+        iface, 0, text.c_str(), text.length(), NULL);
     g_object_unref(iface);
 
     return ret;
@@ -456,12 +504,12 @@ bool AtspiAccessibleNode::setValue(std::string text)
 
 bool AtspiAccessibleNode::setValue(double value)
 {
-    if (!isValid()){
+    if (!isValid()) {
         return false;
     }
 
     AtspiValue *iface = AtspiWrapper::Atspi_accessible_get_value(mNode);
-    LOGI("set Value iface:%p obj:%p value:%lf",iface, mNode, value);
+    LOGI("set Value iface:%p obj:%p value:%lf", iface, mNode, value);
 
     if (!iface) return false;
 
@@ -474,77 +522,77 @@ bool AtspiAccessibleNode::setValue(double value)
 
 void AtspiAccessibleNode::setFeatureProperty(AtspiStateType type)
 {
-    switch(type) {
-        case ATSPI_STATE_CHECKED:
-            setFeatureProperty(NodeFeatureProperties::CHECKED, true);
-            break;
-        case ATSPI_STATE_CHECKABLE:
-            setFeatureProperty(NodeFeatureProperties::CHECKABLE, true);
-            break;
-        case ATSPI_STATE_ENABLED:
-            setFeatureProperty(NodeFeatureProperties::ENABLED, true);
-            break;
-        case ATSPI_STATE_FOCUSABLE:
-            setFeatureProperty(NodeFeatureProperties::FOCUSABLE, true);
-            break;
-        case ATSPI_STATE_FOCUSED:
-            setFeatureProperty(NodeFeatureProperties::FOCUSED, true);
-            break;
-        case ATSPI_STATE_SELECTABLE:
-            setFeatureProperty(NodeFeatureProperties::SELECTABLE, true);
-            break;
-        case ATSPI_STATE_SELECTED:
-            setFeatureProperty(NodeFeatureProperties::SELECTED, true);
-            break;
-        case ATSPI_STATE_SHOWING:
-            setFeatureProperty(NodeFeatureProperties::SHOWING, true);
-            break;
-        case ATSPI_STATE_VISIBLE:
-            setFeatureProperty(NodeFeatureProperties::VISIBLE, true);
-            break;
-        case ATSPI_STATE_ACTIVE:
-            setFeatureProperty(NodeFeatureProperties::ACTIVE, true);
-            break;
-        case ATSPI_STATE_SENSITIVE:
-            setFeatureProperty(NodeFeatureProperties::CLICKABLE, true);
-            break;
-        case ATSPI_STATE_DEFUNCT:
-        case ATSPI_STATE_INVALID:
-            setFeatureProperty(NodeFeatureProperties::INVALID, true);
-            break;
-        case ATSPI_STATE_TRANSIENT:
-        case ATSPI_STATE_TRUNCATED:
-        case ATSPI_STATE_ANIMATED:
-        case ATSPI_STATE_ARMED:
-        case ATSPI_STATE_BUSY:
-        case ATSPI_STATE_COLLAPSED:
-        case ATSPI_STATE_EDITABLE:
-        case ATSPI_STATE_EXPANDABLE:
-        case ATSPI_STATE_EXPANDED:
-        case ATSPI_STATE_HAS_TOOLTIP:
-        case ATSPI_STATE_HORIZONTAL:
-        case ATSPI_STATE_ICONIFIED:
-        case ATSPI_STATE_MODAL:
-        case ATSPI_STATE_MULTI_LINE:
-        case ATSPI_STATE_MULTISELECTABLE:
-        case ATSPI_STATE_OPAQUE:
-        case ATSPI_STATE_PRESSED:
-        case ATSPI_STATE_RESIZABLE:
-        case ATSPI_STATE_SINGLE_LINE:
-        case ATSPI_STATE_STALE:
-        case ATSPI_STATE_VERTICAL:
-        case ATSPI_STATE_MANAGES_DESCENDANTS:
-        case ATSPI_STATE_INDETERMINATE:
-        case ATSPI_STATE_REQUIRED:
-        case ATSPI_STATE_INVALID_ENTRY:
-        case ATSPI_STATE_SUPPORTS_AUTOCOMPLETION:
-        case ATSPI_STATE_SELECTABLE_TEXT:
-        case ATSPI_STATE_IS_DEFAULT:
-        case ATSPI_STATE_VISITED:
-        case ATSPI_STATE_HAS_POPUP:
-        case ATSPI_STATE_READ_ONLY:
-        case ATSPI_STATE_LAST_DEFINED:
-        default:
+    switch (type) {
+    case ATSPI_STATE_CHECKED:
+        setFeatureProperty(NodeFeatureProperties::CHECKED, true);
+        break;
+    case ATSPI_STATE_CHECKABLE:
+        setFeatureProperty(NodeFeatureProperties::CHECKABLE, true);
+        break;
+    case ATSPI_STATE_ENABLED:
+        setFeatureProperty(NodeFeatureProperties::ENABLED, true);
+        break;
+    case ATSPI_STATE_FOCUSABLE:
+        setFeatureProperty(NodeFeatureProperties::FOCUSABLE, true);
+        break;
+    case ATSPI_STATE_FOCUSED:
+        setFeatureProperty(NodeFeatureProperties::FOCUSED, true);
+        break;
+    case ATSPI_STATE_SELECTABLE:
+        setFeatureProperty(NodeFeatureProperties::SELECTABLE, true);
+        break;
+    case ATSPI_STATE_SELECTED:
+        setFeatureProperty(NodeFeatureProperties::SELECTED, true);
+        break;
+    case ATSPI_STATE_SHOWING:
+        setFeatureProperty(NodeFeatureProperties::SHOWING, true);
+        break;
+    case ATSPI_STATE_VISIBLE:
+        setFeatureProperty(NodeFeatureProperties::VISIBLE, true);
+        break;
+    case ATSPI_STATE_ACTIVE:
+        setFeatureProperty(NodeFeatureProperties::ACTIVE, true);
+        break;
+    case ATSPI_STATE_SENSITIVE:
+        setFeatureProperty(NodeFeatureProperties::CLICKABLE, true);
+        break;
+    case ATSPI_STATE_DEFUNCT:
+    case ATSPI_STATE_INVALID:
+        setFeatureProperty(NodeFeatureProperties::INVALID, true);
+        break;
+    case ATSPI_STATE_TRANSIENT:
+    case ATSPI_STATE_TRUNCATED:
+    case ATSPI_STATE_ANIMATED:
+    case ATSPI_STATE_ARMED:
+    case ATSPI_STATE_BUSY:
+    case ATSPI_STATE_COLLAPSED:
+    case ATSPI_STATE_EDITABLE:
+    case ATSPI_STATE_EXPANDABLE:
+    case ATSPI_STATE_EXPANDED:
+    case ATSPI_STATE_HAS_TOOLTIP:
+    case ATSPI_STATE_HORIZONTAL:
+    case ATSPI_STATE_ICONIFIED:
+    case ATSPI_STATE_MODAL:
+    case ATSPI_STATE_MULTI_LINE:
+    case ATSPI_STATE_MULTISELECTABLE:
+    case ATSPI_STATE_OPAQUE:
+    case ATSPI_STATE_PRESSED:
+    case ATSPI_STATE_RESIZABLE:
+    case ATSPI_STATE_SINGLE_LINE:
+    case ATSPI_STATE_STALE:
+    case ATSPI_STATE_VERTICAL:
+    case ATSPI_STATE_MANAGES_DESCENDANTS:
+    case ATSPI_STATE_INDETERMINATE:
+    case ATSPI_STATE_REQUIRED:
+    case ATSPI_STATE_INVALID_ENTRY:
+    case ATSPI_STATE_SUPPORTS_AUTOCOMPLETION:
+    case ATSPI_STATE_SELECTABLE_TEXT:
+    case ATSPI_STATE_IS_DEFAULT:
+    case ATSPI_STATE_VISITED:
+    case ATSPI_STATE_HAS_POPUP:
+    case ATSPI_STATE_READ_ONLY:
+    case ATSPI_STATE_LAST_DEFINED:
+    default:
         break;
     }
 }

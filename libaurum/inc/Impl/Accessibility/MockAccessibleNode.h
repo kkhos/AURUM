@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2022 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,10 +18,10 @@
 #ifndef _MOCK_ACCESSIBLE_NODE_H_
 #define _MOCK_ACCESSIBLE_NODE_H_
 
-#include "AccessibleNode.h"
-
 #include <mutex>
 #include <set>
+
+#include "AccessibleNode.h"
 
 using namespace Aurum;
 
@@ -35,13 +35,17 @@ public:
      * @brief TBD
      * @since_tizen 6.5
      */
-    MockAccessibleNode(std::shared_ptr<AccessibleNode> parent, std::string text,std::string pkg,std::string role, std::string id, std::string type,std::string style, std::string automationId, Rect<int> screenBoundingBox,int supportingIfaces,int featureProperty);
+    MockAccessibleNode(std::shared_ptr<AccessibleNode> parent, std::string text,
+                       std::string pkg, std::string role, std::string id,
+                       std::string type, std::string style,
+                       std::string automationId, Rect<int> screenBoundingBox,
+                       int supportingIfaces, int featureProperty);
 
     /**
      * @brief TBD
      * @since_tizen 6.5
      */
-   ~MockAccessibleNode() override;
+    ~MockAccessibleNode() override;
 
 public:
     /**
@@ -141,7 +145,13 @@ public:
      */
     bool setFocus() override;
 
-	/**
+    /**
+     * @brief TBD
+     * @since_tizen 7.0
+     */
+    void updateTextMinBoundingRect() override;
+
+    /**
      * @brief TBD
      * @since_tizen 6.5
      */
@@ -190,7 +200,10 @@ public:
      * @brief TBD
      * @since_tizen 6.5
      */
-    std::shared_ptr<MockAccessibleNode> addChild(std::string text, std::string pkg, std::string role, std::string res, std::string type, std::string style,std::string automationId,  Rect<int> geometry, int ifaces, int properties);
+    std::shared_ptr<MockAccessibleNode> addChild(
+        std::string text, std::string pkg, std::string role, std::string res,
+        std::string type, std::string style, std::string automationId,
+        Rect<int> geometry, int ifaces, int properties);
 
     /**
      * @brief TBD
@@ -214,7 +227,10 @@ public:
      * @brief TBD
      * @since_tizen 6.5
      */
-    void setProperties(std::string text,std::string pkg, std::string role, std::string res, std::string type, std::string style,std::string automationId,  Rect<int> screenBoundingBox, int supportingIfaces, int featureProperty);
+    void setProperties(std::string text, std::string pkg, std::string role,
+                       std::string res, std::string type, std::string style,
+                       std::string automationId, Rect<int> screenBoundingBox,
+                       int supportingIfaces, int featureProperty);
 
 private:
     /**
@@ -235,11 +251,11 @@ private:
     /**
      * @brief TBD
      */
-    std::mutex                            mLock;
+    std::mutex mLock;
 };
 
-}
+}  // namespace Mock
 
-}
+}  // namespace AurumInternal
 
 #endif

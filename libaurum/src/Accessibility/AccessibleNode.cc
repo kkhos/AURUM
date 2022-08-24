@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2022 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,28 +15,44 @@
  *
  */
 
-#include "Aurum.h"
-
 #include <string.h>
+
 #include <iostream>
+#include <sstream>
 #include <vector>
 
+#include "Aurum.h"
 #include "config.h"
-#include <sstream>
 
 using namespace Aurum;
 
-AccessibleNode::~AccessibleNode()
-{
-}
+AccessibleNode::~AccessibleNode() {}
 
 AccessibleNode::AccessibleNode()
-: mText{""}, mPkg{""}, mRole{""}, mId{""}, mAutomationId{""}, mType{""}, mStyle{""}, mXPath{""},
-  mScreenBoundingBox{0,0,0,0}, mWindowBoundingBox{0,0,0,0}, mSupportingIfaces(0), mFeatureProperty(0), mPid(0), mMinValue{0.0}, mMaxValue{0.0}, mValue{0.0}, mIncrement{0.0}, mValid{true}, mLock{}
+    : mText{""},
+      mPkg{""},
+      mRole{""},
+      mId{""},
+      mAutomationId{""},
+      mType{""},
+      mStyle{""},
+      mXPath{""},
+      mScreenBoundingBox{0, 0, 0, 0},
+      mWindowBoundingBox{0, 0, 0, 0},
+      mSupportingIfaces(0),
+      mFeatureProperty(0),
+      mPid(0),
+      mMinValue{0.0},
+      mMaxValue{0.0},
+      mValue{0.0},
+      mIncrement{0.0},
+      mValid{true},
+      mLock{}
 {
 }
 
-std::string AccessibleNode::description() {
+std::string AccessibleNode::description()
+{
     std::stringstream ss{};
 
     ss << "{";
@@ -56,7 +72,8 @@ void AccessibleNode::notify(int type1, int type2, void *src)
 {
     void *handler = getRawHandler();
 
-    if ((EventType)type1 == EventType::Object && (ObjectEventType)type2 == ObjectEventType::ObjectStateDefunct) {
+    if ((EventType)type1 == EventType::Object &&
+        (ObjectEventType)type2 == ObjectEventType::ObjectStateDefunct) {
         if (handler == src) invalidate();
     }
 }
@@ -81,15 +98,15 @@ void AccessibleNode::print(int depth, int maxDepth)
 
     this->print(depth);
     auto children = this->getChildren();
-    for ( auto &child : children ) {
-        if (child) child->print(depth +1, maxDepth);
+    for (auto &child : children) {
+        if (child) child->print(depth + 1, maxDepth);
     }
 }
 
 void AccessibleNode::print(int d)
 {
     this->refresh();
-    LOGI("%s %s",std::string(d, ' ').c_str(), description().c_str());
+    LOGI("%s %s", std::string(d, ' ').c_str(), description().c_str());
 }
 
 bool AccessibleNode::isSupporting(AccessibleNodeInterface thisIface) const
@@ -253,4 +270,9 @@ double AccessibleNode::getIncrement() const
 int AccessibleNode::getPid() const
 {
     return mPid;
+}
+
+Rect<int> AccessibleNode::getTextMinBoundingRect() const
+{
+    return mTextMinBoundingRect;
 }

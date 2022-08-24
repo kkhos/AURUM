@@ -33,6 +33,7 @@ service Bootstrap {
    rpc actionAndWaitEvent(ReqActionAndWaitEvent) returns (RspActionAndWaitEvent) {}
    rpc setFocus(ReqSetFocus) returns (RspSetFocus) {}
    rpc findElements(ReqFindElements) returns (RspFindElements) {}
+   rpc getTextMinBoundingRect(ReqGetTextMinBoundingRect) returns (RspGetTextMinBoundingRect) {}
 }
 
 // ------------------------------------ //
@@ -563,4 +564,14 @@ message ReqSetFocus {
 
 message RspSetFocus {
    RspStatus status = 1;
+}
+
+message ReqGetTextMinBoundingRect {
+
+   string elementId = 1;
+}
+
+message RspGetTextMinBoundingRect {
+   RspStatus status = 1;
+   Rect size = 2;
 }
