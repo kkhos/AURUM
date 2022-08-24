@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2022 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -348,6 +348,16 @@ public:
     const double getIncrement() const;
 
     /**
+     * @brief Gets text object's minimum bounding rectangle(MBR).
+     *        It works only for NUI Text Object.
+     *
+     * @return Rect
+     *
+     * @since_tizen 7.0
+     */
+    const Rect<int> getTextMinBoundingRect() const;
+
+    /**
      * @brief Sets object's value.
      *
      * @param[in] double value
@@ -565,6 +575,14 @@ public:
      * @since_tizen 7.0
      */
     void updatePid() const;
+
+    /**
+     * @brief Updates text object's minimum bounding rectangle(MBR).
+     *        It works only for NUI Text Object.
+     *
+     * @since_tizen 7.0
+     */
+    void updateTextMinBoundingRect() const;
 
     /**
      * @brief Sets focus to object.
