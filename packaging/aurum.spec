@@ -181,6 +181,9 @@ echo "signing %{TZ_SYS_RO_APP}/org.tizen.aurum-bootstrap"
 /usr/bin/signing-client/hash-signer-client.sh -a -d -p platform %{TZ_SYS_RO_APP}/org.tizen.aurum-bootstrap
 %endif
 
+echo -e 'Make it preloaded app to get appdebugging privilege'
+tpk-backend -y org.tizen.aurum-bootstrap --preload
+
 %postun bootstrap
 /sbin/ldconfig
 
