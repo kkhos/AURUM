@@ -28,7 +28,7 @@ UiSelector::UiSelector()
   mMatchFocused{}, mMatchFocusable{}, mMatchScrollable{}, mMatchSelected{}, mMatchShowing{}, mMatchActive{}, mMatchVisible{},
   mMatchSelectable{}, mMinDepth{}, mMaxDepth{}, mIschecked{}, mIscheckable{}, mIsclickable{}, mIsenabled{},
   mIsfocused{}, mIsfocusable{}, mIsscrollable{}, mIsselected{}, mIsshowing{}, mIsactive{}, mIsvisible{},
-  mIsselectable{}, mChild{}, mParent{}
+  mIsselectable{}, mChild{}, mParent{}, mGeometry{}
 {
 }
 
@@ -46,6 +46,7 @@ std::string UiSelector::description()
     if(!this->mPkg.empty()) ss << "\"mPkg\":\"" << this->mPkg << "\", ";
     if(!this->mType.empty()) ss << "\"mType\":\"" << this->mType << "\", ";
     if(!this->mStyle.empty()) ss << "\"mStyle\":\"" << this->mStyle << "\", ";
+    if(this->mMatchGeometry) ss << "\"mGeometry\":\"" << this->mGeometry.mTopLeft.x << "//" << this->mGeometry.mTopLeft.y << "//" << this->mGeometry.width() << "//" << this->mGeometry.height() << "\", ";
     if(this->mMatchId) ss << "\"mMatchId\":\"" << ((this->mMatchId)?"true":"false") << "\", ";
     if(this->mMatchAutomationId) ss << "\"mMatchAutomationId\":\"" << ((this->mMatchAutomationId)?"true":"false") << "\", ";
     if(this->mMatchRole) ss << "\"mMatchRole\":\"" << ((this->mMatchRole)?"true":"false") << "\", ";
@@ -56,6 +57,7 @@ std::string UiSelector::description()
     if(this->mMatchPkg) ss << "\"mMatchPkg\":\"" << ((this->mMatchPkg)?"true":"false") << "\", ";
     if(this->mMatchType) ss << "\"mMatchType\":\"" << ((this->mMatchType)?"true":"false") << "\", ";
     if(this->mMatchStyle) ss << "\"mMatchStyle\":\"" << ((this->mMatchStyle)?"true":"false" )<< "\", ";
+    if(this->mMatchGeometry) ss << "\"mMatchGeometry\":\"" << ((this->mMatchGeometry)?"true":"false" )<< "\", ";
     if(this->mMinDepth) ss << "\"mMinDepth\":\"" << this->mMinDepth << "\", ";
     if(this->mMaxDepth) ss << "\"mMaxDepth\":\"" << this->mMaxDepth << "\", ";
     if(this->mMatchChecked) ss << "\"mMatchChecked\":\"" << ((this->mMatchChecked)?"true":"false") << "\", ";
@@ -273,5 +275,13 @@ UiSelector *UiSelector::hasChild(std::shared_ptr<UiSelector> child)
 UiSelector *UiSelector::fromParent(std::shared_ptr<UiSelector> parent)
 {
     mParent = parent;
+    return this;
+}
+
+UiSelector *UiSelector::geometry(Rect<int> geometry, bool isEqual)
+{
+    this->mGeometry = geometry;
+    this->mGeometryIsEqual = isEqual;
+    this->mMatchGeometry = true;
     return this;
 }

@@ -193,7 +193,11 @@ message ReqFindElement {
       string ocrText = 21;
    }
 
-   repeated ReqFindElement children = 22;
+   oneof _geometry {
+     Rect geometry = 22; 
+   }
+
+   repeated ReqFindElement children = 23;
 }
 
 message RspFindElement {
@@ -284,7 +288,12 @@ message ReqFindElements {
    oneof _ocrtext {
       string ocrText = 21;
    }
-   repeated ReqFindElements children = 22;
+
+   oneof _geometry {
+     Rect geometry = 22; 
+   }
+
+   repeated ReqFindElements children = 23;
 }
 
 message RspFindElements {

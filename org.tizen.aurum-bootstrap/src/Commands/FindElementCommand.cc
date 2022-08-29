@@ -69,6 +69,7 @@ std::shared_ptr<UiSelector> FindElementCommand::getSelector(void)
     if(mRequest->_textpartialmatch_case()) sel->textPartialMatch(mRequest->textpartialmatch());
     if(mRequest->_xpath_case())            sel->xpath(mRequest->xpath());
     if(mRequest->_ocrtext_case())          sel->ocrText(mRequest->ocrtext());
+    if(mRequest->_geometry_case())         sel->geometry(Rect<int>{mRequest->geometry().x(), mRequest->geometry().y(), mRequest->geometry().x() + mRequest->geometry().width(), mRequest->geometry().y() + mRequest->geometry().height()}, true);
 
     return sel;
 }

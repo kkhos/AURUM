@@ -128,6 +128,15 @@ public:
         return false;
     }
 
+    bool isInRect(const Rect<int> &rect) const
+    {
+        if (rect.mTopLeft.x >= mTopLeft.x && rect.mBottomRight.x <= mBottomRight.x
+            && rect.mTopLeft.y >= mTopLeft.y && rect.mBottomRight.y <= mBottomRight.y)
+            return true;
+
+        return false;
+    }
+
     /**
      * @brief Checks given Rect is same as this or not.
      *
@@ -137,7 +146,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    inline bool operator==(const Rect<T>& rhs)
+    inline bool operator==(const Rect<T>& rhs) const
     {
         return this->mTopLeft == rhs.mTopLeft && this->mBottomRight == rhs.mBottomRight;
     }
@@ -151,7 +160,8 @@ public:
      *
      * @since_tizen 6.5
      */
-    inline bool operator!=(const Rect<T>& rhs){
+    inline bool operator!=(const Rect<T>& rhs) const
+    {
         return !(*this == rhs);
     }
 

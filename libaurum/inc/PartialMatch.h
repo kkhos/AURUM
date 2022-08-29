@@ -164,6 +164,18 @@ private:
      */
     static bool checkCriteria(const bool boolA, const bool boolB);
 
+    /**
+     * @brief Checks Rectangle matched or not.
+     *
+     * @param[in] rectA Rect<int>
+     * @param[in] rectB Rect<int>
+     *
+     * @return ture if matched, else false
+     *
+     * @since_tizen 7.0
+     */
+    static bool checkCriteria(const Rect<int> rectA, const Rect<int> rectB, const bool isEqual);
+
 private:
     const std::shared_ptr<UiSelector>        mSelector;
     const int                                mDepth;
