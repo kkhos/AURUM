@@ -73,7 +73,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    inline bool operator==(const Point2D<T>& rhs)
+    inline bool operator==(const Point2D<T>& rhs) const
     {
         return this->x == rhs.x && this->y == rhs.y;
     }
@@ -87,7 +87,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    inline bool operator!=(const Point2D<T>& rhs)
+    inline bool operator!=(const Point2D<T>& rhs) const
     {
         return !(*this == rhs);
     }

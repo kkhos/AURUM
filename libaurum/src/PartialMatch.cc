@@ -46,6 +46,16 @@ bool PartialMatch::checkCriteria(const bool boolA, const bool boolB)
     return boolA != boolB;
 }
 
+bool PartialMatch::checkCriteria(const Rect<int> rectA, const Rect<int> rectB, bool isEqual)
+{
+    if (isEqual) {
+        return rectA != rectB;
+    }
+    else {
+        return !rectA.isInRect(rectB);
+    }
+}
+
 std::string PartialMatch::debugPrint()
 {
     return mSelector->description();
@@ -105,6 +115,10 @@ bool PartialMatch::checkCriteria(const std::shared_ptr<UiSelector> selector,
     if (selector->mMatchRole) {
         node->updateRoleName();
         if (checkCriteria(selector->mRole, node->getRole(), 0)) return false;
+    }
+    if (selector->mMatchGeometry) {
+        node->updateExtents();
+        if (checkCriteria(selector->mGeometry, node->getScreenBoundingBox(), selector->mGeometryIsEqual)) return false;
     }
     if (selector->mMatchChecked && checkCriteria(selector->mIschecked, node->isChecked())) return false;
     if (selector->mMatchCheckable && checkCriteria(selector->mIscheckable, node->isCheckable())) return false;

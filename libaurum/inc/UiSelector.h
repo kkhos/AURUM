@@ -368,6 +368,18 @@ public:
      */
     UiSelector *xpath(std::string xpath);
 
+    /**
+     * @brief Sets the search criteria to match the object's geometry.
+     *
+     * @param[in] geometry Rect<int>
+     * @param[in] isEqual bool
+     *
+     * @return UiSelector class instance
+     *
+     * @since_tizen 7.0
+     */
+    UiSelector *geometry(Rect<int> geometry, bool isEqual);
+
 public:
     std::string mId;
     std::string mAutomationId;
@@ -390,6 +402,7 @@ public:
     bool mMatchTextPartialMatch;
     bool mMatchXPath;
     bool mMatchOcrText;
+    bool mMatchGeometry;
 
     bool mMatchChecked;
     bool mMatchCheckable;
@@ -420,8 +433,12 @@ public:
     bool mIsvisible;
     bool mIsselectable;
 
+    bool mGeometryIsEqual;
+
     std::vector<std::shared_ptr<UiSelector>> mChild;
     std::shared_ptr<UiSelector> mParent;
+
+    Rect<int> mGeometry;
 };
 
 }
