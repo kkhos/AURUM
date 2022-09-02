@@ -211,9 +211,9 @@ std::vector<std::shared_ptr<AccessibleNode>> UiDevice::getWindowRoot() const
             {
                 for (const auto &retWin : ret)
                 {
-                    retWin->getParent()->updatePid();
-                    LOGI("Pid Dup check in vector (%d) target (%d)", retWin->getParent()->getPid(), tWin->getPid());
-                    if (retWin->getParent()->getPid() == tWin->getPid())
+                    retWin->updatePid();
+                    LOGI("Pid Dup check in vector (%d) target (%d)", retWin->getPid(), tWin->getPid());
+                    if (retWin->getPid() == tWin->getPid())
                     {
                         dup = true;
                         break;
