@@ -52,9 +52,9 @@ UiDevice::UiDevice(IDevice *impl)
     : mDeviceImpl(impl), mWaiter(new Waiter{this})
 {
     LOGI("UiDevice constructor");
+    mIsWithSA = false;
 #ifdef MQTT_ENABLED
     mSAWatcher = std::make_shared<ScreenAnalyzerWatcher>();
-    mIsWithSA = false;
 #endif
     LOGI("UiDevice constructor finish");
 }
