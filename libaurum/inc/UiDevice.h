@@ -474,8 +474,8 @@ private:
     IDevice *mDeviceImpl;
     const Waiter *mWaiter;
     static std::vector<std::shared_ptr<TizenWindow>> mTizenWindows;
-    bool mIsWithSA;
 #ifdef MQTT_ENABLED
+    bool mIsWithSA;
     static std::shared_ptr<ScreenAnalyzerWatcher> mSAWatcher;
 #endif
 };
