@@ -147,6 +147,10 @@ std::vector<std::shared_ptr<TizenWindow>> UiDevice::getTizenWindowInfo() const
     }
 
     g_variant_get(body, "(a(iiiiibbiibbis))", &iter);
+    if (!iter) {
+        LOGE("Failed to get iter");
+		goto out;
+	}
 
     LOGI("%-3s | %-6s | %-4s | %-4s | %-4s | %-4s | %-5s | %-5s | %-6s | %-3s | %-7s | %-6s | %-5s | %-20s", "No" ,"PID", "X", "Y", "W", "H", "Trans", "Alpha", "Opaque", "Vis", "Focused", "Mapped", "Layer", "Name");
     while (g_variant_iter_loop(iter, "(iiiiibbiibbis)",
@@ -172,9 +176,9 @@ std::vector<std::shared_ptr<TizenWindow>> UiDevice::getTizenWindowInfo() const
         }
     }
 
+out:
     if (iter)
         g_variant_iter_free(iter);
-out:
     if (msg)
         g_object_unref(msg);
     if (reply)
