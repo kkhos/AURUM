@@ -1,4 +1,3 @@
-Name:           aurum
 Version:        1.0.0
 Release:        1
 License:        Apache-2.0
