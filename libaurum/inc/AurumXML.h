@@ -19,6 +19,7 @@
 #define _AURUM_XML_H_
 
 #include <unordered_map>
+#include <mutex>
 
 #include "Accessible.h"
 #include "config.h"
@@ -44,7 +45,7 @@ public:
      *
      * @since_tizen 7.0
      */
-    AurumXML(std::shared_ptr<AccessibleNode> root);
+    AurumXML(std::shared_ptr<AccessibleNode> root, std::mutex& XMLMutex);
 
     /**
      * @brief Destroy the AurumXML object
@@ -130,6 +131,7 @@ private:
     xml_document                                *mDoc;
     std::shared_ptr<AccessibleNode>              mRoot;
     std::unordered_map<std::string, std::shared_ptr<AccessibleNode>> mXNodeMap;
+    std::mutex&                                  XMLMutex;
 };
 }  // namespace Aurum
 

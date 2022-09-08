@@ -98,7 +98,6 @@ private:
 
     std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> mActiveAppMap;
     std::map<std::string, std::shared_ptr<AurumXML>> mXMLDocMap;
-
 };
 
 }

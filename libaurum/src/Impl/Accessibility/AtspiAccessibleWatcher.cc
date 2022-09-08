@@ -200,7 +200,7 @@ void AtspiAccessibleWatcher::appendApp(AtspiAccessibleWatcher *instance, AtspiAc
             instance->mXMLDocMap.erase(package);
         }
         instance->mXMLDocMap.insert(std::pair<std::string, std::shared_ptr<AurumXML>>(package,
-                std::make_shared<AurumXML>(std::make_shared<AtspiAccessibleNode>(app))));
+                std::make_shared<AurumXML>(std::make_shared<AtspiAccessibleNode>(app), XMLMutex)));
     }
 }
 
@@ -351,6 +351,16 @@ std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> AtspiAccessi
 
 std::map<std::string, std::shared_ptr<AurumXML>> AtspiAccessibleWatcher::getXMLDocMap(void)
 {
+    bool isFirstWaiting = true;
+    while(!XMLMutex.try_lock())
+    {
+        if(isFirstWaiting)
+        {
+            LOGI("Waiting XMLTree Construct");
+            isFirstWaiting = false;
+        }
+    }
+    XMLMutex.unlock();
     return mXMLDocMap;
 }
 
