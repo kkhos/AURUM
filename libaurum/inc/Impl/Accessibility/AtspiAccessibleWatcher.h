@@ -170,6 +170,7 @@ private:
     static std::mutex mMutex;
     static GMainLoop *mLoop;
     bool isTv;
+    std::mutex XMLMutex;
 };
 
 }

@@ -19,10 +19,14 @@
 
 using namespace Aurum;
 
-AurumXML::AurumXML(std::shared_ptr<AccessibleNode> root) : mRoot(root)
+AurumXML::AurumXML(std::shared_ptr<AccessibleNode> root, std::mutex& XMLMutex) : mRoot(root), XMLMutex(XMLMutex)
 {
+    XMLMutex.lock();
+
     mDoc = new xml_document();
     if (mRoot) this->createXMLtree();
+    
+    XMLMutex.unlock();
 }
 
 AurumXML::~AurumXML()
