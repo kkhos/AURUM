@@ -190,6 +190,11 @@ bool MockDeviceImpl::pressKeyCode(std::string keycode, KeyRequestType type)
     return true;
 }
 
+bool MockDeviceImpl::scrollKeyCode(std::string keycode, int intervalMs, int durationMs)
+{
+    return false;
+}
+
 bool MockDeviceImpl::takeScreenshot(std::string path, float scale, int quality)
 {
     return true;

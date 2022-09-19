@@ -237,6 +237,19 @@ public:
     bool pressKeyCode(std::string keycode, KeyRequestType type) override;
 
     /**
+     * @brief Simulates continuous press of the given keycode key.
+     *
+     * @param[in] keycode keycode
+     * @param[in] intervalMs time interval for pressing given keycode key
+     * @param[in] durationMs total time to press given keycode key
+     *
+     * @return true if the scroll keycode succeeded else false
+     *
+     * @since_tizen 6.5
+     */
+    bool scrollKeyCode(std::string keycode, int intervalMs, int durationMs) override;
+
+    /**
      * @brief Take a screenshot of current window and store it as image file.
      *
      * @param[in] path where the image file should be written to

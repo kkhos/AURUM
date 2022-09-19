@@ -129,6 +129,9 @@ public:
     ::grpc::Status getTextMinBoundingRect(::grpc::ServerContext *context,
                             const ::aurum::ReqGetTextMinBoundingRect *request,
                             ::aurum::RspGetTextMinBoundingRect *response) override;
+    ::grpc::Status sendKeyScroll(::grpc::ServerContext *context,
+                               const ::aurum::ReqKeyScroll *request,
+                               ::aurum::RspKeyScroll *response) override;
 };
 
 #endif
