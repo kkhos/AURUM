@@ -289,3 +289,10 @@ aurumServiceImpl::~aurumServiceImpl()
     return execute(cmd.get(), true);
 }
 
+::grpc::Status aurumServiceImpl::sendKeyScroll(::grpc::ServerContext *context,
+                                         const ::aurum::ReqKeyScroll *request,
+                                         ::aurum::RspKeyScroll *response)
+{
+    std::unique_ptr<SendKeyScrollCommand> cmd = std::make_unique<SendKeyScrollCommand>(request, response);
+    return execute(cmd.get(), false);
+}

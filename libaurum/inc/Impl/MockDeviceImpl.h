@@ -149,6 +149,12 @@ public:
      */
     bool pressKeyCode(std::string keycode, KeyRequestType type) override;
 
+     /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    bool scrollKeyCode(std::string keycode, int intervalMs, int durationMs) override;
+
     /**
      * @brief TBD
      * @since_tizen 6.5
