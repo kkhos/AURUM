@@ -36,6 +36,7 @@ service Bootstrap {
    rpc getActiveAppToolkitName(ReqGetActiveAppToolkitName) returns (RspGetActiveAppToolkitName) {}
    rpc enableScreenAnalyzer(ReqEnableScreenAnalyzer) returns (RspEnableScreenAnalyzer) {}
    rpc getTextMinBoundingRect(ReqGetTextMinBoundingRect) returns (RspGetTextMinBoundingRect) {}
+   rpc sendKeyScroll(ReqKeyScroll) returns (RspKeyScroll) {}
 }
 
 // ------------------------------------ //
@@ -612,3 +613,25 @@ message RspGetTextMinBoundingRect {
    Rect size = 2;
 }
 
+message ReqKeyScroll {
+   enum KeyType {
+      BACK = 0;
+      MENU = 1;
+      HOME = 2;
+      VOLUP = 3;
+      VOLDOWN = 4;
+      POWER = 5;
+      //KEY = 6;
+      XF86 = 7;
+      WHEELUP = 8;
+      WHEELDOWN = 9;
+   }
+   KeyType type = 1;
+   int32 durationMs = 2;
+   int32 intervalMs = 3;
+   string XF86keyCode = 4;
+}
+
+message RspKeyScroll {
+   RspStatus status = 1;
+}

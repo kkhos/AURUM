@@ -112,6 +112,11 @@ public:
     bool pressKeyCode(std::string keycode, KeyRequestType type) override;
 
     /**
+     * @copydoc IDevice::scrollKeyCode()
+     */
+    bool scrollKeyCode(std::string keycode, int intervalMs, int durationMs) override;
+
+    /**
      * @copydoc IDevice::takeScreenshot()
      */
     bool takeScreenshot(std::string path, float scale, int quality) override;

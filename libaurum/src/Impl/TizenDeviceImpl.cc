@@ -251,6 +251,24 @@ bool TizenDeviceImpl::pressKeyCode(std::string keycode, KeyRequestType type)
     return false;
 }
 
+bool TizenDeviceImpl::scrollKeyCode(std::string keycode, int intervalMs, int durationMs)
+{
+    if (intervalMs < 20)
+    {
+        intervalMs = 20; // interval is minimum 20ms
+    }
+
+    int press_count = (durationMs / intervalMs);
+    for (int i = 0; i < press_count; i++)
+    {
+        strokeKeyCode(keycode, INTV_SHORTSTROKE);
+        usleep((intervalMs - INTV_SHORTSTROKE) * 1000);
+    }
+    strokeKeyCode(keycode, INTV_SHORTSTROKE);
+
+    return true;
+}
+
 bool TizenDeviceImpl::strokeKeyCode(std::string keycode, unsigned int durationMs)
 {
     pressKeyCode(keycode);
