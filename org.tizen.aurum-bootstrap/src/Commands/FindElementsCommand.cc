@@ -105,7 +105,7 @@ std::vector<std::shared_ptr<UiSelector>> FindElementsCommand::getSelectors(void)
                 rect->set_width(size.width());
                 rect->set_height(size.height());
 
-                elm->set_widget_type(obj->getType());
+                elm->set_widgettype(obj->getType());
 
                 elm->set_text(obj->getOcrText());
                 elm->set_toolkit("External");
@@ -159,15 +159,15 @@ std::vector<std::shared_ptr<UiSelector>> FindElementsCommand::getSelectors(void)
                 rect->set_width(size.width());
                 rect->set_height(size.height());
 
-                ::aurum::Rect *windowRect = elm->mutable_window_relative_geometry();
+                ::aurum::Rect *windowRect = elm->mutable_windowrelativegeometry();
                 const Rect<int> &windowRelativeSize = obj->getWindowBoundingBox();
                 windowRect->set_x(windowRelativeSize.mTopLeft.x);
                 windowRect->set_y(windowRelativeSize.mTopLeft.y);
                 windowRect->set_width(windowRelativeSize.width());
                 windowRect->set_height(windowRelativeSize.height());
 
-                elm->set_widget_type(obj->getType());
-                elm->set_widget_style(obj->getElementStyle());
+                elm->set_widgettype(obj->getType());
+                elm->set_widgetstyle(obj->getElementStyle());
 
                 elm->set_text(obj->getText());
                 elm->set_xpath(obj->getXPath());
