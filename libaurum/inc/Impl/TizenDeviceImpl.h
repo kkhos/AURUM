@@ -112,6 +112,11 @@ public:
     bool pressKeyCode(std::string keycode, KeyRequestType type) override;
 
     /**
+     * @copydoc IDevice::repeatKeyCode()
+     */
+    bool repeatKeyCode(std::string keycode, int intervalMs, int durationMs) override;
+
+    /**
      * @copydoc IDevice::takeScreenshot()
      */
     bool takeScreenshot(std::string path, float scale, int quality) override;
@@ -144,6 +149,13 @@ protected:
      * @since_tizen 6.5
      */
     bool pressKeyCode(std::string keycode);
+
+    /**
+     * @brief Press given key. This function is for repeated press.
+     *
+     * @since_tizen 7.0
+     */
+    bool pressKeyCode(std::string keycode, int durationMs, int intervalMs);
 
     /**
      * @brief Release given key.
@@ -191,7 +203,9 @@ private:
     static const int INTV_MINIMUM_DRAG_MS = 25;
     static const int INTV_MINIMUM_USLEEP = 1000;
     static const int MINIMUM_DURATION_DRAG = 100;
+    static const int MINIMUM_REPEAT_INTERVAL = 20;
     static const unsigned int MSEC_PER_SEC = 1000;
+    static const unsigned int USEC_PER_MSEC = 1000;
     static const unsigned int MAX_FINGER_NUMBER = 2;
     struct timespec tStart;
     bool isTimerStarted;

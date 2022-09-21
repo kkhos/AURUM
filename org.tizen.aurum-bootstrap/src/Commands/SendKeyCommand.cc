@@ -49,8 +49,18 @@ SendKeyCommand::SendKeyCommand(const ::aurum::ReqKey *request,
         mDevice->wheelUp(1, 167);
     else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_WHEELDOWN)
         mDevice->wheelDown(1, 167);
-    else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_XF86) {
-        mDevice->pressKeyCode(mRequest->xf86keycode(), actionType);
+    else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_XF86)
+    {
+        if (actionType == KeyRequestType::REPEAT)
+        {
+            int durationMs = mRequest->durationms();
+            int intervalMs = mRequest->intervalms();
+            mDevice->repeatKeyCode(mRequest->xf86keycode(), intervalMs, durationMs);
+        }
+        else
+        {
+            mDevice->pressKeyCode(mRequest->xf86keycode(), actionType);
+        }
     }
     return grpc::Status::OK;
 }
