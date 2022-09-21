@@ -58,10 +58,10 @@ message Element {
    repeated Element child = 2;
 
    Rect geometry = 3;
-   Rect window_relative_geometry = 4;
+   Rect windowRelativeGeometry = 4;
 
-   string widget_type = 5;
-   string widget_style = 6;
+   string widgetType = 5;
+   string widgetStyle = 6;
 
    string text = 7;
    string xpath = 8;
