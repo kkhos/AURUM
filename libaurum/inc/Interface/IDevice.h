@@ -44,6 +44,7 @@ enum class KeyRequestType {
     LONG_STROKE, //Key long press(2000ms) and release
     PRESS,       //Key press
     RELEASE,     //Key release
+    REPEAT,      //Repeat key press(100ms) and release
 };
 
 /**
@@ -243,6 +244,19 @@ public:
      * @since_tizen 6.5
      */
     virtual bool pressKeyCode(std::string keycode, KeyRequestType type) = 0;
+
+    /**
+     * @brief Simulates continuous press of the given keycode key.
+     *
+     * @param[in] keycode keycode
+     * @param[in] intervalMs time interval for pressing given keycode key
+     * @param[in] durationMs total time to press given keycode key
+     *
+     * @return true if the scroll keycode succeeded else false
+     *
+     * @since_tizen 7.0
+     */
+    virtual bool repeatKeyCode(std::string keycode, int intervalMs, int durationMs) = 0;
 
     /**
      * @brief Take a screenshot of current window and store it as image file.
