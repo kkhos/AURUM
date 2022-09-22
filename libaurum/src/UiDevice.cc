@@ -420,6 +420,12 @@ bool UiDevice::pressKeyCode(std::string keycode, KeyRequestType type)
     return result;
 }
 
+bool UiDevice::repeatKeyCode(std::string keycode, int intervalMs, int durationMs)
+{
+    bool result =  mDeviceImpl->repeatKeyCode(keycode, intervalMs, durationMs);
+    return result;
+}
+
 bool UiDevice::takeScreenshot(std::string path, float scale, int quality)
 {
     return mDeviceImpl->takeScreenshot(path, scale, quality);
