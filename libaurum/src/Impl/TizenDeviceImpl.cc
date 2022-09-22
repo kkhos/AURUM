@@ -248,13 +248,39 @@ bool TizenDeviceImpl::pressKeyCode(std::string keycode, KeyRequestType type)
         return pressKeyCode(keycode);
     else if (type == KeyRequestType::RELEASE)
         return releaseKeyCode(keycode);
+    else if (type == KeyRequestType::REPEAT)
+    {
+        LOGI("You can't repeat non-XF86 keys");
+        return false;
+    }
+
     return false;
+}
+
+bool TizenDeviceImpl::repeatKeyCode(std::string keycode, int intervalMs, int durationMs)
+{
+    if (intervalMs < MINIMUM_REPEAT_INTERVAL)
+    {
+        LOGI("Minimum intervalMs is %d, but user has set it to %d, so changed it to %d", MINIMUM_REPEAT_INTERVAL, intervalMs, MINIMUM_REPEAT_INTERVAL);
+        intervalMs = MINIMUM_REPEAT_INTERVAL;
+    }
+
+    int press_count = durationMs / intervalMs;
+
+    for (int i = 0; i < press_count; i++)
+    {
+        strokeKeyCode(keycode, INTV_SHORTSTROKE);
+        usleep((intervalMs - INTV_SHORTSTROKE) * USEC_PER_MSEC);
+    }
+    strokeKeyCode(keycode, INTV_SHORTSTROKE);
+
+    return true;
 }
 
 bool TizenDeviceImpl::strokeKeyCode(std::string keycode, unsigned int durationMs)
 {
     pressKeyCode(keycode);
-    usleep(durationMs * 1000);
+    usleep(durationMs * USEC_PER_MSEC);
     releaseKeyCode(keycode);
     return true;
 }

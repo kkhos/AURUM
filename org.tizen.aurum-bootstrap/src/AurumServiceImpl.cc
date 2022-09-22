@@ -288,4 +288,3 @@ aurumServiceImpl::~aurumServiceImpl()
     std::unique_ptr<GetTextMinBoundingRectCommand> cmd = std::make_unique<GetTextMinBoundingRectCommand>(request, response);
     return execute(cmd.get(), true);
 }
-

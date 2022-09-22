@@ -500,7 +500,6 @@ message ReqKey{
       VOLUP = 3;
       VOLDOWN = 4;
       POWER = 5;
-      //KEY = 6;
       XF86 = 7;
       WHEELUP = 8;
       WHEELDOWN = 9;
@@ -510,13 +509,13 @@ message ReqKey{
       LONG_STROKE = 1;
       PRESS = 2;
       RELEASE = 3;
+      REPEAT = 4;
    }
    KeyType type = 1;
    KeyActionType actionType = 2;
-   //oneof keys {
-      //uint32 keyCode = 3;
-   string XF86keyCode = 4;
-   //}
+   string XF86keyCode = 3;
+   int32 durationMs = 4;
+   int32 intervalMs = 5;
 }
 message RspKey{
    RspStatus status = 1;
@@ -611,4 +610,3 @@ message RspGetTextMinBoundingRect {
    RspStatus status = 1;
    Rect size = 2;
 }
-
