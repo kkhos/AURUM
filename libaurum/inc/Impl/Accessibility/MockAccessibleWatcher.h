@@ -71,7 +71,7 @@ public:
      * @brief TBD
      * @since_tizen 6.5
      */
-    virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout) override;
+    virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName) override;
 
     std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> getActiveAppMap(void);
 
