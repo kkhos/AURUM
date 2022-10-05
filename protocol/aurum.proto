@@ -571,6 +571,7 @@ message ReqActionAndWaitEvent {
    }
    EventType eventType = 4;
    int32 timeoutMs = 5;
+   string packageName = 6;
 }
 
 message RspActionAndWaitEvent {

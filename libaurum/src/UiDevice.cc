@@ -301,20 +301,20 @@ bool UiDevice::waitForIdle() const
 bool UiDevice::waitForEvents(
     const A11yEvent type, const int timeout) const
 {
-    return executeAndWaitForEvents(NULL, type, timeout);
+    return executeAndWaitForEvents(NULL, type, timeout, std::string());
 }
 
 bool UiDevice::executeAndWaitForEvents(
-    const Runnable *cmd, const A11yEvent type, const int timeout) const
+    const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName) const
 {
-    return AccessibleWatcher::getInstance()->executeAndWaitForEvents(cmd, type, timeout);
+    return AccessibleWatcher::getInstance()->executeAndWaitForEvents(cmd, type, timeout, packageName);
 }
 
 bool UiDevice::sendKeyAndWaitForEvents(
     const std::string keycode, const A11yEvent type, const int timeout) const
 {
     std::unique_ptr<SendKeyRunnable> cmd = std::make_unique<SendKeyRunnable>(keycode);
-    return executeAndWaitForEvents(cmd.get(), type, timeout);
+    return executeAndWaitForEvents(cmd.get(), type, timeout, std::string());
 }
 
 bool UiDevice::click(const int x, const int y)
