@@ -22,6 +22,7 @@
 #include "AtspiAccessibleWindow.h"
 #include "AtspiAccessibleNode.h"
 #include "AtspiWrapper.h"
+#include "UiDevice.h"
 
 #include <algorithm>
 #include <chrono>
@@ -311,6 +312,7 @@ bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const 
     mMutex.lock();
     mEventQueue.clear();
     mMutex.unlock();
+
     if (cmd)
         cmd->run();
 
@@ -326,8 +328,10 @@ bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const 
 
         if (!localEvents.empty())
         {
+            std::string executedPkg = cmd->getPkg();
+
             for (const auto &event : localEvents) {
-                if (COMPARE(type, event->getEvent()))
+                if (COMPARE(type, event->getEvent()) && (executedPkg.empty() || event->getPkg() == executedPkg))
                 {
                     LOGI("type %d == %d name %s pkg %s",static_cast<int>(type), static_cast<int>(event->getEvent()), event->getName().c_str(), event->getPkg().c_str()); 
                     return true;

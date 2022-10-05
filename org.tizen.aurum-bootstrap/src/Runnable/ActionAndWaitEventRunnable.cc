@@ -43,6 +43,7 @@ void ActionAndWaitEventRunnable::run() const
 
         if (obj) {
             LOGD("Click Object Id(%s)", mElementId.c_str());
+            mPkg = obj->getApplicationPackage();
             obj->click();
         }
         else
@@ -58,9 +59,15 @@ void ActionAndWaitEventRunnable::run() const
         std::shared_ptr<UiObject> obj = mObjMap->getElement(mElementId);
         if (obj) {
             LOGD("SetFocus Object Id(%s)", mElementId.c_str());
+            mPkg = obj->getApplicationPackage();
             obj->setFocus();
         }
         else
             LOGE("Object Id(%s) is invalid or not exist on view", mElementId.c_str());
     }
+}
+
+std::string ActionAndWaitEventRunnable::getPkg() const
+{
+    return mPkg;
 }

@@ -66,7 +66,7 @@ void LaunchAppRunnable::run() const
     app_control_destroy(appControl);
 }
 
-std::string LaunchAppRunnable::getPkgName()
+std::string LaunchAppRunnable::getPkg() const
 {
     return mPkg;
 }
