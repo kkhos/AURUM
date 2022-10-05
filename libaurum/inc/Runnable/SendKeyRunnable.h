@@ -49,6 +49,11 @@ public:
      * @copydoc Runnable::run()
      */
     void run() const override;
+
+    /**
+     * @copydoc Runnable::getPkg()
+     */
+    std::string getPkg() const override;
 };
 
 }

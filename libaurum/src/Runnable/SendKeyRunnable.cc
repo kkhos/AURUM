@@ -32,3 +32,7 @@ void SendKeyRunnable::run() const
     mDevice->pressKeyCode(mKeycode.c_str(), KeyRequestType::RELEASE);
 }
 
+std::string SendKeyRunnable::getPkg() const
+{
+    return std::string();
+}

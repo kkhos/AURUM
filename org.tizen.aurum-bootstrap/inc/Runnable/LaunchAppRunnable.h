@@ -27,6 +27,6 @@ protected:
 
 public:
     LaunchAppRunnable(std::string pkg, const google::protobuf::RepeatedPtrField<aurum::LaunchData>& data);
-    std::string getPkgName();
+    std::string getPkg() const override;
     void run() const override;
 };

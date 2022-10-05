@@ -25,8 +25,10 @@ protected:
     int mType;
     std::string mElementId;
     std::string mKeyCode;
+    mutable std::string mPkg;
 
 public:
     ActionAndWaitEventRunnable(int type, std::string elementId, std::string keyCode);
+    std::string getPkg() const override;
     void run() const override;
 };
