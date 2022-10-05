@@ -306,7 +306,7 @@ std::vector<std::shared_ptr<AccessibleApplication>> AtspiAccessibleWatcher::getA
     return ret;
 }
 
-bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout)
+bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName)
 {
     mMutex.lock();
     mEventQueue.clear();
@@ -327,9 +327,9 @@ bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const 
         if (!localEvents.empty())
         {
             for (const auto &event : localEvents) {
-                if (COMPARE(type, event->getEvent()))
+                if (COMPARE(type, event->getEvent()) && (packageName.empty() || packageName == event->getPkg()))
                 {
-                    LOGI("type %d == %d name %s pkg %s",static_cast<int>(type), static_cast<int>(event->getEvent()), event->getName().c_str(), event->getPkg().c_str()); 
+                    LOGI("type %d == %d name %s pkg %s",static_cast<int>(type), static_cast<int>(event->getEvent()), event->getName().c_str(), event->getPkg().c_str());
                     return true;
                 }
             }

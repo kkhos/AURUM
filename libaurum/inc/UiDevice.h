@@ -364,13 +364,14 @@ public:
      * @param[in] cmd @Runnable
      * @param[in] type one of @A11yEvent
      * @param[in] timeout time(millisecond) to wait event occur
+     * @param[in] packageName package name that event occurs
      *
      * @return true if event happened in time, otherwise false
      *
      * @since_tizen 6.5
      */
     bool executeAndWaitForEvents(
-        const Runnable *cmd, const A11yEvent type, const int timeout) const;
+        const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName) const;
 public:
     /**
      * @brief Gets UiDevice instance.

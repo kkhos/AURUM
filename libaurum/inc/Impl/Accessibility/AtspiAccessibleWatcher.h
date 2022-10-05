@@ -105,7 +105,7 @@ public:
     /**
      * @copydoc @AccessibleWatcher::executeAndWaitForEvents()
      */
-    virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout) override;
+    virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName) override;
 
     /**
      * @copydoc @AccessibleWatcher::getActiveAppMap()

@@ -44,7 +44,7 @@ A11yEvent convertEventType(const ::aurum::ReqActionAndWaitEvent_EventType type)
     std::unique_ptr<ActionAndWaitEventRunnable> cmd = std::make_unique<ActionAndWaitEventRunnable>(
                                                       mRequest->type(), mRequest->elementid(), mRequest->xf86keycode());
     std::shared_ptr<UiDevice> obj = UiDevice::getInstance();
-    bool ret = obj->executeAndWaitForEvents(cmd.get(), convertEventType(mRequest->eventtype()), mRequest->timeoutms());
+    bool ret = obj->executeAndWaitForEvents(cmd.get(), convertEventType(mRequest->eventtype()), mRequest->timeoutms(), mRequest->packagename());
 
     if (ret) mResponse->set_status(::aurum::RspStatus::OK);
     else mResponse->set_status(::aurum::RspStatus::ERROR);

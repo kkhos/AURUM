@@ -108,7 +108,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout) = 0;
+    virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName) = 0;
 
     /**
      * @brief Gets active application map.
