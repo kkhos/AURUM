@@ -43,6 +43,13 @@ public:
      * @since_tizen 6.5
      */
     virtual void run() const = 0;
+
+    /**
+     * @brief Get package of given action
+     *
+     * @since_tizen 7.0
+     */
+    virtual std::string getPkg() const = 0;
 };
 
 }
