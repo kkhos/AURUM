@@ -68,7 +68,7 @@ std::shared_ptr<MockAccessibleApplication> MockAccessibleWatcher::addApplication
     return app;
 }
 
-bool MockAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout)
+bool MockAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName)
 {
     return true;
 }
