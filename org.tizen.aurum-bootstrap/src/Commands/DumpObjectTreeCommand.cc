@@ -105,7 +105,7 @@ void DumpObjectTreeCommand::traverse(::aurum::Element *root, std::shared_ptr<Nod
             if (!idx) {
                 root = mResponse->add_roots();
                 root->set_elementid(obj->getId());
-                root->set_widget_type(obj->getType());
+                root->set_widgettype(obj->getType());
                 root->set_text(obj->getOcrText());
                 root->set_isclickable(obj->isClickable());
                 root->set_isfocused(obj->isFocused());
@@ -123,7 +123,7 @@ void DumpObjectTreeCommand::traverse(::aurum::Element *root, std::shared_ptr<Nod
             else {
                 ::aurum::Element *elm = root->add_child();
                 elm->set_elementid(obj->getId());
-                elm->set_widget_type(obj->getType());
+                elm->set_widgettype(obj->getType());
                 elm->set_text(obj->getOcrText());
                 elm->set_isclickable(obj->isClickable());
                 elm->set_isfocused(obj->isFocused());
