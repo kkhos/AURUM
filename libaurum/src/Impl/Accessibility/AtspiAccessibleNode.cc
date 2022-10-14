@@ -146,12 +146,14 @@ void AtspiAccessibleNode::updateName()
 
 void AtspiAccessibleNode::updateToolkitName()
 {
-    AtspiWrapper::Atspi_accessible_clear_cache(mNode);
-
-    gchar *toolkitName = AtspiWrapper::Atspi_accessible_get_toolkit_name(mNode, NULL);
-    if (toolkitName) {
-        mToolkitName = toolkitName;
-        g_free(toolkitName);
+    AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(mNode, NULL);
+    if (app) {
+        gchar *toolkitName = AtspiWrapper::Atspi_accessible_get_toolkit_name(app, NULL);
+        if (toolkitName) {
+            mToolkitName = toolkitName;
+            g_free(toolkitName);
+        }
+        g_object_unref(app);
     }
 }
 
