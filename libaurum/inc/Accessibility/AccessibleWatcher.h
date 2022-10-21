@@ -24,6 +24,7 @@
 #include "IEventSource.h"
 #include "Runnable.h"
 #include "A11yEvent.h"
+#include "A11yEventHandler.h"
 #include "AurumXML.h"
 #include <atspi/atspi.h>
 
@@ -125,6 +126,18 @@ public:
      * @since_tizen 7.0
      */
     virtual std::map<std::string, std::shared_ptr<AurumXML>> getXMLDocMap(void) = 0;
+
+    /**
+     * @brief Register atspi event callback.
+     *
+     * @param[in] type @A11yEvent
+     * @param[in] cb @EventHandler
+     * @param[in] data @void pointer
+     *
+     * @return true if callback is registered, else false
+     * @since_tizen 7.0
+     */
+    virtual bool registerCallback(const A11yEvent type, EventHandler cb, void *data) = 0;
 
 public:
     /**

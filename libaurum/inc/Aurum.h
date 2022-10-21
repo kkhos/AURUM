@@ -61,6 +61,7 @@
 #include "PartialMatch.h"
 #include "Comparer.h"
 #include "A11yEvent.h"
+#include "A11yEventHandler.h"
 #include "Runnables.h"
 #ifdef MQTT_ENABLED
 #include "ScreenAnalyzerWatcher.h"
