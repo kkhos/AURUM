@@ -251,8 +251,28 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
         pkg = strdup("");
 
     mMutex.lock();
-    mEventQueue.push_back(std::make_shared<A11yEventInfo>(std::string(event->type), std::string(name), std::string(pkg)));
+    auto a11yEvent = std::make_shared<A11yEventInfo>(std::string(event->type), std::string(name), std::string(pkg));
+    mEventQueue.push_back(a11yEvent);
     mMutex.unlock();
+
+    if (instance->mHandlers.count(a11yEvent->getEvent())) {
+        auto list = instance->mHandlers[a11yEvent->getEvent()];
+
+        bool deleted = false;
+
+        auto it = list.begin();
+        while (it != list.end())
+        {
+            LOGI("Callback call type %s pkg %s", event->type, pkg);
+            auto handler = *it;
+            bool res = handler->operator()(std::string(pkg));
+            if (!res) {
+                it = list.erase(it);
+                deleted = true;
+            } else ++it;
+        }
+        if (deleted) instance->mHandlers[a11yEvent->getEvent()] = list;
+    }
 
     if (!strcmp(event->type, "object:state-changed:defunct")) {
          instance->onObjectDefunct(
@@ -416,4 +436,19 @@ bool AtspiAccessibleWatcher::addToWindowSet(AtspiAccessible *node)
         return true;
     }
     return false;
+}
+
+bool AtspiAccessibleWatcher::registerCallback(const A11yEvent type, EventHandler cb, void *data)
+{
+    auto handler = std::make_shared<A11yEventHandler>(type, cb, data);
+    if (mHandlers.count(type)) {
+        auto list = mHandlers[type];
+        list.push_back(handler);
+        mHandlers[type] = list;
+    } else {
+        std::list<std::shared_ptr<A11yEventHandler>> list;
+        list.push_back(handler);
+        mHandlers.insert(std::pair<const A11yEvent, std::list<std::shared_ptr<A11yEventHandler>>>(type, list));
+    }
+    return true;
 }

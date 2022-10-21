@@ -475,3 +475,8 @@ bool UiDevice::getWithScreenAnalyzer()
 {
     return mIsWithSA;
 }
+
+bool UiDevice::registerCallback(const A11yEvent type, EventHandler cb, void *data) const
+{
+    return AccessibleWatcher::getInstance()->registerCallback(type, cb, data);
+}
