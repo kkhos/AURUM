@@ -117,6 +117,11 @@ public:
      */
     virtual std::map<std::string, std::shared_ptr<AurumXML>> getXMLDocMap(void) override;
 
+    /**
+     * @copydoc @AccessibleWatcher::registerCallback()
+     */
+    virtual bool registerCallback(const A11yEvent type, EventHandler cb, void *data) override;
+
 public:
     /**
      * @brief Listen atspi events.
@@ -137,23 +142,12 @@ public:
      */
     void onObjectDefunct(AtspiAccessible *node) override;
 
-    /**
-     * @brief AtspiEvent listener.
-     *
-     * @param[in] event AtspiEvent
-     * @param[in] user_data data for event by user
-     *
-     * @since_tizen 6.5
-     */
-    static void onEventListener(AtspiEvent *event, void *user_data);
 private:
     /** Private methods for Mock Test **/
     bool removeFromActivatedList(AtspiAccessible *node);
     bool addToActivatedList(AtspiAccessible *node);
     bool removeFromWindowSet(AtspiAccessible *node);
     bool addToWindowSet(AtspiAccessible *node);
-    void addEventListener(AtspiEventListener *listener, A11yEvent type);
-    void removeEventListener(AtspiEventListener *listener, A11yEvent type);
     static gpointer eventThreadLoop(gpointer data);
     void appendApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg);
     void removeApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg);
@@ -171,6 +165,7 @@ private:
     static GMainLoop *mLoop;
     bool isTv;
     std::mutex XMLMutex;
+    std::map<const A11yEvent, std::list<std::shared_ptr<A11yEventHandler>>> mHandlers;
 };
 
 }
