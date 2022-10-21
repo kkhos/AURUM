@@ -72,3 +72,8 @@ bool MockAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const A
 {
     return true;
 }
+
+bool MockAccessibleWatcher::registerCallback(const A11yEvent type, EventHandler cb, void *data)
+{
+    return true;
+}
