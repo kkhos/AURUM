@@ -515,6 +515,15 @@ public:
     bool isVisible() const;
 
     /**
+     * @brief Gets object's highlightable property.
+     *
+     * @return true if highlightable else false
+     *
+     * @since_tizen 7.0
+     */
+    bool isHighlightable() const;
+
+    /**
      * @brief Performs a click action on object.
      *
      * @since_tizen 6.5

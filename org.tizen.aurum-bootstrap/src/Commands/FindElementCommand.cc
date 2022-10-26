@@ -70,6 +70,9 @@ std::shared_ptr<UiSelector> FindElementCommand::getSelector(void)
     if(mRequest->_xpath_case())            sel->xpath(mRequest->xpath());
     if(mRequest->_ocrtext_case())          sel->ocrText(mRequest->ocrtext());
     if(mRequest->_geometry_case())         sel->geometry(Rect<int>{mRequest->geometry().x(), mRequest->geometry().y(), mRequest->geometry().x() + mRequest->geometry().width(), mRequest->geometry().y() + mRequest->geometry().height()}, true);
+    if(mRequest->_isvisible_case())        sel->isVisible(mRequest->isvisible());
+    if(mRequest->_isselectable_case())     sel->isSelectable(mRequest->isselectable());
+    if(mRequest->_ishighlightable_case())  sel->isHighlightable(mRequest->ishighlightable());
 
     return sel;
 }
@@ -176,6 +179,7 @@ std::shared_ptr<UiSelector> FindElementCommand::getSelector(void)
             elm->set_isactive(obj->isActive());
             elm->set_isvisible(obj->isVisible());
             elm->set_isselectable(obj->isSelectable());
+            elm->set_ishighlightable(obj->isHighlightable());
 
             elm->set_minvalue(obj->getMinValue());
             elm->set_maxvalue(obj->getMaxValue());
