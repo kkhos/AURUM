@@ -246,6 +246,11 @@ bool AccessibleNode::isActive() const
     return hasFeatureProperty(NodeFeatureProperties::ACTIVE);
 }
 
+bool AccessibleNode::isHighlightable() const
+{
+    return hasFeatureProperty(NodeFeatureProperties::HIGHLIGHTABLE);
+}
+
 double AccessibleNode::getMinValue() const
 {
     return mMinValue;

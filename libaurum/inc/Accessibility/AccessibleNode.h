@@ -76,7 +76,8 @@ enum class NodeFeatureProperties {
     VISIBLE         = 0X0400,
     SHOWING         = 0X0800,
     ACTIVE          = 0X1000,
-    INVALID         = 0X2000,
+    HIGHLIGHTABLE   = 0X2000,
+    INVALID         = 0X4000,
 };
 
 /**
@@ -321,6 +322,11 @@ public:
      * @copydoc UiObject::isVisible()
      */
     bool isVisible() const;
+
+    /**
+     * @copydoc UiObject::isHighlightable()
+     */
+    bool isHighlightable() const;
 
 public:
     /**
