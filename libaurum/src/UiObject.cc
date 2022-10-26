@@ -315,6 +315,11 @@ bool UiObject::isActive() const
     return getAccessibleNode()->isActive();
 }
 
+bool UiObject::isHighlightable() const
+{
+    return getAccessibleNode()->isHighlightable();
+}
+
 void UiObject::refresh() const
 {
     mNode->refresh();
