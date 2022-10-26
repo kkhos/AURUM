@@ -77,6 +77,7 @@ void AurumXML::traverse(xml_node element, std::shared_ptr<AccessibleNode> node)
     element.append_attribute("active") = node->isActive();
     element.append_attribute("visible") = node->isVisible();
     element.append_attribute("selectable") = node->isSelectable();
+    element.append_attribute("highlightable") = node->isHighlightable();
 
     mXNodeMap[node->getId()] = node;
 

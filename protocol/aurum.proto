@@ -84,11 +84,12 @@ message Element {
    bool isActive = 23;
    bool isVisible = 24;
    bool isSelectable = 25;
+   bool isHighlightable = 26;
 
-   double minValue = 26;
-   double maxValue = 27;
-   double value = 28;
-   double increment = 29;
+   double minValue = 27;
+   double maxValue = 28;
+   double value = 29;
+   double increment = 30;
 }
 
 message Point {
@@ -170,6 +171,7 @@ message ReqFindElement {
    oneof _isactive {
       bool isActive = 15;
    }
+
    oneof _mindepth {
       int32 minDepth = 16;
    }
@@ -197,8 +199,19 @@ message ReqFindElement {
    oneof _geometry {
      Rect geometry = 22;
    }
+   oneof _isvisible {
+      bool isVisible = 23;
+   }
 
-   repeated ReqFindElement children = 23;
+   oneof _isselectable {
+      bool isSelectable = 24;
+   }
+
+   oneof _ishighlightable {
+      bool isHighlightable = 25;
+   }
+
+   repeated ReqFindElement children = 26;
 }
 
 message RspFindElement {
@@ -266,6 +279,7 @@ message ReqFindElements {
    oneof _isactive {
       bool isActive = 15;
    }
+
    oneof _mindepth {
       int32 minDepth = 16;
    }
@@ -291,10 +305,22 @@ message ReqFindElements {
    }
 
    oneof _geometry {
-     Rect geometry = 22;
+      Rect geometry = 22;
    }
 
-   repeated ReqFindElements children = 23;
+   oneof _isvisible {
+      bool isVisible = 23;
+   }
+
+   oneof _isselectable {
+      bool isSelectable = 24;
+   }
+
+   oneof _ishighlightable {
+      bool isHighlightable = 25;
+   }
+
+   repeated ReqFindElements children = 26;
 }
 
 message RspFindElements {

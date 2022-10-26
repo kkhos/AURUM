@@ -132,6 +132,7 @@ bool PartialMatch::checkCriteria(const std::shared_ptr<UiSelector> selector,
     if (selector->mMatchActive && checkCriteria(selector->mIsactive, node->isActive())) return false;
     if (selector->mMatchVisible && checkCriteria(selector->mIsvisible, node->isVisible())) return false;
     if (selector->mMatchSelectable && checkCriteria(selector->mIsselectable, node->isSelectable())) return false;
+    if (selector->mMatchHighlightable && checkCriteria(selector->mIshighlightable, node->isHighlightable())) return false;
 
     return true;
 }
