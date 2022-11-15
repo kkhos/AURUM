@@ -1,0 +1,10 @@
+{
+  "name": "helloworld-node",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "helloworld.js",
+  "dependencies": {
+    "@grpc/proto-loader": "^0.5.0",
+    "@grpc/grpc-js": "^1.1.0"
+  }
+}
