@@ -28,7 +28,7 @@ UiSelector::UiSelector()
   mMatchFocused{}, mMatchFocusable{}, mMatchScrollable{}, mMatchSelected{}, mMatchShowing{}, mMatchActive{}, mMatchVisible{},
   mMatchSelectable{}, mMatchHighlightable{}, mMinDepth{}, mMaxDepth{}, mIschecked{}, mIscheckable{}, mIsclickable{}, mIsenabled{},
   mIsfocused{}, mIsfocusable{}, mIsscrollable{}, mIsselected{}, mIsshowing{}, mIsactive{}, mIsvisible{},
-  mIsselectable{}, mIshighlightable{}, mChild{}, mParent{}, mGeometry{}, mGeometryIsEqual{}
+  mIsselectable{}, mIshighlightable{}, mGeometryIsEqual{}, mChild{}, mParent{}, mGeometry{}
 {
 }
 
