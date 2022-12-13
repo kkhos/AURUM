@@ -50,7 +50,7 @@ TakeScreenshotCommand::TakeScreenshotCommand(
     std::ifstream ifs(path, std::ifstream::binary);
     ::aurum::RspTakeScreenshot rsp;
     int size = mDevice->getScreenSize().width * mDevice->getScreenSize().height;
-    char *buf = (char *) calloc(size, sizeof(char));
+    char buf[size];
 
     while (!ifs.eof()) {
         ifs.read(buf, size);
