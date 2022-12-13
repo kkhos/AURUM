@@ -49,8 +49,9 @@ TakeScreenshotCommand::TakeScreenshotCommand(
 
     std::ifstream ifs(path, std::ifstream::binary);
     ::aurum::RspTakeScreenshot rsp;
-    int size = mDevice->getScreenSize().width * mDevice->getScreenSize().height;
-    char *buf = (char *) calloc(size, sizeof(char));
+    const Size2D<int> screenSize = mDevice->getScreenSize();
+    int size = screenSize.width * screenSize.height;
+    char *buf = new char[size];
 
     while (!ifs.eof()) {
         ifs.read(buf, size);
@@ -58,6 +59,7 @@ TakeScreenshotCommand::TakeScreenshotCommand(
         mWriter->Write(rsp);
     }
     ifs.close();
+    delete[] buf;
 
     return grpc::Status::OK;
 }
