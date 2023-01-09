@@ -18,6 +18,9 @@ If objects that satisfies a specific condition are searched on the screen and fo
     <li class="nav-item remove" style="display:none">
     <a class="nav-link" data-toggle="tab" id="java-tab" data-target="#java-tab-pane">Java</a>
     </li>
+    <li class="nav-item remove">
+    <a class="nav-link" data-toggle="tab" id="grpc-tab" data-target="#grpc-tab-pane">CsharpGrpc</a>
+    </li>
 </ul>
 <div class="tab-content">
     <div class="tab-pane fade active" id="python-tab-pane">
@@ -43,6 +46,15 @@ stub.findElements({ isClickable: true }, (err, response) => {
     </div>
     <div class="tab-pane fade" id="java-tab-pane">
     
+    </div>
+    <div class="tab-pane fade" id="grpc-tab-pane">
+{% capture code %}
+{% highlight csharp linenos %}
+var response = client.findElements(new ReqFindElements{ IsClickable = true, });
+{% endhighlight %}
+{% endcapture %}
+{% include fix_linenos.html code=code %}
+{% assign code = nil %}
     </div>
 </div>
 
