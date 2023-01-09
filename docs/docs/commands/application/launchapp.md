@@ -13,10 +13,13 @@ Launch application
     <a class="nav-link active" data-toggle="tab" id="python-tab" data-target="#python-tab-pane">Python</a>
     </li>
     <li class="nav-item remove">
-    <a class="nav-link" data-toggle="tab" id="js-tab" data-target="#js-tab-pane">Node</a>
+    <a class="nav-link" data-toggle="tab" id="js-tab" data-target="#js-tab-pane">Javascript</a>
     </li>
-    <li class="nav-item remove" style="display:none">
+    <li class="nav-item remove">
     <a class="nav-link" data-toggle="tab" id="java-tab" data-target="#java-tab-pane">Java</a>
+    </li>
+    <li class="nav-item remove">
+    <a class="nav-link" data-toggle="tab" id="grpc-tab" data-target="#grpc-tab-pane">CsharpGrpc</a>
     </li>
 </ul>
 <div class="tab-content">
@@ -49,6 +52,16 @@ stub.launchApp({ packageName : 'packageName' }, (err, response) => {
 {% endcapture %}
 {% include fix_linenos.html code=code %}
 {% assign code = nil %} 
+    </div>
+    <div class="tab-pane fade" id="grpc-tab-pane">
+{% capture code %}
+{% highlight csharp linenos %}
+String packageName = "packageName";
+var response = client.launchApp(new ReqLaunchApp{PackageName = packageName});
+{% endhighlight %}
+{% endcapture %}
+{% include fix_linenos.html code=code %}
+{% assign code = nil %}
     </div>
 </div>
 
