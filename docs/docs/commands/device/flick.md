@@ -12,11 +12,14 @@ Generate flick event
     <li class="nav-item remove active">
     <a class="nav-link active" data-toggle="tab" id="python-tab" data-target="#python-tab-pane">Python</a>
     </li>
-    <li class="nav-item remove">
+   <li class="nav-item remove">
     <a class="nav-link" data-toggle="tab" id="js-tab" data-target="#js-tab-pane">Node</a>
     </li>
     <li class="nav-item remove" style="display:none">
     <a class="nav-link" data-toggle="tab" id="java-tab" data-target="#java-tab-pane">Java</a>
+    </li>
+    <li class="nav-item remove">
+    <a class="nav-link" data-toggle="tab" id="grpc-tab" data-target="#grpc-tab-pane">C#</a>
     </li>
 </ul>
 <div class="tab-content">
@@ -43,6 +46,15 @@ stub.flick({ startPoint: { x: 100, y: 500 }, endPoint: { x: 100, y: 100 } }, (er
     </div>
     <div class="tab-pane fade" id="java-tab-pane">
     
+    </div>
+    <div class="tab-pane fade" id="grpc-tab-pane">
+{% capture code %}
+{% highlight csharp linenos %}
+var response = client.flick(new ReqFlick{ StartPoint = new Point{ X = 10, Y = 500 }, EndPoint = new Point{ X = 10, Y = 200 }, DurationMs = 150 });
+{% endhighlight %}
+{% endcapture %}
+{% include fix_linenos.html code=code %}
+{% assign code = nil %}
     </div>
 </div>
 
