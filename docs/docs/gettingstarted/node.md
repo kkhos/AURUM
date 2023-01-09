@@ -21,13 +21,13 @@ $ git clone -b tizen git://git.tizen.org/platform/core/uifw/aurum
 # Navigate to the Node example:
 $ cd aurum/examples/node
 # Install the example's dependencies
-$ npm install   
+$ npm install
 ```
 
 ## Download the aurum.proto
 From the examples/node directory:
 ```bash
-$ curl -L -O https://github.sec.samsung.net/pages/tizen/aurum/protocol/aurum.proto  
+$ curl -L -O https://github.sec.samsung.net/pages/tizen/aurum/protocol/aurum.proto
 ```
 
 ## Connect to target
