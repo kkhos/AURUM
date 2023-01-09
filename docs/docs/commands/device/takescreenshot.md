@@ -18,6 +18,9 @@ Take screenshot
     <li class="nav-item remove" style="display:none">
     <a class="nav-link" data-toggle="tab" id="java-tab" data-target="#java-tab-pane">Java</a>
     </li>
+    <li class="nav-item remove">
+    <a class="nav-link" data-toggle="tab" id="grpc-tab" data-target="#grpc-tab-pane">C#</a>
+    </li>
 </ul>
 <div class="tab-content">
     <div class="tab-pane fade active" id="python-tab-pane">
@@ -50,6 +53,21 @@ result.on('data', (response) => {
     </div>
     <div class="tab-pane fade" id="java-tab-pane">
     
+    </div>
+    <div class="tab-pane fade" id="grpc-tab-pane">
+{% capture code %}
+{% highlight csharp linenos %}
+String path = "screenshot.png";
+FileStream fs = File.Create(path);
+while(await responses.ResponseStream.MoveNext())
+{
+    var response = responses.ResponseStream.Current;
+    fs.Write(response.Image.ToByteArray());
+}
+{% endhighlight %}
+{% endcapture %}
+{% include fix_linenos.html code=code %}
+{% assign code = nil %}
     </div>
 </div>
 
