@@ -18,13 +18,16 @@ Generate click event
     <li class="nav-item remove" style="display:none">
     <a class="nav-link" data-toggle="tab" id="java-tab" data-target="#java-tab-pane">Java</a>
     </li>
+    <li class="nav-item remove">
+    <a class="nav-link" data-toggle="tab" id="grpc-tab" data-target="#grpc-tab-pane">C#</a>
+    </li>
 </ul>
 <div class="tab-content">
     <div class="tab-pane fade active" id="python-tab-pane">
 {% capture code %}
 {% highlight python linenos %}
-  element = stub.findElement(ReqFindElement(maxDepth = 1, isShowing = True))   
-  response = stub.dumpObjectTree(ReqDumpObjectTree(elementId = element.element.elementId))           
+  element = stub.findElement(ReqFindElement(maxDepth = 1, isShowing = True))
+  response = stub.dumpObjectTree(ReqDumpObjectTree(elementId = element.element.elementId))
 {% endhighlight %}
 {% endcapture %}
 {% include fix_linenos.html code=code %}
@@ -50,7 +53,17 @@ stub.findElement({ maxDepth: 1, isShowing: true }, (err, element) => {
 {% assign code = nil %}
     </div>
     <div class="tab-pane fade" id="java-tab-pane">
-    
+
+    </div>
+    <div class="tab-pane fade" id="grpc-tab-pane">
+{% capture code %}
+{% highlight csharp linenos %}
+var element = client.findElement(new ReqFindElement { MaxDepth = 1, IsShowing = true });
+var response = client.dumpObjectTree(new ReqDumpObjectTree{ ElementId = element.Element.ElementId });
+{% endhighlight %}
+{% endcapture %}
+{% include fix_linenos.html code=code %}
+{% assign code = nil %}
     </div>
 </div>
 

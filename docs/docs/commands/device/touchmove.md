@@ -18,6 +18,9 @@ Generate touch move event
     <li class="nav-item remove" style="display:none">
     <a class="nav-link" data-toggle="tab" id="java-tab" data-target="#java-tab-pane">Java</a>
     </li>
+    <li class="nav-item remove">
+    <a class="nav-link" data-toggle="tab" id="grpc-tab" data-target="#grpc-tab-pane">C#</a>
+    </li>
 </ul>
 <div class="tab-content">
     <div class="tab-pane fade active" id="python-tab-pane">
@@ -50,7 +53,17 @@ stub.touchDown({ coordination: { x: 100, y: 100 } }, (err, response) => {
 {% assign code = nil %}
     </div>
     <div class="tab-pane fade" id="java-tab-pane">
-    
+
+    </div>
+    <div class="tab-pane fade" id="grpc-tab-pane">
+{% capture code %}
+{% highlight csharp linenos %}
+var response = client.touchDown(new ReqTouchDown{ Coordination = new Point{ X = 100, Y = 100 } });
+var response2 = client.touchMove(new ReqTouchMove{ SeqId = response.SeqId, Coordination = new Point{ X = 100, Y = 500 } });
+{% endhighlight %}
+{% endcapture %}
+{% include fix_linenos.html code=code %}
+{% assign code = nil %}
     </div>
 </div>
 
