@@ -27,7 +27,7 @@ $ npm install
 ## Download the aurum.proto
 From the examples/node directory:
 ```bash
-$ curl -L -O https://github.sec.samsung.net/pages/tizen/aurum/protocol/aurum.proto   
+$ curl -L -O https://github.sec.samsung.net/pages/tizen/aurum/protocol/aurum.proto
 ```
 
 ## What’s next

@@ -41,7 +41,7 @@ $ cd aurum/examples/python
 ## Generate gRPC code from aurum.proto
 From the examples/python directory:
 ```bash
-$ curl -L -O https://github.sec.samsung.net/pages/tizen/aurum/protocol/aurum.proto  
+$ curl -L -O https://github.sec.samsung.net/pages/tizen/aurum/protocol/aurum.proto
 $ python3 -m grpc_tools.protoc --python_out=. --grpc_python_out=. --proto_path=. aurum.proto
 ```
 
