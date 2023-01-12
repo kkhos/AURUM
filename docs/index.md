@@ -17,7 +17,7 @@ Aurum is a UI automation framework without UI Toolkit dependency.
 Get started now!
 {: .fs-6 .fw-300 }
 
-[Python](/tizen/aurum/docs/gettingstarted/python){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 } [Node](/tizen/aurum/docs/gettingstarted/node){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 } [C#](/tizen/aurum/docs/gettingstarted/C#){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
+[Python](/tizen/aurum/docs/gettingstarted/python){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 } [Node](/tizen/aurum/docs/gettingstarted/node){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 } [C#](/tizen/aurum/docs/gettingstarted/C%23){: .btn .btn-primary .fs-5 .mb-4 .mb-md-0 .mr-2 }
 ---
 
 ### License
