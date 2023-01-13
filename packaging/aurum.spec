@@ -40,10 +40,6 @@ BuildRequires: pkgconfig(jsoncpp)
 BuildRequires:  doxygen
 %endif
 
-%if 0%{?gcov:1}
-BuildRequires:  lcov
-%endif
-
 BuildRequires:  hash-signer
 %if 0%{?sec_product_feature_profile_wearable}
 Requires(post): signing-client
@@ -79,14 +75,6 @@ Requires: libgrpc
 documentations for aurum
 %endif
 
-%if 0%{?gcov:1}
-%package gcov
-Summary:    Aurum - Ui Automation (gcov)
-Group:      Graphics & UI Framework/Testing
-%description gcov
-Ui Automation Library Aurum gcov objects
-%endif
-
 %prep
 %setup -q
 cp %{SOURCE1001} .
@@ -95,16 +83,6 @@ cp %{SOURCE1001} .
 %restore_fcommon
 %else
 export LDFLAGS+="-Wl,-z,noexecstack"
-%endif
-
-%if 0%{?gcov:1}
-export CFLAGS+=" -fprofile-arcs -ftest-coverage "
-export CXXFLAGS+=" -fprofile-arcs -ftest-coverage "
-export FFLAGS+=" -fprofile-arcs -ftest-coverage"
-export LDFLAGS+=" -lgcov"
-%define TIZEN_GCOV true
-%else
-%define TIZEN_GCOV false
 %endif
 
 %if 0%{?gendoc:1}
@@ -126,7 +104,6 @@ meson \
     -Dtizen=true \
     -Denable_documentation=%{TIZEN_GEN_DOC} \
     -Dmqtt_enabled=%{MQTT_ENABLED} \
-    -Dtizen_gcov=%{TIZEN_GCOV} \
     -Dtzapp_path=%{TZ_SYS_RO_APP} \
     -Dtzpackage_path=%{TZ_SYS_RO_PACKAGES} \
     gbsbuild 2>&1 | sed \
@@ -143,11 +120,6 @@ ninja \
         -e 's%^.*: error: .*$%\x1b[37;41m&\x1b[m%' \
         -e 's%^.*: warning: .*$%\x1b[30;43m&\x1b[m%'
 
-%if 0%{?gcov:1}
-  mkdir -p gcov-obj
-  find . -name '*.gcno' -exec cp '{}' gcov-obj ';'
-%endif
-
 #Enable below test if needed
 #meson test \
 #    -C gbsbuild \
@@ -163,11 +135,6 @@ ninja \
 
 export DESTDIR=%{buildroot}
 ninja -C gbsbuild install
-
-%if 0%{?gcov:1}
-mkdir -p %{buildroot}%{_datadir}/gcov/obj
-install -m 0644 gcov-obj/* %{buildroot}%{_datadir}/gcov/obj
-%endif
 
 %post
 sbin/ldconfig
@@ -216,10 +183,4 @@ tpk-backend -y org.tizen.aurum-bootstrap --preload
 %defattr(-,root,root)
 %license COPYING
 %{_datadir}/doc/aurum/
-%endif
-
-%if 0%{?gcov:1}
-%files gcov
-%{_datadir}/gcov/obj/*
-%{_bindir}/test_*
 %endif
