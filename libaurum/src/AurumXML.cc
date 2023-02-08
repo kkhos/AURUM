@@ -174,29 +174,58 @@ std::string makeQuery(std::string id)
     return query;
 }
 
-xml_node AurumXML::checkNode(std::string id)
+std::shared_ptr<AccessibleNode> AurumXML::checkParentNode(std::shared_ptr<AccessibleNode> node)
 {
-    xml_node node;
-    try {
-        std::string query = makeQuery(id);
-        node = mDoc->select_node(query.c_str()).node();
+    auto parent = node->getParent();
+    if (!parent) return nullptr;
 
-        if (!node) {
-            createXMLtree();
-            node = mDoc->select_node(query.c_str()).node();
+    std::string query = makeQuery(node->getId());
+    xml_node xmlNode = mDoc->select_node(query.c_str()).node();
+
+    if (xmlNode) {
+        int childCnt = parent->getChildCount();
+        for (int i = 0; i < childCnt; i++) {
+            std::shared_ptr<AccessibleNode> childNode = parent->getChildAt(i);
+            if (childNode->getRawHandler() == nullptr) continue;
+
+            xml_node childElement = xmlNode.append_child("");
+            traverse(childElement, childNode);
+        }
+        return parent;
+    }
+
+    return checkParentNode(parent);
+}
+
+xml_node AurumXML::checkNode(std::shared_ptr<AccessibleNode> node)
+{
+    xml_node xmlNode;
+
+    try {
+        std::string query = makeQuery(node->getId());
+        xmlNode = mDoc->select_node(query.c_str()).node();
+
+        if (!xmlNode) {
+            // 1. find parent and check node again
+            auto parent = checkParentNode(node);
+
+            // 2. clear tree and create tree again
+            if (!parent) createXMLtree();
+
+            xmlNode = mDoc->select_node(query.c_str()).node();
         }
     } catch (const xpath_exception &e) {
         LOGI("getXPath Error: %s", e.what());
     }
-    return node;
+    return xmlNode;
 }
 
-std::string AurumXML::getXPath(std::string id)
+std::string AurumXML::getXPath(std::shared_ptr<AccessibleNode> node)
 {
-    xml_node node = checkNode(id);
+    xml_node xmlNode = checkNode(node);
 
-    if (node) {
-        std::string xpath = getOptimalXPath(mDoc, node);
+    if (xmlNode) {
+        std::string xpath = getOptimalXPath(mDoc, xmlNode);
         return xpath;
     }
 

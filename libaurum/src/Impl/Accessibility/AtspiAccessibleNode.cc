@@ -250,7 +250,7 @@ void AtspiAccessibleNode::updateXPath()
 
     auto XMLDoc = XMLDocMap[mPkg];
 
-    mXPath = XMLDoc->getXPath(mId);
+    mXPath = XMLDoc->getXPath(std::make_shared<AtspiAccessibleNode>(mNode));
 }
 
 void AtspiAccessibleNode::updateValue()
