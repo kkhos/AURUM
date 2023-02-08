@@ -66,13 +66,13 @@ public:
     /**
      * @brief Gets a XPath from specific id.
      *
-     * @param id
+     * @param node AccessibleNode
      *
      * @return XPath
      *
      * @since_tizen 7.0
      */
-    std::string getXPath(std::string id);
+    std::string getXPath(std::shared_ptr<AccessibleNode> node);
 
     /**
      * @brief Finds that objects that satisfied with the xpath in the object tree.
@@ -119,13 +119,26 @@ private:
      *
      * @brief Check xml_node exists or not
      *
-     * @param string id
+     * @param node AccessibleNode
      *
      * @return xml_node
      *
      * @since_tizen 7.0
      */
-    xml_node checkNode(std::string id);
+    xml_node checkNode(std::shared_ptr<AccessibleNode> node);
+
+    /**
+     * @internal
+     *
+     * @brief Check parent's xml_node exists or not
+     *
+     * @param node AccessibleNode
+     *
+     * @return AccessibleNode
+     *
+     * @since_tizen 7.5
+     */    
+    std::shared_ptr<AccessibleNode> checkParentNode(std::shared_ptr<AccessibleNode> node);
 
 private:
     xml_document                                *mDoc;
