@@ -146,6 +146,8 @@ std::vector<std::shared_ptr<UiSelector>> FindElementsCommand::getSelectors(void)
             std::move(std::begin(ret), std::end(ret), std::back_inserter(founds));
         }
 
+        if (waiter) delete waiter;
+
         if (founds.size() > 0) {
             for (auto& found : founds) {
                 UiObject *obj = found.get();
