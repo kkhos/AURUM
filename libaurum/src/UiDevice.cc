@@ -40,6 +40,7 @@ using namespace AurumInternal;
 #define WM_METHOD_NAME_INFO "GetVisibleWinInfo_v2"
 
 std::vector<std::shared_ptr<TizenWindow>> UiDevice::mTizenWindows;
+std::once_flag UiDevice::mOnceFlag;
 static GDBusConnection *system_conn;
 
 #ifdef MQTT_ENABLED
@@ -68,19 +69,17 @@ UiDevice::~UiDevice()
 std::shared_ptr<UiDevice> UiDevice::getInstance(IDevice *deviceImpl)
 {
     static std::shared_ptr<UiDevice> device{nullptr};
-
-    if (deviceImpl) {
-        device.reset(new UiDevice(deviceImpl));
-    } else {
-        if (device) return device;
-        else {
+    std::call_once(mOnceFlag, [deviceImpl] {
+        if (deviceImpl) {
+            device.reset(new UiDevice(deviceImpl));
+        } else {
 #ifdef TIZEN
             device.reset(new UiDevice(new TizenDeviceImpl()));
 #else
             device.reset(new UiDevice(new MockDeviceImpl()));
 #endif
         }
-    }
+    });
 
     return device;
 }

@@ -505,6 +505,7 @@ private:
 #ifdef MQTT_ENABLED
     static std::shared_ptr<ScreenAnalyzerWatcher> mSAWatcher;
 #endif
+    static std::once_flag mOnceFlag;
 };
 
 }
