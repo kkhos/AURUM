@@ -91,7 +91,6 @@ int TizenDeviceImpl::touchDown(const int x, const int y)
          TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
          long result = (long)efl_util_input_generate_touch(obj->mFakeTouchHandle, seq, EFL_UTIL_INPUT_TOUCH_BEGIN,
                                                            x, y);
-
          if (result != EFL_UTIL_ERROR_NONE) {
               releaseTouchSeqNumber(seq);
               return -1;

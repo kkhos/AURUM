@@ -35,7 +35,7 @@ LaunchAppCommand::LaunchAppCommand(const ::aurum::ReqLaunchApp *request,
     LOGI("LaunchApp --------------- ");
     std::unique_ptr<LaunchAppRunnable> cmd = std::make_unique<LaunchAppRunnable>(mRequest->packagename(), mRequest->data());
     std::shared_ptr<UiDevice> obj = UiDevice::getInstance();
-    obj->executeAndWaitForEvents(cmd.get(), A11yEvent::EVENT_WINDOW_ACTIVATE, WAIT_APP_LAUNCH, mRequest->packagename());
+    obj->executeAndWaitForEvents(cmd.get(), A11yEvent::EVENT_WINDOW_ACTIVATE, WAIT_APP_LAUNCH, mRequest->packagename(), NULL);
 
     return grpc::Status::OK;
 }

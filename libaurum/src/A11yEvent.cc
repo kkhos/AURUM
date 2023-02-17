@@ -51,6 +51,7 @@ static std::unordered_map<std::string,A11yEvent> const table = { {"window:create
 																 {"window:lower", A11yEvent::EVENT_WINDOW_LOWER},
 																 {"window:resize", A11yEvent::EVENT_WINDOW_RESIZE},
 																 {"window:move", A11yEvent::EVENT_WINDOW_MOVE},
+																 {"window:renderpost", A11yEvent::EVENT_WINDOW_RENDER_POST},
 																 {"object:text-changed:insert", A11yEvent::EVENT_TEXT_CHANGED_INSERT},
 																 {"object:text-changed:delete", A11yEvent::EVENT_TEXT_CHANGED_DELETE},
 																 {"object:state-changed:VISIBLE", A11yEvent::EVENT_STATE_CHANGED_VISIBLE},
