@@ -225,3 +225,8 @@ AtspiRect *AtspiWrapper::Atspi_text_get_minimum_bounding_rectangles(AtspiText* o
     return atspi_text_get_range_extents(obj, start_offset, end_offset, type, error);
 }
 
+void AtspiWrapper::Atspi_accessible_set_listen_render_post(AtspiAccessible *obj, gboolean enabled, GError **error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    atspi_accessible_set_listen_render_post(obj, enabled, error);
+}

@@ -365,13 +365,15 @@ public:
      * @param[in] type one of @A11yEvent
      * @param[in] timeout time(millisecond) to wait event occur
      * @param[in] packageName package name that event occurs
+     * @param[in] obj @AccessibleNode
+     * @param[in] count count of render post evnet
      *
      * @return true if event happened in time, otherwise false
      *
      * @since_tizen 6.5
      */
     bool executeAndWaitForEvents(
-        const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName) const;
+        const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName, std::shared_ptr<AccessibleNode> obj, const int count) const;
 
 /**
      * @brief Register atspi event callback.

@@ -104,12 +104,14 @@ public:
      * @param[in] cmd @Runnable
      * @param[in] type @A11yEvent
      * @param[in] timeout time(millisecond) to wait event occur
+     * @param[in] obj @AccessibleNode
+     * @param[in] count count of render post evnet
      *
      * @return true if event occur in time, else false
      *
      * @since_tizen 6.5
      */
-    virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName) = 0;
+    virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName, std::shared_ptr<AccessibleNode> obj, const int count) = 0;
 
     /**
      * @brief Gets active application map.

@@ -53,6 +53,19 @@ enum class WindowActivateInfoType {
 /**
  * @internal
  *
+ * @brief Idle event state enum class.
+ *
+ * @since_tizen 6.5
+ */
+enum class IdleEventState {
+    IDLE_LISTEN_START = 0x00,
+    IDLE_LISTEN_READY = 0x01,
+    IDLE_LISTEN_DONE = 0x02,
+};
+
+/**
+ * @internal
+ *
  * @brief IAtspiEvents Interface
  * @since_tizen 6.5
  */
@@ -105,7 +118,7 @@ public:
     /**
      * @copydoc @AccessibleWatcher::executeAndWaitForEvents()
      */
-    virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName) override;
+    virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName, std::shared_ptr<AccessibleNode> obj, const int count)  override;
 
     /**
      * @copydoc @AccessibleWatcher::getActiveAppMap()
@@ -149,6 +162,7 @@ private:
     bool removeFromWindowSet(AtspiAccessible *node);
     bool addToWindowSet(AtspiAccessible *node);
     static gpointer eventThreadLoop(gpointer data);
+    static gpointer timerThread(gpointer data);
     void appendApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg);
     void removeApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg);
 
@@ -166,6 +180,10 @@ private:
     bool isTv;
     std::mutex XMLMutex;
     std::map<const A11yEvent, std::list<std::shared_ptr<A11yEventHandler>>> mHandlers;
+    static GThread *mTimerThread;
+    static gint64 mStartTime;
+    static IdleEventState isIdle;
+    static int mRenderCount;
 };
 
 }
