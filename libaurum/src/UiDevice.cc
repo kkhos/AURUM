@@ -285,20 +285,24 @@ bool UiDevice::waitForIdle() const
 bool UiDevice::waitForEvents(
     const A11yEvent type, const int timeout) const
 {
-    return executeAndWaitForEvents(NULL, type, timeout, std::string());
+    return executeAndWaitForEvents(NULL, type, timeout, std::string(), 0);
 }
 
-bool UiDevice::executeAndWaitForEvents(
-    const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName) const
+//FIXME: obj only need for idle event
+bool UiDevice::executeAndWaitForEvents
+    (const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName, const int count)  const
 {
-    return AccessibleWatcher::getInstance()->executeAndWaitForEvents(cmd, type, timeout, packageName);
+    //FIXME: Need to get top window
+    auto wins = this->getWindowRoot();
+
+    return AccessibleWatcher::getInstance()->executeAndWaitForEvents(cmd, type, timeout, packageName, wins[0], count);
 }
 
 bool UiDevice::sendKeyAndWaitForEvents(
     const std::string keycode, const A11yEvent type, const int timeout) const
 {
     std::unique_ptr<SendKeyRunnable> cmd = std::make_unique<SendKeyRunnable>(keycode);
-    return executeAndWaitForEvents(cmd.get(), type, timeout, std::string());
+    return executeAndWaitForEvents(cmd.get(), type, timeout, std::string(), 0);
 }
 
 bool UiDevice::click(const int x, const int y)
