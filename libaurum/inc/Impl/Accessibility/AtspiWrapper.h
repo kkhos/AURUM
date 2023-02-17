@@ -69,6 +69,7 @@ public:
     static guint Atspi_accessible_get_process_id(AtspiAccessible *node, GError **error);
     static gchar *Atspi_accessible_get_toolkit_name(AtspiAccessible *node, GError **error);
     static AtspiRect *Atspi_text_get_minimum_bounding_rectangles(AtspiText* obj, gint start_offset, gint end_offset, AtspiCoordType type, GError** error);
+    static void Atspi_accessible_set_listen_render_post(AtspiAccessible *obj, gboolean enabled, GError **error);
 
 private:
     static std::recursive_mutex mMutex;
