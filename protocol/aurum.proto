@@ -590,6 +590,7 @@ message ReqActionAndWaitEvent {
       EVENT_WINDOW_ACTIVATE = 0;
       EVENT_WINDOW_DEACTIVATE = 1;
       EVENT_STATE_CHANGED_FOCUSED = 2;
+      EVENT_WINDOW_IDLE = 3;
    }
    ActionType type = 1;
    oneof params {
@@ -599,6 +600,7 @@ message ReqActionAndWaitEvent {
    EventType eventType = 4;
    int32 timeoutMs = 5;
    string packageName = 6;
+   int32 count = 7;
 }
 
 message RspActionAndWaitEvent {
