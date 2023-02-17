@@ -34,6 +34,8 @@ A11yEvent convertEventType(const ::aurum::ReqActionAndWaitEvent_EventType type)
         return A11yEvent::EVENT_WINDOW_ACTIVATE;
     else if (type == ::aurum::ReqActionAndWaitEvent_EventType::ReqActionAndWaitEvent_EventType_EVENT_WINDOW_DEACTIVATE)
         return A11yEvent::EVENT_WINDOW_DEACTIVATE;
+    else if (type == ::aurum::ReqActionAndWaitEvent_EventType::ReqActionAndWaitEvent_EventType_EVENT_WINDOW_IDLE)
+        return A11yEvent::EVENT_WINDOW_RENDER_POST;
     else
         return A11yEvent::EVENT_STATE_CHANGED_FOCUSED;
 }
@@ -44,7 +46,8 @@ A11yEvent convertEventType(const ::aurum::ReqActionAndWaitEvent_EventType type)
     std::unique_ptr<ActionAndWaitEventRunnable> cmd = std::make_unique<ActionAndWaitEventRunnable>(
                                                       mRequest->type(), mRequest->elementid(), mRequest->xf86keycode());
     std::shared_ptr<UiDevice> obj = UiDevice::getInstance();
-    bool ret = obj->executeAndWaitForEvents(cmd.get(), convertEventType(mRequest->eventtype()), mRequest->timeoutms(), mRequest->packagename());
+    //FIXME: Separation of params according to event type
+    bool ret = obj->executeAndWaitForEvents(cmd.get(), convertEventType(mRequest->eventtype()), mRequest->timeoutms(), mRequest->packagename(), mRequest->count());
 
     if (ret) mResponse->set_status(::aurum::RspStatus::OK);
     else mResponse->set_status(::aurum::RspStatus::ERROR);
