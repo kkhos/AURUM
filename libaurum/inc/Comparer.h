@@ -50,7 +50,7 @@ private:
      *
      * @since_tizen 6.5
      */
-    Comparer(const std::shared_ptr<UiDevice> device, const std::shared_ptr<UiSelector> selector,
+    Comparer(const std::shared_ptr<UiDevice>& device, const std::shared_ptr<UiSelector> selector,
              const bool &earlyReturn);
 
     /**
@@ -73,9 +73,9 @@ public:
      *
      * @since_tizen 6.5
      */
-    static std::shared_ptr<AccessibleNode> findObject(const std::shared_ptr<UiDevice> device,
+    static std::shared_ptr<AccessibleNode> findObject(const std::shared_ptr<UiDevice>& device,
                                                       const std::shared_ptr<UiSelector> selector,
-                                                      const std::shared_ptr<AccessibleNode> root);
+                                                      const std::shared_ptr<AccessibleNode>& root);
 
     /**
      * @brief find object from device.
@@ -92,8 +92,8 @@ public:
      * @since_tizen 6.5
      */
     static std::vector<std::shared_ptr<AccessibleNode>> findObjects(
-        const std::shared_ptr<UiDevice> device, const std::shared_ptr<UiSelector> selector,
-        const std::shared_ptr<AccessibleNode> root, bool earlyReturn = false);
+        const std::shared_ptr<UiDevice>& device, const std::shared_ptr<UiSelector> selector,
+        const std::shared_ptr<AccessibleNode>& root, bool earlyReturn = false);
 
 private:
     /**
@@ -105,7 +105,7 @@ private:
      *
      * @since_tizen 6.5
      */
-    std::vector<std::shared_ptr<AccessibleNode>> findObjects(const std::shared_ptr<AccessibleNode> root);
+    std::vector<std::shared_ptr<AccessibleNode>> findObjects(const std::shared_ptr<AccessibleNode>& root);
 
     /**
      * @internal
@@ -120,11 +120,11 @@ private:
      * @since_tizen 6.5
      */
     std::vector<std::shared_ptr<AccessibleNode>> findObjects(
-        const std::shared_ptr<AccessibleNode> root, const int &index, const int &depth,
+        const std::shared_ptr<AccessibleNode>& root, const int &index, const int &depth,
         std::list<std::shared_ptr<PartialMatch>> &partialMatches);
 
 private:
-    const std::shared_ptr<UiDevice> mDevice;
+    const std::shared_ptr<UiDevice>& mDevice;
     const std::shared_ptr<UiSelector> mSelector;
     bool mEarlyReturn;
 };
