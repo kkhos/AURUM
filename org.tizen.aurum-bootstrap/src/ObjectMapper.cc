@@ -33,13 +33,13 @@ ObjectMapper *ObjectMapper::getInstance()
 
 std::string ObjectMapper::addElement(std::shared_ptr<UiObject> object)
 {
-    std::string value = object->getId();
+    const std::string value = object->getId();
     mObjectMap[value] = object;
     LOGI("addElement %p, id %s", object.get(), value.c_str());
     return value;
 }
 
-std::shared_ptr<UiObject> ObjectMapper::getElement(std::string elementId)
+std::shared_ptr<UiObject> ObjectMapper::getElement(const std::string& elementId)
 {
     LOGI("getElement for elementId(%s)", elementId.c_str());
 
@@ -56,7 +56,7 @@ std::shared_ptr<UiObject> ObjectMapper::getElement(std::string elementId)
     }
 }
 
-bool ObjectMapper::removeElement(const std::string elementId)
+bool ObjectMapper::removeElement(const std::string& elementId)
 {
     LOGI("removeElement for Id(%s)", elementId.c_str());
     std::shared_ptr<UiObject> obj = getElement(elementId);
