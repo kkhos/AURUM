@@ -30,6 +30,7 @@
 #include <algorithm>
 #include <iostream>
 #include <gio/gio.h>
+#include <unordered_set>
 
 using namespace Aurum;
 using namespace AurumInternal;
@@ -188,11 +189,11 @@ out:
 
 std::vector<std::shared_ptr<AccessibleNode>> UiDevice::getWindowRoot() const
 {
-    bool dup;
     LOGI("Request window info");
     getTizenWindowInfo();
 
     std::vector<std::shared_ptr<AccessibleNode>> ret{};
+    std::unordered_map<int, std::shared_ptr<AccessibleApplication>> pidToAppNode{};
 
     auto apps = AccessibleWatcher::getInstance()->getApplications();
     for (auto app : apps)
@@ -200,6 +201,7 @@ std::vector<std::shared_ptr<AccessibleNode>> UiDevice::getWindowRoot() const
         app->getAccessibleNode()->updateName();
         app->getAccessibleNode()->updatePid();
         LOGI("App(%s) Pid(%d)", app->getPackageName().c_str(), app->getAccessibleNode()->getPid());
+        pidToAppNode[app->getAccessibleNode()->getPid()] = app;
     }
 
     for (auto tWin : mTizenWindows)
@@ -207,35 +209,18 @@ std::vector<std::shared_ptr<AccessibleNode>> UiDevice::getWindowRoot() const
         LOGI("Visible win (%d) (%d %d %d %d) (%s)", tWin->getPid(), tWin->getWindowGeometry().mTopLeft.x, tWin->getWindowGeometry().mTopLeft.y, tWin->getWindowGeometry().width(),
             tWin->getWindowGeometry().height(), tWin->getName().c_str());
 
-        for (auto app : apps)
-        {
-            dup = false;
-            if (app->getAccessibleNode()->getPid() == tWin->getPid())
-            {
-                for (const auto &retWin : ret)
-                {
-                    retWin->updatePid();
-                    LOGI("Pid Dup check in vector (%d) target (%d)", retWin->getPid(), tWin->getPid());
-                    if (retWin->getPid() == tWin->getPid())
-                    {
-                        dup = true;
-                        break;
-                    }
-                }
+        if (pidToAppNode.count(tWin->getPid() == 0)) continue;
 
-                if (!dup)
-                {
-                    LOGI("Actvie App : (%s) (%d)", tWin->getName().c_str(), tWin->getPid());
-                    auto wins = app->getWindows();
-                    std::transform(wins.begin(), wins.end(), std::back_inserter(ret),
-                        [&](std::shared_ptr<AccessibleWindow> window){
-                            LOGI("Target window add pkg: (%s), name (%s)", window->getAccessibleNode()->getPkg().c_str(), window->getTitle().c_str());
-                            return window->getAccessibleNode();
-                        }
-                    );
-                }
-            }
-        }
+        LOGI("Actvie App : (%s) (%d)", tWin->getName().c_str(), tWin->getPid());
+        auto wins = pidToAppNode[tWin->getPid()]->getWindows();
+        std::transform(wins.begin(), wins.end(), std::back_inserter(ret),
+             [&](std::shared_ptr<AccessibleWindow> window) {
+                 LOGI("Target window add pkg: (%s), name (%s)", window->getAccessibleNode()->getPkg().c_str(), window->getTitle().c_str());
+                 return window->getAccessibleNode();
+             }
+        );
+
+        pidToAppNode.erase(tWin->getPid());
     }
 
     return ret;
