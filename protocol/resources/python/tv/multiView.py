@@ -8,52 +8,43 @@ import logging
 import grpc
 import time
 
-# Second view size change and check
 # Please refer key codes below page
 # https://code.sec.samsung.net/confluence/display/GFX/VD+Key+Code+Table
-def MultiViewSizeTest(stub):
-    response = stub.findElements(ReqFindElements(textField='VSComponent2'))
-    if len(response.elements) <= 0: return False
+def MultiViewSelectContentTest(stub):
+    response = stub.findElement(ReqFindElements(textField='VSComponent2'))
+    if response.element is None: return False
 
-    responseGuide = stub.findElements(ReqFindElements(textField='Guide TextBox'))
-    if len(response.elements) <= 0:
-        stub.sendKey(ReqKey(type='XF86', actionType='STROKE', XF86keyCode='Return'))
-
-    stub.sendKey(ReqKey(type='XF86', actionType='STROKE', XF86keyCode='Right'))
     stub.sendKey(ReqKey(type='XF86', actionType='STROKE', XF86keyCode='Up'))
     stub.sendKey(ReqKey(type='XF86', actionType='STROKE', XF86keyCode='Return'))
     # Wait until render finished
-    time.sleep(1)
+    time.sleep(3)
 
     responseAfter = stub.findElement(ReqFindElement(textField='VSComponent2'))
     if responseAfter.element is None: return False
 
-    if response.element.geometry.width < responseAfter.element.geometry.width:
+    if response.element.geometry.height < responseAfter.element.geometry.height:
         return True
 
     return False
 
-# Launch 3rd-party app and long press back key test
-def MultiViewContentsTest(stub):
+def MultiViewChangeContentTest(stub):
+    stub.sendKey(ReqKey(type='XF86', actionType='LONG_STROKE', XF86keyCode='XF86Back'))
     stub.sendKey(ReqKey(type='XF86', actionType='STROKE', XF86keyCode='Return'))
     stub.sendKey(ReqKey(type='XF86', actionType='STROKE', XF86keyCode='Left'))
     stub.sendKey(ReqKey(type='XF86', actionType='STROKE', XF86keyCode='Up'))
     stub.sendKey(ReqKey(type='XF86', actionType='STROKE', XF86keyCode='Return'))
     # Wait until render finished
-    time.sleep(10)
+    time.sleep(5)
 
     # It fails if there is a View
-    response= stub.findElements(ReqFindElements(textField='VSComponent2'))
-    if len(response.elements) > 0: return False
-
-    stub.sendKey(ReqKey(type='XF86', actionType='LONG_STROKE', XF86keyCode='XF86Back'))
+    response= stub.findElement(ReqFindElements(textField='VSComponent2'))
+    if response.element is None: return False
 
     return True
 
 # Launch application. it returns application running state
 def launchAppTest(stub):
     stub.launchApp(ReqLaunchApp(packageName='com.samsung.tv.multiscreen'))
-    time.sleep(5)
     return stub.getAppInfo(ReqGetAppInfo(packageName='com.samsung.tv.multiscreen')).isRunning
 
 # Close application. it returns application running state
@@ -73,8 +64,12 @@ def run():
     with grpc.insecure_channel('127.0.0.1:50051') as channel:
         stub = BootstrapStub(channel)
         runTest(stub, launchAppTest)
-        runTest(stub, MultiViewSizeTest)
-        runTest(stub, MultiViewContentsTest)
+        # Select Internet View
+        runTest(stub, MultiViewSelectContentTest)
+        # Change Internet View to Youtube View
+        runTest(stub, MultiViewChangeContentTest)
+        # Change Youtube View to Internet View
+        runTest(stub, MultiViewChangeContentTest)
         runTest(stub, closeAppTest)
 
 if __name__ == '__main__':
