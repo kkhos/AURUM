@@ -13,6 +13,7 @@ def SearchTestWithText(stub):
     response = stub.findElement(ReqFindElement(widgetType='TextField'))
     if response.element is None: return False
     targetObj = response.element.elementId
+    stub.setFocus(ReqSetFocus(elementId=targetObj))
     testString = 'Movie'
     stub.setValue(ReqSetValue(elementId=targetObj, stringValue=testString))
 
@@ -24,14 +25,14 @@ def SearchTestWithText(stub):
 # Find Foused item and move focus to right then compare focused item with previous one
 def SearchFocusedObject(stub):
     response = stub.findElement(ReqFindElement(isFocused=True))
-    if response.elements is None: return False
+    if response.element is None: return False
 
     prevObj = response.element.elementId
-    stub.sendKey(ReqKey(type='XF86', actionType='LONG_STROKE', XF86keyCode='Right'))
+    stub.sendKey(ReqKey(type='XF86', actionType='LONG_STROKE', XF86keyCode='Down'))
     time.sleep(1)
 
     response = stub.findElement(ReqFindElement(isFocused=True))
-    if response.elements is None: return False
+    if response.element is None: return False
 
     if prevObj != response.element.elementId:
         return True
@@ -41,15 +42,12 @@ def SearchFocusedObject(stub):
 
 # Launch application. it returns application running state
 def launchAppTest(stub):
-    stub.sendKey(ReqKey(type='XF86', actionType='STROKE', XF86keyCode='XF86Search'))
-    # Wait until app launch
-    time.sleep(5)
+    stub.launchApp(ReqLaunchApp(packageName="com.samsung.tv.searchall"))
     return stub.getAppInfo(ReqGetAppInfo(packageName='com.samsung.tv.searchall')).isRunning
 
 # Close application. it returns application running state
 def closeAppTest(stub):
-    stub.sendKey(ReqKey(type='XF86', actionType='STROKE', XF86keyCode='XF86Exit'))
-    time.sleep(2)
+    stub.closeApp(ReqCloseApp(packageName='com.samsung.tv.searchall'))
     return stub.getAppInfo(ReqGetAppInfo(packageName='com.samsung.tv.searchall')).isRunning != True
 
 def runTest(stub, testFunc):
