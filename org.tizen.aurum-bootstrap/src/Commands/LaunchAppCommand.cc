@@ -32,10 +32,14 @@ LaunchAppCommand::LaunchAppCommand(const ::aurum::ReqLaunchApp *request,
 
 ::grpc::Status LaunchAppCommand::execute()
 {
+    bool ret = false;
     LOGI("LaunchApp --------------- ");
     std::unique_ptr<LaunchAppRunnable> cmd = std::make_unique<LaunchAppRunnable>(mRequest->packagename(), mRequest->data());
     std::shared_ptr<UiDevice> obj = UiDevice::getInstance();
-    obj->executeAndWaitForEvents(cmd.get(), A11yEvent::EVENT_WINDOW_ACTIVATE, WAIT_APP_LAUNCH, mRequest->packagename());
+    ret = obj->executeAndWaitForEvents(cmd.get(), A11yEvent::EVENT_WINDOW_ACTIVATE, WAIT_APP_LAUNCH, mRequest->packagename());
+
+    if (ret) mResponse->set_status(::aurum::RspStatus::OK);
+    else mResponse->set_status(::aurum::RspStatus::ERROR);
 
     return grpc::Status::OK;
 }
