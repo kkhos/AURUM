@@ -31,6 +31,8 @@
 #include <vector>
 #include <set>
 #include <map>
+#include <mutex>
+#include <condition_variable>
 
 using namespace Aurum;
 
@@ -164,7 +166,9 @@ private:
     static std::mutex mMutex;
     static GMainLoop *mLoop;
     bool isTv;
+    bool XMLLoaded;
     std::mutex XMLMutex;
+    std::condition_variable XMLConditionVar;
     std::map<const A11yEvent, std::list<std::shared_ptr<A11yEventHandler>>> mHandlers;
 };
 

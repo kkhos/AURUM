@@ -128,6 +128,7 @@ AtspiAccessibleWatcher::AtspiAccessibleWatcher()
 {
     GVariant *result = nullptr;
     GError *error = nullptr;
+    XMLLoaded = false;
 
     atspi_init();
 
@@ -199,8 +200,9 @@ void AtspiAccessibleWatcher::appendApp(AtspiAccessibleWatcher *instance, AtspiAc
         if (instance->mXMLDocMap.count(package)) {
             instance->mXMLDocMap.erase(package);
         }
+        XMLLoaded = false;
         instance->mXMLDocMap.insert(std::pair<std::string, std::shared_ptr<AurumXML>>(package,
-                std::make_shared<AurumXML>(std::make_shared<AtspiAccessibleNode>(app), XMLMutex)));
+                std::make_shared<AurumXML>(std::make_shared<AtspiAccessibleNode>(app), &XMLLoaded, &XMLMutex, &XMLConditionVar)));
     }
 }
 
@@ -366,16 +368,11 @@ std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> AtspiAccessi
 
 std::map<std::string, std::shared_ptr<AurumXML>> AtspiAccessibleWatcher::getXMLDocMap(void)
 {
-    bool isFirstWaiting = true;
-    while(!XMLMutex.try_lock())
-    {
-        if(isFirstWaiting)
-        {
-            LOGI("Waiting XMLTree Construct");
-            isFirstWaiting = false;
-        }
-    }
-    XMLMutex.unlock();
+    std::unique_lock lk(XMLMutex);
+
+    LOGI("Waiting XMLTree Construct");
+    XMLConditionVar.wait(lk, [&] {return XMLLoaded;});
+
     return mXMLDocMap;
 }
 
