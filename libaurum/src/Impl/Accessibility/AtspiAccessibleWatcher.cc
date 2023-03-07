@@ -129,6 +129,9 @@ AtspiAccessibleWatcher::AtspiAccessibleWatcher()
     GVariant *result = nullptr;
     GError *error = nullptr;
 
+    mAppCount = 0;
+    mAppXMLLoadedCount = 0;
+
     atspi_init();
 
     mEventThread = g_thread_new("AtspiEventThread", eventThreadLoop, this);
@@ -199,8 +202,10 @@ void AtspiAccessibleWatcher::appendApp(AtspiAccessibleWatcher *instance, AtspiAc
         if (instance->mXMLDocMap.count(package)) {
             instance->mXMLDocMap.erase(package);
         }
+
+        mAppCount++;
         instance->mXMLDocMap.insert(std::pair<std::string, std::shared_ptr<AurumXML>>(package,
-                std::make_shared<AurumXML>(std::make_shared<AtspiAccessibleNode>(app), XMLMutex)));
+                std::make_shared<AurumXML>(std::make_shared<AtspiAccessibleNode>(app), &mAppXMLLoadedCount, &mXMLMutex, &mXMLConditionVar)));
     }
 }
 
@@ -366,17 +371,30 @@ std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> AtspiAccessi
 
 std::map<std::string, std::shared_ptr<AurumXML>> AtspiAccessibleWatcher::getXMLDocMap(void)
 {
-    bool isFirstWaiting = true;
-    while(!XMLMutex.try_lock())
-    {
-        if(isFirstWaiting)
-        {
-            LOGI("Waiting XMLTree Construct");
-            isFirstWaiting = false;
-        }
-    }
-    XMLMutex.unlock();
+    std::unique_lock lk(mXMLMutex);
+
+    //LOGI("mAppCount: %d, mAppXMLLoadedCount: %d", mAppCount, mAppXMLLoadedCount);
+    mXMLConditionVar.wait(lk, [&] {return mAppCount <= mAppXMLLoadedCount;});
+
+    lk.unlock();
+
     return mXMLDocMap;
+}
+
+std::shared_ptr<AurumXML> AtspiAccessibleWatcher::getXMLDoc(std::string pkgName)
+{
+    std::unique_lock lk(mXMLMutex);
+
+    //LOGI("mAppCount: %d, mAppXMLLoadedCount: %d", mAppCount, mAppXMLLoadedCount);
+    mXMLConditionVar.wait(lk, [&] {return mAppCount <= mAppXMLLoadedCount;});
+
+    lk.unlock();
+
+    if (mXMLDocMap.count(pkgName) > 0)
+        return mXMLDocMap[pkgName];
+    else
+        return std::shared_ptr<AurumXML>(nullptr);
+
 }
 
 bool AtspiAccessibleWatcher::removeFromActivatedList(AtspiAccessible *node)

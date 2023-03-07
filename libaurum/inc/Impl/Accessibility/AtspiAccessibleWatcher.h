@@ -31,6 +31,8 @@
 #include <vector>
 #include <set>
 #include <map>
+#include <mutex>
+#include <condition_variable>
 
 using namespace Aurum;
 
@@ -118,6 +120,11 @@ public:
     virtual std::map<std::string, std::shared_ptr<AurumXML>> getXMLDocMap(void) override;
 
     /**
+     * @copydoc @AccessibleWatcher::getXMLDoc()
+     */
+    virtual std::shared_ptr<AurumXML> getXMLDoc(std::string pkgName) override;
+
+    /**
      * @copydoc @AccessibleWatcher::registerCallback()
      */
     virtual bool registerCallback(const A11yEvent type, EventHandler cb, void *data) override;
@@ -164,8 +171,16 @@ private:
     static std::mutex mMutex;
     static GMainLoop *mLoop;
     bool isTv;
-    std::mutex XMLMutex;
     std::map<const A11yEvent, std::list<std::shared_ptr<A11yEventHandler>>> mHandlers;
+
+    int mAppCount;
+
+    // this variable should be protected by XMLMutex.
+    int mAppXMLLoadedCount;
+
+    std::mutex mXMLMutex;
+    std::condition_variable mXMLConditionVar;
+
 };
 
 }
