@@ -19,14 +19,23 @@
 
 using namespace Aurum;
 
-AurumXML::AurumXML(const std::shared_ptr<AccessibleNode> root, std::mutex& XMLMutex) : mRoot(root), XMLMutex(XMLMutex)
+AurumXML::AurumXML(const std::shared_ptr<AccessibleNode> root, bool *XMLLoaded, std::mutex *XMLMutex, std::condition_variable *XMLConditionVar)
+: mRoot(root)
 {
-    XMLMutex.lock();
+    if (*XMLLoaded == true)
+    {
+        LOGE("XMLLoaded was true, set to false.");
+        *XMLLoaded = false;
+    }
 
+    XMLMutex->lock();
     mDoc = new xml_document();
     if (mRoot) this->createXMLtree();
 
-    XMLMutex.unlock();
+    *XMLLoaded = true;
+
+    XMLMutex->unlock();
+    XMLConditionVar->notify_one();
 }
 
 AurumXML::~AurumXML()
