@@ -41,7 +41,7 @@ A11yEventInfo::A11yEventInfo(std::string event, std::string name, std::string pk
 
 
 static std::unordered_map<std::string,A11yEvent> const table = { {"window:create", A11yEvent::EVENT_WINDOW_CREATE},
-																 {"window:close", A11yEvent::EVENT_WINDOW_CLOSE},
+																 {"window:destroy", A11yEvent::EVENT_WINDOW_DESTROY},
 																 {"window:minimize", A11yEvent::EVENT_WINDOW_MINIMIZE},
 																 {"window:maxmize", A11yEvent::EVENT_WINDOW_MAXIMIZE},
  																 {"window:restore", A11yEvent::EVENT_WINDOW_RESTORE},

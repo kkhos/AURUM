@@ -1,0 +1,19 @@
+{
+  "name": "Aurum Pages",
+  "version": "0.0.1",
+  "description": "Aurum is a UI automation framework without UI Toolkit dependency.",
+  "repository": "https://github.sec.samsung.net/tizen/aurum",
+  "license": "Apache",
+  "devDependencies": {
+    "prettier": "^2.7.1",
+    "stylelint": "^14.14.0",
+    "stylelint-config-prettier-scss": "0.0.1",
+    "stylelint-config-standard-scss": "^5.0.0",
+    "stylelint-prettier": "^2.0.0"
+  },
+  "scripts": {
+    "test": "stylelint '**/*.scss'",
+    "format": "prettier --write '**/*.{scss,js,json}'",
+    "stylelint-check": "stylelint-config-prettier-check"
+  }
+}

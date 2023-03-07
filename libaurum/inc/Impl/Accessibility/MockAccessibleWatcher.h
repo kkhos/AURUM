@@ -73,6 +73,8 @@ public:
      */
     virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName) override;
 
+    virtual bool registerCallback(const A11yEvent type, EventHandler cb, void *data) override;
+
     std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> getActiveAppMap(void);
 
     std::map<std::string, std::shared_ptr<AurumXML>> getXMLDocMap(void);

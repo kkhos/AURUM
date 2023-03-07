@@ -19,7 +19,7 @@
 
 using namespace Aurum;
 
-Comparer::Comparer(const std::shared_ptr<UiDevice> device, const std::shared_ptr<UiSelector> selector,
+Comparer::Comparer(const std::shared_ptr<UiDevice>& device, const std::shared_ptr<UiSelector>& selector,
                    const bool &earlyReturn)
     : mDevice(device), mSelector(selector), mEarlyReturn(earlyReturn)
 {
@@ -27,9 +27,9 @@ Comparer::Comparer(const std::shared_ptr<UiDevice> device, const std::shared_ptr
 
 Comparer::~Comparer() {}
 
-std::shared_ptr<AccessibleNode> Comparer::findObject(const std::shared_ptr<UiDevice> device,
-                                     const std::shared_ptr<UiSelector> selector,
-                                     const std::shared_ptr<AccessibleNode> root)
+std::shared_ptr<AccessibleNode> Comparer::findObject(const std::shared_ptr<UiDevice>& device,
+                                     const std::shared_ptr<UiSelector>& selector,
+                                     const std::shared_ptr<AccessibleNode>& root)
 {
     std::vector<std::shared_ptr<AccessibleNode>> ret = findObjects(device, selector, root, true);
     if (ret.size() > 0)
@@ -38,14 +38,13 @@ std::shared_ptr<AccessibleNode> Comparer::findObject(const std::shared_ptr<UiDev
         return nullptr;
 }
 
-std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(const std::shared_ptr<UiDevice> device,
-                                                    const std::shared_ptr<UiSelector> selector,
-                                                    const std::shared_ptr<AccessibleNode> root, bool earlyReturn)
+std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(const std::shared_ptr<UiDevice>& device,
+                                                    const std::shared_ptr<UiSelector>& selector,
+                                                    const std::shared_ptr<AccessibleNode>& root, bool earlyReturn)
 {
     Comparer comparer(device, selector, earlyReturn);
 
     LOGI("findObjects selector(%s) from (type:%s style:%s, role:%s, text:%s) earlyReturn:%d", selector->description().c_str(), root->getType().c_str(),  root->getStyle().c_str(),  root->getRole().c_str(),  root->getText().c_str(), earlyReturn);
-
     if (selector->mParent) {
         auto ret = Comparer::findObjects(device, selector->mParent, root);
         std::vector<std::shared_ptr<AccessibleNode>> merged{};
@@ -76,7 +75,7 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(const std::sh
     return comparer.findObjects(root);
 }
 
-std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(const std::shared_ptr<AccessibleNode> root)
+std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(const std::shared_ptr<AccessibleNode>& root)
 {
     std::list<std::shared_ptr<PartialMatch>> partialList{};
     std::vector<std::shared_ptr<AccessibleNode>> ret = findObjects(root, 0, 1, partialList);
@@ -85,7 +84,7 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(const std::sh
 }
 
 std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(
-    const std::shared_ptr<AccessibleNode> root, const int &index, const int &depth,
+    const std::shared_ptr<AccessibleNode>& root, const int &index, const int &depth,
     std::list<std::shared_ptr<PartialMatch>> &partialMatches)
 {
     std::vector<std::shared_ptr<AccessibleNode>> ret;
@@ -108,7 +107,6 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(
             std::vector<std::shared_ptr<AccessibleNode>> childret =
                 findObjects(childNode, i, depth + 1, partialMatches);
             std::move(std::begin(childret), std::end(childret), std::back_inserter(ret));
-
             if (!ret.empty() && mEarlyReturn) {
                 LOGI("Object found and earlyReturn");
                 return ret;

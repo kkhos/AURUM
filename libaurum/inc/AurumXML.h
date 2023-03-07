@@ -20,6 +20,7 @@
 
 #include <unordered_map>
 #include <mutex>
+#include <sstream>
 
 #include "Accessible.h"
 #include "config.h"
@@ -45,7 +46,7 @@ public:
      *
      * @since_tizen 7.0
      */
-    AurumXML(std::shared_ptr<AccessibleNode> root, std::mutex& XMLMutex);
+    AurumXML(const std::shared_ptr<AccessibleNode> root, std::mutex& XMLMutex);
 
     /**
      * @brief Destroy the AurumXML object
@@ -66,13 +67,13 @@ public:
     /**
      * @brief Gets a XPath from specific id.
      *
-     * @param id
+     * @param node AccessibleNode
      *
      * @return XPath
      *
      * @since_tizen 7.0
      */
-    std::string getXPath(std::string id);
+    std::string getXPath(const std::shared_ptr<AccessibleNode>& node);
 
     /**
      * @brief Finds that objects that satisfied with the xpath in the object tree.
@@ -97,7 +98,7 @@ private:
      *
      * @since_tizen 7.0
      */
-    void traverse(xml_node element, std::shared_ptr<AccessibleNode> node);
+    void traverse(xml_node& element, const std::shared_ptr<AccessibleNode>& node);
 
     /**
      * @internal
@@ -119,17 +120,30 @@ private:
      *
      * @brief Check xml_node exists or not
      *
-     * @param string id
+     * @param node AccessibleNode
      *
      * @return xml_node
      *
      * @since_tizen 7.0
      */
-    xml_node checkNode(std::string id);
+    xml_node checkNode(const std::shared_ptr<AccessibleNode>& node);
+
+    /**
+     * @internal
+     *
+     * @brief Check parent's xml_node exists or not
+     *
+     * @param node AccessibleNode
+     *
+     * @return AccessibleNode
+     *
+     * @since_tizen 7.5
+     */
+    std::shared_ptr<AccessibleNode> checkParentNode(const std::shared_ptr<AccessibleNode>& node);
 
 private:
     xml_document                                *mDoc;
-    std::shared_ptr<AccessibleNode>              mRoot;
+    const std::shared_ptr<AccessibleNode>        mRoot;
     std::unordered_map<std::string, std::shared_ptr<AccessibleNode>> mXNodeMap;
     std::mutex&                                  XMLMutex;
 };

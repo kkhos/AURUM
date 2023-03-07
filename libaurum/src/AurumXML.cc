@@ -19,7 +19,7 @@
 
 using namespace Aurum;
 
-AurumXML::AurumXML(std::shared_ptr<AccessibleNode> root, std::mutex& XMLMutex) : mRoot(root), XMLMutex(XMLMutex)
+AurumXML::AurumXML(const std::shared_ptr<AccessibleNode> root, std::mutex& XMLMutex) : mRoot(root), XMLMutex(XMLMutex)
 {
     XMLMutex.lock();
 
@@ -34,7 +34,7 @@ AurumXML::~AurumXML()
     delete mDoc;
 }
 
-void AurumXML::traverse(xml_node element, std::shared_ptr<AccessibleNode> node)
+void AurumXML::traverse(xml_node& element, const std::shared_ptr<AccessibleNode>& node)
 {
     if (!node) return;
 
@@ -65,25 +65,30 @@ void AurumXML::traverse(xml_node element, std::shared_ptr<AccessibleNode> node)
     element.append_attribute("width") = size.width();
     element.append_attribute("height") = size.height();
 
-    element.append_attribute("checked") = node->isChecked();
-    element.append_attribute("checkable") = node->isCheckable();
-    element.append_attribute("clickable") = node->isClickable();
-    element.append_attribute("enabled") = node->isEnabled();
-    element.append_attribute("focused") = node->isFocused();
-    element.append_attribute("focusable") = node->isFocusable();
-    element.append_attribute("scrollable") = node->isScrollable();
-    element.append_attribute("selected") = node->isSelected();
-    element.append_attribute("showing") = node->isShowing();
-    element.append_attribute("active") = node->isActive();
-    element.append_attribute("visible") = node->isVisible();
-    element.append_attribute("selectable") = node->isSelectable();
-    element.append_attribute("highlightable") = node->isHighlightable();
+    const std::vector<std::pair<std::string, bool>> attributes = {
+        {"checked", node->isChecked()},
+        {"checkable", node->isCheckable()},
+        {"clickable", node->isClickable()},
+        {"enabled", node->isEnabled()},
+        {"focused", node->isFocused()},
+        {"focusable", node->isFocusable()},
+        {"scrollable", node->isScrollable()},
+        {"selected", node->isSelected()},
+        {"showing", node->isShowing()},
+        {"active", node->isActive()},
+        {"visible", node->isVisible()},
+        {"selectable", node->isSelectable()},
+        {"highlightable", node->isHighlightable()}
+    };
+    for (const auto& attribute : attributes) {
+        element.append_attribute(attribute.first.c_str()) = attribute.second;
+    }
 
     mXNodeMap[node->getId()] = node;
 
     int childCnt = node->getChildCount();
     for (int i = 0; i < childCnt; i++) {
-        std::shared_ptr<AccessibleNode> childNode = node->getChildAt(i);
+        const std::shared_ptr<AccessibleNode>& childNode = node->getChildAt(i);
         if (childNode->getRawHandler() == nullptr) continue;
 
         xml_node childElement = element.append_child("");
@@ -111,20 +116,19 @@ std::string AurumXML::getOptimalXPath(xml_document *doc, xml_node node)
     int count = 0;
     int index = 0;
 
-    const char *automationId = node.attribute("automationid").value();
-    if (strlen(automationId) > 0) {
-        xpath += "//";
-        xpath += node.name();
-        xpath += "[@automationid=\"";
-        xpath += automationId;
-        xpath += "\"]";
+    const auto automationId = node.attribute("automationid").value();
+    const auto len = strlen(automationId);
+    if (len > 0) {
+        xpath.append("//")
+             .append(node.name())
+             .append("[@automationid=\"")
+             .append(automationId)
+             .append("\"]");
 
         try {
-            auto nodes = doc->select_nodes(xpath.c_str());
+            const auto nodes = doc->select_nodes(xpath.c_str());
             if (nodes.size() > 1) {
-                for (xpath_node_set::const_iterator it = nodes.begin();
-                     it != nodes.end(); ++it) {
-                    xpath_node no = *it;
+                for (const auto& no : nodes) {
                     count++;
                     if (no.node() == node) {
                         index = count;
@@ -132,8 +136,8 @@ std::string AurumXML::getOptimalXPath(xml_document *doc, xml_node node)
                     }
                 }
                 xpath.append(1, '[')
-                    .append(std::to_string(index))
-                    .append(1, ']');
+                     .append(std::to_string(index))
+                     .append(1, ']');
             }
         } catch (const xpath_exception &e) {
             LOGI("getOptimalXPath Error: %s", e.what());
@@ -142,10 +146,10 @@ std::string AurumXML::getOptimalXPath(xml_document *doc, xml_node node)
         return xpath;
     }
 
-    xml_node parent = node.parent();
+    auto parent = node.parent();
     if (parent) {
-        xml_node child = parent.first_child();
-        for (xml_node el = child; el; el = el.next_sibling()) {
+        const xml_node& child = parent.first_child();
+        for (auto el = child; el; el = el.next_sibling()) {
             if (el.name() && node.name() && !strcmp(el.name(), node.name())) {
                 count++;
                 if (el == node) index = count;
@@ -153,50 +157,77 @@ std::string AurumXML::getOptimalXPath(xml_document *doc, xml_node node)
         }
     }
 
-    xpath += "/";
-    xpath += node.name();
+    xpath.append("/")
+         .append(node.name());
 
     if (count > 1)
-        xpath.append(1, '[').append(std::to_string(index)).append(1, ']');
+        xpath.append(1, '[')
+             .append(std::to_string(index))
+             .append(1, ']');
 
     if (node == doc->first_child()) return xpath;
 
     return getOptimalXPath(doc, parent).append(xpath);
 }
 
-std::string makeQuery(std::string id)
-{
-    std::string query;
-    query += "//*[@id=\"";
-    query += id;
-    query += "\"]";
-
-    return query;
+std::string makeQuery(const std::string& id) {
+    std::stringstream query;
+    query << "//*[@id=\"" << id << "\"]";
+    return query.str();
 }
 
-xml_node AurumXML::checkNode(std::string id)
+std::shared_ptr<AccessibleNode> AurumXML::checkParentNode(const std::shared_ptr<AccessibleNode>& node)
 {
-    xml_node node;
-    try {
-        std::string query = makeQuery(id);
-        node = mDoc->select_node(query.c_str()).node();
+    const auto parent = node->getParent();
+    if (!parent) return nullptr;
 
-        if (!node) {
-            createXMLtree();
-            node = mDoc->select_node(query.c_str()).node();
+    const std::string query = makeQuery(node->getId());
+    xml_node xmlNode = mDoc->select_node(query.c_str()).node();
+
+    if (xmlNode) {
+       int childCnt = parent->getChildCount();
+        for (int i = 0; i < childCnt; i++) {
+            const std::shared_ptr<AccessibleNode>& childNode = parent->getChildAt(i);
+            if (childNode->getRawHandler() == nullptr) continue;
+
+            xml_node childElement = xmlNode.append_child("");
+            traverse(childElement, childNode);
+        }
+        return parent;
+    }
+
+    return checkParentNode(parent);
+}
+
+xml_node AurumXML::checkNode(const std::shared_ptr<AccessibleNode>& node)
+{
+    xml_node xmlNode;
+
+    try {
+        const std::string query = makeQuery(node->getId());
+        xmlNode = mDoc->select_node(query.c_str()).node();
+
+        if (!xmlNode) {
+            // 1. find parent and check node again
+            auto parent = checkParentNode(node);
+
+            // 2. clear tree and create tree again
+            if (!parent) createXMLtree();
+
+            xmlNode = mDoc->select_node(query.c_str()).node();
         }
     } catch (const xpath_exception &e) {
         LOGI("getXPath Error: %s", e.what());
     }
-    return node;
+    return xmlNode;
 }
 
-std::string AurumXML::getXPath(std::string id)
+std::string AurumXML::getXPath(const std::shared_ptr<AccessibleNode>& node)
 {
-    xml_node node = checkNode(id);
+    xml_node xmlNode = checkNode(node);
 
-    if (node) {
-        std::string xpath = getOptimalXPath(mDoc, node);
+    if (xmlNode) {
+        std::string xpath = getOptimalXPath(mDoc, xmlNode);
         return xpath;
     }
 
@@ -214,16 +245,14 @@ std::vector<std::shared_ptr<AccessibleNode>> AurumXML::findObjects(
     try {
         if (earlyReturn) {
             xml_node    node = mDoc->select_node(xpath.c_str()).node();
-            std::string id(node.attribute("id").value());
+            const std::string id(node.attribute("id").value());
             if (mXNodeMap.count(id) > 0) ret.push_back(mXNodeMap[id]);
 
         } else {
-            xpath_node_set results = mDoc->select_nodes(xpath.c_str());
+            const auto nodes = mDoc->select_nodes(xpath.c_str());
 
-            for (xpath_node_set::const_iterator it = results.begin();
-                 it != results.end(); ++it) {
-                auto        node = (*it).node();
-                std::string id(node.attribute("id").value());
+            for (const auto& no : nodes) {
+                const std::string id(no.node().attribute("id").value());
 
                 if (mXNodeMap.count(id) > 0) ret.push_back(mXNodeMap[id]);
             }

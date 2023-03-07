@@ -372,6 +372,19 @@ public:
      */
     bool executeAndWaitForEvents(
         const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName) const;
+
+/**
+     * @brief Register atspi event callback.
+     *
+     * @param[in] type @A11yEvent
+     * @param[in] cb @EventHandler
+     * @param[in] data @void pointer
+     *
+     * @return true if callback is registered, else false
+     * @since_tizen 7.0
+     */
+    bool registerCallback(const A11yEvent type, EventHandler cb, void *data) const;
+
 public:
     /**
      * @brief Gets UiDevice instance.
@@ -492,6 +505,7 @@ private:
 #ifdef MQTT_ENABLED
     static std::shared_ptr<ScreenAnalyzerWatcher> mSAWatcher;
 #endif
+    static std::once_flag mOnceFlag;
 };
 
 }
