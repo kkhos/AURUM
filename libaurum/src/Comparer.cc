@@ -59,12 +59,10 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(const std::sh
     if (selector->mMatchXPath) {
         std::vector<std::shared_ptr<AccessibleNode>> merged{};
 
-        auto XMLDocMap = AccessibleWatcher::getInstance()->getXMLDocMap();
         std::string pkg = root->getPkg();
+        auto XMLDoc = AccessibleWatcher::getInstance()->getXMLDoc(pkg);
 
-        if (XMLDocMap.count(pkg) == 0) return merged;
-
-        auto XMLDoc = XMLDocMap[pkg];
+        if (XMLDoc.get() == nullptr) return merged;
 
         auto tmp = XMLDoc->findObjects(selector->mXPath, earlyReturn);
         std::move(std::begin(tmp), std::end(tmp), std::back_inserter(merged));
