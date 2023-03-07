@@ -79,6 +79,8 @@ public:
 
     std::map<std::string, std::shared_ptr<AurumXML>> getXMLDocMap(void);
 
+    std::shared_ptr<AurumXML> getXMLDoc(std::string pkgName);
+
 public:
     /**
      * @brief TBD

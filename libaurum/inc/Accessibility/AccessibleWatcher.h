@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -128,6 +128,16 @@ public:
      * @since_tizen 7.0
      */
     virtual std::map<std::string, std::shared_ptr<AurumXML>> getXMLDocMap(void) = 0;
+
+    /**
+     * @brief Gets AurumXML pointer of a specific package name.
+     *
+     * @param[in] pkgName name of package.
+     *
+     * @return pointer of AurumXML the package if exist, else null pointer
+     * @since_tizen 7.0
+     */
+    virtual std::shared_ptr<AurumXML> getXMLDoc(std::string pkgName) = 0;
 
     /**
      * @brief Register atspi event callback.
