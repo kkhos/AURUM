@@ -213,11 +213,9 @@ std::string AurumXML::getXPath(const std::shared_ptr<AccessibleNode>& node)
     return "NotSupported";
 }
 
-std::vector<std::shared_ptr<AccessibleNode>> AurumXML::findObjects(
+void AurumXML::findObjects(std::vector<std::shared_ptr<AccessibleNode>> &ret,
     std::string xpath, bool earlyReturn)
 {
-    std::vector<std::shared_ptr<AccessibleNode>> ret;
-
     createXMLtree();
 
     LOGI("xpath %s earlyReturn %d", xpath.c_str(), earlyReturn);
@@ -239,6 +237,4 @@ std::vector<std::shared_ptr<AccessibleNode>> AurumXML::findObjects(
     } catch (const xpath_exception &e) {
         LOGI("findObjects Error: %s", e.what());
     }
-
-    return ret;
 }
