@@ -81,11 +81,11 @@ public:
      *
      * @param xpath
      *
-     * @return the list of found AccessibleNode vector
+     * @param ret vector contains objects
      *
      * @since_tizen 7.0
      */
-    std::vector<std::shared_ptr<AccessibleNode>> findObjects(std::string xpath, bool earlyReturn = false);
+    void findObjects(std::vector<std::shared_ptr<AccessibleNode>> &ret, std::string xpath, bool earlyReturn = false);
 
 private:
     /**

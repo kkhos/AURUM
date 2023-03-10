@@ -31,14 +31,16 @@ std::shared_ptr<AccessibleNode> Comparer::findObject(const std::shared_ptr<UiDev
                                      const std::shared_ptr<UiSelector>& selector,
                                      const std::shared_ptr<AccessibleNode>& root)
 {
-    std::vector<std::shared_ptr<AccessibleNode>> ret = findObjects(device, selector, root, true);
+    std::vector<std::shared_ptr<AccessibleNode>> ret;
+    findObjects(ret, device, selector, root, true);
     if (ret.size() > 0)
         return std::move(ret[0]);
     else
         return nullptr;
 }
 
-std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(const std::shared_ptr<UiDevice>& device,
+void Comparer::findObjects(std::vector<std::shared_ptr<AccessibleNode>> &ret,
+                                                    const std::shared_ptr<UiDevice>& device,
                                                     const std::shared_ptr<UiSelector>& selector,
                                                     const std::shared_ptr<AccessibleNode>& root, bool earlyReturn)
 {
@@ -46,48 +48,46 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(const std::sh
 
     LOGI("findObjects selector(%s) from (type:%s style:%s, role:%s, text:%s) earlyReturn:%d", selector->description().c_str(), root->getType().c_str(),  root->getStyle().c_str(),  root->getRole().c_str(),  root->getText().c_str(), earlyReturn);
     if (selector->mParent) {
-        auto ret = Comparer::findObjects(device, selector->mParent, root);
-        std::vector<std::shared_ptr<AccessibleNode>> merged{};
+
+        // TODO: Optimize findObjects() when selector has a parent
+        std::vector<std::shared_ptr<AccessibleNode>> ret;
+        Comparer::findObjects(ret, device, selector->mParent, root);
 
         for (const auto &node : ret) {
-            auto tmp = comparer.findObjects(node);
-            std::move(std::begin(tmp), std::end(tmp), std::back_inserter(merged));
+            comparer.findObjects(ret, node);
         }
-        return merged;
+
+        return;
     }
 
     if (selector->mMatchXPath) {
-        std::vector<std::shared_ptr<AccessibleNode>> merged{};
-
         std::string pkg = root->getPkg();
         auto XMLDoc = AccessibleWatcher::getInstance()->getXMLDoc(pkg);
 
-        if (XMLDoc.get() == nullptr) return merged;
+        if (XMLDoc.get() == nullptr) return;
 
-        auto tmp = XMLDoc->findObjects(selector->mXPath, earlyReturn);
-        std::move(std::begin(tmp), std::end(tmp), std::back_inserter(merged));
+        XMLDoc->findObjects(ret, selector->mXPath, earlyReturn);
 
-        return merged;
+        return;
     }
 
-    return comparer.findObjects(root);
+    comparer.findObjects(ret, root);
 }
 
-std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(const std::shared_ptr<AccessibleNode>& root)
+void Comparer::findObjects(std::vector<std::shared_ptr<AccessibleNode>> &ret,
+                                                            const std::shared_ptr<AccessibleNode>& root)
 {
     std::list<std::shared_ptr<PartialMatch>> partialList{};
-    std::vector<std::shared_ptr<AccessibleNode>> ret = findObjects(root, 0, 1, partialList);
+    findObjects(ret, root, 0, 1, partialList);
     LOGI("%d object(s) found", (int)ret.size());
-    return ret;
 }
 
-std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(
+void Comparer::findObjects(std::vector<std::shared_ptr<AccessibleNode>> &ret,
     const std::shared_ptr<AccessibleNode>& root, const int &index, const int &depth,
     std::list<std::shared_ptr<PartialMatch>> &partialMatches)
 {
-    std::vector<std::shared_ptr<AccessibleNode>> ret;
 
-    if (mSelector->mMatchShowing && !root->isShowing()) return ret;
+    if (mSelector->mMatchShowing && !root->isShowing()) return;
 
     for (auto &match : partialMatches)
         match->update(root, index, depth, partialMatches);
@@ -102,12 +102,10 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(
             auto child = children[i];
             if (child->getRawHandler() == nullptr) continue;
 
-            std::vector<std::shared_ptr<AccessibleNode>> childret =
-                findObjects(child, i, depth + 1, partialMatches);
-            std::move(std::begin(childret), std::end(childret), std::back_inserter(ret));
+            findObjects(ret, child, i, depth + 1, partialMatches);
             if (!ret.empty() && mEarlyReturn) {
                 LOGI("Object found and earlyReturn");
-                return ret;
+                return;
             }
         }
     } else {
@@ -118,6 +116,4 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(
         LOGI("Found matched = %s with criteria %s", root->description().c_str(), currentMatch->debugPrint().c_str());
         ret.push_back(root);
     }
-
-    return ret;
 }
