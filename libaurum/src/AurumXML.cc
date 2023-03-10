@@ -19,21 +19,15 @@
 
 using namespace Aurum;
 
-AurumXML::AurumXML(const std::shared_ptr<AccessibleNode> root, bool *XMLLoaded, std::mutex *XMLMutex, std::condition_variable *XMLConditionVar)
+AurumXML::AurumXML(const std::shared_ptr<AccessibleNode> root, int *appXMLLoadedCount, std::mutex *XMLMutex, std::condition_variable *XMLConditionVar)
 : mRoot(root)
 {
-    if (*XMLLoaded == true)
-    {
-        LOGE("XMLLoaded was true, set to false.");
-        *XMLLoaded = false;
-    }
-
-    XMLMutex->lock();
     mDoc = new xml_document();
     if (mRoot) this->createXMLtree();
 
-    *XMLLoaded = true;
-
+    XMLMutex->lock();
+    LOGI("XML Document Created: %s", root->getId().c_str());
+    (*appXMLLoadedCount)++;
     XMLMutex->unlock();
     XMLConditionVar->notify_one();
 }
@@ -243,11 +237,9 @@ std::string AurumXML::getXPath(const std::shared_ptr<AccessibleNode>& node)
     return "NotSupported";
 }
 
-std::vector<std::shared_ptr<AccessibleNode>> AurumXML::findObjects(
+void AurumXML::findObjects(std::vector<std::shared_ptr<AccessibleNode>> &ret,
     std::string xpath, bool earlyReturn)
 {
-    std::vector<std::shared_ptr<AccessibleNode>> ret;
-
     createXMLtree();
 
     LOGI("xpath %s earlyReturn %d", xpath.c_str(), earlyReturn);
@@ -269,6 +261,4 @@ std::vector<std::shared_ptr<AccessibleNode>> AurumXML::findObjects(
     } catch (const xpath_exception &e) {
         LOGI("findObjects Error: %s", e.what());
     }
-
-    return ret;
 }

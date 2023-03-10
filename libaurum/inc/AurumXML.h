@@ -47,7 +47,7 @@ public:
      *
      * @since_tizen 7.0
      */
-    AurumXML(const std::shared_ptr<AccessibleNode> root, bool *XMLLoaded, std::mutex *XMLMutex, std::condition_variable *XMLConditionVar);
+    AurumXML(const std::shared_ptr<AccessibleNode> root, int *appXMLLoadedCount, std::mutex *XMLMutex, std::condition_variable *XMLConditionVar);
 
     /**
      * @brief Destroy the AurumXML object
@@ -81,11 +81,11 @@ public:
      *
      * @param xpath
      *
-     * @return the list of found AccessibleNode vector
+     * @param ret vector contains objects
      *
      * @since_tizen 7.0
      */
-    std::vector<std::shared_ptr<AccessibleNode>> findObjects(std::string xpath, bool earlyReturn = false);
+    void findObjects(std::vector<std::shared_ptr<AccessibleNode>> &ret, std::string xpath, bool earlyReturn = false);
 
 private:
     /**

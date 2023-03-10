@@ -272,8 +272,9 @@ std::vector<std::shared_ptr<UiObject>> UiDevice::findObjects(
     std::vector<std::shared_ptr<UiObject>> ret{};
     auto rootNodes = getWindowRoot();
     for (const auto &window : rootNodes) {
-        std::vector<std::shared_ptr<AccessibleNode>> nodes =
-            Comparer::findObjects(getInstance(), selector, window);
+        std::vector<std::shared_ptr<AccessibleNode>> nodes{};
+        Comparer::findObjects(nodes, getInstance(), selector, window);
+
         for (auto &node : nodes)
             ret.push_back(std::make_shared<UiObject>(getInstance(), selector, node));
     }
