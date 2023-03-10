@@ -135,7 +135,7 @@ public:
      * @param[in] pkgName name of package.
      *
      * @return pointer of AurumXML the package if exist, else null pointer
-     * @since_tizen 7.5
+     * @since_tizen 7.0
      */
     virtual std::shared_ptr<AurumXML> getXMLDoc(std::string pkgName) = 0;
 

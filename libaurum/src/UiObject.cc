@@ -92,7 +92,9 @@ std::vector<std::shared_ptr<UiObject>> UiObject::findObjects(
     const std::shared_ptr<UiSelector> selector) const
 {
     std::vector<std::shared_ptr<UiObject>> result{};
-    auto nodes = Comparer::findObjects(mDevice, selector, getAccessibleNode());
+
+    std::vector<std::shared_ptr<AccessibleNode>> nodes{};
+    Comparer::findObjects(nodes, mDevice, selector, getAccessibleNode());
     for ( auto& node : nodes) {
         if (!node) {
             LOGI("Skipped! (node == nullptr)");
