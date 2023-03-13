@@ -58,7 +58,7 @@ public:
     /**
      * @brief Updates all PartialMatches class.
      *
-     * @param[in] node target @AssessibleNode
+     * @param[in] node target @AccessibleNode
      * @param[in] index node index
      * @param[in] depth next depth
      * @param[in] partialMatches @PartialMatch list
@@ -87,8 +87,8 @@ public:
 public:
 
     /**
-     * @brief It determine current given depth accatable and check criteria,
-     *        It checks selector's min, max depth in relative depth, and check criteria.
+     * @brief It determines current given depth acceptable and checks criteria,
+     *        It checks selector's min, max depth in relative depth, and checks criteria.
      *
      * @param[in] node target @AccessibleNode
      * @param[in] selector @UiSelector
@@ -104,8 +104,8 @@ public:
                                                 int index, int depth);
 
     /**
-     * @brief It determine current given depth accatable and check criteria,
-     *        It checks selector's min, max depth in relative depth, and check criteria.
+     * @brief It determines current given depth acceptable and checks criteria,
+     *        It checks selector's min, max depth in relative depth, and checks criteria.
      *
      * @param[in] node target @AccessibleNode
      * @param[in] selector @UiSelector
@@ -146,7 +146,7 @@ private:
      * @param[in] textB string
      * @param[in] textPartialMatch bool
      *
-     * @return ture if matched, else false
+     * @return true if matched, else false
      *
      * @since_tizen 6.5
      */
@@ -158,7 +158,7 @@ private:
      * @param[in] boolA bool
      * @param[in] boolA bool
      *
-     * @return ture if matched, else false
+     * @return true if matched, else false
      *
      * @since_tizen 6.5
      */
@@ -170,7 +170,7 @@ private:
      * @param[in] rectA Rect<int>
      * @param[in] rectB Rect<int>
      *
-     * @return ture if matched, else false
+     * @return true if matched, else false
      *
      * @since_tizen 7.0
      */

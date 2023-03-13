@@ -95,7 +95,7 @@ public:
     AccessibleNode();
 
     /**
-     * @brief AccessibleNode desctructor.
+     * @brief AccessibleNode destructor.
      *
      * @since_tizen 6.5
      */
@@ -507,7 +507,7 @@ public:
      * @brief Sets Node's property.
      *
      * @param[in] prop @NodeFeatureProperties
-     * @param[in] has Node has given property ot not
+     * @param[in] has Node has given property or not
      *
      * @since_tizen 6.5
      */

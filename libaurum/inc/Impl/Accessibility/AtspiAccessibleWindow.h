@@ -46,7 +46,7 @@ public:
     AtspiAccessibleWindow(std::shared_ptr<AccessibleApplication> app, std::shared_ptr<AccessibleNode> node);
 
     /**
-     * @brief AtspiAccessibleWindow desturctor.
+     * @brief AtspiAccessibleWindow destructor.
      *
      * @since_tizen 6.5
      */

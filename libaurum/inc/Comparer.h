@@ -37,7 +37,7 @@ namespace Aurum {
  *
  * @ingroup aurum
  *
- * @brief Class that traverses the object tree and finds an object that match the givin condition.
+ * @brief Class that traverses the object tree and finds an object that match the given condition.
  */
 class Comparer {
 private:
@@ -45,7 +45,7 @@ private:
      * @brief Comparer constructor with device, selector, early return flag.
      *
      * @param[in] device @UiDevice
-     * @param[in] selector @UiSelctor
+     * @param[in] selector @UiSelector
      * @param[in] earlyReturn flag for early return
      *
      * @since_tizen 6.5
@@ -69,7 +69,7 @@ public:
      * @param[in] selector @UiSelector
      * @param[in] root @AccessibleNode root object(focused window on current state)
      *
-     * @return AccessibleNode if found, else nulltpr
+     * @return AccessibleNode if found, else nullptr
      *
      * @since_tizen 6.5
      */
@@ -87,7 +87,7 @@ public:
      * @param[in] root @AccessibleNode root object(focused window on current state)
      * @param[in] earlyReturn find all object or not (default = false)
      *
-     * @return AccessibleNode if found, else nulltpr
+     * @return AccessibleNode if found, else nullptr
      *
      * @since_tizen 6.5
      */

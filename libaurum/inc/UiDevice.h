@@ -365,7 +365,7 @@ public:
      * @param[in] type one of @A11yEvent
      * @param[in] timeout time(millisecond) to wait event occur
      * @param[in] packageName package name that event occurs
-     * @param[in] count count of render post evnet
+     * @param[in] count count of render post event
      *
      * @return true if event happened in time, otherwise false
      *
@@ -427,7 +427,7 @@ public:
     /**
      * @brief Gets ScreenAnalyzerWatcher instance.
      *
-     * @retrun ScreenAnalyzerWatcher ptr
+     * @return ScreenAnalyzerWatcher ptr
      *
      * @since_tizen 7.0
      */
@@ -477,14 +477,14 @@ private:
 
 private:
     /**
-     * @brief UiDevice Consturctor.
+     * @brief UiDevice Constructor.
      *
      * @since_tizen 6.5
      */
     UiDevice();
 
     /**
-     * @brief UiDevice Consturctor with IDevice.
+     * @brief UiDevice Constructor with IDevice.
      *
      * @since_tizen 6.5
      */

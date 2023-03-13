@@ -96,7 +96,7 @@ public:
      * @param[in] selector @UiSelector
 
      *
-     * @return SaObject vector if found, else nulltpr
+     * @return SaObject vector if found, else nullptr
      *
      * @since_tizen 7.0
      */
@@ -108,7 +108,7 @@ public:
      * @param[in] selector @UiSelector
 
      *
-     * @return SaObject if found, else nulltpr
+     * @return SaObject if found, else nullptr
      *
      * @since_tizen 7.0
      */
@@ -119,7 +119,7 @@ public:
      *
      * @param[in] selector @UiSelector
      *
-     * @return SaObject if found, else nulltpr
+     * @return SaObject if found, else nullptr
      *
      * @since_tizen 7.0
      */

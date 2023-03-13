@@ -48,7 +48,7 @@ public:
     /**
      * @brief Checks that there is an object that are satisfied with selector condition.
      *
-     * @param[in] selector @UiSelctor
+     * @param[in] selector @UiSelector
      *
      * @return true if object has, else false
      *
@@ -59,9 +59,9 @@ public:
     /**
      * @brief Finds object that is satisfied with selector condition.
      *
-     * @param[in] selector @UiSelctor
+     * @param[in] selector @UiSelector
      *
-     * @return UiObject if succeed, else nulltpr
+     * @return UiObject if succeed, else nullptr
      *
      * @since_tizen 6.5
      */
@@ -71,9 +71,9 @@ public:
     /**
      * @brief Finds objects that are satisfied with selector condition.
      *
-     * @param[in] selector @UiSelctor
+     * @param[in] selector @UiSelector
      *
-     * @return UiObject vector if succeed, else nulltpr
+     * @return UiObject vector if succeed, else nullptr
      *
      * @since_tizen 6.5
      */

@@ -105,7 +105,7 @@ public:
      * @param[in] type @A11yEvent
      * @param[in] timeout time(millisecond) to wait event occur
      * @param[in] obj @AccessibleNode
-     * @param[in] count count of render post evnet
+     * @param[in] count count of render post event
      *
      * @return true if event occur in time, else false
      *

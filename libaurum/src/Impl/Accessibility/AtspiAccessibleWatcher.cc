@@ -233,7 +233,7 @@ gpointer AtspiAccessibleWatcher::timerThread(gpointer data)
     for (;;)
     {
         //FIXME: User can change waiting time and count of render post
-        //       instead of waiting spelcific time
+        //       instead of waiting specific time
         if ((g_get_monotonic_time() - mStartTime) > WAIT_FOR_IDLE_MICRO_SEC)
         {
             break;

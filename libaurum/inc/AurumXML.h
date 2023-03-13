@@ -58,7 +58,7 @@ public:
     /**
      * @brief Creates a XML tree.
      *
-     * @return true if XML tree is created succesfully, false otherwise
+     * @return true if XML tree is created successfully, false otherwise
      *
      * @since_tizen 7.0
      */

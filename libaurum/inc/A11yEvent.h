@@ -78,7 +78,7 @@ public:
      *
      * @param[in] event @A11yEvent
      * @param[in] name name of the ATSPI event
-     * @param[in] package event occured package name
+     * @param[in] package event occurred package name
      *
      * @since_tizen 6.5
      */
@@ -89,7 +89,7 @@ public:
      *
      * @param[in] event name of the event
      * @param[in] name name of the ATSPI event
-     * @param[in] package event occured package name
+     * @param[in] package event occurred package name
      *
      * @since_tizen 6.5
      */

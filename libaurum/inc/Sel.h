@@ -32,7 +32,7 @@ namespace Aurum {
  *
  * @ingroup aurum
  *
- * @brief Helper class for use @UiSelctor easily.
+ * @brief Helper class for use @UiSelector easily.
  *        This class using in Aurum feature UTC in cpp test code.
  */
 class Sel {

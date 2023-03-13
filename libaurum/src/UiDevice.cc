@@ -211,7 +211,7 @@ std::vector<std::shared_ptr<AccessibleNode>> UiDevice::getWindowRoot() const
 
         if (pidToAppNode.count(tWin->getPid() == 0)) continue;
 
-        LOGI("Actvie App : (%s) (%d)", tWin->getName().c_str(), tWin->getPid());
+        LOGI("Active App : (%s) (%d)", tWin->getName().c_str(), tWin->getPid());
         auto wins = pidToAppNode[tWin->getPid()]->getWindows();
         std::transform(wins.begin(), wins.end(), std::back_inserter(ret),
              [&](std::shared_ptr<AccessibleWindow> window) {
