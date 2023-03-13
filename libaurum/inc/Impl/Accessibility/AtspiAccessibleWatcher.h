@@ -44,8 +44,8 @@ namespace AurumInternal {
  * @since_tizen 6.5
  */
 enum class WindowActivateInfoType {
-    DEFAULT_LABEL_ENALBED = 0x00,
-    DEFAULT_LABEL_ENALBED_WITHOUT_WINDOW = 0x01,
+    DEFAULT_LABEL_ENABLED = 0x00,
+    DEFAULT_LABEL_ENABLED_WITHOUT_WINDOW = 0x01,
     DEFAULT_LABEL_DISABLED = 0x02,
     KEYBOARD = 0x04,
 };

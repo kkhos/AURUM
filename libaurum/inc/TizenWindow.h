@@ -30,7 +30,7 @@ public:
     int getPid();
     Rect<int> getWindowGeometry();
     bool isTransformed();
-    bool isAlpah();
+    bool isAlpha();
     int getOpaque();
     int getVisibility();
     bool isFocused();

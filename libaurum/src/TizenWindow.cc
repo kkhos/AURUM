@@ -46,7 +46,7 @@ bool TizenWindow::isTransformed()
     return mIsTransformed;
 }
 
-bool TizenWindow::isAlpah()
+bool TizenWindow::isAlpha()
 {
     return mIsAlpha;
 }
