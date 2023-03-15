@@ -172,6 +172,7 @@ private:
     static gpointer timerThread(gpointer data);
     void appendApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg);
     void removeApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg);
+    void waitForXMLLoaded();
 
 private:
     GDBusProxy *mDbusProxy;

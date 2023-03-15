@@ -447,30 +447,25 @@ std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> AtspiAccessi
 
 std::map<std::string, std::shared_ptr<AurumXML>> AtspiAccessibleWatcher::getXMLDocMap(void)
 {
-    std::unique_lock lk(mXMLMutex);
-
-    //LOGI("mAppCount: %d, mAppXMLLoadedCount: %d", mAppCount, mAppXMLLoadedCount);
-    mXMLConditionVar.wait(lk, [&] {return mAppCount <= mAppXMLLoadedCount;});
-
-    lk.unlock();
-
     return mXMLDocMap;
 }
 
 std::shared_ptr<AurumXML> AtspiAccessibleWatcher::getXMLDoc(std::string pkgName)
 {
-    std::unique_lock lk(mXMLMutex);
-
-    //LOGI("mAppCount: %d, mAppXMLLoadedCount: %d", mAppCount, mAppXMLLoadedCount);
-    mXMLConditionVar.wait(lk, [&] {return mAppCount <= mAppXMLLoadedCount;});
-
-    lk.unlock();
-
     if (mXMLDocMap.count(pkgName) > 0)
         return mXMLDocMap[pkgName];
     else
         return std::shared_ptr<AurumXML>(nullptr);
 
+}
+
+void AtspiAccessibleWatcher::waitForXMLLoaded()
+{
+    std::unique_lock lk(mXMLMutex);
+
+    //LOGI("mAppCount: %d, mAppXMLLoadedCount: %d", mAppCount, mAppXMLLoadedCount);
+    mXMLConditionVar.wait(lk, [&] {return mAppCount <= mAppXMLLoadedCount;});
+    lk.unlock();
 }
 
 bool AtspiAccessibleWatcher::removeFromActivatedList(AtspiAccessible *node)
