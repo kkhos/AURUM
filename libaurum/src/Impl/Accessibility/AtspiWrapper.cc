@@ -51,6 +51,12 @@ int AtspiWrapper::Atspi_accessible_get_child_count(AtspiAccessible *node, GError
     return atspi_accessible_get_child_count(node, error);
 }
 
+GArray *AtspiWrapper::Atspi_accessible_get_children(AtspiAccessible *node, GError **error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_accessible_get_children(node, error);
+}
+
 AtspiAccessible *AtspiWrapper::Atspi_accessible_get_child_at_index(AtspiAccessible *node, int index, GError **error)
 {
     std::unique_lock<std::recursive_mutex> lock(mMutex);

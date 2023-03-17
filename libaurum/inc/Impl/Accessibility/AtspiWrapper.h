@@ -40,6 +40,7 @@ public:
     static gchar *Atspi_accessible_get_name(AtspiAccessible *node, GError **error);
     static AtspiAccessible *Atspi_get_desktop(int n);
     static int Atspi_accessible_get_child_count(AtspiAccessible *node, GError **error);
+    static GArray *Atspi_accessible_get_children(AtspiAccessible *node, GError **error);
     static AtspiAccessible *Atspi_accessible_get_child_at_index(AtspiAccessible *node, int index, GError **error);
     static AtspiAccessible *Atspi_accessible_get_parent(AtspiAccessible *node, GError **error);
     static AtspiStateSet *Atspi_accessible_get_state_set(AtspiAccessible *node);

@@ -361,19 +361,20 @@ std::vector<std::shared_ptr<AccessibleApplication>> AtspiAccessibleWatcher::getA
 {
     std::vector<std::shared_ptr<AccessibleApplication>> ret{};
     AtspiAccessible *root = AtspiWrapper::Atspi_get_desktop(0);
-    int nchild = AtspiWrapper::Atspi_accessible_get_child_count(root, NULL);
-    if (nchild <= 0) {
-        g_object_unref(root);
-        return ret;
-    }
-
-    for (int i = 0; i < nchild; i++){
-        AtspiAccessible *child = AtspiWrapper::Atspi_accessible_get_child_at_index(root, i, NULL);
-        if (child) {
-            ret.push_back(std::make_shared<AtspiAccessibleApplication>(std::make_shared<AtspiAccessibleNode>(child)));
+    GArray *children = AtspiWrapper::Atspi_accessible_get_children(root, NULL);
+    if (children) {
+        ret.reserve(children->len);
+        AtspiAccessible *child = nullptr;
+        for (unsigned int i = 0; i < children->len; i++) {
+            child = g_array_index(children, AtspiAccessible *, i);
+            if (child) {
+                ret.push_back(std::make_shared<AtspiAccessibleApplication>(std::make_shared<AtspiAccessibleNode>(child)));
+            }
         }
+        g_array_free(children, true);
     }
     g_object_unref(root);
+
     return ret;
 }
 
