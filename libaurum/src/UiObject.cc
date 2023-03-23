@@ -144,8 +144,14 @@ std::shared_ptr<UiObject> UiObject::getChildAt(int index) const {
 
 std::vector<std::shared_ptr<UiObject>> UiObject::getChildren() const
 {
-    auto sel = Sel::depth(2);
-    return this->findObjects(sel);
+    std::vector<std::shared_ptr<UiObject>> ret{};
+
+    auto children = getAccessibleNode()->getChildren();
+    for (auto &child : children) {
+        ret.push_back(std::make_shared<UiObject>(mDevice, mSelector, child));
+    }
+
+    return ret;
 }
 
 std::shared_ptr<Node> UiObject::getDescendant()

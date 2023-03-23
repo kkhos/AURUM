@@ -41,7 +41,11 @@ void AurumXML::traverse(xml_node& element, const std::shared_ptr<AccessibleNode>
 {
     if (!node) return;
 
-    node->refresh(false);
+    node->updateUniqueId();
+    node->updateName();
+    node->updateRoleName();
+    node->updateAttributes();
+    node->updateToolkitName();
 
     std::string name;
     if (node->getType().empty())
@@ -57,45 +61,18 @@ void AurumXML::traverse(xml_node& element, const std::shared_ptr<AccessibleNode>
     element.set_name(name.c_str());
 
     element.append_attribute("name") = node->getText().c_str();
-    element.append_attribute("type") = node->getType().c_str();
     element.append_attribute("id") = node->getId().c_str();
     element.append_attribute("automationid") = node->getAutomationId().c_str();
-    element.append_attribute("package") = node->getPkg().c_str();
-
-    const Rect<int> &size = node->getScreenBoundingBox();
-    element.append_attribute("x") = size.mTopLeft.x;
-    element.append_attribute("y") = size.mTopLeft.y;
-    element.append_attribute("width") = size.width();
-    element.append_attribute("height") = size.height();
-
-    const std::vector<std::pair<std::string, bool>> attributes = {
-        {"checked", node->isChecked()},
-        {"checkable", node->isCheckable()},
-        {"clickable", node->isClickable()},
-        {"enabled", node->isEnabled()},
-        {"focused", node->isFocused()},
-        {"focusable", node->isFocusable()},
-        {"scrollable", node->isScrollable()},
-        {"selected", node->isSelected()},
-        {"showing", node->isShowing()},
-        {"active", node->isActive()},
-        {"visible", node->isVisible()},
-        {"selectable", node->isSelectable()},
-        {"highlightable", node->isHighlightable()}
-    };
-    for (const auto& attribute : attributes) {
-        element.append_attribute(attribute.first.c_str()) = attribute.second;
-    }
 
     mXNodeMap[node->getId()] = node;
 
-    int childCnt = node->getChildCount();
-    for (int i = 0; i < childCnt; i++) {
-        const std::shared_ptr<AccessibleNode>& childNode = node->getChildAt(i);
-        if (childNode->getRawHandler() == nullptr) continue;
+    auto children = node->getChildren();
+    for (auto &child : children)
+    {
+        if (child->getRawHandler() == nullptr) continue;
 
         xml_node childElement = element.append_child("");
-        traverse(childElement, childNode);
+        traverse(childElement, child);
     }
 }
 
@@ -188,13 +165,12 @@ std::shared_ptr<AccessibleNode> AurumXML::checkParentNode(const std::shared_ptr<
     xml_node xmlNode = mDoc->select_node(query.c_str()).node();
 
     if (xmlNode) {
-       int childCnt = parent->getChildCount();
-        for (int i = 0; i < childCnt; i++) {
-            const std::shared_ptr<AccessibleNode>& childNode = parent->getChildAt(i);
-            if (childNode->getRawHandler() == nullptr) continue;
+        auto children = node->getChildren();
+        for (auto &child : children) {
+            if (child->getRawHandler() == nullptr) continue;
 
             xml_node childElement = xmlNode.append_child("");
-            traverse(childElement, childNode);
+            traverse(childElement, child);
         }
         return parent;
     }
