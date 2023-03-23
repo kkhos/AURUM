@@ -97,13 +97,13 @@ std::vector<std::shared_ptr<AccessibleNode>> Comparer::findObjects(
     if (currentMatch) partialMatches.push_front(currentMatch);
 
     if (!(mSelector->mMaxDepth && (depth+1 > mSelector->mMaxDepth))) {
-        int childCnt = root->getChildCount();
-        for (int i = 0; i < childCnt; i++) {
-            std::shared_ptr<AccessibleNode> childNode = root->getChildAt(i);
-            if (childNode->getRawHandler() == nullptr) continue;
+        auto children = root->getChildren();
+        for (int i = 0; i < (int)children.size(); i++) {
+            auto child = children[i];
+            if (child->getRawHandler() == nullptr) continue;
 
             std::vector<std::shared_ptr<AccessibleNode>> childret =
-                findObjects(childNode, i, depth + 1, partialMatches);
+                findObjects(child, i, depth + 1, partialMatches);
             std::move(std::begin(childret), std::end(childret), std::back_inserter(ret));
             if (!ret.empty() && mEarlyReturn) {
                 LOGI("Object found and earlyReturn");

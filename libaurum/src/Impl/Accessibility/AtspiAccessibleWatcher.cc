@@ -139,6 +139,8 @@ AtspiAccessibleWatcher::AtspiAccessibleWatcher()
 
     atspi_init();
 
+    AtspiWrapper::Atspi_accessible_set_cache_mask(AtspiWrapper::Atspi_get_desktop(0), ATSPI_CACHE_ALL);
+
     mEventThread = g_thread_new("AtspiEventThread", eventThreadLoop, this);
 
     mDbusProxy = g_dbus_proxy_new_for_bus_sync(
@@ -191,7 +193,6 @@ AtspiAccessibleWatcher::~AtspiAccessibleWatcher()
 
 void AtspiAccessibleWatcher::appendApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg)
 {
-    AtspiWrapper::Atspi_accessible_set_cache_mask(app, ATSPI_CACHE_ALL);
     LOGI("window activated in app(%s)", pkg);
     if (!instance->mActiveAppMap.count(app)) {
         LOGI("add activated window's app in map");
