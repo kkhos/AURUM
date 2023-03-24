@@ -209,7 +209,7 @@ std::vector<std::shared_ptr<AccessibleNode>> UiDevice::getWindowRoot() const
         LOGI("Visible win (%d) (%d %d %d %d) (%s)", tWin->getPid(), tWin->getWindowGeometry().mTopLeft.x, tWin->getWindowGeometry().mTopLeft.y, tWin->getWindowGeometry().width(),
             tWin->getWindowGeometry().height(), tWin->getName().c_str());
 
-        if (pidToAppNode.count(tWin->getPid() == 0)) continue;
+        if (pidToAppNode.count(tWin->getPid()) == 0) continue;
 
         LOGI("Active App : (%s) (%d)", tWin->getName().c_str(), tWin->getPid());
         auto wins = pidToAppNode[tWin->getPid()]->getWindows();
