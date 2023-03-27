@@ -31,6 +31,7 @@
 #include <iostream>
 #include <gio/gio.h>
 #include <unordered_set>
+#include <unordered_map>
 
 using namespace Aurum;
 using namespace AurumInternal;
