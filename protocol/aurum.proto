@@ -549,6 +549,7 @@ message RspKey{
 }
 
 message ReqTakeScreenshot{
+   bool getPixels = 1;
 }
 message RspTakeScreenshot{
    bytes image = 1;
