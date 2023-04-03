@@ -31,7 +31,6 @@
 #include <iostream>
 #include <gio/gio.h>
 #include <unordered_set>
-#include <efl_util.h>
 
 using namespace Aurum;
 using namespace AurumInternal;
@@ -210,7 +209,7 @@ std::vector<std::shared_ptr<AccessibleNode>> UiDevice::getWindowRoot() const
         LOGI("Visible win (%d) (%d %d %d %d) (%s)", tWin->getPid(), tWin->getWindowGeometry().mTopLeft.x, tWin->getWindowGeometry().mTopLeft.y, tWin->getWindowGeometry().width(),
             tWin->getWindowGeometry().height(), tWin->getName().c_str());
 
-        if (pidToAppNode.count(tWin->getPid()) == 0) continue;
+        if (pidToAppNode.count(tWin->getPid() == 0)) continue;
 
         LOGI("Active App : (%s) (%d)", tWin->getName().c_str(), tWin->getPid());
         auto wins = pidToAppNode[tWin->getPid()]->getWindows();
@@ -415,9 +414,9 @@ bool UiDevice::repeatKeyCode(std::string keycode, int intervalMs, int durationMs
     return result;
 }
 
-bool UiDevice::takeScreenshot(std::string path, bool asPixels, void **pixels)
+bool UiDevice::takeScreenshot(std::string path, float scale, int quality)
 {
-    return mDeviceImpl->takeScreenshot(path, asPixels, pixels);
+    return mDeviceImpl->takeScreenshot(path, scale, quality);
 }
 
 long long UiDevice::getSystemTime(TimeRequestType type)

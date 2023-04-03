@@ -195,7 +195,7 @@ bool MockDeviceImpl::repeatKeyCode(std::string keycode, int intervalMs, int dura
     return false;
 }
 
-bool MockDeviceImpl::takeScreenshot(std::string path, float scale, int quality)
+bool MockDeviceImpl::takeScreenshot(std::string path, bool asPixels, void **pixels)
 {
     return true;
 }

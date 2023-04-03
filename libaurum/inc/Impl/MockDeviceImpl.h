@@ -157,9 +157,9 @@ public:
 
     /**
      * @brief TBD
-     * @since_tizen 6.5
+     * @since_tizen 7.0
      */
-    bool takeScreenshot(std::string path, float scale, int quality) override;
+    bool takeScreenshot(std::string path, bool asPixels, void **pixels) override;
 
     /**
      * @brief TBD

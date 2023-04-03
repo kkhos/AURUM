@@ -1,0 +1,15 @@
+--- libaurum/src/UiDevice.cc
++++ libaurum/src/UiDevice.cc
+@@ -194,8 +194,11 @@ std::vector<std::shared_ptr<AccessibleNode>> UiDevice::getWindowRoot() const
+     getTizenWindowInfo();
+ 
+     std::vector<std::shared_ptr<AccessibleNode>> ret{};
++    LOGE("WCC get application start");
++    //auto apps = AccessibleWatcher::getInstance()->getApplications();
+ 
+-    auto apps = AccessibleWatcher::getInstance()->getApplications();
++    auto apps = AccessibleWatcher::getInstance()->getApplicationsTest();
++    LOGE("WCC get application finish\n\n\n");
+     for (auto app : apps)
+     {
+         app->getAccessibleNode()->updateName();
