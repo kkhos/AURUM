@@ -416,9 +416,9 @@ bool UiDevice::repeatKeyCode(std::string keycode, int intervalMs, int durationMs
     return result;
 }
 
-bool UiDevice::takeScreenshot(std::string path, float scale, int quality)
+bool UiDevice::takeScreenshot(std::string path, bool asPixels, void **pixels)
 {
-    return mDeviceImpl->takeScreenshot(path, scale, quality);
+    return mDeviceImpl->takeScreenshot(path, asPixels, pixels);
 }
 
 long long UiDevice::getSystemTime(TimeRequestType type)

@@ -262,14 +262,14 @@ public:
      * @brief Take a screenshot of current window and store it as image file.
      *
      * @param[in] path where the image file should be written to
-     * @param[in] scale scale the screenshot down if needed; 1.0f for original size
-     * @param[in] quality quality of the PNG compression; range: 0-100
+     * @param[in] asPixels asPixels wheter to receive screen pixel data
+     * @param[in] pixels pixel pixel buffer data pointer
      *
      * @return true if screen shot is created successfully, false otherwise
      *
      * @since_tizen 6.5
      */
-    virtual bool takeScreenshot(std::string path, float scale, int quality) = 0;
+    virtual bool takeScreenshot(std::string path, bool asPixels, void **pixels) = 0;
 
     /**
      * @brief Gets device system time.
