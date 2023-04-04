@@ -20,6 +20,7 @@
 
 #include <unordered_map>
 #include <mutex>
+#include <condition_variable>
 #include <sstream>
 
 #include "Accessible.h"
@@ -46,7 +47,7 @@ public:
      *
      * @since_tizen 7.0
      */
-    AurumXML(const std::shared_ptr<AccessibleNode> root, std::mutex& XMLMutex);
+    AurumXML(const std::shared_ptr<AccessibleNode> root, int *appXMLLoadedCount, std::mutex *XMLMutex, std::condition_variable *XMLConditionVar);
 
     /**
      * @brief Destroy the AurumXML object
@@ -58,7 +59,7 @@ public:
     /**
      * @brief Creates a XML tree.
      *
-     * @return true if XML tree is created succesfully, false otherwise
+     * @return true if XML tree is created successfully, false otherwise
      *
      * @since_tizen 7.0
      */
@@ -80,11 +81,11 @@ public:
      *
      * @param xpath
      *
-     * @return the list of found AccessibleNode vector
+     * @param ret vector contains objects
      *
      * @since_tizen 7.0
      */
-    std::vector<std::shared_ptr<AccessibleNode>> findObjects(std::string xpath, bool earlyReturn = false);
+    void findObjects(std::vector<std::shared_ptr<AccessibleNode>> &ret, std::string xpath, bool earlyReturn = false);
 
 private:
     /**
@@ -145,7 +146,6 @@ private:
     xml_document                                *mDoc;
     const std::shared_ptr<AccessibleNode>        mRoot;
     std::unordered_map<std::string, std::shared_ptr<AccessibleNode>> mXNodeMap;
-    std::mutex&                                  XMLMutex;
 };
 }  // namespace Aurum
 

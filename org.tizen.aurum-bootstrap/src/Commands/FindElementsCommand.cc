@@ -81,7 +81,6 @@ std::vector<std::shared_ptr<UiSelector>> FindElementsCommand::getSelectors(void)
 
 ::grpc::Status FindElementsCommand::execute()
 {
-    LOGI("findElements --------------- ");
     auto searchableObj = getSearchableTop();
     auto selectors     = getSelectors();
     std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();

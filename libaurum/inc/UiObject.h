@@ -537,7 +537,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    void longClick(const unsigned int durationMs = LOGNCLICK_INTERVAL) const;
+    void longClick(const unsigned int durationMs = LONGCLICK_INTERVAL) const;
 
     /**
      * TODO
@@ -666,7 +666,7 @@ private:
     std::shared_ptr<UiSelector>  mSelector;
     std::shared_ptr<AccessibleNode> mNode;
     const Waiter *mWaiter;
-    static const unsigned int LOGNCLICK_INTERVAL = 500;
+    static const unsigned int LONGCLICK_INTERVAL = 500;
 };
 
 }

@@ -92,7 +92,9 @@ std::vector<std::shared_ptr<UiObject>> UiObject::findObjects(
     const std::shared_ptr<UiSelector> selector) const
 {
     std::vector<std::shared_ptr<UiObject>> result{};
-    auto nodes = Comparer::findObjects(mDevice, selector, getAccessibleNode());
+
+    std::vector<std::shared_ptr<AccessibleNode>> nodes{};
+    Comparer::findObjects(nodes, mDevice, selector, getAccessibleNode());
     for ( auto& node : nodes) {
         if (!node) {
             LOGI("Skipped! (node == nullptr)");
@@ -144,8 +146,14 @@ std::shared_ptr<UiObject> UiObject::getChildAt(int index) const {
 
 std::vector<std::shared_ptr<UiObject>> UiObject::getChildren() const
 {
-    auto sel = Sel::depth(2);
-    return this->findObjects(sel);
+    std::vector<std::shared_ptr<UiObject>> ret{};
+
+    auto children = getAccessibleNode()->getChildren();
+    for (auto &child : children) {
+        ret.push_back(std::make_shared<UiObject>(mDevice, mSelector, child));
+    }
+
+    return ret;
 }
 
 std::shared_ptr<Node> UiObject::getDescendant()

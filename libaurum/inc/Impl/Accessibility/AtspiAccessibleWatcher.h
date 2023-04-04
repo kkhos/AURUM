@@ -31,6 +31,8 @@
 #include <vector>
 #include <set>
 #include <map>
+#include <mutex>
+#include <condition_variable>
 
 using namespace Aurum;
 
@@ -44,10 +46,23 @@ namespace AurumInternal {
  * @since_tizen 6.5
  */
 enum class WindowActivateInfoType {
-    DEFAULT_LABEL_ENALBED = 0x00,
-    DEFAULT_LABEL_ENALBED_WITHOUT_WINDOW = 0x01,
+    DEFAULT_LABEL_ENABLED = 0x00,
+    DEFAULT_LABEL_ENABLED_WITHOUT_WINDOW = 0x01,
     DEFAULT_LABEL_DISABLED = 0x02,
     KEYBOARD = 0x04,
+};
+
+/**
+ * @internal
+ *
+ * @brief Idle event state enum class.
+ *
+ * @since_tizen 7.5
+ */
+enum class IdleEventState {
+    IDLE_LISTEN_START = 0x00,
+    IDLE_LISTEN_READY = 0x01,
+    IDLE_LISTEN_DONE = 0x02,
 };
 
 /**
@@ -105,7 +120,7 @@ public:
     /**
      * @copydoc @AccessibleWatcher::executeAndWaitForEvents()
      */
-    virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName) override;
+    virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName, std::shared_ptr<AccessibleNode> obj, const int count)  override;
 
     /**
      * @copydoc @AccessibleWatcher::getActiveAppMap()
@@ -116,6 +131,11 @@ public:
      * @copydoc @AccessibleWatcher::getXMLDocMap()
      */
     virtual std::map<std::string, std::shared_ptr<AurumXML>> getXMLDocMap(void) override;
+
+    /**
+     * @copydoc @AccessibleWatcher::getXMLDoc()
+     */
+    virtual std::shared_ptr<AurumXML> getXMLDoc(std::string pkgName) override;
 
     /**
      * @copydoc @AccessibleWatcher::registerCallback()
@@ -149,6 +169,7 @@ private:
     bool removeFromWindowSet(AtspiAccessible *node);
     bool addToWindowSet(AtspiAccessible *node);
     static gpointer eventThreadLoop(gpointer data);
+    static gpointer timerThread(gpointer data);
     void appendApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg);
     void removeApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg);
 
@@ -164,8 +185,20 @@ private:
     static std::mutex mMutex;
     static GMainLoop *mLoop;
     bool isTv;
-    std::mutex XMLMutex;
     std::map<const A11yEvent, std::list<std::shared_ptr<A11yEventHandler>>> mHandlers;
+
+    int mAppCount;
+
+    // this variable should be protected by XMLMutex.
+    int mAppXMLLoadedCount;
+
+    std::mutex mXMLMutex;
+    std::condition_variable mXMLConditionVar;
+
+    static GThread *mTimerThread;
+    static gint64 mStartTime;
+    static IdleEventState isIdle;
+    static int mRenderCount;
 };
 
 }

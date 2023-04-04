@@ -80,7 +80,7 @@ public:
     /**
      * @brief Checks that there is an object that are satisfied with selector condition.
      *
-     * @param[in] selector @UiSelctor
+     * @param[in] selector @UiSelector
      *
      * @return function that performs hasObject
      *         returned function will return true if object has, else false
@@ -93,10 +93,10 @@ public:
     /**
      * @brief Checks that there is an object that are satisfied with selector condition.
      *
-     * @param[in] selector @UiSelctor
+     * @param[in] selector @UiSelector
      *
      * @return function that performs findObject
-     *         returned function will return obj if succeed, else nulltpr
+     *         returned function will return obj if succeed, else nullptr
      *
      * @since_tizen 6.5
      */
@@ -119,7 +119,7 @@ public:
     /**
      * @brief Checks that there are objects that are satisfied with selector condition.
      *
-     * @param[in] selector @UiSelctor
+     * @param[in] selector @UiSelector
      *
      * @return function that performs findObjects
      *         returned function will return vector if succeed, else vector size is zero

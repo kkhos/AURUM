@@ -43,7 +43,7 @@ public:
     AtspiAccessibleNode(AtspiAccessible *node);
 
     /**
-     * @brief AtspiAccessibleNode desctructor.
+     * @brief AtspiAccessibleNode destructor.
      *
      * @since_tizen 6.5
      */

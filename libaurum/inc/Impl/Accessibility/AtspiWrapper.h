@@ -40,6 +40,7 @@ public:
     static gchar *Atspi_accessible_get_name(AtspiAccessible *node, GError **error);
     static AtspiAccessible *Atspi_get_desktop(int n);
     static int Atspi_accessible_get_child_count(AtspiAccessible *node, GError **error);
+    static GArray *Atspi_accessible_get_children(AtspiAccessible *node, GError **error);
     static AtspiAccessible *Atspi_accessible_get_child_at_index(AtspiAccessible *node, int index, GError **error);
     static AtspiAccessible *Atspi_accessible_get_parent(AtspiAccessible *node, GError **error);
     static AtspiStateSet *Atspi_accessible_get_state_set(AtspiAccessible *node);
@@ -69,6 +70,7 @@ public:
     static guint Atspi_accessible_get_process_id(AtspiAccessible *node, GError **error);
     static gchar *Atspi_accessible_get_toolkit_name(AtspiAccessible *node, GError **error);
     static AtspiRect *Atspi_text_get_minimum_bounding_rectangles(AtspiText* obj, gint start_offset, gint end_offset, AtspiCoordType type, GError** error);
+    static void Atspi_accessible_set_listen_post_render(AtspiAccessible *obj, gboolean enabled, GError **error);
 
 private:
     static std::recursive_mutex mMutex;

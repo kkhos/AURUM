@@ -22,7 +22,7 @@ namespace Aurum {
 
 /**
  * @brief Size2D Class.
- *        This class for represent specific obejct's size as width and height.
+ *        This class for represent specific object's size as width and height.
  *
  * @since_tizen 6.5
  */
@@ -30,14 +30,14 @@ template <typename T>
 class Size2D {
 public:
     /**
-     * @brief Size2D contructor with value.
+     * @brief Size2D constructor with value.
      *
      * @since_tizen 6.5
      */
     Size2D() : width{0}, height{0} {}
 
     /**
-     * @brief Size2D contructor with source.
+     * @brief Size2D constructor with source.
      *
      * @since_tizen 6.5
      */
@@ -48,7 +48,7 @@ public:
     }
 
     /**
-     * @brief Size2D contructor with type.
+     * @brief Size2D constructor with type.
      *
      * @since_tizen 6.5
      */

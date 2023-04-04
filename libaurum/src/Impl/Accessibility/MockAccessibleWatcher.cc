@@ -60,6 +60,11 @@ std::map<std::string, std::shared_ptr<AurumXML>> MockAccessibleWatcher::getXMLDo
     return mXMLDocMap;
 }
 
+std::shared_ptr<AurumXML> MockAccessibleWatcher::getXMLDoc(std::string pkgName)
+{
+    return std::shared_ptr<AurumXML>();
+}
+
 std::shared_ptr<MockAccessibleApplication> MockAccessibleWatcher::addApplication(std::string pkgName, Rect<int> geometry, int ifaces, int properties)
 {
     std::shared_ptr<MockAccessibleNode> appNode = std::make_shared<MockAccessibleNode>(nullptr, pkgName, pkgName, "application", "", "Elm_Win", "default", "", geometry, ifaces, properties);
@@ -68,7 +73,7 @@ std::shared_ptr<MockAccessibleApplication> MockAccessibleWatcher::addApplication
     return app;
 }
 
-bool MockAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName)
+bool MockAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName, std::shared_ptr<AccessibleNode> obj, const int count)
 {
     return true;
 }

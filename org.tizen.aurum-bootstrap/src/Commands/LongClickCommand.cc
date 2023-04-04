@@ -36,14 +36,14 @@ LongClickCommand::LongClickCommand(const ::aurum::ReqClick *request,
     if (type == ::aurum::ReqClick_RequestType_ELEMENTID) {
         std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
         if (obj) {
-            obj->longClick(LOGNCLICK_INTERVAL);
+            obj->longClick(LONGCLICK_INTERVAL);
             mResponse->set_status(::aurum::RspStatus::OK);
         } else
             mResponse->set_status(::aurum::RspStatus::ERROR);
     } else if (type == ::aurum::ReqClick_RequestType_COORD) {
         std::shared_ptr<UiDevice> obj = UiDevice::getInstance();
         const ::aurum::Point& point = mRequest->coordination();
-        obj->click(point.x(), point.y(), LOGNCLICK_INTERVAL);
+        obj->click(point.x(), point.y(), LONGCLICK_INTERVAL);
         mResponse->set_status(::aurum::RspStatus::OK);
     } else if (type == ::aurum::ReqClick_RequestType_ATSPI) {
         mResponse->set_status(::aurum::RspStatus::ERROR);

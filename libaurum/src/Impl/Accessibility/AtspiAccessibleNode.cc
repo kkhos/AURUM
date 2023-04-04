@@ -33,7 +33,6 @@ AtspiAccessibleNode::AtspiAccessibleNode(AtspiAccessible *node)
     watcher->attach(shared_from_this());
 
     if (mNode) {
-        this->updateApplication();
         this->updateUniqueId();
         this->updateStates();
     } else {
@@ -70,11 +69,20 @@ std::shared_ptr<AccessibleNode> AtspiAccessibleNode::getChildAt(int index) const
 std::vector<std::shared_ptr<AccessibleNode>> AtspiAccessibleNode::getChildren() const
 {
     std::vector<std::shared_ptr<AccessibleNode>> ret{};
-    int nchild = this->getChildCount();
-    for (int i = 0; i < nchild; i++) {
-        auto child = getChildAt(i);
-        if (child) ret.push_back(child);
+
+    GArray *children = AtspiWrapper::Atspi_accessible_get_children(mNode, NULL);
+    if (children) {
+        ret.reserve(children->len);
+        AtspiAccessible *child = nullptr;
+        for (unsigned int i = 0; i < children->len; i++) {
+            child = g_array_index(children, AtspiAccessible *, i);
+            if (child) {
+                ret.push_back(std::make_shared<AtspiAccessibleNode>(child));
+            }
+        }
+        g_array_free(children, true);
     }
+
     return ret;
 }
 
@@ -109,6 +117,8 @@ void* AtspiAccessibleNode::getRawHandler(void) const
 
 void AtspiAccessibleNode::updateRoleName()
 {
+    if (!mRole.empty()) return;
+
     AtspiWrapper::Atspi_accessible_clear_cache(mNode);
 
     gchar *rolename = AtspiWrapper::Atspi_accessible_get_role_name(mNode, NULL);
@@ -120,6 +130,8 @@ void AtspiAccessibleNode::updateRoleName()
 
 void AtspiAccessibleNode::updateUniqueId()
 {
+    if (!mId.empty()) return;
+
     AtspiWrapper::Atspi_accessible_clear_cache(mNode);
 
     #ifdef TIZEN
@@ -146,6 +158,8 @@ void AtspiAccessibleNode::updateName()
 
 void AtspiAccessibleNode::updateToolkitName()
 {
+    if (!mToolkitName.empty()) return;
+
     AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(mNode, NULL);
     if (app) {
         gchar *toolkitName = AtspiWrapper::Atspi_accessible_get_toolkit_name(app, NULL);
@@ -159,6 +173,8 @@ void AtspiAccessibleNode::updateToolkitName()
 
 void AtspiAccessibleNode::updateApplication()
 {
+    if (!mPkg.empty()) return;
+
     AtspiWrapper::Atspi_accessible_clear_cache(mNode);
 
     AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(mNode, NULL);
@@ -174,6 +190,8 @@ void AtspiAccessibleNode::updateApplication()
 
 void AtspiAccessibleNode::updateAttributes()
 {
+    if (!mType.empty()) return;
+
     AtspiWrapper::Atspi_accessible_clear_cache(mNode);
 
     GHashTable *attributes = AtspiWrapper::Atspi_accessible_get_attributes(mNode, NULL);
@@ -218,8 +236,6 @@ void AtspiAccessibleNode::updateStates()
 
 void AtspiAccessibleNode::updateExtents()
 {
-    AtspiWrapper::Atspi_accessible_clear_cache(mNode);
-
     AtspiComponent *component = AtspiWrapper::Atspi_accessible_get_component_iface(mNode);
     if (component) {
         AtspiRect *screenExtent = AtspiWrapper::Atspi_component_get_extents(
@@ -245,10 +261,8 @@ void AtspiAccessibleNode::updateExtents()
 
 void AtspiAccessibleNode::updateXPath()
 {
-    auto XMLDocMap = AccessibleWatcher::getInstance()->getXMLDocMap();
-    if (XMLDocMap.count(mPkg) == 0) return;
-
-    auto XMLDoc = XMLDocMap[mPkg];
+    auto XMLDoc = AccessibleWatcher::getInstance()->getXMLDoc(mPkg);
+    if (XMLDoc.get() == nullptr) return;
 
     mXPath = XMLDoc->getXPath(shared_from_this());
 }
@@ -269,15 +283,13 @@ void AtspiAccessibleNode::updateValue()
 
 void AtspiAccessibleNode::updatePid()
 {
-    AtspiWrapper::Atspi_accessible_clear_cache(mNode);
+    if (mPid > 0) return;
 
     mPid = AtspiWrapper::Atspi_accessible_get_process_id(mNode, NULL);
 }
 
 void AtspiAccessibleNode::updateTextMinBoundingRect()
 {
-    AtspiWrapper::Atspi_accessible_clear_cache(mNode);
-
     AtspiText *text = atspi_accessible_get_text_iface(mNode);
     if (text)
     {
@@ -312,57 +324,66 @@ void AtspiAccessibleNode::refresh(bool updateAll)
     AtspiWrapper::Atspi_accessible_clear_cache(mNode);
 
     if (isValid()) {
-        gchar *rolename = AtspiWrapper::Atspi_accessible_get_role_name(mNode, NULL);
-        if (rolename) {
-            mRole = rolename;
-            g_free(rolename);
+        if (mRole.empty()) {
+            gchar *rolename = AtspiWrapper::Atspi_accessible_get_role_name(mNode, NULL);
+            if (rolename) {
+                mRole = rolename;
+                g_free(rolename);
+            }
         }
     #ifdef TIZEN
-        gchar *uID = AtspiWrapper::Atspi_accessible_get_unique_id(mNode, NULL);
-        if (uID) {
-            mId = uID;
-            g_free(uID);
+        if (mId.empty()) {
+            gchar *uID = AtspiWrapper::Atspi_accessible_get_unique_id(mNode, NULL);
+            if (uID) {
+                mId = uID;
+                g_free(uID);
+            }
         }
     #else
         mId = std::string{"N/A"};
     #endif
-
         gchar *name = AtspiWrapper::Atspi_accessible_get_name(mNode, NULL);
         if (name) {
             mText = name;
             g_free(name);
         }
 
-        gchar *toolkitName = AtspiWrapper::Atspi_accessible_get_toolkit_name(mNode, NULL);
-        if (toolkitName) {
-            mToolkitName = toolkitName;
-            g_free(toolkitName);
-        }
-
-        AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(mNode, NULL);
-        if (app) {
-            gchar *pkg = AtspiWrapper::Atspi_accessible_get_name(app, NULL);
-            if (pkg) {
-                mPkg = pkg;
-                g_free(pkg);
+        if (mToolkitName.empty()) {
+            gchar *toolkitName = AtspiWrapper::Atspi_accessible_get_toolkit_name(mNode, NULL);
+            if (toolkitName) {
+                mToolkitName = toolkitName;
+                g_free(toolkitName);
             }
-            g_object_unref(app);
         }
 
-        GHashTable *attributes = AtspiWrapper::Atspi_accessible_get_attributes(mNode, NULL);
-        if (attributes) {
-            char *t = (char*)g_hash_table_lookup(attributes, "type");
-            if (!t) t = (char*)g_hash_table_lookup(attributes, "t");
-            if (!t) t = (char*)g_hash_table_lookup(attributes, "class");
-            char *s = (char*)g_hash_table_lookup(attributes, "style");
-            char *a = (char*)g_hash_table_lookup(attributes, "automationId");
+        if (mPkg.empty()) {
+            AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(mNode, NULL);
+            if (app) {
+                gchar *pkg = AtspiWrapper::Atspi_accessible_get_name(app, NULL);
+                if (pkg) {
+                    mPkg = pkg;
+                    g_free(pkg);
+                }
+                g_object_unref(app);
+            }
+        }
 
-            if (t) mType =  std::string(t);
-            else mType = mRole;
-            if (s) mStyle = std::string(s);
-            if (a) mAutomationId = std::string(a);
+        if (mType.empty()) {
+            GHashTable *attributes = AtspiWrapper::Atspi_accessible_get_attributes(mNode, NULL);
+            if (attributes) {
+                char *t = (char*)g_hash_table_lookup(attributes, "type");
+                if (!t) t = (char*)g_hash_table_lookup(attributes, "t");
+                if (!t) t = (char*)g_hash_table_lookup(attributes, "class");
+                char *s = (char*)g_hash_table_lookup(attributes, "style");
+                char *a = (char*)g_hash_table_lookup(attributes, "automationId");
 
-            g_hash_table_unref(attributes);
+                if (t) mType =  std::string(t);
+                else mType = mRole;
+                if (s) mStyle = std::string(s);
+                if (a) mAutomationId = std::string(a);
+
+                g_hash_table_unref(attributes);
+            }
         }
 
         AtspiStateSet *st = AtspiWrapper::Atspi_accessible_get_state_set(mNode);

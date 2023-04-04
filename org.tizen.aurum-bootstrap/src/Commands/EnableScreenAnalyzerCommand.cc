@@ -29,7 +29,7 @@ EnableScreenAnalyzerCommand::EnableScreenAnalyzerCommand(const ::aurum::ReqEnabl
 {
     LOGI("EnableScreenAnalyzer test --------------- ");
 
-    LOGI("Screen Analzyer enabled (%d) Servier IP : (%s)", mRequest->enable(), mRequest->serverip().c_str());
+    LOGI("Screen Analyzer enabled (%d) Server IP : (%s)", mRequest->enable(), mRequest->serverip().c_str());
     std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();
     mDevice->setWithScreenAnalyzer(mRequest->enable());
 #ifdef MQTT_ENABLED

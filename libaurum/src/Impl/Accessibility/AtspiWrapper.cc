@@ -51,6 +51,12 @@ int AtspiWrapper::Atspi_accessible_get_child_count(AtspiAccessible *node, GError
     return atspi_accessible_get_child_count(node, error);
 }
 
+GArray *AtspiWrapper::Atspi_accessible_get_children(AtspiAccessible *node, GError **error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_accessible_get_children(node, error);
+}
+
 AtspiAccessible *AtspiWrapper::Atspi_accessible_get_child_at_index(AtspiAccessible *node, int index, GError **error)
 {
     std::unique_lock<std::recursive_mutex> lock(mMutex);
@@ -225,3 +231,8 @@ AtspiRect *AtspiWrapper::Atspi_text_get_minimum_bounding_rectangles(AtspiText* o
     return atspi_text_get_range_extents(obj, start_offset, end_offset, type, error);
 }
 
+void AtspiWrapper::Atspi_accessible_set_listen_post_render(AtspiAccessible *obj, gboolean enabled, GError **error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    atspi_accessible_set_listen_post_render(obj, enabled, error);
+}

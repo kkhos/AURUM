@@ -43,6 +43,7 @@ enum class A11yEvent {
      EVENT_WINDOW_LOWER = 0x00100,
      EVENT_WINDOW_MOVE = 0x00200,
      EVENT_WINDOW_RESIZE = 0x00400,
+     EVENT_WINDOW_RENDER_POST = 0x00800,
 
      EVENT_TEXT_CHANGED_INSERT = 0x00800,
      EVENT_TEXT_CHANGED_DELETE = 0x01000,
@@ -77,7 +78,7 @@ public:
      *
      * @param[in] event @A11yEvent
      * @param[in] name name of the ATSPI event
-     * @param[in] package event occured package name
+     * @param[in] package event occurred package name
      *
      * @since_tizen 6.5
      */
@@ -88,7 +89,7 @@ public:
      *
      * @param[in] event name of the event
      * @param[in] name name of the ATSPI event
-     * @param[in] package event occured package name
+     * @param[in] package event occurred package name
      *
      * @since_tizen 6.5
      */

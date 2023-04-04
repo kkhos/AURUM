@@ -40,7 +40,7 @@ public:
     Rect() : mTopLeft{0, 0}, mBottomRight{0, 0} {}
 
     /**
-     * @brief Rect constructor with top topleft point, bottom right point
+     * @brief Rect constructor with top top-left point, bottom-right point
      *
      * @param[in] tl top left @Point2D
      * @param[in] br bottom right @Point2D

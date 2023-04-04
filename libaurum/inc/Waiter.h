@@ -66,7 +66,7 @@ public:
     /**
      * @brief wait for condition satisfied.
      *
-     * @param[in] condisiton @ISearchable
+     * @param[in] condition @ISearchable
      *
      * @return template
      *

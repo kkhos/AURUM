@@ -39,6 +39,11 @@ std::vector<std::shared_ptr<A11yEventInfo>> AtspiAccessibleWatcher::mEventQueue;
 GThread *AtspiAccessibleWatcher::mEventThread = nullptr;
 std::mutex AtspiAccessibleWatcher::mMutex = std::mutex{};
 GMainLoop *AtspiAccessibleWatcher::mLoop = nullptr;
+GThread *AtspiAccessibleWatcher::mTimerThread = nullptr;
+gint64 AtspiAccessibleWatcher::mStartTime = 0;
+IdleEventState AtspiAccessibleWatcher::isIdle = IdleEventState::IDLE_LISTEN_READY;
+static const unsigned int WAIT_FOR_IDLE_MICRO_SEC = 100000; // 0.1 sec
+int AtspiAccessibleWatcher::mRenderCount = 10;
 
 static bool iShowingNode(AtspiAccessible *node)
 {
@@ -129,7 +134,12 @@ AtspiAccessibleWatcher::AtspiAccessibleWatcher()
     GVariant *result = nullptr;
     GError *error = nullptr;
 
+    mAppCount = 0;
+    mAppXMLLoadedCount = 0;
+
     atspi_init();
+
+    AtspiWrapper::Atspi_accessible_set_cache_mask(AtspiWrapper::Atspi_get_desktop(0), ATSPI_CACHE_ALL);
 
     mEventThread = g_thread_new("AtspiEventThread", eventThreadLoop, this);
 
@@ -183,7 +193,6 @@ AtspiAccessibleWatcher::~AtspiAccessibleWatcher()
 
 void AtspiAccessibleWatcher::appendApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg)
 {
-    AtspiWrapper::Atspi_accessible_set_cache_mask(app, ATSPI_CACHE_ALL);
     LOGI("window activated in app(%s)", pkg);
     if (!instance->mActiveAppMap.count(app)) {
         LOGI("add activated window's app in map");
@@ -199,8 +208,10 @@ void AtspiAccessibleWatcher::appendApp(AtspiAccessibleWatcher *instance, AtspiAc
         if (instance->mXMLDocMap.count(package)) {
             instance->mXMLDocMap.erase(package);
         }
+
+        mAppCount++;
         instance->mXMLDocMap.insert(std::pair<std::string, std::shared_ptr<AurumXML>>(package,
-                std::make_shared<AurumXML>(std::make_shared<AtspiAccessibleNode>(app), XMLMutex)));
+                std::make_shared<AurumXML>(std::make_shared<AtspiAccessibleNode>(app), &mAppXMLLoadedCount, &mXMLMutex, &mXMLConditionVar)));
     }
 }
 
@@ -222,6 +233,28 @@ void AtspiAccessibleWatcher::removeApp(AtspiAccessibleWatcher *instance, AtspiAc
     g_object_unref(app);
 }
 
+gpointer AtspiAccessibleWatcher::timerThread(gpointer data)
+{
+    mStartTime = g_get_monotonic_time();
+    for (;;)
+    {
+        //FIXME: User can change waiting time and count of render post
+        //       instead of waiting specific time
+        if ((g_get_monotonic_time() - mStartTime) > WAIT_FOR_IDLE_MICRO_SEC)
+        {
+            break;
+        }
+
+        usleep(100);
+    }
+
+    mTimerThread = nullptr;
+    isIdle = IdleEventState::IDLE_LISTEN_DONE;
+    g_thread_exit(NULL);
+
+    return NULL;
+}
+
 void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
 {
     if (!event->source)
@@ -231,6 +264,30 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
     char *name = NULL, *pkg = NULL;
     AtspiAccessibleWatcher *instance = (AtspiAccessibleWatcher *)watcher;
     name = AtspiWrapper::Atspi_accessible_get_name(event->source, NULL);
+
+    LOGE("WCC event = %s", event->type);
+    if (isIdle == IdleEventState::IDLE_LISTEN_START && !strncmp(event->type, "window:post-render", 18))
+    {
+        if (mTimerThread == nullptr)
+        {
+            LOGI("Timer Thread Start");
+            mTimerThread = g_thread_new("TimerThread", timerThread, instance);
+        }
+        else
+        {
+            mStartTime = g_get_monotonic_time();
+        }
+
+        mRenderCount--;
+        if (mRenderCount == 0)
+        {
+          LOGI("RenderCount is 0. Stop to listen RenderPost");
+          mStartTime = g_get_monotonic_time() + WAIT_FOR_IDLE_MICRO_SEC;
+        }
+
+        if (name) free(name);
+        return;
+    }
 
     AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(event->source, NULL);
     if (name && app)
@@ -305,27 +362,41 @@ std::vector<std::shared_ptr<AccessibleApplication>> AtspiAccessibleWatcher::getA
 {
     std::vector<std::shared_ptr<AccessibleApplication>> ret{};
     AtspiAccessible *root = AtspiWrapper::Atspi_get_desktop(0);
-    int nchild = AtspiWrapper::Atspi_accessible_get_child_count(root, NULL);
-    if (nchild <= 0) {
-        g_object_unref(root);
-        return ret;
-    }
-
-    for (int i = 0; i < nchild; i++){
-        AtspiAccessible *child = AtspiWrapper::Atspi_accessible_get_child_at_index(root, i, NULL);
-        if (child) {
-            ret.push_back(std::make_shared<AtspiAccessibleApplication>(std::make_shared<AtspiAccessibleNode>(child)));
+    GArray *children = AtspiWrapper::Atspi_accessible_get_children(root, NULL);
+    if (children) {
+        ret.reserve(children->len);
+        AtspiAccessible *child = nullptr;
+        for (unsigned int i = 0; i < children->len; i++) {
+            child = g_array_index(children, AtspiAccessible *, i);
+            if (child) {
+                ret.push_back(std::make_shared<AtspiAccessibleApplication>(std::make_shared<AtspiAccessibleNode>(child)));
+            }
         }
+        g_array_free(children, true);
     }
     g_object_unref(root);
+
     return ret;
 }
 
-bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName)
+bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName, std::shared_ptr<AccessibleNode> obj, const int count)
 {
     mMutex.lock();
     mEventQueue.clear();
     mMutex.unlock();
+
+    // Call atspi method for start to listen atspi event.
+    if (type == A11yEvent::EVENT_WINDOW_RENDER_POST)
+    {
+        LOGI("RenderPost listen start with pkg (%s) timeout (%d) count (%d)", obj->getPkg().c_str(), timeout, count);
+        isIdle = IdleEventState::IDLE_LISTEN_START;
+        if (count == 0 || count < 0)
+          mRenderCount = 10;
+        else
+          mRenderCount = count;
+        AtspiWrapper::Atspi_accessible_set_listen_post_render((AtspiAccessible *)(obj->getRawHandler()), true, NULL);
+    }
+
     if (cmd)
         cmd->run();
 
@@ -338,6 +409,9 @@ bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const 
         localEvents.assign(mEventQueue.begin(), mEventQueue.end());
         mEventQueue.clear();
         mMutex.unlock();
+
+        if (isIdle == IdleEventState::IDLE_LISTEN_DONE)
+            break;
 
         if (!localEvents.empty())
         {
@@ -356,6 +430,15 @@ bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const 
             std::chrono::milliseconds{100});
     }
 
+    if (isIdle != IdleEventState::IDLE_LISTEN_READY)
+    {
+        LOGI("RenderPost listen finish");
+        isIdle = IdleEventState::IDLE_LISTEN_READY;
+        AtspiWrapper::Atspi_accessible_set_listen_post_render((AtspiAccessible *)(obj->getRawHandler()), false, NULL);
+
+        return true;
+    }
+
     return false;
 }
 
@@ -366,17 +449,30 @@ std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> AtspiAccessi
 
 std::map<std::string, std::shared_ptr<AurumXML>> AtspiAccessibleWatcher::getXMLDocMap(void)
 {
-    bool isFirstWaiting = true;
-    while(!XMLMutex.try_lock())
-    {
-        if(isFirstWaiting)
-        {
-            LOGI("Waiting XMLTree Construct");
-            isFirstWaiting = false;
-        }
-    }
-    XMLMutex.unlock();
+    std::unique_lock lk(mXMLMutex);
+
+    //LOGI("mAppCount: %d, mAppXMLLoadedCount: %d", mAppCount, mAppXMLLoadedCount);
+    mXMLConditionVar.wait(lk, [&] {return mAppCount <= mAppXMLLoadedCount;});
+
+    lk.unlock();
+
     return mXMLDocMap;
+}
+
+std::shared_ptr<AurumXML> AtspiAccessibleWatcher::getXMLDoc(std::string pkgName)
+{
+    std::unique_lock lk(mXMLMutex);
+
+    //LOGI("mAppCount: %d, mAppXMLLoadedCount: %d", mAppCount, mAppXMLLoadedCount);
+    mXMLConditionVar.wait(lk, [&] {return mAppCount <= mAppXMLLoadedCount;});
+
+    lk.unlock();
+
+    if (mXMLDocMap.count(pkgName) > 0)
+        return mXMLDocMap[pkgName];
+    else
+        return std::shared_ptr<AurumXML>(nullptr);
+
 }
 
 bool AtspiAccessibleWatcher::removeFromActivatedList(AtspiAccessible *node)
