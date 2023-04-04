@@ -299,19 +299,40 @@ bool TizenDeviceImpl::releaseKeyCode(std::string keycode)
     return result == EFL_UTIL_ERROR_NONE;
 }
 
-bool TizenDeviceImpl::takeScreenshot(std::string path, float scale, int quality)
+bool TizenDeviceImpl::takeScreenshot(std::string path, bool asPixels, void **pixels)
 {
     efl_util_screenshot_h screenshot = NULL;
     tbm_surface_h tbm_surface = NULL;
 
+    void *ptr = NULL;
+    const int WIDTH = mScreenSize.width;
+    const int HEIGHT = mScreenSize.height;
+
     CaptureMutex.lock();
-    screenshot = efl_util_screenshot_initialize(mScreenSize.width, mScreenSize.height);
+    screenshot = efl_util_screenshot_initialize(WIDTH, HEIGHT);
 
     if (screenshot) {
         tbm_surface = efl_util_screenshot_take_tbm_surface(screenshot);
         if (tbm_surface) {
-            tdm_helper_dump_buffer(tbm_surface, path.c_str());
-            sync();
+            if (asPixels) {
+                tbm_surface_info_s info;
+
+                unsigned char *src = NULL;
+                unsigned char *dst = NULL;
+                tbm_surface_map(tbm_surface, TBM_SURF_OPTION_READ, &info);
+
+                ptr = malloc( WIDTH * HEIGHT * 4 );
+                src = (unsigned char *)info.planes[0].ptr;
+                dst = (unsigned char *)ptr;
+
+                memcpy(dst, src, WIDTH * HEIGHT * 4);
+                *pixels = ptr;
+
+                tbm_surface_unmap(tbm_surface);
+            } else {
+                tdm_helper_dump_buffer(tbm_surface, path.c_str());
+                sync();
+            }
             tbm_surface_destroy(tbm_surface);
         } else {
             efl_util_screenshot_deinitialize(screenshot);

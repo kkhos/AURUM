@@ -30,36 +30,51 @@ TakeScreenshotCommand::TakeScreenshotCommand(
 
 ::grpc::Status TakeScreenshotCommand::execute()
 {
-    LOGI("TakeScreenshot --------------- ");
+    LOGI("TakeScreenshot (getPixels : %d)--------------- ", mRequest->getpixels());
 
-    struct tm timeinfo;
-    time_t now = time(0);
-    if (!localtime_r(&now, &timeinfo)) {
-        LOGE("fail to get localtime. Screenshot cancelled");
-        return grpc::Status::CANCELLED;
+    if (!mRequest->getpixels()) {
+        struct tm timeinfo;
+        time_t now = time(0);
+        if (!localtime_r(&now, &timeinfo)) {
+            LOGE("fail to get localtime. Screenshot cancelled");
+            return grpc::Status::CANCELLED;
+        }
+
+        char name[128];
+        std::snprintf(name, 128, "/tmp/screenshot-%d-%d-%d-%d:%d:%d.png",
+                                  (timeinfo.tm_year + 1900), (timeinfo.tm_mon + 1), timeinfo.tm_mday,
+                                  timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec);
+        std::string path(name);
+        std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();
+        mDevice->takeScreenshot(path, false, NULL);
+
+        std::ifstream ifs(path, std::ifstream::binary);
+        ::aurum::RspTakeScreenshot rsp;
+        const Size2D<int> screenSize = mDevice->getScreenSize();
+        int size = screenSize.width * screenSize.height;
+        char *buf = new char[size];
+
+        while (!ifs.eof()) {
+            ifs.read(buf, size);
+            rsp.set_image(buf, ifs.gcount());
+            mWriter->Write(rsp);
+        }
+        ifs.close();
+        delete[] buf;
     }
+    else {
+        void *pixels = NULL;
+        std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();
+        mDevice->takeScreenshot("", true, &pixels);
+        ::aurum::RspTakeScreenshot rsp;
+        const Size2D<int> screenSize = mDevice->getScreenSize();
+        int size = screenSize.width * screenSize.height;
 
-    char name[128];
-    std::snprintf(name, 128, "/tmp/screenshot-%d-%d-%d-%d:%d:%d.png",
-                              (timeinfo.tm_year + 1900), (timeinfo.tm_mon + 1), timeinfo.tm_mday,
-                              timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec);
-    std::string path(name);
-    std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();
-    mDevice->takeScreenshot(path, 1.0, 1);
-
-    std::ifstream ifs(path, std::ifstream::binary);
-    ::aurum::RspTakeScreenshot rsp;
-    const Size2D<int> screenSize = mDevice->getScreenSize();
-    int size = screenSize.width * screenSize.height;
-    char *buf = new char[size];
-
-    while (!ifs.eof()) {
-        ifs.read(buf, size);
-        rsp.set_image(buf, ifs.gcount());
+        rsp.set_image(pixels, size * 4);
         mWriter->Write(rsp);
+
+        free(pixels);
     }
-    ifs.close();
-    delete[] buf;
 
     return grpc::Status::OK;
 }

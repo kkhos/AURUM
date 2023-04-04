@@ -119,7 +119,7 @@ public:
     /**
      * @copydoc IDevice::takeScreenshot()
      */
-    bool takeScreenshot(std::string path, float scale, int quality) override;
+    bool takeScreenshot(std::string path, bool asPixels, void **pixels) override;
 
     /**
      * @copydoc IDevice::getSystemTime()
