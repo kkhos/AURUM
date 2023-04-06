@@ -19,6 +19,7 @@
 #define _MOCK_DEVICE_IMPL_H_
 
 #include "config.h"
+#include "AccessibleNode.h"
 #include "IDevice.h"
 
 #include <set>
@@ -172,6 +173,11 @@ public:
      * @since_tizen 6.5
      */
     const Size2D<int> getScreenSize() override;
+
+    /**
+     * @copydoc IDevice::getWindowRoot()
+     */
+    std::vector<std::shared_ptr<AccessibleNode>> getWindowRoot() const override;
 
 protected:
     /**

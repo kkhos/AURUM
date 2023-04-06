@@ -11,7 +11,6 @@ libaurum_src += [
   files('A11yEvent.cc'),
   files('A11yEventHandler.cc'),
   files('AurumXML.cc'),
-  files('TizenWindow.cc'),
 ]
 
 if get_option('mqtt_enabled') == true
