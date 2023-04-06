@@ -40,9 +40,9 @@ GThread *AtspiAccessibleWatcher::mEventThread = nullptr;
 std::mutex AtspiAccessibleWatcher::mMutex = std::mutex{};
 GMainLoop *AtspiAccessibleWatcher::mLoop = nullptr;
 GThread *AtspiAccessibleWatcher::mTimerThread = nullptr;
-gint64 AtspiAccessibleWatcher::mStartTime = 0;
+std::chrono::system_clock::time_point AtspiAccessibleWatcher::mStartTime;
 IdleEventState AtspiAccessibleWatcher::isIdle = IdleEventState::IDLE_LISTEN_READY;
-static const unsigned int WAIT_FOR_IDLE_MICRO_SEC = 100000; // 0.1 sec
+static const unsigned int WAIT_FOR_IDLE_MILLI_SEC = 3000; // 3sec
 int AtspiAccessibleWatcher::mRenderCount = 10;
 
 static bool iShowingNode(AtspiAccessible *node)
@@ -235,17 +235,19 @@ void AtspiAccessibleWatcher::removeApp(AtspiAccessibleWatcher *instance, AtspiAc
 
 gpointer AtspiAccessibleWatcher::timerThread(gpointer data)
 {
-    mStartTime = g_get_monotonic_time();
+    mStartTime = std::chrono::system_clock::now();
     for (;;)
     {
         //FIXME: User can change waiting time and count of render post
         //       instead of waiting specific time
-        if ((g_get_monotonic_time() - mStartTime) > WAIT_FOR_IDLE_MICRO_SEC)
+        if (((std::chrono::system_clock::now() - mStartTime) >
+            std::chrono::milliseconds{WAIT_FOR_IDLE_MILLI_SEC}) || 
+	    (mRenderCount == 0))
         {
             break;
         }
-
-        usleep(100);
+        std::this_thread::sleep_for(
+            std::chrono::milliseconds{10});
     }
 
     mTimerThread = nullptr;
@@ -274,14 +276,14 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
         }
         else
         {
-            mStartTime = g_get_monotonic_time();
+            mStartTime = std::chrono::system_clock::now();
         }
 
         mRenderCount--;
         if (mRenderCount == 0)
         {
           LOGI("RenderCount is 0. Stop to listen RenderPost");
-          mStartTime = g_get_monotonic_time() + WAIT_FOR_IDLE_MICRO_SEC;
+          isIdle = IdleEventState::IDLE_LISTEN_DONE;
         }
 
         if (name) free(name);
@@ -432,10 +434,17 @@ bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const 
     if (isIdle != IdleEventState::IDLE_LISTEN_READY)
     {
         LOGI("RenderPost listen finish");
-        isIdle = IdleEventState::IDLE_LISTEN_READY;
         AtspiWrapper::Atspi_accessible_set_listen_post_render((AtspiAccessible *)(obj->getRawHandler()), false, NULL);
 
-        return true;
+        if (isIdle == IdleEventState::IDLE_LISTEN_DONE)
+        {
+            isIdle = IdleEventState::IDLE_LISTEN_READY;
+            return true;
+        } else 
+        {
+            isIdle = IdleEventState::IDLE_LISTEN_READY;
+            return false;
+        }
     }
 
     return false;
