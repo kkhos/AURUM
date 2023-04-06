@@ -31,6 +31,7 @@
 #include <tdm_helper.h>
 #include <tbm_surface.h>
 #include <system_info.h>
+#include <gio/gio.h>
 
 using namespace Aurum;
 using namespace AurumInternal;
@@ -38,8 +39,14 @@ using namespace AurumInternal;
 #define NANO_SEC 1000000000.0
 #define MICRO_SEC 1000000
 
+#define WM_BUS_NAME "org.enlightenment.wm"
+#define WM_OBJECT_PATH "/org/enlightenment/wm"
+#define WM_INTERFACE_NAME "org.enlightenment.wm.proc"
+#define WM_METHOD_NAME_INFO "GetVisibleWinInfo_v2"
 
 std::mutex TizenDeviceImpl::CaptureMutex = std::mutex{};
+std::vector<std::shared_ptr<TizenWindow>> TizenDeviceImpl::mTizenWindows;
+static GDBusConnection *system_conn;
 
 TizenDeviceImpl::TizenDeviceImpl()
 : mFakeTouchHandle{0}, mFakeKeyboardHandle{0}, mFakeWheelHandle{0}, tStart{}, isTimerStarted{false}, mTouchSeq{}
@@ -421,4 +428,146 @@ bool TizenDeviceImpl::releaseTouchSeqNumber(int seq)
         return true;
     }
     return false;
+}
+
+std::vector<std::shared_ptr<AccessibleNode>> TizenDeviceImpl::getWindowRoot() const
+{
+    LOGI("Request window info");
+    getTizenWindowInfo();
+
+    std::vector<std::shared_ptr<AccessibleNode>> ret{};
+    std::unordered_map<int, std::shared_ptr<AccessibleApplication>> pidToAppNode{};
+
+    auto apps = AccessibleWatcher::getInstance()->getApplications();
+    for (auto app : apps)
+    {
+        app->getAccessibleNode()->updateName();
+        app->getAccessibleNode()->updatePid();
+        LOGI("App(%s) Pid(%d)", app->getPackageName().c_str(), app->getAccessibleNode()->getPid());
+        pidToAppNode[app->getAccessibleNode()->getPid()] = app;
+    }
+
+    for (auto tWin : mTizenWindows)
+    {
+        LOGI("Visible win (%d) (%d %d %d %d) (%s)", tWin->getPid(), tWin->getWindowGeometry().mTopLeft.x, tWin->getWindowGeometry().mTopLeft.y, tWin->getWindowGeometry().width(),
+            tWin->getWindowGeometry().height(), tWin->getName().c_str());
+
+        if (pidToAppNode.count(tWin->getPid()) == 0) continue;
+
+        LOGI("Active App : (%s) (%d)", tWin->getName().c_str(), tWin->getPid());
+        auto wins = pidToAppNode[tWin->getPid()]->getWindows();
+        std::transform(wins.begin(), wins.end(), std::back_inserter(ret),
+             [&](std::shared_ptr<AccessibleWindow> window) {
+                 window->getAccessibleNode()->updateApplication();
+                 LOGI("Target window add pkg: (%s), name (%s)", window->getAccessibleNode()->getPkg().c_str(), window->getTitle().c_str());
+                 return window->getAccessibleNode();
+             }
+        );
+
+        pidToAppNode.erase(tWin->getPid());
+    }
+
+    return ret;
+}
+
+std::vector<std::shared_ptr<TizenWindow>> TizenDeviceImpl::getTizenWindowInfo() const
+{
+    GError *err = NULL;
+    GDBusMessage *msg;
+    GDBusMessage *reply;
+    GDBusConnection *conn;
+    GVariant *body;
+    GVariantIter *iter = NULL;
+    int idx = 0;
+    int pid;
+    int x;
+    int y;
+    int w;
+    int h;
+    gboolean transformed;
+    gboolean alpha;
+    int opaque;
+    int visibility;
+    gboolean focused;
+    gboolean mapped;
+    int layer;
+    char *name;
+
+    mTizenWindows.clear();
+
+    if (system_conn == NULL) {
+        conn = g_bus_get_sync(G_BUS_TYPE_SYSTEM, NULL, &err);
+        if (conn == NULL) {
+            LOGE("g_bus_get_sync() is failed. %s", err->message);
+            g_error_free(err);
+            return mTizenWindows;
+        }
+        system_conn = conn;
+    }
+
+    msg = g_dbus_message_new_method_call(WM_BUS_NAME,
+            WM_OBJECT_PATH,
+            WM_INTERFACE_NAME,
+            WM_METHOD_NAME_INFO);
+    if (msg == NULL) {
+        LOGE("g_dbus_message_new_method_call() is failed.");
+        return mTizenWindows;
+    }
+
+    reply = g_dbus_connection_send_message_with_reply_sync(system_conn, msg,
+            G_DBUS_SEND_MESSAGE_FLAGS_NONE, -1, NULL, NULL, &err);
+
+    if (!reply) {
+        if (err != NULL) {
+            LOGE("Failed to get info [%s]", err->message);
+            g_error_free(err);
+        }
+        goto out;
+    }
+
+    body = g_dbus_message_get_body(reply);
+    if (!body) {
+        LOGE("Failed to get body");
+        goto out;
+    }
+
+    g_variant_get(body, "(a(iiiiibbiibbis))", &iter);
+    if (!iter) {
+        LOGE("Failed to get iter");
+        goto out;
+    }
+
+    LOGI("%-3s | %-6s | %-4s | %-4s | %-4s | %-4s | %-5s | %-5s | %-6s | %-3s | %-7s | %-6s | %-5s | %-20s", "No" ,"PID", "X", "Y", "W", "H", "Trans", "Alpha", "Opaque", "Vis", "Focused", "Mapped", "Layer", "Name");
+    while (g_variant_iter_loop(iter, "(iiiiibbiibbis)",
+                &pid,
+                &x,
+                &y,
+                &w,
+                &h,
+                &transformed,
+                &alpha,
+                &opaque,
+                &visibility,
+                &focused,
+                &mapped,
+                &layer,
+                &name)) {
+        LOGI("%-3d | %-6d | %-4d | %-4d | %-4d | %-4d | %-5d | %-5d | %-6d | %-3d | %-7d | %-6d | %-5d | %-20s", idx++, pid, x,y,w,h, transformed, alpha, opaque, visibility, focused, mapped, layer, name);
+        if (visibility == 0 && pid > 0)
+        {
+            Rect<int> geometry = {x,  y, w, h};
+            std::string winName(name);
+            mTizenWindows.push_back(std::make_shared<Aurum::TizenWindow>(pid, geometry, transformed, alpha, opaque, visibility, focused, mapped, layer, winName));
+        }
+    }
+
+out:
+    if (iter)
+        g_variant_iter_free(iter);
+    if (msg)
+        g_object_unref(msg);
+    if (reply)
+        g_object_unref(reply);
+
+    return mTizenWindows;
 }

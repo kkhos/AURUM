@@ -16,7 +16,7 @@
  */
 
 #include "Aurum.h"
-
+#include "AccessibleWatcher.h"
 #include "MockDeviceImpl.h"
 
 #include <functional>
@@ -265,3 +265,23 @@ long long MockDeviceImpl::timeStamp(void)
     long long rtn = (t.tv_sec + t.tv_nsec/NANO_SEC) * MICRO_SEC;
     return rtn;
 }
+
+std::vector<std::shared_ptr<AccessibleNode>> MockDeviceImpl::getWindowRoot() const
+{
+    std::vector<std::shared_ptr<AccessibleNode>> ret{};
+
+    auto apps = AccessibleWatcher::getInstance()->getApplications();
+
+    for (auto app : apps)
+    {
+        auto wins = app->getWindows();
+        std::transform(wins.begin(), wins.end(), std::back_inserter(ret),
+            [&](std::shared_ptr<AccessibleWindow> window) {
+                 return window->getAccessibleNode();
+             }
+        );
+    }
+        
+    return ret;
+}
+

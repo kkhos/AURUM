@@ -4,7 +4,6 @@ libaurum_install_inc = [
   './inc/UiDevice.h',
   './inc/UiObject.h',
   './inc/UiSelector.h',
-  './inc/TizenWindow.h',
   './inc/Sel.h',
   './inc/Until.h',
   './inc/Waiter.h',
