@@ -46,6 +46,7 @@ void AurumXML::traverse(xml_node& element, const std::shared_ptr<AccessibleNode>
     node->updateRoleName();
     node->updateAttributes();
     node->updateToolkitName();
+    node->updateApplication();
 
     std::string name;
     if (node->getType().empty())
