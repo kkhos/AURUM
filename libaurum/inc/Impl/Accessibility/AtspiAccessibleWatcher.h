@@ -196,7 +196,7 @@ private:
     std::condition_variable mXMLConditionVar;
 
     static GThread *mTimerThread;
-    static gint64 mStartTime;
+    static std::chrono::system_clock::time_point mStartTime;
     static IdleEventState isIdle;
     static int mRenderCount;
 };
