@@ -20,7 +20,9 @@
 
 #include "config.h"
 #include "Size2D.h"
+#include "AccessibleNode.h"
 #include <string>
+
 
 namespace Aurum {
 
@@ -290,6 +292,15 @@ public:
      * @since_tizen 6.5
      */
     virtual const Size2D<int> getScreenSize() = 0;
+
+    /**
+     * @brief Gets currently enabled applications root window.
+     *
+     * @return AccessibleNode ptr vector
+     *
+     * @since_tizen 7.5
+     */
+    virtual std::vector<std::shared_ptr<AccessibleNode>> getWindowRoot() const = 0;
 };
 
 }

@@ -22,7 +22,6 @@
 
 #include "UiObject.h"
 #include "UiSelector.h"
-#include "TizenWindow.h"
 
 #include "IDevice.h"
 #include "ISearchable.h"
@@ -403,16 +402,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    std::vector<std::shared_ptr<AccessibleNode>> getWindowRoot() const;
-
-    /**
-     * @brief Gets currently window information from window system.
-     *
-     * @return TizenWindow ptr vector
-     *
-     * @since_tizen 7.0
-     */
-    std::vector<std::shared_ptr<TizenWindow>> getTizenWindowInfo() const;
+    std::vector<std::shared_ptr<AccessibleNode>> getWindowRoot() const override;
 
 #ifdef MQTT_ENABLED
     /**
@@ -501,7 +491,6 @@ public:
 private:
     IDevice *mDeviceImpl;
     const Waiter *mWaiter;
-    static std::vector<std::shared_ptr<TizenWindow>> mTizenWindows;
     bool mIsWithSA;
 #ifdef MQTT_ENABLED
     static std::shared_ptr<ScreenAnalyzerWatcher> mSAWatcher;

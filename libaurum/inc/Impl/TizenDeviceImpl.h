@@ -20,6 +20,7 @@
 
 #include "config.h"
 #include "IDevice.h"
+#include "TizenWindow.h"
 
 #include <set>
 #include <efl_util.h>
@@ -135,6 +136,11 @@ public:
      */
     const Size2D<int> getScreenSize() override;
 
+    /**
+     * @copydoc IDevice::getWindowRoot()
+     */
+    std::vector<std::shared_ptr<AccessibleNode>> getWindowRoot() const override;
+
 protected:
     /**
      * @brief Press and release given key during duration time.
@@ -186,6 +192,15 @@ private:
      */
     int stopTimer(void);
 
+    /**
+     * @brief Gets currently window information from window system.
+     *
+     * @return TizenWindow ptr vector
+     *
+     * @since_tizen 7.0
+     */
+    std::vector<std::shared_ptr<TizenWindow>> getTizenWindowInfo() const;
+
 private:
     efl_util_inputgen_h mFakeTouchHandle;
     efl_util_inputgen_h mFakeKeyboardHandle;
@@ -209,6 +224,7 @@ private:
      */
     Size2D<int> mScreenSize;
     static std::mutex CaptureMutex;
+    static std::vector<std::shared_ptr<TizenWindow>> mTizenWindows;
 };
 
 }
