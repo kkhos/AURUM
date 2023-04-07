@@ -142,6 +142,21 @@ private:
      */
     std::shared_ptr<AccessibleNode> checkParentNode(const std::shared_ptr<AccessibleNode>& node);
 
+    /**
+     * @internal
+     *
+     * @brief Finds XNode that satisfied with the xpath in the object tree.
+     *
+     * @param ret vector contains objects
+     *
+     * @param xpath
+     *
+     * @param earlyReturn
+     *
+     * @since_tizen 7.5
+     */
+    void findXNodes(std::vector<std::shared_ptr<AccessibleNode>> &ret, std::string xpath, bool earlyReturn);
+
 private:
     xml_document                                *mDoc;
     const std::shared_ptr<AccessibleNode>        mRoot;
