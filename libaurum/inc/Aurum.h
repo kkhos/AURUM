@@ -47,7 +47,6 @@
 #include "UiDevice.h"
 #include "UiObject.h"
 #include "UiSelector.h"
-#include "TizenWindow.h"
 #include "Sel.h"
 #include "Until.h"
 #include "Waiter.h"
