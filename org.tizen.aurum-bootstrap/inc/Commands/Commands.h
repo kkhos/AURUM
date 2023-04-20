@@ -53,3 +53,4 @@
 #include "Commands/EnableScreenAnalyzerCommand.h"
 
 #include "Commands/GetTextMinBoundingRectCommand.h"
+#include "Commands/SetXMLSyncCommand.h"

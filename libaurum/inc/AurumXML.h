@@ -158,6 +158,10 @@ private:
     void findXNodes(std::vector<std::shared_ptr<AccessibleNode>> &ret, std::string xpath, bool earlyReturn);
 
 private:
+
+    AurumXML(const AurumXML&) = delete;
+    AurumXML& operator=(const AurumXML&) = delete;
+
     xml_document                                *mDoc;
     const std::shared_ptr<AccessibleNode>        mRoot;
     std::unordered_map<std::string, std::shared_ptr<AccessibleNode>> mXNodeMap;
