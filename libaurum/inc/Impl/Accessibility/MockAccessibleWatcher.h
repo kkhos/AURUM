@@ -81,6 +81,8 @@ public:
 
     std::shared_ptr<AurumXML> getXMLDoc(std::string pkgName);
 
+    void setXMLsync(bool sync);
+
 public:
     /**
      * @brief TBD

@@ -142,6 +142,11 @@ public:
      */
     virtual bool registerCallback(const A11yEvent type, EventHandler cb, void *data) override;
 
+    /**
+     * @copydoc @AccessibleWatcher::setXMLsync()
+     */
+    virtual void setXMLsync(bool sync) override;
+
 public:
     /**
      * @brief Listen atspi events.
@@ -172,6 +177,7 @@ private:
     static gpointer timerThread(gpointer data);
     void appendApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg);
     void removeApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg);
+    void setXMLsync();
 
 private:
     GDBusProxy *mDbusProxy;
@@ -194,6 +200,8 @@ private:
 
     std::mutex mXMLMutex;
     std::condition_variable mXMLConditionVar;
+
+    bool XMLsync;
 
     static GThread *mTimerThread;
     static std::chrono::system_clock::time_point mStartTime;
