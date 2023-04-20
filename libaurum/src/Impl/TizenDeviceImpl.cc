@@ -180,7 +180,7 @@ int TizenDeviceImpl::stopTimer(void)
 bool TizenDeviceImpl::drag(const int sx, const int sy, const int ex, const int ey,
                          const int steps, const int durationMs)
 {
-    unsigned int _stepUs;
+    int _stepUs;
     int _durationUs, _steps;
     int consumptionUs;
 
