@@ -132,6 +132,9 @@ public:
     ::grpc::Status setTimeout(::grpc::ServerContext *context,
                               const ::aurum::ReqSetTimeout *request,
                               ::aurum::RspSetTimeout *response) override;
+    ::grpc::Status setXMLSync(::grpc::ServerContext *context,
+                            const ::aurum::ReqSetXMLSync *request,
+                            ::aurum::RspSetXMLSync *response) override;
 public:
     int WAIT_TIMEOUT_MS;
 };

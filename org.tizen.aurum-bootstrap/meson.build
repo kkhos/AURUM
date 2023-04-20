@@ -48,6 +48,7 @@ bootstrap_svr_src += [
    files('src/Commands/GetActiveAppToolkitNameCommand.cc'),
    files('src/Commands/EnableScreenAnalyzerCommand.cc'),
    files('src/Commands/GetTextMinBoundingRectCommand.cc'),
+   files('src/Commands/SetXMLSyncCommand.cc'),
 ]
 
 bootstrap_svr_dep = [

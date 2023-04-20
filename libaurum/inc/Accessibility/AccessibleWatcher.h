@@ -151,6 +151,15 @@ public:
      */
     virtual bool registerCallback(const A11yEvent type, EventHandler cb, void *data) = 0;
 
+    /**
+     * @brief Set AurumXML synchronization.
+     *
+     * @param[in] sync Whether to synchronize
+     *
+     * @since_tizen 7.5
+     */
+    virtual void setXMLsync(bool sync) = 0;
+
 public:
     /**
      * @brief Gets active application vector.
