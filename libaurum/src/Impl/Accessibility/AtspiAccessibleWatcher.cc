@@ -136,6 +136,7 @@ AtspiAccessibleWatcher::AtspiAccessibleWatcher()
 
     mAppCount = 0;
     mAppXMLLoadedCount = 0;
+    mXMLSync = false;
 
     atspi_init();
 
@@ -203,15 +204,19 @@ void AtspiAccessibleWatcher::appendApp(AtspiAccessibleWatcher *instance, AtspiAc
         LOGI("app(%s) is already in map", pkg);
     }
 
-    std::string package(pkg);
-    if (!package.empty()) {
-        if (instance->mXMLDocMap.count(package)) {
-            instance->mXMLDocMap.erase(package);
-        }
+    if (mXMLSync)
+    {
+        std::string package(pkg);
+        if (!package.empty()) {
 
-        mAppCount++;
-        instance->mXMLDocMap.insert(std::pair<std::string, std::shared_ptr<AurumXML>>(package,
-                std::make_shared<AurumXML>(std::make_shared<AtspiAccessibleNode>(app), &mAppXMLLoadedCount, &mXMLMutex, &mXMLConditionVar)));
+            if (instance->mXMLDocMap.count(package)) {
+                instance->mXMLDocMap.erase(package);
+            }
+
+            mAppCount++;
+            instance->mXMLDocMap.insert(std::pair<std::string, std::shared_ptr<AurumXML>>(package,
+                    std::make_shared<AurumXML>(std::make_shared<AtspiAccessibleNode>(app), &mAppXMLLoadedCount, &mXMLMutex, &mXMLConditionVar)));
+        }
     }
 }
 
@@ -226,8 +231,11 @@ void AtspiAccessibleWatcher::removeApp(AtspiAccessibleWatcher *instance, AtspiAc
         LOGE("deactivated window's app(%s) is not in map", pkg);
     }
 
-    if (instance->mXMLDocMap.count(std::string(pkg))) {
-        instance->mXMLDocMap.erase(std::string(pkg));
+    if (mXMLSync)
+    {
+        if (instance->mXMLDocMap.count(std::string(pkg))) {
+            instance->mXMLDocMap.erase(std::string(pkg));
+        }
     }
 
     g_object_unref(app);
@@ -457,24 +465,32 @@ std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> AtspiAccessi
 
 std::map<std::string, std::shared_ptr<AurumXML>> AtspiAccessibleWatcher::getXMLDocMap(void)
 {
-    std::unique_lock lk(mXMLMutex);
+    LOGI("XMLsync: %s", (mXMLSync ? "TRUE" : "FALSE"));
+    if(mXMLSync)
+    {
+        std::unique_lock lk(mXMLMutex);
 
-    //LOGI("mAppCount: %d, mAppXMLLoadedCount: %d", mAppCount, mAppXMLLoadedCount);
-    mXMLConditionVar.wait(lk, [&] {return mAppCount <= mAppXMLLoadedCount;});
+        //LOGI("mAppCount: %d, mAppXMLLoadedCount: %d", mAppCount, mAppXMLLoadedCount);
+        mXMLConditionVar.wait(lk, [&] {return mAppCount <= mAppXMLLoadedCount;});
 
-    lk.unlock();
+        lk.unlock();
+    }
 
     return mXMLDocMap;
 }
 
 std::shared_ptr<AurumXML> AtspiAccessibleWatcher::getXMLDoc(std::string pkgName)
 {
-    std::unique_lock lk(mXMLMutex);
+    LOGI("XMLsync: %s", (mXMLSync ? "TRUE" : "FALSE"));
+    if(mXMLSync)
+    {
+        std::unique_lock lk(mXMLMutex);
 
-    //LOGI("mAppCount: %d, mAppXMLLoadedCount: %d", mAppCount, mAppXMLLoadedCount);
-    mXMLConditionVar.wait(lk, [&] {return mAppCount <= mAppXMLLoadedCount;});
+        //LOGI("mAppCount: %d, mAppXMLLoadedCount: %d", mAppCount, mAppXMLLoadedCount);
+        mXMLConditionVar.wait(lk, [&] {return mAppCount <= mAppXMLLoadedCount;});
 
-    lk.unlock();
+        lk.unlock();
+    }
 
     if (mXMLDocMap.count(pkgName) > 0)
         return mXMLDocMap[pkgName];
@@ -550,4 +566,14 @@ bool AtspiAccessibleWatcher::registerCallback(const A11yEvent type, EventHandler
         mHandlers.insert(std::pair<const A11yEvent, std::list<std::shared_ptr<A11yEventHandler>>>(type, list));
     }
     return true;
+}
+
+void AtspiAccessibleWatcher::setXMLsync(bool sync)
+{
+    LOGI("setXMLSync: %s", (sync ? "TRUE" : "FALSE"));
+    mXMLSync = sync;
+
+    if(!sync) {
+        mXMLDocMap.clear();
+    }
 }
