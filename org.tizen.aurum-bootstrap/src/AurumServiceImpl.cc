@@ -300,3 +300,11 @@ aurumServiceImpl::~aurumServiceImpl()
     response->set_status(::aurum::RspStatus::OK);
     return ::grpc::Status::OK;
 }
+
+::grpc::Status aurumServiceImpl::setXMLSync(::grpc::ServerContext *context,
+                                            const ::aurum::ReqSetXMLSync *request,
+                                            ::aurum::RspSetXMLSync *response)
+{
+    std::unique_ptr<SetXMLSyncCommand> cmd = std::make_unique<SetXMLSyncCommand>(request, response);
+    return execute(cmd.get(), true);
+}
