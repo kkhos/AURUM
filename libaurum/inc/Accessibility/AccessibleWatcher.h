@@ -114,14 +114,6 @@ public:
     virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName, std::shared_ptr<AccessibleNode> obj, const int count) = 0;
 
     /**
-     * @brief Gets active application map.
-     *
-     * @return map (pure Atspi Node ptr(@AtspiAccessible), @AccessibleApplication)
-     * @since_tizen 6.5
-     */
-    virtual std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> getActiveAppMap(void) = 0;
-
-    /**
      * @brief Gets XML Document map.
      *
      * @return map (package std::string, @AurumXML)

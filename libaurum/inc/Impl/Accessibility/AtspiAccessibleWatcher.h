@@ -123,11 +123,6 @@ public:
     virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName, std::shared_ptr<AccessibleNode> obj, const int count)  override;
 
     /**
-     * @copydoc @AccessibleWatcher::getActiveAppMap()
-     */
-    virtual std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> getActiveAppMap(void) override;
-
-    /**
      * @copydoc @AccessibleWatcher::getXMLDocMap()
      */
     virtual std::map<std::string, std::shared_ptr<AurumXML>> getXMLDocMap(void) override;
@@ -184,7 +179,6 @@ private:
     std::list<AtspiAccessible *> mActivatedWindowList;
     std::list<AtspiAccessible *> mActivatedApplicationList;
     std::set<AtspiAccessible *> mWindowSet;
-    std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> mActiveAppMap;
     std::map<std::string, std::shared_ptr<AurumXML>> mXMLDocMap;
     static GThread *mEventThread;
     static std::vector<std::shared_ptr<A11yEventInfo>> mEventQueue;

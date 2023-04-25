@@ -195,15 +195,6 @@ AtspiAccessibleWatcher::~AtspiAccessibleWatcher()
 void AtspiAccessibleWatcher::appendApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg)
 {
     LOGI("window activated in app(%s)", pkg);
-    if (!instance->mActiveAppMap.count(app)) {
-        LOGI("add activated window's app in map");
-        instance->mActiveAppMap.insert(std::pair<AtspiAccessible *, std::shared_ptr<AccessibleApplication>>(app,
-                std::make_shared<AtspiAccessibleApplication>(std::make_shared<AtspiAccessibleNode>(app))));
-    }
-    else {
-        LOGI("app(%s) is already in map", pkg);
-    }
-
     if (mXMLSync)
     {
         std::string package(pkg);
@@ -223,14 +214,6 @@ void AtspiAccessibleWatcher::appendApp(AtspiAccessibleWatcher *instance, AtspiAc
 void AtspiAccessibleWatcher::removeApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg)
 {
     LOGI("window deactivate in app(%s)", pkg);
-    if (instance->mActiveAppMap.count(app)) {
-        LOGI("window deactivated delete app(%s) in map", pkg);
-        instance->mActiveAppMap.erase(app);
-    }
-    else {
-        LOGE("deactivated window's app(%s) is not in map", pkg);
-    }
-
     if (mXMLSync)
     {
         if (instance->mXMLDocMap.count(std::string(pkg))) {
@@ -302,8 +285,9 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
     if (name && app)
     {
         pkg = AtspiWrapper::Atspi_accessible_get_name(app, NULL);
-        if (!strncmp(event->type, "window:activate", 15)) instance->appendApp(instance, app, pkg);
-        else if (!strncmp(event->type, "window:deactivate", 16)) instance->removeApp(instance, app, pkg);
+        if (!strncmp(event->type, "window:create", 13)) instance->appendApp(instance, app, pkg);
+        else if (!strncmp(event->type, "window:activate", 15) && instance->mXMLDocMap.count(pkg) == 0) instance->appendApp(instance, app, pkg);
+        else if (!strncmp(event->type, "window:destroy", 14)) instance->removeApp(instance, app, pkg);
 
         // To support focus skipped window
         if (instance->isTv) {
@@ -456,11 +440,6 @@ bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const 
     }
 
     return false;
-}
-
-std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> AtspiAccessibleWatcher::getActiveAppMap(void)
-{
-    return mActiveAppMap;
 }
 
 std::map<std::string, std::shared_ptr<AurumXML>> AtspiAccessibleWatcher::getXMLDocMap(void)
