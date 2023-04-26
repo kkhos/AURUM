@@ -37,6 +37,7 @@ service Bootstrap {
    rpc enableScreenAnalyzer(ReqEnableScreenAnalyzer) returns (RspEnableScreenAnalyzer) {}
    rpc getTextMinBoundingRect(ReqGetTextMinBoundingRect) returns (RspGetTextMinBoundingRect) {}
    rpc setTimeout(ReqSetTimeout) returns (RspSetTimeout) {}
+   rpc setXMLSync(ReqSetXMLSync) returns (RspSetXMLSync) {}
 }
 
 // ------------------------------------ //
@@ -590,8 +591,10 @@ message ReqActionAndWaitEvent {
    enum EventType {
       EVENT_WINDOW_ACTIVATE = 0;
       EVENT_WINDOW_DEACTIVATE = 1;
-      EVENT_STATE_CHANGED_FOCUSED = 2;
-      EVENT_WINDOW_IDLE = 3;
+      EVENT_WINDOW_MINIMIZE = 2;
+      EVENT_WINDOW_RAISE = 3;
+      EVENT_WINDOW_IDLE = 4;
+      EVENT_STATE_CHANGED_FOCUSED = 5;
    }
    ActionType type = 1;
    oneof params {
@@ -647,5 +650,13 @@ message ReqSetTimeout {
 }
 
 message RspSetTimeout {
+   RspStatus status = 1;
+}
+
+message ReqSetXMLSync {
+   bool enable = 1;
+}
+
+message RspSetXMLSync {
    RspStatus status = 1;
 }

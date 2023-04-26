@@ -50,10 +50,6 @@ void MockAccessibleWatcher::addApplication(std::shared_ptr<AccessibleApplication
 {
     mApplicationList.push_back(application);
 }
-std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> MockAccessibleWatcher::getActiveAppMap(void)
-{
-    return mActiveAppMap;
-}
 
 std::map<std::string, std::shared_ptr<AurumXML>> MockAccessibleWatcher::getXMLDocMap(void)
 {
@@ -81,4 +77,8 @@ bool MockAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const A
 bool MockAccessibleWatcher::registerCallback(const A11yEvent type, EventHandler cb, void *data)
 {
     return true;
+}
+
+void MockAccessibleWatcher::setXMLsync(bool sync)
+{
 }

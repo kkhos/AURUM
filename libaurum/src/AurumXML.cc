@@ -53,7 +53,10 @@ void AurumXML::traverse(xml_node& element, const std::shared_ptr<AccessibleNode>
     else
         name = node->getType();
 
-    if (!name.compare("application")) name = node->getPkg();
+    if (!name.compare("application")) {
+        node->updateApplication();
+        name = node->getPkg();
+    }
 
     // Remove white spaces.
     name.erase(remove(name.begin(), name.end(), ' '), name.end());
@@ -67,7 +70,7 @@ void AurumXML::traverse(xml_node& element, const std::shared_ptr<AccessibleNode>
     mXNodeMap[node->getId()] = node;
 
     auto children = node->getChildren();
-    for (auto &child : children)
+    for (const auto &child : children)
     {
         if (child->getRawHandler() == nullptr) continue;
 
@@ -83,7 +86,7 @@ bool AurumXML::createXMLtree()
     mDoc->remove_children();
 
     xml_node element = mDoc->append_child("");
-
+    
     traverse(element, mRoot);
 
     return true;
@@ -166,7 +169,7 @@ std::shared_ptr<AccessibleNode> AurumXML::checkParentNode(const std::shared_ptr<
 
     if (xmlNode) {
         auto children = node->getChildren();
-        for (auto &child : children) {
+        for (const auto &child : children) {
             if (child->getRawHandler() == nullptr) continue;
 
             xml_node childElement = xmlNode.append_child("");
@@ -213,26 +216,33 @@ std::string AurumXML::getXPath(const std::shared_ptr<AccessibleNode>& node)
     return "NotSupported";
 }
 
+void AurumXML::findXNodes(std::vector<std::shared_ptr<AccessibleNode>> &ret,
+    std::string xpath, bool earlyReturn)
+{
+    if (earlyReturn) {
+        xml_node    node = mDoc->select_node(xpath.c_str()).node();
+        const std::string id(node.attribute("id").value());
+        if (mXNodeMap.count(id) > 0) ret.push_back(mXNodeMap[id]);
+    } else {
+        const auto nodes = mDoc->select_nodes(xpath.c_str());
+
+        for (const auto& no : nodes) {
+            const std::string id(no.node().attribute("id").value());
+
+            if (mXNodeMap.count(id) > 0) ret.push_back(mXNodeMap[id]);
+        }
+    }    
+}
+
 void AurumXML::findObjects(std::vector<std::shared_ptr<AccessibleNode>> &ret,
     std::string xpath, bool earlyReturn)
 {
-    createXMLtree();
-
     LOGI("xpath %s earlyReturn %d", xpath.c_str(), earlyReturn);
     try {
-        if (earlyReturn) {
-            xml_node    node = mDoc->select_node(xpath.c_str()).node();
-            const std::string id(node.attribute("id").value());
-            if (mXNodeMap.count(id) > 0) ret.push_back(mXNodeMap[id]);
-
-        } else {
-            const auto nodes = mDoc->select_nodes(xpath.c_str());
-
-            for (const auto& no : nodes) {
-                const std::string id(no.node().attribute("id").value());
-
-                if (mXNodeMap.count(id) > 0) ret.push_back(mXNodeMap[id]);
-            }
+        findXNodes(ret, xpath, earlyReturn);
+        if (ret.size() == 0) {
+            createXMLtree();
+            findXNodes(ret, xpath, earlyReturn);
         }
     } catch (const xpath_exception &e) {
         LOGI("findObjects Error: %s", e.what());

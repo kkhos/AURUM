@@ -40,9 +40,9 @@ GThread *AtspiAccessibleWatcher::mEventThread = nullptr;
 std::mutex AtspiAccessibleWatcher::mMutex = std::mutex{};
 GMainLoop *AtspiAccessibleWatcher::mLoop = nullptr;
 GThread *AtspiAccessibleWatcher::mTimerThread = nullptr;
-gint64 AtspiAccessibleWatcher::mStartTime = 0;
+std::chrono::system_clock::time_point AtspiAccessibleWatcher::mStartTime;
 IdleEventState AtspiAccessibleWatcher::isIdle = IdleEventState::IDLE_LISTEN_READY;
-static const unsigned int WAIT_FOR_IDLE_MICRO_SEC = 100000; // 0.1 sec
+static const unsigned int WAIT_FOR_IDLE_MILLI_SEC = 3000; // 3sec
 int AtspiAccessibleWatcher::mRenderCount = 10;
 
 static bool iShowingNode(AtspiAccessible *node)
@@ -136,6 +136,7 @@ AtspiAccessibleWatcher::AtspiAccessibleWatcher()
 
     mAppCount = 0;
     mAppXMLLoadedCount = 0;
+    mXMLSync = false;
 
     atspi_init();
 
@@ -194,40 +195,30 @@ AtspiAccessibleWatcher::~AtspiAccessibleWatcher()
 void AtspiAccessibleWatcher::appendApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg)
 {
     LOGI("window activated in app(%s)", pkg);
-    if (!instance->mActiveAppMap.count(app)) {
-        LOGI("add activated window's app in map");
-        instance->mActiveAppMap.insert(std::pair<AtspiAccessible *, std::shared_ptr<AccessibleApplication>>(app,
-                std::make_shared<AtspiAccessibleApplication>(std::make_shared<AtspiAccessibleNode>(app))));
-    }
-    else {
-        LOGI("app(%s) is already in map", pkg);
-    }
+    if (mXMLSync)
+    {
+        std::string package(pkg);
+        if (!package.empty()) {
 
-    std::string package(pkg);
-    if (!package.empty()) {
-        if (instance->mXMLDocMap.count(package)) {
-            instance->mXMLDocMap.erase(package);
+            if (instance->mXMLDocMap.count(package)) {
+                instance->mXMLDocMap.erase(package);
+            }
+
+            mAppCount++;
+            instance->mXMLDocMap.insert(std::pair<std::string, std::shared_ptr<AurumXML>>(package,
+                    std::make_shared<AurumXML>(std::make_shared<AtspiAccessibleNode>(app), &mAppXMLLoadedCount, &mXMLMutex, &mXMLConditionVar)));
         }
-
-        mAppCount++;
-        instance->mXMLDocMap.insert(std::pair<std::string, std::shared_ptr<AurumXML>>(package,
-                std::make_shared<AurumXML>(std::make_shared<AtspiAccessibleNode>(app), &mAppXMLLoadedCount, &mXMLMutex, &mXMLConditionVar)));
     }
 }
 
 void AtspiAccessibleWatcher::removeApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg)
 {
     LOGI("window deactivate in app(%s)", pkg);
-    if (instance->mActiveAppMap.count(app)) {
-        LOGI("window deactivated delete app(%s) in map", pkg);
-        instance->mActiveAppMap.erase(app);
-    }
-    else {
-        LOGE("deactivated window's app(%s) is not in map", pkg);
-    }
-
-    if (instance->mXMLDocMap.count(std::string(pkg))) {
-        instance->mXMLDocMap.erase(std::string(pkg));
+    if (mXMLSync)
+    {
+        if (instance->mXMLDocMap.count(std::string(pkg))) {
+            instance->mXMLDocMap.erase(std::string(pkg));
+        }
     }
 
     g_object_unref(app);
@@ -235,17 +226,19 @@ void AtspiAccessibleWatcher::removeApp(AtspiAccessibleWatcher *instance, AtspiAc
 
 gpointer AtspiAccessibleWatcher::timerThread(gpointer data)
 {
-    mStartTime = g_get_monotonic_time();
+    mStartTime = std::chrono::system_clock::now();
     for (;;)
     {
         //FIXME: User can change waiting time and count of render post
         //       instead of waiting specific time
-        if ((g_get_monotonic_time() - mStartTime) > WAIT_FOR_IDLE_MICRO_SEC)
+        if (((std::chrono::system_clock::now() - mStartTime) >
+            std::chrono::milliseconds{WAIT_FOR_IDLE_MILLI_SEC}) ||
+            (mRenderCount == 0))
         {
             break;
         }
-
-        usleep(100);
+        std::this_thread::sleep_for(
+            std::chrono::milliseconds{10});
     }
 
     mTimerThread = nullptr;
@@ -274,14 +267,14 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
         }
         else
         {
-            mStartTime = g_get_monotonic_time();
+            mStartTime = std::chrono::system_clock::now();
         }
 
         mRenderCount--;
         if (mRenderCount == 0)
         {
           LOGI("RenderCount is 0. Stop to listen RenderPost");
-          mStartTime = g_get_monotonic_time() + WAIT_FOR_IDLE_MICRO_SEC;
+          isIdle = IdleEventState::IDLE_LISTEN_DONE;
         }
 
         if (name) free(name);
@@ -292,8 +285,9 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
     if (name && app)
     {
         pkg = AtspiWrapper::Atspi_accessible_get_name(app, NULL);
-        if (!strncmp(event->type, "window:activate", 15)) instance->appendApp(instance, app, pkg);
-        else if (!strncmp(event->type, "window:deactivate", 16)) instance->removeApp(instance, app, pkg);
+        if (!strncmp(event->type, "window:create", 13)) instance->appendApp(instance, app, pkg);
+        else if (!strncmp(event->type, "window:activate", 15) && instance->mXMLDocMap.count(pkg) == 0) instance->appendApp(instance, app, pkg);
+        else if (!strncmp(event->type, "window:destroy", 14)) instance->removeApp(instance, app, pkg);
 
         // To support focus skipped window
         if (instance->isTv) {
@@ -432,40 +426,50 @@ bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const 
     if (isIdle != IdleEventState::IDLE_LISTEN_READY)
     {
         LOGI("RenderPost listen finish");
-        isIdle = IdleEventState::IDLE_LISTEN_READY;
         AtspiWrapper::Atspi_accessible_set_listen_post_render((AtspiAccessible *)(obj->getRawHandler()), false, NULL);
 
-        return true;
+        if (isIdle == IdleEventState::IDLE_LISTEN_DONE)
+        {
+            isIdle = IdleEventState::IDLE_LISTEN_READY;
+            return true;
+        } else
+        {
+            isIdle = IdleEventState::IDLE_LISTEN_READY;
+            return false;
+        }
     }
 
     return false;
 }
 
-std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> AtspiAccessibleWatcher::getActiveAppMap(void)
-{
-    return mActiveAppMap;
-}
-
 std::map<std::string, std::shared_ptr<AurumXML>> AtspiAccessibleWatcher::getXMLDocMap(void)
 {
-    std::unique_lock lk(mXMLMutex);
+    LOGI("XMLsync: %s", (mXMLSync ? "TRUE" : "FALSE"));
+    if(mXMLSync)
+    {
+        std::unique_lock lk(mXMLMutex);
 
-    //LOGI("mAppCount: %d, mAppXMLLoadedCount: %d", mAppCount, mAppXMLLoadedCount);
-    mXMLConditionVar.wait(lk, [&] {return mAppCount <= mAppXMLLoadedCount;});
+        //LOGI("mAppCount: %d, mAppXMLLoadedCount: %d", mAppCount, mAppXMLLoadedCount);
+        mXMLConditionVar.wait(lk, [&] {return mAppCount <= mAppXMLLoadedCount;});
 
-    lk.unlock();
+        lk.unlock();
+    }
 
     return mXMLDocMap;
 }
 
 std::shared_ptr<AurumXML> AtspiAccessibleWatcher::getXMLDoc(std::string pkgName)
 {
-    std::unique_lock lk(mXMLMutex);
+    LOGI("XMLsync: %s", (mXMLSync ? "TRUE" : "FALSE"));
+    if(mXMLSync)
+    {
+        std::unique_lock lk(mXMLMutex);
 
-    //LOGI("mAppCount: %d, mAppXMLLoadedCount: %d", mAppCount, mAppXMLLoadedCount);
-    mXMLConditionVar.wait(lk, [&] {return mAppCount <= mAppXMLLoadedCount;});
+        //LOGI("mAppCount: %d, mAppXMLLoadedCount: %d", mAppCount, mAppXMLLoadedCount);
+        mXMLConditionVar.wait(lk, [&] {return mAppCount <= mAppXMLLoadedCount;});
 
-    lk.unlock();
+        lk.unlock();
+    }
 
     if (mXMLDocMap.count(pkgName) > 0)
         return mXMLDocMap[pkgName];
@@ -541,4 +545,14 @@ bool AtspiAccessibleWatcher::registerCallback(const A11yEvent type, EventHandler
         mHandlers.insert(std::pair<const A11yEvent, std::list<std::shared_ptr<A11yEventHandler>>>(type, list));
     }
     return true;
+}
+
+void AtspiAccessibleWatcher::setXMLsync(bool sync)
+{
+    LOGI("setXMLSync: %s", (sync ? "TRUE" : "FALSE"));
+    mXMLSync = sync;
+
+    if(!sync) {
+        mXMLDocMap.clear();
+    }
 }

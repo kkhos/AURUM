@@ -123,11 +123,6 @@ public:
     virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName, std::shared_ptr<AccessibleNode> obj, const int count)  override;
 
     /**
-     * @copydoc @AccessibleWatcher::getActiveAppMap()
-     */
-    virtual std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> getActiveAppMap(void) override;
-
-    /**
      * @copydoc @AccessibleWatcher::getXMLDocMap()
      */
     virtual std::map<std::string, std::shared_ptr<AurumXML>> getXMLDocMap(void) override;
@@ -141,6 +136,11 @@ public:
      * @copydoc @AccessibleWatcher::registerCallback()
      */
     virtual bool registerCallback(const A11yEvent type, EventHandler cb, void *data) override;
+
+    /**
+     * @copydoc @AccessibleWatcher::setXMLsync()
+     */
+    virtual void setXMLsync(bool sync) override;
 
 public:
     /**
@@ -172,13 +172,13 @@ private:
     static gpointer timerThread(gpointer data);
     void appendApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg);
     void removeApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg);
+    void setXMLsync();
 
 private:
     GDBusProxy *mDbusProxy;
     std::list<AtspiAccessible *> mActivatedWindowList;
     std::list<AtspiAccessible *> mActivatedApplicationList;
     std::set<AtspiAccessible *> mWindowSet;
-    std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> mActiveAppMap;
     std::map<std::string, std::shared_ptr<AurumXML>> mXMLDocMap;
     static GThread *mEventThread;
     static std::vector<std::shared_ptr<A11yEventInfo>> mEventQueue;
@@ -195,8 +195,10 @@ private:
     std::mutex mXMLMutex;
     std::condition_variable mXMLConditionVar;
 
+    bool mXMLSync;
+
     static GThread *mTimerThread;
-    static gint64 mStartTime;
+    static std::chrono::system_clock::time_point mStartTime;
     static IdleEventState isIdle;
     static int mRenderCount;
 };
