@@ -36,6 +36,10 @@ A11yEvent convertEventType(const ::aurum::ReqActionAndWaitEvent_EventType type)
         return A11yEvent::EVENT_WINDOW_DEACTIVATE;
     else if (type == ::aurum::ReqActionAndWaitEvent_EventType::ReqActionAndWaitEvent_EventType_EVENT_WINDOW_IDLE)
         return A11yEvent::EVENT_WINDOW_RENDER_POST;
+	else if (type == ::aurum::ReqActionAndWaitEvent_EventType::ReqActionAndWaitEvent_EventType_EVENT_WINDOW_MINIMIZE)
+        return A11yEvent::EVENT_WINDOW_MINIMIZE;
+	else if (type == ::aurum::ReqActionAndWaitEvent_EventType::ReqActionAndWaitEvent_EventType_EVENT_WINDOW_RAISE)
+        return A11yEvent::EVENT_WINDOW_RAISE;
     else
         return A11yEvent::EVENT_STATE_CHANGED_FOCUSED;
 }

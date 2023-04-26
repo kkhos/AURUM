@@ -150,10 +150,16 @@ bool UiDevice::waitForEvents(
 bool UiDevice::executeAndWaitForEvents
     (const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName, const int count)  const
 {
-    //FIXME: Need to get top window
-    auto wins = this->getWindowRoot();
+    std::vector<std::shared_ptr<AccessibleNode>> wins;
 
-    return AccessibleWatcher::getInstance()->executeAndWaitForEvents(cmd, type, timeout, packageName, wins[0], count);
+    //FIXME: Need to get top window
+    if (type != A11yEvent::EVENT_NONE &&  (A11yEvent::EVENT_WINDOW_RENDER_POST & type) == type)
+    {
+        wins = this->getWindowRoot();
+        return AccessibleWatcher::getInstance()->executeAndWaitForEvents(cmd, type, timeout, packageName, wins[0], count);
+    }
+
+    return AccessibleWatcher::getInstance()->executeAndWaitForEvents(cmd, type, timeout, packageName, NULL, count);
 }
 
 bool UiDevice::sendKeyAndWaitForEvents(
