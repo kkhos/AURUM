@@ -2,3 +2,6 @@ grpcio
 grpcio-tools
 protobuf
 six
+numpy
+opencv-python
+pillow
