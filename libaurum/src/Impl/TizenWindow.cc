@@ -20,8 +20,8 @@
 
 using namespace Aurum;
 
-TizenWindow::TizenWindow(int pid, Rect<int> geometry, bool transformed, bool alpha, int opaque, int visibility, bool focused, bool mapped, int layer, std::string name)
-    : mPid(pid), mWindowGeometry(geometry), mIsTransformed(transformed), mIsAlpha(alpha), mOpaque(opaque), mVisibility(visibility), mIsFocused(focused), mIsMapped(mapped), mLayer(layer), mName(name)
+TizenWindow::TizenWindow(int pid, Rect<int> geometry, int windowAngle, int targetAngle, bool transformed, bool alpha, int opaque, int visibility, bool focused, bool mapped, int layer, std::string name)
+    : mPid(pid), mWindowGeometry(geometry), mWindowAngle(windowAngle), mTargetAngle(targetAngle),mIsTransformed(transformed), mIsAlpha(alpha), mOpaque(opaque), mVisibility(visibility), mIsFocused(focused), mIsMapped(mapped), mLayer(layer), mName(name)
 {
 
 }
@@ -39,6 +39,16 @@ int TizenWindow::getPid()
 Rect<int> TizenWindow::getWindowGeometry()
 {
     return mWindowGeometry;
+}
+
+int TizenWindow::getWindowAngle()
+{
+    return mWindowAngle;
+}
+
+int TizenWindow::getTargetAngle()
+{
+    return mTargetAngle;
 }
 
 bool TizenWindow::isTransformed()

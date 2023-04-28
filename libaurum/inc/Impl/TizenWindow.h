@@ -24,11 +24,13 @@ namespace Aurum {
 
 class TizenWindow : public std::enable_shared_from_this<TizenWindow> {
 public:
-    TizenWindow(int pid, Rect<int> geometry, bool transformed, bool alpha, int opaque, int visibility, bool focused, bool mapped, int layer, std::string name);
+    TizenWindow(int pid, Rect<int> geometry, int windowAngle, int targetAngle, bool transformed, bool alpha, int opaque, int visibility, bool focused, bool mapped, int layer, std::string name);
     ~TizenWindow();
 
     int getPid();
     Rect<int> getWindowGeometry();
+    int getWindowAngle();
+    int getTargetAngle();
     bool isTransformed();
     bool isAlpha();
     int getOpaque();
@@ -39,6 +41,8 @@ public:
 private:
     int mPid;                   // window's PID
     Rect<int> mWindowGeometry;  // window's geometry
+    int mWindowAngle;           // window's angle
+    int mTargetAngle;           // device's angle
     bool mIsTransformed;        // true : transformed window
     bool mIsAlpha;              // true : alpha
     int mOpaque;                // true : opaque state set window
