@@ -457,6 +457,24 @@ public:
      */
     bool getWithScreenAnalyzer();
 
+    /**
+     * @brief Gets angle of root window.
+     *
+     * @return window angle int
+     *
+     * @since_tizen 7.5
+     */
+    int getWindowAngle();
+
+        /**
+     * @brief Gets angle of target device.
+     *
+     * @return target angle int
+     *
+     * @since_tizen 7.5
+     */
+    int getTargetAngle();
+
 private:
     /**
      * @brief Waits process idle.

@@ -49,6 +49,7 @@ bootstrap_svr_src += [
    files('src/Commands/EnableScreenAnalyzerCommand.cc'),
    files('src/Commands/GetTextMinBoundingRectCommand.cc'),
    files('src/Commands/SetXMLSyncCommand.cc'),
+   files('src/Commands/GetAngleCommand.cc'),
 ]
 
 bootstrap_svr_dep = [

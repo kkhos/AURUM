@@ -54,6 +54,16 @@ public:
     virtual std::string getOcrText() const = 0;
 
     /**
+     * @copydoc UiObject::getWindowAngle()
+     */
+    virtual int getWindowAngle() const = 0;
+
+    /**
+     * @copydoc UiObject::getTargetAngle()
+     */
+    virtual int getTargetAngle() const = 0;
+
+    /**
      * @copydoc UiObject::isFocusable()
      */
     virtual bool isFocusable() const = 0;
