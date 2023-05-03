@@ -172,6 +172,16 @@ public:
     std::string getOcrText() const override;
 
     /**
+     * @copydoc UiObject::getWindowAngle()
+     */
+    int getWindowAngle() const override;
+
+    /**
+     * @copydoc UiObject::getTargetAngle()
+     */
+    int getTargetAngle() const override;
+
+    /**
      * @copydoc UiObject::isFocusable()
      */
     bool isFocusable() const override;
@@ -211,6 +221,24 @@ public:
      * @copydoc UiObject::setOcrText()
      */
     void setOcrText(std::string text);
+
+    /**
+     * @brief Sets Node's angle of window.
+     *
+     * @param[in] int window angle
+     *
+     * @since_tizen 7.5
+     */
+    void setWindowAngle(int windowAngle);
+
+    /**
+     * @brief Sets Node's angle of target device.
+     *
+     * @param[in] int target angle
+     *
+     * @since_tizen 7.5
+     */
+    void setTargetAngle(int targetAngle);
 
     /**
      * @copydoc UiObject::getPkg()
@@ -537,6 +565,8 @@ protected:
     int mSupportingIfaces;
     int mFeatureProperty;
     int mPid;
+    int mWindowAngle;
+    int mTargetAngle;
     double mMinValue;
     double mMaxValue;
     double mValue;

@@ -38,6 +38,7 @@ service Bootstrap {
    rpc getTextMinBoundingRect(ReqGetTextMinBoundingRect) returns (RspGetTextMinBoundingRect) {}
    rpc setTimeout(ReqSetTimeout) returns (RspSetTimeout) {}
    rpc setXMLSync(ReqSetXMLSync) returns (RspSetXMLSync) {}
+   rpc getAngle(ReqGetAngle) returns (RspGetAngle) {}
 }
 
 // ------------------------------------ //
@@ -91,6 +92,9 @@ message Element {
    double maxValue = 28;
    double value = 29;
    double increment = 30;
+
+   int32 windowAngle = 31;
+   int32 targetAngle = 32;
 }
 
 message Point {
@@ -659,4 +663,13 @@ message ReqSetXMLSync {
 
 message RspSetXMLSync {
    RspStatus status = 1;
+}
+
+message ReqGetAngle {   
+}
+
+message RspGetAngle {
+   RspStatus status = 1;
+   int32 windowAngle = 2;
+   int32 targetAngle = 3;
 }
