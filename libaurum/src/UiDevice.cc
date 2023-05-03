@@ -332,3 +332,21 @@ bool UiDevice::registerCallback(const A11yEvent type, EventHandler cb, void *dat
 {
     return AccessibleWatcher::getInstance()->registerCallback(type, cb, data);
 }
+
+int UiDevice::getWindowAngle()
+{
+    auto wins = getWindowRoot();
+
+    if (wins.size() > 0) return wins[0]->getWindowAngle();
+
+    return 0;
+}
+
+int UiDevice::getTargetAngle()
+{
+    auto wins = getWindowRoot();
+
+    if (wins.size() > 0) return wins[0]->getTargetAngle();
+
+    return 0;
+}

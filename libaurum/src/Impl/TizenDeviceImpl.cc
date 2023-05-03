@@ -459,6 +459,8 @@ std::vector<std::shared_ptr<AccessibleNode>> TizenDeviceImpl::getWindowRoot() co
         std::transform(wins.begin(), wins.end(), std::back_inserter(ret),
              [&](std::shared_ptr<AccessibleWindow> window) {
                  window->getAccessibleNode()->updateApplication();
+                 window->getAccessibleNode()->setWindowAngle(tWin->getWindowAngle());
+                 window->getAccessibleNode()->setTargetAngle(tWin->getTargetAngle());
                  LOGI("Target window add pkg: (%s), name (%s)", window->getAccessibleNode()->getPkg().c_str(), window->getTitle().c_str());
                  return window->getAccessibleNode();
              }

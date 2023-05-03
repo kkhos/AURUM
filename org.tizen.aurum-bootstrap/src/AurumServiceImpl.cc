@@ -308,3 +308,11 @@ aurumServiceImpl::~aurumServiceImpl()
     std::unique_ptr<SetXMLSyncCommand> cmd = std::make_unique<SetXMLSyncCommand>(request, response);
     return execute(cmd.get(), true);
 }
+
+::grpc::Status aurumServiceImpl::getAngle(::grpc::ServerContext *context,
+                                          const ::aurum::ReqGetAngle *request,
+                                          ::aurum::RspGetAngle *response)
+{
+    std::unique_ptr<GetAngleCommand> cmd = std::make_unique<GetAngleCommand>(request, response);
+    return execute(cmd.get(), true);
+}
