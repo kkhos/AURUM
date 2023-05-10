@@ -444,6 +444,7 @@ std::vector<std::shared_ptr<AccessibleNode>> TizenDeviceImpl::getWindowRoot() co
         app->getAccessibleNode()->updateName();
         app->getAccessibleNode()->updatePid();
         LOGI("App(%s) Pid(%d)", app->getPackageName().c_str(), app->getAccessibleNode()->getPid());
+        if (app->getPackageName().length() == 0) continue;
         pidToAppNode[app->getAccessibleNode()->getPid()] = app;
     }
 
