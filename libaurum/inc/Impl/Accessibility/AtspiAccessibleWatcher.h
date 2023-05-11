@@ -173,6 +173,7 @@ private:
     void appendApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg);
     void removeApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg);
     void setXMLsync();
+    void processCallback(char *type, char *name, char *pkg);
 
 private:
     GDBusProxy *mDbusProxy;

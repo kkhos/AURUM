@@ -42,7 +42,7 @@ GMainLoop *AtspiAccessibleWatcher::mLoop = nullptr;
 GThread *AtspiAccessibleWatcher::mTimerThread = nullptr;
 std::chrono::system_clock::time_point AtspiAccessibleWatcher::mStartTime;
 IdleEventState AtspiAccessibleWatcher::isIdle = IdleEventState::IDLE_LISTEN_READY;
-static const unsigned int WAIT_FOR_IDLE_MILLI_SEC = 3000; // 3sec
+static const unsigned int WAIT_FOR_IDLE_MILLI_SEC = 1000; // 1sec
 int AtspiAccessibleWatcher::mRenderCount = 10;
 
 static bool iShowingNode(AtspiAccessible *node)
@@ -248,6 +248,29 @@ gpointer AtspiAccessibleWatcher::timerThread(gpointer data)
     return NULL;
 }
 
+void AtspiAccessibleWatcher::processCallback(char *type, char *name, char *pkg)
+{
+    mMutex.lock();
+    auto a11yEvent = std::make_shared<A11yEventInfo>(std::string(type), std::string(name), std::string(pkg));
+    mEventQueue.push_back(a11yEvent);
+    mMutex.unlock();
+
+    if (this->mHandlers.count(a11yEvent->getEvent())) {
+        auto &list = this->mHandlers[a11yEvent->getEvent()];
+        auto it = list.begin();
+
+        while (it != list.end())
+        {
+            LOGI("Callback call type %s pkg %s", type, pkg);
+            auto handler = *it;
+            bool res = (*handler)(std::string(pkg));
+            if (!res) it = list.erase(it);
+            else ++it;
+        }
+    }
+
+}
+
 void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
 {
     if (!event->source)
@@ -280,6 +303,8 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
         if (name) free(name);
         return;
     }
+    else if (isIdle == IdleEventState::IDLE_LISTEN_DONE && !strncmp(event->type, "window:post-render", 18))
+        return;
 
     AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(event->source, NULL);
     if (name && app)
@@ -300,24 +325,7 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
     else
         pkg = strdup("");
 
-    mMutex.lock();
-    auto a11yEvent = std::make_shared<A11yEventInfo>(std::string(event->type), std::string(name), std::string(pkg));
-    mEventQueue.push_back(a11yEvent);
-    mMutex.unlock();
-
-    if (instance->mHandlers.count(a11yEvent->getEvent())) {
-        auto &list = instance->mHandlers[a11yEvent->getEvent()];
-        auto it = list.begin();
-
-        while (it != list.end())
-        {
-            LOGI("Callback call type %s pkg %s", event->type, pkg);
-            auto handler = *it;
-            bool res = (*handler)(std::string(pkg));
-            if (!res) it = list.erase(it);
-            else ++it;
-        }
-    }
+    instance->processCallback(event->type, name, pkg);
 
     if (!strcmp(event->type, "object:state-changed:defunct")) {
          instance->onObjectDefunct(
@@ -431,6 +439,7 @@ bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const 
         if (isIdle == IdleEventState::IDLE_LISTEN_DONE)
         {
             isIdle = IdleEventState::IDLE_LISTEN_READY;
+            processCallback((char *)"window:post-render", (char *)"", (char *)"");
             return true;
         } else
         {
