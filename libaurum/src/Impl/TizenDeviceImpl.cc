@@ -247,6 +247,7 @@ bool TizenDeviceImpl::pressPower(KeyRequestType type)
 
 bool TizenDeviceImpl::pressKeyCode(std::string keycode, KeyRequestType type)
 {
+    LOGI("pressKeyCode(%s)", keycode.c_str());
     if (type == KeyRequestType::STROKE)
         return strokeKeyCode(keycode, INTV_SHORTSTROKE);
     else if (type == KeyRequestType::LONG_STROKE)
