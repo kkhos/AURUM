@@ -247,6 +247,16 @@ std::string UiObject::getOcrText() const
     return getAccessibleNode()->getOcrText();
 }
 
+int UiObject::getWindowAngle() const
+{
+    return getAccessibleNode()->getWindowAngle();
+}
+
+int UiObject::getTargetAngle() const
+{
+    return getAccessibleNode()->getTargetAngle();
+}
+
 std::string UiObject::getToolkitName() const
 {
     getAccessibleNode()->updateToolkitName();

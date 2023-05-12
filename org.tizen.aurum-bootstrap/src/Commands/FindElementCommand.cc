@@ -191,6 +191,9 @@ std::shared_ptr<UiSelector> FindElementCommand::getSelector(void)
             elm->set_value(obj->getValue());
             elm->set_increment(obj->getIncrement());
 
+            elm->set_windowangle(obj->getWindowAngle());
+            elm->set_targetangle(obj->getTargetAngle());
+
             mResponse->set_status(::aurum::RspStatus::OK);
         } else {
             mResponse->set_status(::aurum::RspStatus::ERROR);

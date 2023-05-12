@@ -54,3 +54,4 @@
 
 #include "Commands/GetTextMinBoundingRectCommand.h"
 #include "Commands/SetXMLSyncCommand.h"
+#include "Commands/GetAngleCommand.h"

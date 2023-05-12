@@ -42,7 +42,7 @@ using namespace AurumInternal;
 #define WM_BUS_NAME "org.enlightenment.wm"
 #define WM_OBJECT_PATH "/org/enlightenment/wm"
 #define WM_INTERFACE_NAME "org.enlightenment.wm.proc"
-#define WM_METHOD_NAME_INFO "GetVisibleWinInfo_v2"
+#define WM_METHOD_NAME_INFO "GetVisibleWinInfo_v3"
 
 std::mutex TizenDeviceImpl::CaptureMutex = std::mutex{};
 std::vector<std::shared_ptr<TizenWindow>> TizenDeviceImpl::mTizenWindows;
@@ -445,6 +445,7 @@ std::vector<std::shared_ptr<AccessibleNode>> TizenDeviceImpl::getWindowRoot() co
         app->getAccessibleNode()->updateName();
         app->getAccessibleNode()->updatePid();
         LOGI("App(%s) Pid(%d)", app->getPackageName().c_str(), app->getAccessibleNode()->getPid());
+        if (app->getPackageName().length() == 0) continue;
         pidToAppNode[app->getAccessibleNode()->getPid()] = app;
     }
 
@@ -460,6 +461,8 @@ std::vector<std::shared_ptr<AccessibleNode>> TizenDeviceImpl::getWindowRoot() co
         std::transform(wins.begin(), wins.end(), std::back_inserter(ret),
              [&](std::shared_ptr<AccessibleWindow> window) {
                  window->getAccessibleNode()->updateApplication();
+                 window->getAccessibleNode()->setWindowAngle(tWin->getWindowAngle());
+                 window->getAccessibleNode()->setTargetAngle(tWin->getTargetAngle());
                  LOGI("Target window add pkg: (%s), name (%s)", window->getAccessibleNode()->getPkg().c_str(), window->getTitle().c_str());
                  return window->getAccessibleNode();
              }
@@ -485,6 +488,8 @@ std::vector<std::shared_ptr<TizenWindow>> TizenDeviceImpl::getTizenWindowInfo() 
     int y;
     int w;
     int h;
+    int winAngle;
+    int targetAngle;
     gboolean transformed;
     gboolean alpha;
     int opaque;
@@ -532,19 +537,21 @@ std::vector<std::shared_ptr<TizenWindow>> TizenDeviceImpl::getTizenWindowInfo() 
         goto out;
     }
 
-    g_variant_get(body, "(a(iiiiibbiibbis))", &iter);
+    g_variant_get(body, "(a(iiiiiiibbiibbis))", &iter);
     if (!iter) {
         LOGE("Failed to get iter");
         goto out;
     }
 
-    LOGI("%-3s | %-6s | %-4s | %-4s | %-4s | %-4s | %-5s | %-5s | %-6s | %-3s | %-7s | %-6s | %-5s | %-20s", "No" ,"PID", "X", "Y", "W", "H", "Trans", "Alpha", "Opaque", "Vis", "Focused", "Mapped", "Layer", "Name");
-    while (g_variant_iter_loop(iter, "(iiiiibbiibbis)",
+    LOGI("%-3s | %-6s | %-4s | %-4s | %-4s | %-4s | %-9s | %-12s | %-5s | %-5s | %-6s | %-3s | %-7s | %-6s | %-5s | %-20s", "No" ,"PID", "X", "Y", "W", "H", "Win Angle", "Target Angle", "Trans", "Alpha", "Opaque", "Vis", "Focused", "Mapped", "Layer", "Name");
+    while (g_variant_iter_loop(iter, "(iiiiiiibbiibbis)",
                 &pid,
                 &x,
                 &y,
                 &w,
                 &h,
+                &winAngle,
+                &targetAngle,
                 &transformed,
                 &alpha,
                 &opaque,
@@ -553,12 +560,12 @@ std::vector<std::shared_ptr<TizenWindow>> TizenDeviceImpl::getTizenWindowInfo() 
                 &mapped,
                 &layer,
                 &name)) {
-        LOGI("%-3d | %-6d | %-4d | %-4d | %-4d | %-4d | %-5d | %-5d | %-6d | %-3d | %-7d | %-6d | %-5d | %-20s", idx++, pid, x,y,w,h, transformed, alpha, opaque, visibility, focused, mapped, layer, name);
+        LOGI("%-3d | %-6d | %-4d | %-4d | %-4d | %-4d | %-9d | %-12d | %-5d | %-5d | %-6d | %-3d | %-7d | %-6d | %-5d | %-20s", idx++, pid, x,y,w,h, winAngle, targetAngle, transformed, alpha, opaque, visibility, focused, mapped, layer, name);
         if (visibility == 0 && pid > 0)
         {
-            Rect<int> geometry = {x,  y, w, h};
+            Rect<int> geometry = {x, y, w, h};
             std::string winName(name);
-            mTizenWindows.push_back(std::make_shared<Aurum::TizenWindow>(pid, geometry, transformed, alpha, opaque, visibility, focused, mapped, layer, winName));
+            mTizenWindows.push_back(std::make_shared<Aurum::TizenWindow>(pid, geometry, winAngle, targetAngle, transformed, alpha, opaque, visibility, focused, mapped, layer, winName));
         }
     }
 

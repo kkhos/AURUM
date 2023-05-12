@@ -135,6 +135,9 @@ public:
     ::grpc::Status setXMLSync(::grpc::ServerContext *context,
                             const ::aurum::ReqSetXMLSync *request,
                             ::aurum::RspSetXMLSync *response) override;
+    ::grpc::Status getAngle(::grpc::ServerContext *context,
+                            const ::aurum::ReqGetAngle *request,
+                            ::aurum::RspGetAngle *response) override;
 public:
     int WAIT_TIMEOUT_MS;
 };

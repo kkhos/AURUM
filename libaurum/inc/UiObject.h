@@ -194,6 +194,24 @@ public:
     std::string getOcrText() const override;
 
     /**
+     * @brief Gets object's angle of window.
+     *
+     * @return int
+     *
+     * @since_tizen 7.5
+     */
+    int getWindowAngle() const override;
+
+    /**
+     * @brief Gets object's angle of target device.
+     *
+     * @return int
+     *
+     * @since_tizen 7.5
+     */
+    int getTargetAngle() const override;
+
+    /**
      * @brief Gets object's focusable property.
      *
      * @return true if focusable else false
