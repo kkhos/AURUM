@@ -32,7 +32,7 @@ AccessibleNode::~AccessibleNode()
 
 AccessibleNode::AccessibleNode()
 : mText{""}, mOcrText{""}, mPkg{""}, mRole{""}, mId{""}, mAutomationId{""}, mType{""}, mStyle{""}, mXPath{""}, mToolkitName{""},
-  mScreenBoundingBox{0,0,0,0}, mWindowBoundingBox{0,0,0,0}, mSupportingIfaces(0), mFeatureProperty(0), mPid(0), mMinValue{0.0}, mMaxValue{0.0}, mValue{0.0}, mIncrement{0.0}, mValid{true}, mLock{}
+  mScreenBoundingBox{0,0,0,0}, mWindowBoundingBox{0,0,0,0}, mSupportingIfaces(0), mFeatureProperty(0), mPid(0), mWindowAngle(0), mTargetAngle(0), mMinValue{0.0}, mMaxValue{0.0}, mValue{0.0}, mIncrement{0.0}, mValid{true}, mLock{}
 {
 }
 
@@ -126,9 +126,29 @@ std::string AccessibleNode::getOcrText() const
     return mOcrText;
 }
 
+int AccessibleNode::getWindowAngle() const
+{
+    return mWindowAngle;
+}
+
+int AccessibleNode::getTargetAngle() const
+{
+    return mTargetAngle;
+}
+
 void AccessibleNode::setOcrText(std::string text)
 {
     mOcrText = text;
+}
+
+void AccessibleNode::setWindowAngle(int windowAngle)
+{
+    mWindowAngle = windowAngle;
+}
+
+void AccessibleNode::setTargetAngle(int targetAngle)
+{
+    mTargetAngle = targetAngle;
 }
 
 std::string AccessibleNode::getPkg() const
