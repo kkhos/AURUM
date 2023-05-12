@@ -37,6 +37,8 @@ service Bootstrap {
    rpc enableScreenAnalyzer(ReqEnableScreenAnalyzer) returns (RspEnableScreenAnalyzer) {}
    rpc getTextMinBoundingRect(ReqGetTextMinBoundingRect) returns (RspGetTextMinBoundingRect) {}
    rpc setTimeout(ReqSetTimeout) returns (RspSetTimeout) {}
+   rpc setXMLSync(ReqSetXMLSync) returns (RspSetXMLSync) {}
+   rpc getAngle(ReqGetAngle) returns (RspGetAngle) {}
 }
 
 // ------------------------------------ //
@@ -90,6 +92,9 @@ message Element {
    double maxValue = 28;
    double value = 29;
    double increment = 30;
+
+   int32 windowAngle = 31;
+   int32 targetAngle = 32;
 }
 
 message Point {
@@ -549,6 +554,7 @@ message RspKey{
 }
 
 message ReqTakeScreenshot{
+   bool getPixels = 1;
 }
 message RspTakeScreenshot{
    bytes image = 1;
@@ -589,7 +595,10 @@ message ReqActionAndWaitEvent {
    enum EventType {
       EVENT_WINDOW_ACTIVATE = 0;
       EVENT_WINDOW_DEACTIVATE = 1;
-      EVENT_STATE_CHANGED_FOCUSED = 2;
+      EVENT_WINDOW_MINIMIZE = 2;
+      EVENT_WINDOW_RAISE = 3;
+      EVENT_WINDOW_IDLE = 4;
+      EVENT_STATE_CHANGED_FOCUSED = 5;
    }
    ActionType type = 1;
    oneof params {
@@ -599,6 +608,7 @@ message ReqActionAndWaitEvent {
    EventType eventType = 4;
    int32 timeoutMs = 5;
    string packageName = 6;
+   int32 count = 7;
 }
 
 message RspActionAndWaitEvent {
@@ -645,4 +655,21 @@ message ReqSetTimeout {
 
 message RspSetTimeout {
    RspStatus status = 1;
+}
+
+message ReqSetXMLSync {
+   bool enable = 1;
+}
+
+message RspSetXMLSync {
+   RspStatus status = 1;
+}
+
+message ReqGetAngle {
+}
+
+message RspGetAngle {
+   RspStatus status = 1;
+   int32 windowAngle = 2;
+   int32 targetAngle = 3;
 }
