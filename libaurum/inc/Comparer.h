@@ -124,7 +124,7 @@ private:
      */
     void findObjects(
         std::vector<std::shared_ptr<AccessibleNode>> &ret,
-        const std::shared_ptr<AccessibleNode>& root, const int &index, const int &depth,
+        const std::shared_ptr<AccessibleNode>& root,
         std::list<std::shared_ptr<PartialMatch>> &partialMatches);
 
 private:
