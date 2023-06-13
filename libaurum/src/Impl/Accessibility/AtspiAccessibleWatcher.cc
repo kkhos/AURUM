@@ -233,7 +233,8 @@ gpointer AtspiAccessibleWatcher::timerThread(gpointer data)
         //       instead of waiting specific time
         if (((std::chrono::system_clock::now() - mStartTime) >
             std::chrono::milliseconds{WAIT_FOR_IDLE_MILLI_SEC}) ||
-            (mRenderCount == 0))
+            (mRenderCount == 0) ||
+            (isIdle == IdleEventState::IDLE_LISTEN_READY))
         {
             break;
         }
@@ -242,7 +243,8 @@ gpointer AtspiAccessibleWatcher::timerThread(gpointer data)
     }
 
     mTimerThread = nullptr;
-    isIdle = IdleEventState::IDLE_LISTEN_DONE;
+    if (isIdle != IdleEventState::IDLE_LISTEN_READY)
+        isIdle = IdleEventState::IDLE_LISTEN_DONE;
     g_thread_exit(NULL);
 
     return NULL;

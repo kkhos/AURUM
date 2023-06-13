@@ -16,6 +16,7 @@
  */
 
 #include "Aurum.h"
+#include <vector>
 
 using namespace Aurum;
 
@@ -33,6 +34,7 @@ std::shared_ptr<AccessibleNode> Comparer::findObject(const std::shared_ptr<UiDev
 {
     std::vector<std::shared_ptr<AccessibleNode>> ret;
     findObjects(ret, device, selector, root, true);
+
     if (ret.size() > 0)
         return std::move(ret[0]);
     else
@@ -78,42 +80,75 @@ void Comparer::findObjects(std::vector<std::shared_ptr<AccessibleNode>> &ret,
                                                             const std::shared_ptr<AccessibleNode>& root)
 {
     std::list<std::shared_ptr<PartialMatch>> partialList{};
-    findObjects(ret, root, 0, 1, partialList);
+    findObjects(ret, root, partialList);
     LOGI("%d object(s) found", (int)ret.size());
 }
 
+struct findObjectsNode
+{
+    std::shared_ptr<AccessibleNode> curNode;
+    int curIndex;
+    int curDepth;
+    bool isCompleted;
+    int prevPartialMatchesSize = 0;
+};
+
 void Comparer::findObjects(std::vector<std::shared_ptr<AccessibleNode>> &ret,
-    const std::shared_ptr<AccessibleNode>& root, const int &index, const int &depth,
+    const std::shared_ptr<AccessibleNode>& root,
     std::list<std::shared_ptr<PartialMatch>> &partialMatches)
 {
+    std::vector <findObjectsNode> mStack;
+    mStack.push_back({root, 0, 1, false, -1});
 
-    if (mSelector->mMatchShowing && !root->isShowing()) return;
+    while(!mStack.empty())
+    {
+        auto curNode = mStack.back().curNode;
+        int curIndex = mStack.back().curIndex;
+        int curDepth = mStack.back().curDepth;
+        bool isCompleted = mStack.back().isCompleted;
+        int prevPartialMatchesSize = mStack.back().prevPartialMatchesSize;
+        mStack.pop_back();
 
-    for (auto &match : partialMatches)
-        match->update(root, index, depth, partialMatches);
-
-    std::shared_ptr<PartialMatch> currentMatch =
-        PartialMatch::accept(root, mSelector, index, depth);
-    if (currentMatch) partialMatches.push_front(currentMatch);
-
-    if (!(mSelector->mMaxDepth && (depth+1 > mSelector->mMaxDepth))) {
-        auto children = root->getChildren();
-        for (int i = 0; i < (int)children.size(); i++) {
-            auto child = children[i];
-            if (child->getRawHandler() == nullptr) continue;
-
-            findObjects(ret, child, i, depth + 1, partialMatches);
-            if (!ret.empty() && mEarlyReturn) {
-                LOGI("Object found and earlyReturn");
-                return;
-            }
+        if(isCompleted)
+        {
+            while(partialMatches.size() > prevPartialMatchesSize)
+            partialMatches.pop_front();
+            continue;
         }
-    } else {
-        LOGI("Abort searching! No need to search children(maxDepth limit overflow, %d < %d < %d)", mSelector->mMinDepth? mSelector->mMinDepth: -1, depth, mSelector->mMaxDepth?(mSelector->mMaxDepth):9999999);
-    }
 
-    if (currentMatch && currentMatch->finalizeMatch()){
-        LOGI("Found matched = %s with criteria %s", root->description().c_str(), currentMatch->debugPrint().c_str());
-        ret.push_back(root);
+        if (mSelector->mMatchShowing && !curNode->isShowing()) continue;
+
+        int partialMatchSize = (int)partialMatches.size();
+        mStack.push_back({curNode, curIndex, curDepth, true, partialMatchSize});
+
+        for (auto &match : partialMatches)
+            match->update(curNode, curIndex, curDepth, partialMatches);
+
+        std::shared_ptr<PartialMatch> currentMatch =
+            PartialMatch::accept(curNode, mSelector, curIndex, curDepth);
+
+        if (currentMatch) partialMatches.push_front(currentMatch);
+
+        if (!(mSelector->mMaxDepth && (curDepth+1 > mSelector->mMaxDepth))) {
+            auto children = curNode->getChildren();
+            for (int i = (int)children.size() - 1; i >= 0; i--) {
+                auto child = children[i];
+                if (child->getRawHandler() == nullptr) continue;
+
+                mStack.push_back({child, i, curDepth + 1, false, -1});
+            }
+        } else {
+            LOGI("Abort searching! No need to search children(maxDepth limit overflow, %d < %d < %d)", mSelector->mMinDepth? mSelector->mMinDepth: -1, curDepth, mSelector->mMaxDepth?(mSelector->mMaxDepth):9999999);
+        }
+
+        if (currentMatch && currentMatch->finalizeMatch()) {
+            LOGI("Found matched = %s with criteria %s", root->description().c_str(), currentMatch->debugPrint().c_str());
+            ret.push_back(curNode);
+        }
+
+        if (!ret.empty() && mEarlyReturn) {
+            LOGI("Object found and earlyReturn");
+            return;
+        }
     }
 }
