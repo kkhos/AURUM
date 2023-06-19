@@ -271,7 +271,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    virtual bool takeScreenshot(std::string path, bool asPixels, void **pixels) = 0;
+    virtual bool takeScreenshot(std::string path, bool asPixels, void **pixels, int angle = 0) = 0;
 
     /**
      * @brief Gets device system time.

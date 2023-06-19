@@ -24,6 +24,7 @@
 
 #include <set>
 #include <efl_util.h>
+#include <efl_util_screenshot_extension.h>
 #include <shared_mutex>
 
 using namespace Aurum;
@@ -120,7 +121,7 @@ public:
     /**
      * @copydoc IDevice::takeScreenshot()
      */
-    bool takeScreenshot(std::string path, bool asPixels, void **pixels) override;
+    bool takeScreenshot(std::string path, bool asPixels, void **pixels, int angle = 0) override;
 
     /**
      * @copydoc IDevice::getSystemTime()

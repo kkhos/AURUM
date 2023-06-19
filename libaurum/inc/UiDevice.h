@@ -259,7 +259,7 @@ public:
      *
      * @since_tizen 7.0
      */
-    bool takeScreenshot(std::string path, bool asPixels, void **pixels) override;
+    bool takeScreenshot(std::string path, bool asPixels, void **pixels, int angle = 0) override;
 
     /**
      * @brief Gets device system time.
