@@ -201,6 +201,8 @@ void AtspiAccessibleWatcher::appendApp(AtspiAccessibleWatcher *instance, AtspiAc
         if (!package.empty()) {
 
             if (instance->mXMLDocMap.count(package)) {
+                mAppCount--;
+                mAppXMLLoadedCount--;
                 instance->mXMLDocMap.erase(package);
             }
 
@@ -217,6 +219,8 @@ void AtspiAccessibleWatcher::removeApp(AtspiAccessibleWatcher *instance, AtspiAc
     if (mXMLSync)
     {
         if (instance->mXMLDocMap.count(std::string(pkg))) {
+            mAppCount--;
+            mAppXMLLoadedCount--;
             instance->mXMLDocMap.erase(std::string(pkg));
         }
     }
@@ -455,12 +459,11 @@ bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const 
 
 std::map<std::string, std::shared_ptr<AurumXML>> AtspiAccessibleWatcher::getXMLDocMap(void)
 {
-    LOGI("XMLsync: %s", (mXMLSync ? "TRUE" : "FALSE"));
     if(mXMLSync)
     {
         std::unique_lock lk(mXMLMutex);
 
-        //LOGI("mAppCount: %d, mAppXMLLoadedCount: %d", mAppCount, mAppXMLLoadedCount);
+        LOGI("mAppCount: %d, mAppXMLLoadedCount: %d", mAppCount, mAppXMLLoadedCount);
         mXMLConditionVar.wait(lk, [&] {return mAppCount <= mAppXMLLoadedCount;});
 
         lk.unlock();
@@ -471,12 +474,11 @@ std::map<std::string, std::shared_ptr<AurumXML>> AtspiAccessibleWatcher::getXMLD
 
 std::shared_ptr<AurumXML> AtspiAccessibleWatcher::getXMLDoc(std::string pkgName)
 {
-    LOGI("XMLsync: %s", (mXMLSync ? "TRUE" : "FALSE"));
     if(mXMLSync)
     {
         std::unique_lock lk(mXMLMutex);
 
-        //LOGI("mAppCount: %d, mAppXMLLoadedCount: %d", mAppCount, mAppXMLLoadedCount);
+        LOGI("mAppCount: %d, mAppXMLLoadedCount: %d", mAppCount, mAppXMLLoadedCount);
         mXMLConditionVar.wait(lk, [&] {return mAppCount <= mAppXMLLoadedCount;});
 
         lk.unlock();
@@ -565,5 +567,16 @@ void AtspiAccessibleWatcher::setXMLsync(bool sync)
 
     if(!sync) {
         mXMLDocMap.clear();
+        mAppCount = 0;
+        mAppXMLLoadedCount = 0;
+    } else {
+        auto apps = getApplications();
+        for (auto app : apps)
+        {
+            app->getAccessibleNode()->updateName();
+            mAppCount++;
+            mXMLDocMap.insert(std::pair<std::string, std::shared_ptr<AurumXML>>(app->getPackageName(),
+                    std::make_shared<AurumXML>(app->getAccessibleNode(), &mAppXMLLoadedCount, &mXMLMutex, &mXMLConditionVar)));
+        }
     }
 }
