@@ -142,7 +142,7 @@ void Comparer::findObjects(std::vector<std::shared_ptr<AccessibleNode>> &ret,
         }
 
         if (currentMatch && currentMatch->finalizeMatch()) {
-            LOGI("Found matched = %s with criteria %s", root->description().c_str(), currentMatch->debugPrint().c_str());
+            LOGI("Found matched = %s with criteria %s", curNode->description().c_str(), currentMatch->debugPrint().c_str());
             ret.push_back(curNode);
         }
 
