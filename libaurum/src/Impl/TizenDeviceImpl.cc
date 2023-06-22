@@ -307,19 +307,27 @@ bool TizenDeviceImpl::releaseKeyCode(std::string keycode)
     return result == EFL_UTIL_ERROR_NONE;
 }
 
-bool TizenDeviceImpl::takeScreenshot(std::string path, bool asPixels, void **pixels)
+bool TizenDeviceImpl::takeScreenshot(std::string path, bool asPixels, void **pixels, int angle)
 {
     efl_util_screenshot_h screenshot = NULL;
     tbm_surface_h tbm_surface = NULL;
 
     void *ptr = NULL;
-    const int WIDTH = mScreenSize.width;
-    const int HEIGHT = mScreenSize.height;
+    int WIDTH = 0;
+    int HEIGHT = 0;
+    if (angle == 90 || angle == 270) {
+        WIDTH = mScreenSize.height;
+        HEIGHT = mScreenSize.width;
+    } else {
+        WIDTH = mScreenSize.width;
+        HEIGHT = mScreenSize.height;
+    }
 
     CaptureMutex.lock();
     screenshot = efl_util_screenshot_initialize(WIDTH, HEIGHT);
 
     if (screenshot) {
+        efl_util_screenshot_set_auto_rotation(screenshot, EINA_TRUE);
         tbm_surface = efl_util_screenshot_take_tbm_surface(screenshot);
         if (tbm_surface) {
             if (asPixels) {

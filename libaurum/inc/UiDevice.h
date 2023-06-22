@@ -254,12 +254,13 @@ public:
      * @param[in] path where the image file should be written to
      * @param[in] asPixels asPixels wheter to receive screen pixel data
      * @param[in] pixels pixel pixel buffer data pointer
+     * @param[in] angle rotation angle of current screen
      *
      * @return true if screen shot is created successfully, false otherwise
      *
-     * @since_tizen 7.0
+     * @since_tizen 8.0
      */
-    bool takeScreenshot(std::string path, bool asPixels, void **pixels) override;
+    bool takeScreenshot(std::string path, bool asPixels, void **pixels, int angle = 0) override;
 
     /**
      * @brief Gets device system time.
