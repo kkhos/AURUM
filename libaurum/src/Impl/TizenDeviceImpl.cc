@@ -136,7 +136,7 @@ bool TizenDeviceImpl::wheelUp(int amount, const int durationMs)
     LOGI("wheel up %d for %d", amount, durationMs);
     long result = -1;
     TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
-    obj->mFakeWheelHandle = efl_util_input_initialize_generator_with_sync(EFL_UTIL_INPUT_DEVTYPE_POINTER, NULL);
+    obj->mFakeWheelHandle = efl_util_input_initialize_generator_with_sync(EFL_UTIL_INPUT_DEVTYPE_POINTER, "SMSRC Fake Input");
     for (int i = 0; i < amount; i++){
          TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
          result = (long)efl_util_input_generate_wheel(obj->mFakeWheelHandle, EFL_UTIL_INPUT_POINTER_WHEEL_HORZ, 1);
@@ -152,7 +152,7 @@ bool TizenDeviceImpl::wheelDown(int amount, const int durationMs)
     LOGI("wheel down %d for %d", amount, durationMs);
     long result = -1;
     TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
-    obj->mFakeWheelHandle = efl_util_input_initialize_generator_with_sync(EFL_UTIL_INPUT_DEVTYPE_POINTER, NULL);
+    obj->mFakeWheelHandle = efl_util_input_initialize_generator_with_sync(EFL_UTIL_INPUT_DEVTYPE_POINTER, "SMSRC Fake Input");
     for (int i = 0; i < amount; i++){
         TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
         result = (long)efl_util_input_generate_wheel(obj->mFakeWheelHandle, EFL_UTIL_INPUT_POINTER_WHEEL_HORZ, -1);
