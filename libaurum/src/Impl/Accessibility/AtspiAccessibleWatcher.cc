@@ -139,6 +139,7 @@ AtspiAccessibleWatcher::AtspiAccessibleWatcher()
     mXMLSync = false;
 
     atspi_init();
+    atspi_set_timeout(-1, -1);
 
     AtspiWrapper::Atspi_accessible_set_cache_mask(AtspiWrapper::Atspi_get_desktop(0), ATSPI_CACHE_ALL);
 
