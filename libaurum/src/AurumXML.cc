@@ -41,11 +41,8 @@ void AurumXML::traverse(xml_node& element, const std::shared_ptr<AccessibleNode>
 {
     if (!node) return;
 
-    node->updateUniqueId();
     node->updateName();
-    node->updateRoleName();
     node->updateAttributes();
-    node->updateToolkitName();
 
     std::string name;
     if (node->getType().empty())
@@ -164,11 +161,11 @@ std::shared_ptr<AccessibleNode> AurumXML::checkParentNode(const std::shared_ptr<
     const auto parent = node->getParent();
     if (!parent) return nullptr;
 
-    const std::string query = makeQuery(node->getId());
+    const std::string query = makeQuery(parent->getId());
     xml_node xmlNode = mDoc->select_node(query.c_str()).node();
 
     if (xmlNode) {
-        auto children = node->getChildren();
+        auto children = parent->getChildren();
         for (const auto &child : children) {
             if (child->getRawHandler() == nullptr) continue;
 
@@ -190,11 +187,15 @@ xml_node AurumXML::checkNode(const std::shared_ptr<AccessibleNode>& node)
         xmlNode = mDoc->select_node(query.c_str()).node();
 
         if (!xmlNode) {
+            /* When node is deleted, XMLDoc doesn't know it so XMLDoc is not updated.
+	     * Disable creating XPath partially.
             // 1. find parent and check node again
             auto parent = checkParentNode(node);
 
             // 2. clear tree and create tree again
-            if (!parent) createXMLtree();
+            if (!parent) 
+	    */
+            createXMLtree();
 
             xmlNode = mDoc->select_node(query.c_str()).node();
         }
