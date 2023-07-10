@@ -31,6 +31,7 @@
 using namespace grpc;
 
 typedef struct _ServiceContext {
+    GThread *thread;
     std::unique_ptr<Server> server;
     bool forceTouchEnabled;
 } ServiceContext;
@@ -51,7 +52,8 @@ static void _vconf_force_enable_touch_set(void *data, bool enable)
     ctx->forceTouchEnabled = enable;
 }
 
-static bool _service_app_create(void *data)
+static gpointer
+_grpc_thread_func (gpointer data)
 {
     ServiceContext *ctx = (ServiceContext *)data;
     std::string binding("0.0.0.0:50051");
@@ -76,6 +78,20 @@ static bool _service_app_create(void *data)
     ctx->server = std::move(builder.BuildAndStart());
     ctx->server->Wait();
 
+    return NULL;
+}
+
+static bool _service_app_create(void *data)
+{
+    ServiceContext *ctx = (ServiceContext *)data;
+
+    ctx->thread = g_thread_new("grpc_thread", _grpc_thread_func, ctx);
+
+    if (!ctx->thread) {
+        LOGE("Thread is empty!");
+        return false;
+    }
+
     return true;
 }
 
@@ -86,6 +102,7 @@ static void _service_app_terminate(void *data)
     if (ctx->forceTouchEnabled)
         _vconf_force_enable_touch_set(ctx, false);
     ctx->server->Shutdown();
+    g_thread_join(ctx->thread);
 }
 
 static void _service_app_control(app_control_h app_control, void *data)
