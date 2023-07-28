@@ -81,9 +81,10 @@ bool AurumXML::createXMLtree()
     if (!mDoc || !mRoot) return false;
 
     mDoc->remove_children();
+    mXNodeMap.clear();
 
     xml_node element = mDoc->append_child("");
-    
+
     traverse(element, mRoot);
 
     return true;
@@ -232,13 +233,14 @@ void AurumXML::findXNodes(std::vector<std::shared_ptr<AccessibleNode>> &ret,
 
             if (mXNodeMap.count(id) > 0) ret.push_back(mXNodeMap[id]);
         }
-    }    
+    }
 }
 
 void AurumXML::findObjects(std::vector<std::shared_ptr<AccessibleNode>> &ret,
     std::string xpath, bool earlyReturn)
 {
     LOGI("xpath %s earlyReturn %d", xpath.c_str(), earlyReturn);
+    createXMLtree();
     try {
         findXNodes(ret, xpath, earlyReturn);
         if (ret.size() == 0) {
