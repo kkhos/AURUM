@@ -311,7 +311,10 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
         return;
     }
     else if (isIdle == IdleEventState::IDLE_LISTEN_DONE && !strncmp(event->type, "window:post-render", 18))
+    {
+        if (name) free(name);
         return;
+    }
 
     AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(event->source, NULL);
     if (name && app)
