@@ -575,7 +575,7 @@ void AtspiAccessibleWatcher::setXMLsync(bool sync)
         mAppXMLLoadedCount = 0;
     } else {
         auto apps = getApplications();
-        for (auto app : apps)
+        for (auto &app : apps)
         {
             app->getAccessibleNode()->updateName();
             mAppCount++;

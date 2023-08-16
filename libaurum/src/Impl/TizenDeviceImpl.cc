@@ -448,7 +448,7 @@ std::vector<std::shared_ptr<AccessibleNode>> TizenDeviceImpl::getWindowRoot() co
     std::unordered_map<int, std::shared_ptr<AccessibleApplication>> pidToAppNode{};
 
     auto apps = AccessibleWatcher::getInstance()->getApplications();
-    for (auto app : apps)
+    for (auto &app : apps)
     {
         app->getAccessibleNode()->updateName();
         app->getAccessibleNode()->updatePid();
@@ -457,7 +457,7 @@ std::vector<std::shared_ptr<AccessibleNode>> TizenDeviceImpl::getWindowRoot() co
         pidToAppNode[app->getAccessibleNode()->getPid()] = app;
     }
 
-    for (auto tWin : mTizenWindows)
+    for (auto &tWin : mTizenWindows)
     {
         LOGI("Visible win (%d) (%d %d %d %d) (%s)", tWin->getPid(), tWin->getWindowGeometry().mTopLeft.x, tWin->getWindowGeometry().mTopLeft.y, tWin->getWindowGeometry().width(),
             tWin->getWindowGeometry().height(), tWin->getName().c_str());
