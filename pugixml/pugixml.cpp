@@ -8042,6 +8042,7 @@ PUGI__NS_BEGIN
 
 	PUGI__FN bool node_is_before_sibling(xml_node_struct* ln, xml_node_struct* rn)
 	{
+		assert(ln && rn);
 		assert(ln->parent == rn->parent);
 
 		// there is no common ancestor (the shared parent is null), nodes are from different documents
