@@ -15,12 +15,7 @@
  *
  */
 
-#include <gio/gio.h>
-#include <grpcpp/grpcpp.h>
-#include "Commands/Command.h"
-#include "ObjectMapper.h"
-#include <aurum.grpc.pb.h>
-#include "config.h"
+#include "bootstrap.h"
 
 class SetXMLSyncCommand : public Command {
 private:

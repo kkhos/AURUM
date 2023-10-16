@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,14 +17,10 @@
 
 #include <iostream>
 #include <service_app.h>
-#include <gio/gio.h>
-#include <grpcpp/grpcpp.h>
-#include <aurum.grpc.pb.h>
 #include <glib.h>
 #include <vconf.h>
 #include <system_info.h>
 
-#include "bootstrap.h"
 #include "AurumServiceImpl.h"
 #include "config.h"
 
@@ -53,7 +49,7 @@ static void _vconf_force_enable_touch_set(void *data, bool enable)
 }
 
 static gpointer
-_grpc_thread_func (gpointer data)
+_grpc_thread_func(gpointer data)
 {
     ServiceContext *ctx = (ServiceContext *)data;
     std::string binding("0.0.0.0:50051");
@@ -72,7 +68,7 @@ _grpc_thread_func (gpointer data)
         free(value);
     }
 
-    LOGI("[T] Server Listening on %s", binding.c_str());
+    LOGI("Server Listening on %s", binding.c_str());
     builder.AddListeningPort(binding, grpc::InsecureServerCredentials());
     builder.RegisterService(&service);
     ctx->server = std::move(builder.BuildAndStart());

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  *
  */
 
-#include "bootstrap.h"
 #include "TouchMoveCommand.h"
 #include "UiDevice.h"
 
@@ -28,6 +27,7 @@ TouchMoveCommand::TouchMoveCommand(const ::aurum::ReqTouchMove *request,
 ::grpc::Status TouchMoveCommand::execute()
 {
     LOGI("TouchMove --------------- ");
+
     const aurum::Point& point = mRequest->coordination();
     int seq = mRequest->seqid();
     UiDevice::getInstance()->touchMove(point.x(), point.y(), seq);

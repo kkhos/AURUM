@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,14 +16,10 @@
  */
 
 #include "AurumServiceImpl.h"
-
-#include <AccessibleWatcher.h>
+#include "AccessibleWatcher.h"
 #include "Commands/Commands.h"
 #include "Commands/PostCommand.h"
 #include "Commands/PreCommand.h"
-
-#include "config.h"
-#include "bootstrap.h"
 
 using namespace grpc;
 using namespace aurum;
@@ -39,9 +35,9 @@ aurumServiceImpl::aurumServiceImpl()
 {
     std::unique_ptr<PreCommand>  proxyPreCmd  = std::make_unique<PreCommand>(cmd);
     std::unique_ptr<PostCommand> proxyPostCmd = std::make_unique<PostCommand>(proxyPreCmd.get());
-    ::grpc::Status rst = proxyPostCmd->execute();
+    ::grpc::Status ret = proxyPostCmd->execute();
     if (clean) ObjectMapper::getInstance()->cleanUp();
-    return rst;
+    return ret;
 }
 
 aurumServiceImpl::~aurumServiceImpl()

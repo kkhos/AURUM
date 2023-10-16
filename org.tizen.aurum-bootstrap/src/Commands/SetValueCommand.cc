@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  *
  */
 
-#include "bootstrap.h"
 #include "SetValueCommand.h"
 
 SetValueCommand::SetValueCommand(const ::aurum::ReqSetValue* request,
@@ -26,8 +25,10 @@ SetValueCommand::SetValueCommand(const ::aurum::ReqSetValue* request,
 
 ::grpc::Status SetValueCommand::execute()
 {
-    bool ret = false;
     LOGI("SetValue --------------- ");
+
+    bool ret = false;
+
     ::aurum::ParamType param_type = mRequest->type();
     if (param_type == ::aurum::STRING) {
         LOGI("text:%s", mRequest->stringvalue().c_str());
