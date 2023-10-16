@@ -15,9 +15,7 @@
  *
  */
 
-#include "bootstrap.h"
 #include "GetAngleCommand.h"
-
 #include "UiDevice.h"
 
 GetAngleCommand::GetAngleCommand(const ::aurum::ReqGetAngle* request,
@@ -34,7 +32,7 @@ GetAngleCommand::GetAngleCommand(const ::aurum::ReqGetAngle* request,
 
     mResponse->set_windowangle(mDevice->getWindowAngle());
     mResponse->set_targetangle(mDevice->getTargetAngle());
-
     mResponse->set_status(::aurum::RspStatus::OK);
+
     return grpc::Status::OK;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  *
  */
 
-#include "bootstrap.h"
 #include "SendKeyCommand.h"
 #include "UiDevice.h"
 
@@ -28,6 +27,7 @@ SendKeyCommand::SendKeyCommand(const ::aurum::ReqKey *request,
 ::grpc::Status SendKeyCommand::execute()
 {
     LOGI("SendKey --------------- ");
+
     std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();
     ::aurum::ReqKey_KeyType type = mRequest->type();
     ::aurum::ReqKey_KeyActionType action_type = mRequest->actiontype();

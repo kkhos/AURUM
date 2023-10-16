@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,17 +15,7 @@
  *
  */
 
-#include "bootstrap.h"
 #include "PreCommand.h"
-#include <atspi/atspi.h>
-
-#include <thread>
-#include <chrono>
-
-#include <Ecore.h>
-#include <device/power.h>
-#include <device/display.h>
-#include <device/callback.h>
 
 PreCommand::PreCommand() : PreCommand(nullptr) {}
 PreCommand::PreCommand(Command *cmd) : mCommand{cmd} {}

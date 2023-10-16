@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
  *
  */
 
-#include "bootstrap.h"
-#include "ClearCommand.h"
 #include <string>
+
+#include "ClearCommand.h"
 
 ClearCommand::ClearCommand(const ::aurum::ReqClear *request,
                            ::aurum::RspClear *response)
@@ -42,6 +42,7 @@ bool ClearCommand::hasHintText(std::shared_ptr<UiObject> obj)
 ::grpc::Status ClearCommand::execute()
 {
     LOGI("Clear --------------- ");
+
     ObjectMapper *mObjMap = ObjectMapper::getInstance();
     std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
 

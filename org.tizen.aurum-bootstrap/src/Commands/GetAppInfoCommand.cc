@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,10 +15,10 @@
  *
  */
 
-#include "bootstrap.h"
-#include "GetAppInfoCommand.h"
 #include <app_manager_extension.h>
 #include <package_manager.h>
+
+#include "GetAppInfoCommand.h"
 
 GetAppInfoCommand::GetAppInfoCommand(const ::aurum::ReqGetAppInfo *request,
                                      ::aurum::RspGetAppInfo *response)
@@ -28,7 +28,7 @@ GetAppInfoCommand::GetAppInfoCommand(const ::aurum::ReqGetAppInfo *request,
 
 ::grpc::Status GetAppInfoCommand::execute()
 {
-    LOGI("GetAppInfo --------------- ");
+    LOGI("GetAppInfo (%s) --------------- ", mRequest->packagename().c_str());
 
     std::string packageName = mRequest->packagename();
 

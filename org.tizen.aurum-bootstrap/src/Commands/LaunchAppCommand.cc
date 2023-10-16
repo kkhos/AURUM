@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
  *
  */
 
-#include "bootstrap.h"
+#include <chrono>
+#include <thread>
+
 #include "LaunchAppCommand.h"
 #include "LaunchAppRunnable.h"
 #include "UiDevice.h"
-#include <chrono>
-#include <thread>
 
 #define WAIT_APP_LAUNCH 10000
 
@@ -32,8 +32,10 @@ LaunchAppCommand::LaunchAppCommand(const ::aurum::ReqLaunchApp *request,
 
 ::grpc::Status LaunchAppCommand::execute()
 {
+    LOGI("LaunchApp (%s) --------------- ", mRequest->packagename().c_str());
+
     bool ret = false;
-    LOGI("LaunchApp --------------- ");
+
     std::unique_ptr<LaunchAppRunnable> cmd = std::make_unique<LaunchAppRunnable>(mRequest->packagename(), mRequest->data());
     std::shared_ptr<UiDevice> obj = UiDevice::getInstance();
     ret = obj->executeAndWaitForEvents(cmd.get(), A11yEvent::EVENT_WINDOW_ACTIVATE, WAIT_APP_LAUNCH, mRequest->packagename(), 0);

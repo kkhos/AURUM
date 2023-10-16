@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,13 +15,13 @@
  *
  */
 
-#include "ObjectMapper.h"
-#include <memory>
-#include "bootstrap.h"
 #include <algorithm>
 #include <sstream>
+#include <memory>
 
-ObjectMapper::ObjectMapper() : mObjectMap{}, mObjCounter{0} {}
+#include "ObjectMapper.h"
+
+ObjectMapper::ObjectMapper() : mObjectMap{} {}
 
 ObjectMapper::~ObjectMapper() {}
 
