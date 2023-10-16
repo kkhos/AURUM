@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
  *
  */
 
-#include "bootstrap.h"
 #include "EnableScreenAnalyzerCommand.h"
 #include "UiDevice.h"
+#include "config.h"
 
 EnableScreenAnalyzerCommand::EnableScreenAnalyzerCommand(const ::aurum::ReqEnableScreenAnalyzer *request,
                                      ::aurum::RspEnableScreenAnalyzer *response)
@@ -27,7 +27,7 @@ EnableScreenAnalyzerCommand::EnableScreenAnalyzerCommand(const ::aurum::ReqEnabl
 
 ::grpc::Status EnableScreenAnalyzerCommand::execute()
 {
-    LOGI("EnableScreenAnalyzer test --------------- ");
+    LOGI("EnableScreenAnalyzer --------------- ");
 
     LOGI("Screen Analyzer enabled (%d) Server IP : (%s)", mRequest->enable(), mRequest->serverip().c_str());
     std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();

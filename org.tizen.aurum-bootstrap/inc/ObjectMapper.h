@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
  *
  */
 
-#ifndef _OBJECT_MAPPER_H_
-#define _OBJECT_MAPPER_H_
+#pragma once
 
 #include <map>
 #include <string>
 
+#include "bootstrap.h"
 #include "UiObject.h"
 
 using namespace Aurum;
@@ -28,7 +28,6 @@ using namespace Aurum;
 class ObjectMapper {
 private:
     std::map<std::string, std::shared_ptr<UiObject>> mObjectMap;
-    unsigned long long                               mObjCounter;
 
 private:
     ObjectMapper();
@@ -43,5 +42,3 @@ public:
     bool removeElement(const std::string& elementId);
     void cleanUp();
 };
-
-#endif

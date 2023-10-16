@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,10 +15,15 @@
  *
  */
 
-#ifndef _BOOT_STRAP_H_
-#define _BOOT_STRAP_H_
+#pragma once
 
 #include <dlog.h>
+#include <gio/gio.h>
+#include <grpcpp/grpcpp.h>
+#include <aurum.grpc.pb.h>
+
+#include "Commands/Command.h"
+#include "ObjectMapper.h"
 
 #ifdef LOG_TAG
 #undef LOG_TAG
@@ -42,6 +47,4 @@
                    FONT_RED "%s: %s(%d) > " fmt FONT_RESET, \
                    __FILE__, __func__, __LINE__, ##arg); \
     } while (0); })
-#endif
-
 #endif

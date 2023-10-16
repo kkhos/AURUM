@@ -15,7 +15,6 @@
  *
  */
 
-#include "bootstrap.h"
 #include "SetXMLSyncCommand.h"
 
 SetXMLSyncCommand::SetXMLSyncCommand(const ::aurum::ReqSetXMLSync* request,
@@ -26,8 +25,9 @@ SetXMLSyncCommand::SetXMLSyncCommand(const ::aurum::ReqSetXMLSync* request,
 
 ::grpc::Status SetXMLSyncCommand::execute()
 {
-    bool sync = mRequest->enable();
-    AccessibleWatcher::getInstance()->setXMLsync(sync);
+    LOGI("SetXMLSync (%d) --------------- ", mRequest->enable());
+
+    AccessibleWatcher::getInstance()->setXMLsync(mRequest->enable());
 
     mResponse->set_status(::aurum::RspStatus::OK);
     return grpc::Status::OK;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,10 +15,10 @@
  *
  */
 
-#include "bootstrap.h"
-#include "CloseAppCommand.h"
 #include <chrono>
 #include <thread>
+
+#include "CloseAppCommand.h"
 #include <app_manager_extension.h>
 
 CloseAppCommand::CloseAppCommand(const ::aurum::ReqCloseApp *request,
@@ -51,6 +51,7 @@ CloseAppCommand::CloseAppCommand(const ::aurum::ReqCloseApp *request,
     }
 
     app_context_destroy(app_context);
+
     return grpc::Status::OK;
 }
 
@@ -58,5 +59,6 @@ CloseAppCommand::CloseAppCommand(const ::aurum::ReqCloseApp *request,
 {
     LOGI("Wait for 1500ms");
     std::this_thread::sleep_for(std::chrono::milliseconds{1500});
+
     return grpc::Status::OK;
 }

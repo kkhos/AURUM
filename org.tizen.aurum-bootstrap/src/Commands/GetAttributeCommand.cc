@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  *
  */
 
-#include "bootstrap.h"
 #include "GetAttributeCommand.h"
 #include "UiObject.h"
 #include "UiDevice.h"
@@ -35,6 +34,7 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
                                                                         ::aurum::RspGetAttribute*response)
 {
     LOGI("GetAttribute --------------- ");
+
     ::aurum::ReqGetAttribute_RequestType type = request->attribute();
     LOGI("type : %d", type);
 
@@ -77,6 +77,7 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
     obj->updateStates();
     mResponse->set_boolvalue(obj->isVisible());
     mResponse->set_status(aurum::RspStatus::OK);
+
     return grpc::Status::OK;
 }
 
@@ -91,6 +92,7 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
     obj->updateStates();
     mResponse->set_boolvalue(obj->isFocused());
     mResponse->set_status(aurum::RspStatus::OK);
+
     return grpc::Status::OK;
 }
 
@@ -105,6 +107,7 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
     obj->updateStates();
     mResponse->set_boolvalue(obj->isFocusable());
     mResponse->set_status(aurum::RspStatus::OK);
+
     return grpc::Status::OK;
 }
 
@@ -119,6 +122,7 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
     obj->updateStates();
     mResponse->set_boolvalue(obj->isCheckable());
     mResponse->set_status(aurum::RspStatus::OK);
+
     return grpc::Status::OK;
 }
 
@@ -133,6 +137,7 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
     obj->updateStates();
     mResponse->set_boolvalue(obj->isChecked());
     mResponse->set_status(aurum::RspStatus::OK);
+
     return grpc::Status::OK;
 }
 
@@ -147,6 +152,7 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
     obj->updateStates();
     mResponse->set_boolvalue(obj->isEnabled());
     mResponse->set_status(aurum::RspStatus::OK);
+
     return grpc::Status::OK;
 }
 
@@ -161,6 +167,7 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
     obj->updateStates();
     mResponse->set_boolvalue(obj->isClickable());
     mResponse->set_status(aurum::RspStatus::OK);
+
     return grpc::Status::OK;
 }
 
@@ -175,6 +182,7 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
     obj->updateStates();
     mResponse->set_boolvalue(obj->isScrollable());
     mResponse->set_status(aurum::RspStatus::OK);
+
     return grpc::Status::OK;
 }
 
@@ -189,6 +197,7 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
     obj->updateStates();
     mResponse->set_boolvalue(obj->isSelectable());
     mResponse->set_status(aurum::RspStatus::OK);
+
     return grpc::Status::OK;
 }
 
@@ -203,6 +212,7 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
     obj->updateStates();
     mResponse->set_boolvalue(obj->isSelected());
     mResponse->set_status(aurum::RspStatus::OK);
+
     return grpc::Status::OK;
 }
 
@@ -217,6 +227,7 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
     obj->updateStates();
     mResponse->set_boolvalue(obj->isShowing());
     mResponse->set_status(aurum::RspStatus::OK);
+
     return grpc::Status::OK;
 }
 
@@ -231,5 +242,6 @@ std::unique_ptr<GetAttributeCommand> GetAttributeCommand::createCommand(const ::
     obj->updateStates();
     mResponse->set_boolvalue(obj->isActive());
     mResponse->set_status(aurum::RspStatus::OK);
+
     return grpc::Status::OK;
 }
