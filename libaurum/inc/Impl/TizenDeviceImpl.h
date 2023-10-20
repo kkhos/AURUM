@@ -200,7 +200,7 @@ private:
      *
      * @since_tizen 7.0
      */
-    std::vector<std::shared_ptr<TizenWindow>> getTizenWindowInfo() const;
+    void getTizenWindowInfo(std::vector<std::shared_ptr<TizenWindow>> &mTizenWindows) const;
 
 private:
     efl_util_inputgen_h mFakeTouchHandle;
@@ -225,7 +225,6 @@ private:
      */
     Size2D<int> mScreenSize;
     static std::mutex CaptureMutex;
-    static std::vector<std::shared_ptr<TizenWindow>> mTizenWindows;
 };
 
 }
