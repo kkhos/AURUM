@@ -45,7 +45,6 @@ using namespace AurumInternal;
 #define WM_METHOD_NAME_INFO "GetVisibleWinInfo_v3"
 
 std::mutex TizenDeviceImpl::CaptureMutex = std::mutex{};
-std::vector<std::shared_ptr<TizenWindow>> TizenDeviceImpl::mTizenWindows;
 static GDBusConnection *system_conn;
 
 TizenDeviceImpl::TizenDeviceImpl()
@@ -442,7 +441,9 @@ bool TizenDeviceImpl::releaseTouchSeqNumber(int seq)
 std::vector<std::shared_ptr<AccessibleNode>> TizenDeviceImpl::getWindowRoot() const
 {
     LOGI("Request window info");
-    getTizenWindowInfo();
+
+    std::vector<std::shared_ptr<TizenWindow>> mTizenWindows{};
+    getTizenWindowInfo(mTizenWindows);
 
     std::vector<std::shared_ptr<AccessibleNode>> ret{};
     std::unordered_map<int, std::shared_ptr<AccessibleApplication>> pidToAppNode{};
@@ -482,7 +483,7 @@ std::vector<std::shared_ptr<AccessibleNode>> TizenDeviceImpl::getWindowRoot() co
     return ret;
 }
 
-std::vector<std::shared_ptr<TizenWindow>> TizenDeviceImpl::getTizenWindowInfo() const
+void TizenDeviceImpl::getTizenWindowInfo(std::vector<std::shared_ptr<TizenWindow>> &mTizenWindows) const
 {
     GError *err = NULL;
     GDBusMessage *msg;
@@ -507,14 +508,12 @@ std::vector<std::shared_ptr<TizenWindow>> TizenDeviceImpl::getTizenWindowInfo() 
     int layer;
     char *name;
 
-    mTizenWindows.clear();
-
     if (system_conn == NULL) {
         conn = g_bus_get_sync(G_BUS_TYPE_SYSTEM, NULL, &err);
         if (conn == NULL) {
             LOGE("g_bus_get_sync() is failed. %s", err->message);
             g_error_free(err);
-            return mTizenWindows;
+            return;
         }
         system_conn = conn;
     }
@@ -525,7 +524,7 @@ std::vector<std::shared_ptr<TizenWindow>> TizenDeviceImpl::getTizenWindowInfo() 
             WM_METHOD_NAME_INFO);
     if (msg == NULL) {
         LOGE("g_dbus_message_new_method_call() is failed.");
-        return mTizenWindows;
+        return;
     }
 
     reply = g_dbus_connection_send_message_with_reply_sync(system_conn, msg,
@@ -585,5 +584,5 @@ out:
     if (reply)
         g_object_unref(reply);
 
-    return mTizenWindows;
+    return;
 }
