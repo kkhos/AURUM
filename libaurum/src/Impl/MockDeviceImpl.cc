@@ -272,7 +272,7 @@ std::vector<std::shared_ptr<AccessibleNode>> MockDeviceImpl::getWindowRoot() con
 
     auto apps = AccessibleWatcher::getInstance()->getApplications();
 
-    for (auto app : apps)
+    for (auto &app : apps)
     {
         auto wins = app->getWindows();
         std::transform(wins.begin(), wins.end(), std::back_inserter(ret),
