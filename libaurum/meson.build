@@ -34,13 +34,6 @@ libaurum_install_inc = [
   './inc/Aurum.h',
 ]
 
-if get_option('mqtt_enabled') == true
-  libaurum_install_inc += [
-    './inc/SaObject.h',
-    './inc/ScreenAnalyzer/ScreenAnalyzerWatcher.h',
-  ]
-endif
-
 libaurum_inc = [
   include_directories('./inc'),
   include_directories('./inc/Accessibility'),
@@ -51,12 +44,6 @@ libaurum_inc = [
   include_directories('./inc/Interface'),
   root_inc,
 ]
-
-if get_option('mqtt_enabled') == true
-  libaurum_inc += [
-    include_directories('./inc/ScreenAnalyzer'),
-  ]
-endif
 
 libaurum_src = []
 subdir('src')
@@ -75,14 +62,6 @@ if get_option('tizen') == true
     dependency('dlog'),
     dependency('elementary'),
     dependency('libtdm'),
-  ]
-endif
-
-if get_option('mqtt_enabled') == true
-  libaurum_dep += [
-    dependency('libmosquitto'),
-    dependency('jsoncpp'),
-    dependency('capi-appfw-app-manager'),
   ]
 endif
 

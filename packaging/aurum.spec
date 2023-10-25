@@ -31,11 +31,6 @@ BuildRequires: pkgconfig(capi-system-system-settings)
 BuildRequires: pkgconfig(capi-base-utils-i18n)
 BuildRequires: pkgconfig(vconf)
 
-%if "%{mqtt}" == "1"
-BuildRequires: pkgconfig(libmosquitto)
-BuildRequires: pkgconfig(jsoncpp)
-%endif
-
 %if 0%{?gendoc:1}
 BuildRequires:  doxygen
 %endif
@@ -91,19 +86,12 @@ export LDFLAGS+="-Wl,-z,noexecstack"
 %define TIZEN_GEN_DOC false
 %endif
 
-%if "%{mqtt}" == "1"
-%define MQTT_ENABLED true
-%else
-%define MQTT_ENABLED false
-%endif
-
 meson \
     --prefix /usr \
     --libdir %{_libdir} \
     -Dcpp_std=c++17 \
     -Dtizen=true \
     -Denable_documentation=%{TIZEN_GEN_DOC} \
-    -Dmqtt_enabled=%{MQTT_ENABLED} \
     -Dtzapp_path=%{TZ_SYS_RO_APP} \
     -Dtzpackage_path=%{TZ_SYS_RO_PACKAGES} \
     gbsbuild 2>&1 | sed \

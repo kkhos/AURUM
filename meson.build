@@ -17,10 +17,6 @@ if get_option('tizen_gcov') == true
   config_h.set10('TIZEN_GCOV', true)
 endif
 
-if get_option('mqtt_enabled') == true
-  config_h.set10('MQTT_ENABLED', true)
-endif
-
 root_inc = include_directories('./')
 
 subdir('pugixml')

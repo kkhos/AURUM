@@ -37,21 +37,12 @@ using namespace AurumInternal;
 
 std::once_flag UiDevice::mOnceFlag;
 
-#ifdef MQTT_ENABLED
-std::shared_ptr<ScreenAnalyzerWatcher> UiDevice::mSAWatcher;
-#endif
-
 UiDevice::UiDevice() : UiDevice(nullptr) {}
 
 UiDevice::UiDevice(IDevice *impl)
     : mDeviceImpl(impl), mWaiter(new Waiter{this})
 {
     LOGI("UiDevice constructor");
-    mIsWithSA = false;
-#ifdef MQTT_ENABLED
-    mSAWatcher = std::make_shared<ScreenAnalyzerWatcher>();
-#endif
-    LOGI("UiDevice constructor finish");
 }
 
 UiDevice::~UiDevice()
@@ -294,39 +285,10 @@ const Size2D<int> UiDevice::getScreenSize()
     return mDeviceImpl->getScreenSize();
 }
 
-#ifdef MQTT_ENABLED
-std::vector<std::shared_ptr<SaObject>> UiDevice::getSaObject()
-{
-    return mSAWatcher->GetSaObjects();
-}
-
-std::shared_ptr<ScreenAnalyzerWatcher> UiDevice::getSAWatcher()
-{
-    return mSAWatcher;
-}
-#endif
-
-void UiDevice::RequestScreenAnalyze()
-{
-#ifdef MQTT_ENABLED
-    mSAWatcher->PublishData();
-#endif
-}
-
 bool UiDevice::getExternalAppLaunched()
 {
     auto ret = this->getWindowRoot();
     return (ret.size() > 0) ? false : true;
-}
-
-void UiDevice::setWithScreenAnalyzer(bool withScreenAnalyzer)
-{
-    mIsWithSA = withScreenAnalyzer;
-}
-
-bool UiDevice::getWithScreenAnalyzer()
-{
-    return mIsWithSA;
 }
 
 bool UiDevice::registerCallback(const A11yEvent type, EventHandler cb, void *data) const

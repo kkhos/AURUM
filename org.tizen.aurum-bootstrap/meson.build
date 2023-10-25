@@ -46,7 +46,6 @@ bootstrap_svr_src += [
    files('src/Commands/ActionAndWaitEventCommand.cc'),
    files('src/Commands/SetFocusCommand.cc'),
    files('src/Commands/GetActiveAppToolkitNameCommand.cc'),
-   files('src/Commands/EnableScreenAnalyzerCommand.cc'),
    files('src/Commands/GetTextMinBoundingRectCommand.cc'),
    files('src/Commands/SetXMLSyncCommand.cc'),
    files('src/Commands/GetAngleCommand.cc'),

@@ -10,7 +10,6 @@ def run():
     """
 
     stub = getStub()
-    stub.enableScreenAnalyzer(ReqEnableScreenAnalyzer(enable=True))
     response = stub.findElements(ReqFindElements())
     print(response)
 
