@@ -62,10 +62,10 @@ std::unique_ptr<ClickCommand> ClickCommand::createCommand(const ::aurum::ReqClic
 
 ::grpc::Status ClickCoordCommand::execute()
 {
-    LOGI("ClickCoord (%d, %d) --------------- ", point.x(), point.y());
-
     std::shared_ptr<UiDevice> obj = UiDevice::getInstance();
     const ::aurum::Point& point = mRequest->coordination();
+
+    LOGI("ClickCoord (%d, %d) --------------- ", point.x(), point.y());
 
     obj->click(point.x(), point.y());
     mResponse->set_status(::aurum::RspStatus::OK);
