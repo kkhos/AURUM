@@ -270,14 +270,6 @@ aurumServiceImpl::~aurumServiceImpl()
     return execute(cmd.get(), true);
 }
 
-::grpc::Status aurumServiceImpl::enableScreenAnalyzer(::grpc::ServerContext *context,
-                                    const ::aurum::ReqEnableScreenAnalyzer *request,
-                                    ::aurum::RspEnableScreenAnalyzer *response)
-{
-    std::unique_ptr<EnableScreenAnalyzerCommand> cmd = std::make_unique<EnableScreenAnalyzerCommand>(request, response);
-    return execute(cmd.get(), true);
-}
-
 ::grpc::Status aurumServiceImpl::getTextMinBoundingRect(::grpc::ServerContext *context,
                                          const ::aurum::ReqGetTextMinBoundingRect *request,
                                          ::aurum::RspGetTextMinBoundingRect *response)

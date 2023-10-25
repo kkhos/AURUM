@@ -65,34 +65,6 @@ bool PartialMatch::checkCriteria(const std::shared_ptr<UiSelector> selector,
                                  const std::shared_ptr<AccessibleNode> node,
                                  std::shared_ptr<UiDevice> device)
 {
-#ifdef MQTT_ENABLED
-    if (selector->mMatchOcrText)
-    {
-        if (!device->getWithScreenAnalyzer() || !node->isShowing() || !(node->getText().size() == 0)) return false;
-        //FIXME: getSaObjectHasText();
-        auto saObjs = device->getSAWatcher()->GetSaObjects();
-
-        node->updateExtents();
-        auto objBoundingBox = node->getScreenBoundingBox();
-        for (auto saObj : saObjs) {
-            if (saObj->getOcrText().size() != 0) {
-                if (objBoundingBox.isInRect(saObj->getScreenBoundingBox().midPoint()) &&
-                   ((objBoundingBox.width() * objBoundingBox.height() * 1.5) > (saObj->getScreenBoundingBox().width() * saObj->getScreenBoundingBox().height())) &&
-                   ((objBoundingBox.width() * objBoundingBox.height() < (saObj->getScreenBoundingBox().width() * saObj->getScreenBoundingBox().height() * 1.5))))
-                {
-                    LOGI("Text Set %s ", saObj->getOcrText().c_str());
-                    node->setOcrText(saObj->getOcrText());
-                }
-            }
-        }
-
-        if (node->getOcrText().size() == 0) return false;
-        if (checkCriteria(selector->mOcrText, node->getOcrText(), 1)) return false;
-
-        LOGI("node ocr = %s, selector ocr = %s",node->getOcrText().c_str(), selector->mOcrText.c_str());
-    }
-#endif
-
     if (selector->mMatchText || selector->mMatchTextPartialMatch) {
         node->updateName();
         if (selector->mMatchText && checkCriteria(selector->mText, node->getText(), 0)) return false;

@@ -43,7 +43,6 @@
 #include "Commands/ActionAndWaitEventCommand.h"
 #include "Commands/SetFocusCommand.h"
 #include "Commands/GetActiveAppToolkitNameCommand.h"
-#include "Commands/EnableScreenAnalyzerCommand.h"
 #include "Commands/GetTextMinBoundingRectCommand.h"
 #include "Commands/SetXMLSyncCommand.h"
 #include "Commands/GetAngleCommand.h"
