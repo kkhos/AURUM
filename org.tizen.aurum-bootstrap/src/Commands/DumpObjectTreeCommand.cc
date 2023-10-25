@@ -97,68 +97,15 @@ void DumpObjectTreeCommand::traverse(::aurum::Element *root, std::shared_ptr<Nod
     LOGI("DumpObjectTree --------------- ");
 
     std::shared_ptr<UiDevice> mDevice = UiDevice::getInstance();
-#ifdef MQTT_ENABLED
-    if (mDevice->getExternalAppLaunched())
-    {
-        mDevice->RequestScreenAnalyze();
 
-        auto objs = mDevice->getSAWatcher()->GetSaObjects();
-        ::aurum::Element *root;
-        int idx = 0;
-        for (auto obj : objs) {
-            if (!idx) {
-                root = mResponse->add_roots();
-                root->set_elementid(obj->getId());
-                root->set_widgettype(obj->getType());
-                root->set_text(obj->getOcrText());
-                root->set_isclickable(obj->isClickable());
-                root->set_isfocused(obj->isFocused());
-                root->set_isfocusable(obj->isFocusable());
-                root->set_isactive(obj->isActive());
-                root->set_isshowing(true);
-                root->set_isvisible(true);
-                ::aurum::Rect *rect = root->mutable_geometry();
-                const Rect<int> &size = obj->getScreenBoundingBox();
-                rect->set_x(size.mTopLeft.x);
-                rect->set_y(size.mTopLeft.y);
-                rect->set_width(size.width());
-                rect->set_height(size.height());
-            }
-            else {
-                ::aurum::Element *elm = root->add_child();
-                elm->set_elementid(obj->getId());
-                elm->set_widgettype(obj->getType());
-                elm->set_text(obj->getOcrText());
-                elm->set_isclickable(obj->isClickable());
-                elm->set_isfocused(obj->isFocused());
-                elm->set_isfocusable(obj->isFocusable());
-                elm->set_isactive(obj->isActive());
-                elm->set_isshowing(true);
-                elm->set_isvisible(true);
+    LOGI("elementid : %s", mRequest->elementid().c_str());
+    if (mRequest->elementid().length()) {
+        auto obj = mObjMap->getElement(mRequest->elementid());
+        if (!obj) return grpc::Status::OK;
 
-                ::aurum::Rect *rect = elm->mutable_geometry();
-                const Rect<int> &size = obj->getScreenBoundingBox();
-                rect->set_x(size.mTopLeft.x);
-                rect->set_y(size.mTopLeft.y);
-                rect->set_width(size.width());
-                rect->set_height(size.height());
-            }
-
-            idx++;
-        }
-    }
-    else
-#endif
-    {
-        LOGI("elementid : %s", mRequest->elementid().c_str());
-        if (mRequest->elementid().length()) {
-            auto obj = mObjMap->getElement(mRequest->elementid());
-            if (!obj) return grpc::Status::OK;;
-
-            auto node = obj->getDescendant();
-            ::aurum::Element *root = mResponse->add_roots();
-            traverse(root, node, 0);
-        }
+        auto node = obj->getDescendant();
+        ::aurum::Element *root = mResponse->add_roots();
+        traverse(root, node, 0);
     }
 
     return grpc::Status::OK;

@@ -35,11 +35,6 @@
 #include <functional>
 #include <string>
 
-#ifdef MQTT_ENABLED
-#include "SaObject.h"
-#include "ScreenAnalyzerWatcher.h"
-#endif
-
 namespace Aurum {
 
 /**
@@ -405,32 +400,6 @@ public:
      */
     std::vector<std::shared_ptr<AccessibleNode>> getWindowRoot() const override;
 
-#ifdef MQTT_ENABLED
-    /**
-     * @brief Gets screen analyzer Object vector.
-     *
-     * @return SaObject ptr vector
-     *
-     * @since_tizen 7.0
-     */
-    std::vector<std::shared_ptr<SaObject>> getSaObject();
-
-    /**
-     * @brief Gets ScreenAnalyzerWatcher instance.
-     *
-     * @return ScreenAnalyzerWatcher ptr
-     *
-     * @since_tizen 7.0
-     */
-    std::shared_ptr<ScreenAnalyzerWatcher> getSAWatcher();
-#endif
-    /**
-     * @brief Requests current screen analyze.
-     *
-     * @since_tizen 7.0
-     */
-    void RequestScreenAnalyze();
-
     /**
      * @brief Gets external application launched or not.
      *
@@ -439,24 +408,6 @@ public:
      * @since_tizen 7.0
      */
     bool getExternalAppLaunched();
-
-    /**
-     * @brief Sets whether to use screen analyzer for Tizen apps.
-     *
-     * @param[in] withScreenAnalyzer boolean value
-     *
-     * @since_tizen 7.0
-     */
-    void setWithScreenAnalyzer(bool withScreenAnalyzer);
-
-    /**
-     * @brief Gets whether to use screen analyzer for Tizen apps.
-     *
-     * @return true screen analyzer use for Tizen apps, otherwise false
-     *
-     * @since_tizen 7.0
-     */
-    bool getWithScreenAnalyzer();
 
     /**
      * @brief Gets angle of root window.
@@ -510,10 +461,6 @@ public:
 private:
     IDevice *mDeviceImpl;
     const Waiter *mWaiter;
-    bool mIsWithSA;
-#ifdef MQTT_ENABLED
-    static std::shared_ptr<ScreenAnalyzerWatcher> mSAWatcher;
-#endif
     static std::once_flag mOnceFlag;
 };
 
