@@ -152,6 +152,8 @@ public:
      */
     virtual void setXMLsync(bool sync) = 0;
 
+    virtual bool getWindowChanged() = 0;
+    virtual void setWindowChanged() = 0;
 public:
     /**
      * @brief Gets active application vector.

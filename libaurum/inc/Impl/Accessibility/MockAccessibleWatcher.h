@@ -81,6 +81,8 @@ public:
 
     void setXMLsync(bool sync);
 
+    bool getWindowChanged();
+    void setWindowChanged();
 public:
     /**
      * @brief TBD

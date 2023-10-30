@@ -44,6 +44,7 @@ std::chrono::system_clock::time_point AtspiAccessibleWatcher::mStartTime;
 IdleEventState AtspiAccessibleWatcher::isIdle = IdleEventState::IDLE_LISTEN_READY;
 static const unsigned int WAIT_FOR_IDLE_MILLI_SEC = 1000; // 1sec
 int AtspiAccessibleWatcher::mRenderCount = 10;
+bool AtspiAccessibleWatcher::isWindowChanged = false;
 
 static bool iShowingNode(AtspiAccessible *node)
 {
@@ -284,6 +285,10 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
     {
         return;
     }
+
+    if (!strncmp(event->type, "window", 6))
+        isWindowChanged = true;
+
     char *name = NULL, *pkg = NULL;
     AtspiAccessibleWatcher *instance = (AtspiAccessibleWatcher *)watcher;
     name = AtspiWrapper::Atspi_accessible_get_name(event->source, NULL);
@@ -583,4 +588,14 @@ void AtspiAccessibleWatcher::setXMLsync(bool sync)
                     std::make_shared<AurumXML>(app->getAccessibleNode(), &mAppXMLLoadedCount, &mXMLMutex, &mXMLConditionVar)));
         }
     }
+}
+
+bool AtspiAccessibleWatcher::getWindowChanged()
+{
+    return isWindowChanged;
+}
+
+void AtspiAccessibleWatcher::setWindowChanged()
+{
+    isWindowChanged = false;
 }

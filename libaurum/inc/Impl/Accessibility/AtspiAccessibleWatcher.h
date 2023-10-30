@@ -142,6 +142,8 @@ public:
      */
     virtual void setXMLsync(bool sync) override;
 
+    virtual bool getWindowChanged() override;
+    virtual void setWindowChanged() override;
 public:
     /**
      * @brief Listen atspi events.
@@ -202,6 +204,7 @@ private:
     static std::chrono::system_clock::time_point mStartTime;
     static IdleEventState isIdle;
     static int mRenderCount;
+    static bool isWindowChanged;
 };
 
 }
