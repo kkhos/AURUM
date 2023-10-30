@@ -81,6 +81,7 @@ public:
 
     void setXMLsync(bool sync);
 
+    bool getWindowEventEmitted();
 public:
     /**
      * @brief TBD

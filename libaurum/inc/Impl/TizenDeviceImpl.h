@@ -225,6 +225,7 @@ private:
      */
     Size2D<int> mScreenSize;
     static std::mutex CaptureMutex;
+    static std::vector<std::shared_ptr<AccessibleNode>> mCachedNode;
 };
 
 }
