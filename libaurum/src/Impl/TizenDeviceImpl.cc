@@ -46,6 +46,7 @@ using namespace AurumInternal;
 
 std::mutex TizenDeviceImpl::CaptureMutex = std::mutex{};
 static GDBusConnection *system_conn;
+std::vector<std::shared_ptr<AccessibleNode>> TizenDeviceImpl::mCachedNode;
 
 TizenDeviceImpl::TizenDeviceImpl()
 : mFakeTouchHandle{0}, mFakeKeyboardHandle{0}, mFakeWheelHandle{0}, tStart{}, isTimerStarted{false}, mTouchSeq{}
@@ -440,7 +441,12 @@ bool TizenDeviceImpl::releaseTouchSeqNumber(int seq)
 
 std::vector<std::shared_ptr<AccessibleNode>> TizenDeviceImpl::getWindowRoot() const
 {
-    LOGI("Request window info");
+    if (!AccessibleWatcher::getInstance()->getWindowEventEmitted() && mCachedNode.size() > 0)
+    {
+        for (auto &win : mCachedNode)
+            LOGI("Cache hit pkg: (%s)", win->getPkg().c_str());
+        return mCachedNode;
+    }
 
     std::vector<std::shared_ptr<TizenWindow>> mTizenWindows{};
     getTizenWindowInfo(mTizenWindows);
@@ -479,6 +485,8 @@ std::vector<std::shared_ptr<AccessibleNode>> TizenDeviceImpl::getWindowRoot() co
 
         pidToAppNode.erase(tWin->getPid());
     }
+
+    mCachedNode = ret;
 
     return ret;
 }
