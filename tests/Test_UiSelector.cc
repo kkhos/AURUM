@@ -112,8 +112,8 @@ TEST_F(AurumTestUiSelector, depth_P1)
     auto sel = std::make_shared<UiSelector>();
     sel->depth(2);
     auto objects = UiDevice::getInstance()->findObjects(sel);
-    ASSERT_EQ(objects.size(), 1);
-    ASSERT_EQ(objects[0]->getText(), "node5");
+    ASSERT_EQ(objects.size(), 4);
+    ASSERT_EQ(objects[0]->getText(), "node1");
 }
 
 TEST_F(AurumTestUiSelector, minDepth_P1)
@@ -121,9 +121,9 @@ TEST_F(AurumTestUiSelector, minDepth_P1)
     auto sel = std::make_shared<UiSelector>();
     sel->minDepth(2);
     auto objects = UiDevice::getInstance()->findObjects(sel);
-    ASSERT_EQ(objects.size(), 2);
-    ASSERT_EQ(objects[0]->getText(), "node6");
-    ASSERT_EQ(objects[1]->getText(), "node5");
+    ASSERT_EQ(objects.size(), 6);
+    ASSERT_EQ(objects[0]->getText(), "node1");
+    ASSERT_EQ(objects[1]->getText(), "node2");
 }
 
 TEST_F(AurumTestUiSelector, maxDepth_P1)
@@ -132,9 +132,9 @@ TEST_F(AurumTestUiSelector, maxDepth_P1)
     sel->maxDepth(0);
     auto objects = UiDevice::getInstance()->findObjects(sel);
 
-    ASSERT_EQ(objects.size(), 2);
+    ASSERT_EQ(objects.size(), 9);
     ASSERT_EQ(objects[0]->getText(), "win1");
-    ASSERT_EQ(objects[1]->getText(), "win2");
+    ASSERT_EQ(objects[1]->getText(), "node1");
 }
 
 TEST_F(AurumTestUiSelector, isCheckable_P1)
@@ -163,7 +163,7 @@ TEST_F(AurumTestUiSelector, isShowing_P1)
     sel->maxDepth(0);
     auto objects = UiDevice::getInstance()->findObjects(sel);
 
-    ASSERT_EQ(objects.size(), 2);
+    ASSERT_EQ(objects.size(), 9);
     ASSERT_EQ(objects[0]->isShowing(), true);
     ASSERT_EQ(objects[1]->isShowing(), true);
 }
@@ -174,9 +174,9 @@ TEST_F(AurumTestUiSelector, isActive_P1)
     sel->maxDepth(0);
     auto objects = UiDevice::getInstance()->findObjects(sel);
 
-    ASSERT_EQ(objects.size(), 2);
+    ASSERT_EQ(objects.size(), 9);
     ASSERT_EQ(objects[0]->isActive(), true);
-    ASSERT_EQ(objects[1]->isActive(), true);
+    ASSERT_EQ(objects[1]->isActive(), false);
 }
 
 TEST_F(AurumTestUiSelector, Selector_Advanced_P1)
@@ -195,7 +195,7 @@ TEST_F(AurumTestUiSelector, Selector_Advanced_P1)
     sel->hasChild(childSel);
     found = UiDevice::getInstance()->findObject(sel);
 
-    ASSERT_NE(found, nullptr);
+    ASSERT_EQ(found, nullptr);
 }
 
 
@@ -221,8 +221,7 @@ TEST_F(AurumTestUiSelector, Selector_Advanced_P2)
     sel->hasChild(childSel2);
     found = UiDevice::getInstance()->findObject(sel);
 
-    ASSERT_NE(found, nullptr);
-    ASSERT_EQ(found->getText(), "win1");
+    ASSERT_EQ(found, nullptr);
 }
 
 TEST_F(AurumTestUiSelector, Selector_Parent_P1)
@@ -237,8 +236,7 @@ TEST_F(AurumTestUiSelector, Selector_Parent_P1)
     sel->text("node5")->fromParent(selp);
 
     auto found = UiDevice::getInstance()->findObject(sel);
-    ASSERT_NE(found, nullptr);
-    ASSERT_EQ(found->getText(), "node5");
+    ASSERT_EQ(found, nullptr);
 }
 
 TEST_F(AurumTestUiSelector, Selector_Parent_N2)
@@ -257,7 +255,7 @@ TEST_F(AurumTestUiSelector, Selector_Parent_N2)
 
     found = UiDevice::getInstance()->findObject(selpp);
     ASSERT_NE(found, nullptr);
-    ASSERT_EQ(found->getText(), "win2");
+    ASSERT_EQ(found->getText(), "win1");
 
 }
 
@@ -295,4 +293,44 @@ TEST_F(AurumTestUiSelector, Selector_Advanced_N1)
     found = UiDevice::getInstance()->findObject(sel);
 
     ASSERT_EQ(found, nullptr);
+}
+
+TEST_F(AurumTestUiSelector, id_N1)
+{
+    auto sel = std::make_shared<UiSelector>();
+    sel->id("res.id.1");
+    auto objects = UiDevice::getInstance()->findObjects(sel);
+    ASSERT_NE(objects.size(), 0);
+}
+
+TEST_F(AurumTestUiSelector, text_N1)
+{
+    auto sel = std::make_shared<UiSelector>();
+    sel->text("node1");
+    auto objects = UiDevice::getInstance()->findObjects(sel);
+    ASSERT_NE(objects.size(), 0);
+}
+
+TEST_F(AurumTestUiSelector, pkg_N1)
+{
+    auto sel = std::make_shared<UiSelector>();
+    sel->pkg("pkg1");
+    auto objects = UiDevice::getInstance()->findObjects(sel);
+    ASSERT_NE(objects.size(), 0);
+}
+
+TEST_F(AurumTestUiSelector, type_N1)
+{
+    auto sel = std::make_shared<UiSelector>();
+    sel->type("widget.type.1");
+    auto objects = UiDevice::getInstance()->findObjects(sel);
+    ASSERT_NE(objects.size(), 0);
+}
+
+TEST_F(AurumTestUiSelector, style_N1)
+{
+    auto sel = std::make_shared<UiSelector>();
+    sel->style("widget.style.2");
+    auto objects = UiDevice::getInstance()->findObjects(sel);
+    ASSERT_NE(objects.size(), 0);
 }

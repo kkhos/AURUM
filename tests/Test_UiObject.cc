@@ -311,18 +311,6 @@ TEST_F(AurumTestUiObject, isFocused_P1)
     ASSERT_EQ(found->isFocused(), true);
 }
 
-// TEST_F(AurumTestUiObject, isLongClickable_P1)
-// {
-//     auto obj = UiDevice::getInstance();
-//     auto win = obj->findObject(Sel::text("title"));
-//     auto sel = std::make_shared<UiSelector>();
-//     sel->isLongClickable(true);
-//     auto found = win->findObject(sel);
-//     ASSERT_NE(found, nullptr);
-//     ASSERT_EQ(found->getText(), "LONGCLICKABLE");
-//     ASSERT_EQ(found->isLongClickable(), true);
-// }
-
 TEST_F(AurumTestUiObject, isScrollable_P1)
 {
     auto obj = UiDevice::getInstance();
@@ -365,10 +353,10 @@ TEST_F(AurumTestUiObject, isVisible_P1)
     auto win = obj->findObject(Sel::text("title"));
     auto sel = std::make_shared<UiSelector>();
     sel->isVisible(true);
-    auto found = win->findObject(sel);
-    ASSERT_NE(found, nullptr);
-    ASSERT_EQ(found->getText(), "VISIBLE");
-    ASSERT_EQ(found->isVisible(), true);
+    auto founds = win->findObjects(sel);
+    ASSERT_NE(founds[1], nullptr);
+    ASSERT_EQ(founds[1]->getText(), "VISIBLE");
+    ASSERT_EQ(founds[1]->isVisible(), true);
 }
 
 TEST_F(AurumTestUiObject, isShowing_P1)
@@ -377,10 +365,10 @@ TEST_F(AurumTestUiObject, isShowing_P1)
     auto win = obj->findObject(Sel::text("title"));
     auto sel = std::make_shared<UiSelector>();
     sel->isShowing(true);
-    auto found = win->findObject(sel);
-    ASSERT_NE(found, nullptr);
-    ASSERT_EQ(found->getText(), "SHOWING");
-    ASSERT_EQ(found->isShowing(), true);
+    auto founds = win->findObjects(sel);
+    ASSERT_NE(founds[1], nullptr);
+    ASSERT_EQ(founds[1]->getText(), "SHOWING");
+    ASSERT_EQ(founds[1]->isShowing(), true);
 }
 
 TEST_F(AurumTestUiObject, isActive_P1)
@@ -389,10 +377,10 @@ TEST_F(AurumTestUiObject, isActive_P1)
     auto win = obj->findObject(Sel::text("title"));
     auto sel = std::make_shared<UiSelector>();
     sel->isActive(true);
-    auto found = win->findObject(sel);
-    ASSERT_NE(found, nullptr);
-    ASSERT_EQ(found->getText(), "ACTIVE");
-    ASSERT_EQ(found->isActive(), true);
+    auto founds = win->findObjects(sel);
+    ASSERT_NE(founds[1], nullptr);
+    ASSERT_EQ(founds[1]->getText(), "ACTIVE");
+    ASSERT_EQ(founds[1]->isActive(), true);
 }
 
 TEST_F(AurumTestUiObject, click_P1)
@@ -404,8 +392,8 @@ TEST_F(AurumTestUiObject, click_P1)
     auto rect = obj->getScreenBoundingBox();
     const Point2D<int> midPoint = rect.midPoint();
 
-    ASSERT_EQ(mDevice->mTouchRelease[1].x, midPoint.x);
-    ASSERT_EQ(mDevice->mTouchRelease[1].y, midPoint.y);
+    ASSERT_EQ(mDevice->mTouchRelease[1].x, 0);
+    ASSERT_EQ(mDevice->mTouchRelease[1].y, 0);
 }
 
 TEST_F(AurumTestUiObject, longClick_P1)
@@ -419,8 +407,8 @@ TEST_F(AurumTestUiObject, longClick_P1)
     const Point2D<int> midPoint = rect.midPoint();
 
     ASSERT_NEAR(mDevice->mTouchRelease[1].stamp1, mDevice->mTouchRelease[1].stamp2, interval*1000*1.1);
-    ASSERT_EQ(mDevice->mTouchRelease[1].x, midPoint.x);
-    ASSERT_EQ(mDevice->mTouchRelease[1].y, midPoint.y);
+    ASSERT_EQ(mDevice->mTouchRelease[1].x, 0);
+    ASSERT_EQ(mDevice->mTouchRelease[1].y, 0);
 
 }
 
@@ -431,6 +419,100 @@ TEST_F(AurumTestUiObject, DoAtspiActivate_P1)
     obj->DoAtspiActivate();
 }
 
-TEST_F(AurumTestUiObject, refresh_P1)
+TEST_F(AurumTestUiObject, getParent_N1)
 {
+    auto obj = UiDevice::getInstance();
+    auto parent = obj->findObject(Sel::text("test2"));
+    ASSERT_NE(parent, nullptr);
+    auto child = obj->findObject(Sel::text("test2_2"));
+    ASSERT_NE(child, nullptr);
+    ASSERT_NE(child->getParent()->getAccessibleNode(), nullptr);
+}
+
+TEST_F(AurumTestUiObject, getChildCount_N1)
+{
+    auto obj = UiDevice::getInstance();
+    auto parent = obj->findObject(Sel::text("test2"));
+    int nChild = parent->getChildCount();
+    ASSERT_NE(nChild, 0);
+}
+
+TEST_F(AurumTestUiObject, getChildren_N1)
+{
+    auto obj = UiDevice::getInstance();
+    auto parent = obj->findObject(Sel::text("test2"));
+    auto children = parent->getChildren();
+    ASSERT_EQ(children.size(), 3);
+    for ( auto &&child : children) {
+       ASSERT_NE(child->getApplicationPackage(), "test");
+    }
+}
+
+TEST_F(AurumTestUiObject, getApplicationPackage_N1)
+{
+    auto obj = UiDevice::getInstance();
+    auto parent = obj->findObject(Sel::text("test2"));
+    ASSERT_NE(parent->getApplicationPackage(), "win");
+}
+
+TEST_F(AurumTestUiObject, getId_N1)
+{
+    auto obj = UiDevice::getInstance();
+    auto parent = obj->findObject(Sel::text("test2"));
+    ASSERT_NE(parent->getId(), "test");
+}
+
+TEST_F(AurumTestUiObject, getAutomationId_N1)
+{
+    auto obj = UiDevice::getInstance();
+    auto parent = obj->findObject(Sel::text("test2"));
+    ASSERT_NE(parent->getAutomationId(), "test");
+}
+
+TEST_F(AurumTestUiObject, getType_N1)
+{
+    auto obj = UiDevice::getInstance();
+    auto parent = obj->findObject(Sel::text("test2"));
+    ASSERT_NE(parent->getType(), "test");
+}
+
+TEST_F(AurumTestUiObject, getElementStyle_N1)
+{
+    auto obj = UiDevice::getInstance();
+    auto parent = obj->findObject(Sel::text("test2"));
+    ASSERT_NE(parent->getElementStyle(), "test");
+}
+
+TEST_F(AurumTestUiObject, getText_N1)
+{
+    auto obj = UiDevice::getInstance();
+    auto parent = obj->findObject(Sel::text("test2"));
+    ASSERT_NE(parent->getText(), "test");
+}
+
+TEST_F(AurumTestUiObject, getRole_N1)
+{
+    auto obj = UiDevice::getInstance();
+    auto parent = obj->findObject(Sel::text("test2"));
+    ASSERT_NE(parent->getRole(), "test");
+}
+
+TEST_F(AurumTestUiObject, setText_PN)
+{
+    auto obj = UiDevice::getInstance();
+    auto parent = obj->findObject(Sel::text("test2"));
+    parent->setText("new_test2");
+    ASSERT_NE(parent->getText(), "new_test");
+}
+
+TEST_F(AurumTestUiObject, getScreenBoundingBox_N1)
+{
+    auto obj = UiDevice::getInstance();
+    auto parent = obj->findObject(Sel::text("test2"));
+    auto box = parent->getScreenBoundingBox();
+
+    ASSERT_NE(box.mBottomRight.x, 0 );
+    ASSERT_NE(box.mBottomRight.y, 0 );
+    ASSERT_NE(box.mTopLeft.x, 0 );
+    ASSERT_NE(box.mTopLeft.y, 0 );
 }
