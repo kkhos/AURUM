@@ -61,6 +61,13 @@ std::shared_ptr<AccessibleNode> MockAccessibleNode::getParent() const
     return mParentNode;
 }
 
+std::vector<std::shared_ptr<AccessibleNode>> MockAccessibleNode::getMatches(const std::shared_ptr<UiSelector> selector, const bool ealryReturn) const
+{
+    std::vector<std::shared_ptr<AccessibleNode>> ret{};
+
+    return ret;
+}
+
 void* MockAccessibleNode::getRawHandler(void) const
 {
     printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
