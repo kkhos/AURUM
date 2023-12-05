@@ -71,6 +71,8 @@ public:
     static gchar *Atspi_accessible_get_toolkit_name(AtspiAccessible *node, GError **error);
     static AtspiRect *Atspi_text_get_minimum_bounding_rectangles(AtspiText* obj, gint start_offset, gint end_offset, AtspiCoordType type, GError** error);
     static void Atspi_accessible_set_listen_post_render(AtspiAccessible *obj, gboolean enabled, GError **error);
+    static AtspiCollection *Atspi_accessible_get_collection_iface(AtspiAccessible *node);
+    static GArray *Atspi_collection_get_matches(AtspiCollection *obj, AtspiMatchRule *rule, AtspiCollectionSortOrder sortby, gint count, gboolean traverse, GError **error);
 
 private:
     static std::recursive_mutex mMutex;

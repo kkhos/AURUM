@@ -24,6 +24,8 @@
 #include <vector>
 #include <memory>
 
+#include "Rect.h"
+
 namespace Aurum {
 
 /**

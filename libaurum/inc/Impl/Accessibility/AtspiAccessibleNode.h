@@ -71,6 +71,11 @@ public:
     std::shared_ptr<AccessibleNode> getParent() const override;
 
     /**
+     * @copydoc UiObject::getMatches()
+     */
+    std::vector<std::shared_ptr<AccessibleNode>> getMatches(const std::shared_ptr<UiSelector> selector, const bool ealryReturn) const override;
+
+    /**
      * @copydoc AccessibleNode::isValid()
      */
     bool isValid() const override;
