@@ -139,6 +139,20 @@ public:
         const std::shared_ptr<UiSelector> selector) const override;
 
     /**
+     * @brief Get the Matches object that satisfied with the selector condition in the object tree.
+     *        This method is similar to findObjects, but getMatches is more faster than findObjects.   
+     * 
+     * @param[in] selector @UiSelector
+     * @param[in] earlyReturn boolean
+     * 
+     * @return the list of found UiObject pointer vector
+     * 
+     * @since_tizen 8.0
+     */
+    std::vector<std::shared_ptr<UiObject>> getMatches(
+        const std::shared_ptr<UiSelector> selector, const bool earlyReturn) const;
+
+    /**
      * TODO
      */
     bool waitFor(

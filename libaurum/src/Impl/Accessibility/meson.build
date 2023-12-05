@@ -4,6 +4,7 @@
         files('AtspiAccessibleNode.cc'),
         files('AtspiAccessibleWatcher.cc'),
         files('AtspiWrapper.cc'),
+        files('AtspiMatchRuleConvertor.cc'),
     ]
 
     libaurum_src += [

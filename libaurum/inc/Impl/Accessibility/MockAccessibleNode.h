@@ -68,6 +68,12 @@ public:
      */
     std::shared_ptr<AccessibleNode> getParent() const override;
 
+    /**
+     * @brief TBD
+     * @since_tizen 8.0
+     */
+    std::vector<std::shared_ptr<AccessibleNode>> getMatches(const std::shared_ptr<UiSelector> selector, const bool ealryReturn) const override;
+
 public:
     /**
      * @brief TBD
