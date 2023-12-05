@@ -236,3 +236,15 @@ void AtspiWrapper::Atspi_accessible_set_listen_post_render(AtspiAccessible *obj,
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     atspi_accessible_set_listen_post_render(obj, enabled, error);
 }
+
+AtspiCollection *AtspiWrapper::Atspi_accessible_get_collection_iface(AtspiAccessible *node)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_accessible_get_collection_iface(node);
+}
+
+GArray *AtspiWrapper::Atspi_collection_get_matches(AtspiCollection *obj, AtspiMatchRule *rule, AtspiCollectionSortOrder sortby, gint count, gboolean traverse, GError **error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_collection_get_matches(obj, rule, sortby, count, traverse, error);
+}
