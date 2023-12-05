@@ -27,6 +27,7 @@
 #include "IEventConsumer.h"
 #include "IObject.h"
 #include "Rect.h"
+#include "UiSelector.h"
 #include "config.h"
 
 namespace Aurum {
@@ -130,6 +131,11 @@ public:
      * @copydoc UiObject::getParent()
      */
     virtual std::shared_ptr<AccessibleNode> getParent() const = 0;
+
+    /**
+     * @copydoc UiObject::getMatches()
+     */
+    virtual std::vector<std::shared_ptr<AccessibleNode>> getMatches(const std::shared_ptr<UiSelector> selector, const bool ealryReturn) const = 0;
 
     /**
      * @brief Called by @AccessibleWatcher::notifyAll.

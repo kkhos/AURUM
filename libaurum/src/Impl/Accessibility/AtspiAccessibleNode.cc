@@ -18,6 +18,7 @@
 #include "Aurum.h"
 
 #include "AtspiAccessibleNode.h"
+#include "AtspiMatchRuleConvertor.h"
 #include "AtspiWrapper.h"
 
 #include <gio/gio.h>
@@ -612,3 +613,31 @@ void AtspiAccessibleNode::setFeatureProperty(AtspiStateType type)
         break;
     }
 }
+
+ std::vector<std::shared_ptr<AccessibleNode>> AtspiAccessibleNode::getMatches(const std::shared_ptr<UiSelector> selector, const bool ealryReturn) const
+ {
+    std::vector<std::shared_ptr<AccessibleNode>> ret{};
+
+    AtspiCollection *collection = AtspiWrapper::Atspi_accessible_get_collection_iface(mNode);
+    if (collection) {
+        AtspiMatchRule *rule = AtspiMatchRuleConvertor(selector);
+        if (!rule) return ret;
+
+        int count = ealryReturn ? 1 : 0;
+        GArray *matches = AtspiWrapper::Atspi_collection_get_matches(collection, rule, ATSPI_Collection_SORT_ORDER_CANONICAL, count, false, NULL);
+        if (matches) {
+            ret.reserve(matches->len);
+            AtspiAccessible *match = nullptr;
+            for (unsigned int i = 0; i < matches->len; i++) {
+                match = g_array_index(matches, AtspiAccessible *, i);
+               if (match) {
+                   ret.push_back(std::make_shared<AtspiAccessibleNode>(match));
+               }
+            }
+            g_array_free(matches, true);
+        }
+        g_object_unref(rule);
+    }
+
+    return ret;
+ }
