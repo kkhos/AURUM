@@ -51,7 +51,7 @@ TakeScreenshotCommand::TakeScreenshotCommand(
         std::ifstream ifs(path, std::ifstream::binary);
         ::aurum::RspTakeScreenshot rsp;
         const Size2D<int> screenSize = mDevice->getScreenSize();
-        int size = screenSize.width * screenSize.height;
+        int size = screenSize.width * screenSize.height * 4;
         char *buf = new char[size];
 
         while (!ifs.eof()) {
