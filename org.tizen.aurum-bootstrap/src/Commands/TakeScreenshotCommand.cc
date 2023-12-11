@@ -51,7 +51,7 @@ TakeScreenshotCommand::TakeScreenshotCommand(
         std::ifstream ifs(path, std::ifstream::binary);
         ::aurum::RspTakeScreenshot rsp;
         const Size2D<int> screenSize = mDevice->getScreenSize();
-        int size = screenSize.width * screenSize.height;
+        int size = screenSize.width * screenSize.height * 4; //The reason for multiplying by 4 is that image is a 32-bit RGBA PNG file.
         char *buf = new char[size];
 
         while (!ifs.eof()) {
