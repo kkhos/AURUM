@@ -67,6 +67,19 @@ void AurumXML::traverse(xml_node& element, const std::shared_ptr<AccessibleNode>
     mXNodeMap[node->getId()] = node;
 
     auto children = node->getChildren();
+    
+    std::sort(children.begin(), children.end(), [](const std::shared_ptr<AccessibleNode> &a, const std::shared_ptr<AccessibleNode> &b){
+        a->updateExtents();
+        b->updateExtents();
+
+        auto aRect = a->getScreenBoundingBox();
+        auto bRect = b->getScreenBoundingBox();
+
+        if (aRect.mTopLeft.x != bRect.mTopLeft.x) return aRect.mTopLeft.x < bRect.mTopLeft.x;
+        if (aRect.mTopLeft.y != bRect.mTopLeft.y) return aRect.mTopLeft.y < bRect.mTopLeft.y;
+        else return aRect.width() * aRect.height() <= bRect.width() * bRect.height();
+    });
+
     for (const auto &child : children)
     {
         if (child->getRawHandler() == nullptr) continue;
