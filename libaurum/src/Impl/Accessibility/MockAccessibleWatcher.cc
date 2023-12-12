@@ -82,3 +82,8 @@ bool MockAccessibleWatcher::registerCallback(const A11yEvent type, EventHandler 
 void MockAccessibleWatcher::setXMLsync(bool sync)
 {
 }
+
+bool MockAccessibleWatcher::getWindowEventEmitted()
+{
+    return true;
+}

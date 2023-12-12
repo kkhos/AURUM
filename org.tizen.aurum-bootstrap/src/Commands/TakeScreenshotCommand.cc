@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
  *
  */
 
-#include "bootstrap.h"
-#include "TakeScreenshotCommand.h"
 #include <fstream>
+
+#include "TakeScreenshotCommand.h"
 #include "UiObject.h"
 #include "UiDevice.h"
 
@@ -51,7 +51,7 @@ TakeScreenshotCommand::TakeScreenshotCommand(
         std::ifstream ifs(path, std::ifstream::binary);
         ::aurum::RspTakeScreenshot rsp;
         const Size2D<int> screenSize = mDevice->getScreenSize();
-        int size = screenSize.width * screenSize.height;
+        int size = screenSize.width * screenSize.height * 4; //The reason for multiplying by 4 is that image is a 32-bit RGBA PNG file.
         char *buf = new char[size];
 
         while (!ifs.eof()) {

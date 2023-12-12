@@ -90,5 +90,29 @@ TEST_F(AurumTestSel, depth_P1)
        if (founds.size() <= 0) break;
        sum += founds.size();
     }
-    ASSERT_EQ(sum, 7);
+    ASSERT_EQ(sum, 16);
+}
+
+TEST_F(AurumTestSel, text_N1)
+{
+    auto founds = UiDevice::getInstance()->findObjects(Sel::text("node5"));
+    ASSERT_NE(founds.size(), 2);
+}
+
+TEST_F(AurumTestSel, type_N1)
+{
+    auto founds = UiDevice::getInstance()->findObjects(Sel::type("type of widget"));
+    ASSERT_NE(founds.size(), 2);
+}
+
+TEST_F(AurumTestSel, style_N1)
+{
+    auto founds = UiDevice::getInstance()->findObjects(Sel::style("style of widget"));
+    ASSERT_NE(founds.size(), 0);
+}
+
+TEST_F(AurumTestSel, depth_N1)
+{
+    auto founds = UiDevice::getInstance()->findObjects(Sel::depth(1));
+    ASSERT_NE(founds.size(), 10);
 }

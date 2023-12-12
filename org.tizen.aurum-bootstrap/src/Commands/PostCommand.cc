@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,20 +15,18 @@
  *
  */
 
-#include "bootstrap.h"
 #include "PostCommand.h"
-#include <atspi/atspi.h>
 
 PostCommand::PostCommand() : PostCommand(nullptr) {}
 PostCommand::PostCommand(Command *cmd) : mCommand{cmd} {}
 
 ::grpc::Status PostCommand::execute()
 {
-    ::grpc::Status rst = mCommand->execute();
+    ::grpc::Status ret = mCommand->execute();
 
     mCommand->executePost();
 
-    return rst;
+    return ret;
 }
 
 ::grpc::Status PostCommand::executePre()

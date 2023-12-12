@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  *
  */
 
-#include "bootstrap.h"
 #include "GetValueCommand.h"
 #include "UiObject.h"
 
@@ -28,9 +27,10 @@ GetValueCommand::GetValueCommand(const ::aurum::ReqGetValue *request,
 ::grpc::Status GetValueCommand::execute()
 {
     LOGI("GetValue --------------- ");
+
     ::aurum::ParamType param_type = mRequest->type();
     if (param_type == ::aurum::STRING) {
-        ObjectMapper             *mObjMap = ObjectMapper::getInstance();
+        ObjectMapper *mObjMap = ObjectMapper::getInstance();
         std::shared_ptr<UiObject> obj =
             mObjMap->getElement(mRequest->elementid());
 
@@ -47,7 +47,7 @@ GetValueCommand::GetValueCommand(const ::aurum::ReqGetValue *request,
         LOGI("Integer is not supported.");
         mResponse->set_status(::aurum::RspStatus::ERROR);
     } else if (param_type == ::aurum::DOUBLE) {
-        ObjectMapper             *mObjMap = ObjectMapper::getInstance();
+        ObjectMapper *mObjMap = ObjectMapper::getInstance();
         std::shared_ptr<UiObject> obj =
             mObjMap->getElement(mRequest->elementid());
 

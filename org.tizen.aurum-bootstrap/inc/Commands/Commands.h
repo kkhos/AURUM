@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,40 +18,31 @@
 #include "Commands/KillServerCommand.h"
 #include "Commands/FindElementCommand.h"
 #include "Commands/FindElementsCommand.h"
-
 #include "Commands/GetAttributeCommand.h"
 #include "Commands/GetValueCommand.h"
 #include "Commands/SetValueCommand.h"
-
 #include "Commands/ClearCommand.h"
 #include "Commands/GetSizeCommand.h"
-
 #include "Commands/ClickCommand.h"
 #include "Commands/FlickCommand.h"
 #include "Commands/LongClickCommand.h"
-
 #include "Commands/TouchDownCommand.h"
 #include "Commands/TouchMoveCommand.h"
 #include "Commands/TouchUpCommand.h"
-
 #include "Commands/CloseAppCommand.h"
 #include "Commands/GetAppInfoCommand.h"
 #include "Commands/InstallAppCommand.h"
 #include "Commands/LaunchAppCommand.h"
 #include "Commands/RemoveAppCommand.h"
-
 #include "Commands/GetDeviceTimeCommand.h"
 #include "Commands/GetLocationCommand.h"
 #include "Commands/SendKeyCommand.h"
-
 #include "Commands/TakeScreenshotCommand.h"
 #include "Commands/DumpObjectTreeCommand.h"
 #include "Commands/GetScreenSizeCommand.h"
 #include "Commands/ActionAndWaitEventCommand.h"
 #include "Commands/SetFocusCommand.h"
 #include "Commands/GetActiveAppToolkitNameCommand.h"
-#include "Commands/EnableScreenAnalyzerCommand.h"
-
 #include "Commands/GetTextMinBoundingRectCommand.h"
 #include "Commands/SetXMLSyncCommand.h"
 #include "Commands/GetAngleCommand.h"

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
  *
  */
 
-#include "bootstrap.h"
+#include <chrono>
+#include <thread>
+
 #include "ActionAndWaitEventCommand.h"
 #include "ActionAndWaitEventRunnable.h"
 #include "UiDevice.h"
-#include <chrono>
-#include <thread>
 
 ActionAndWaitEventCommand::ActionAndWaitEventCommand(const ::aurum::ReqActionAndWaitEvent *request,
                                    ::aurum::RspActionAndWaitEvent *response)
@@ -47,6 +47,7 @@ A11yEvent convertEventType(const ::aurum::ReqActionAndWaitEvent_EventType type)
 ::grpc::Status ActionAndWaitEventCommand::execute()
 {
     LOGI("ActionAndWaitEvent --------------- ");
+
     std::unique_ptr<ActionAndWaitEventRunnable> cmd = std::make_unique<ActionAndWaitEventRunnable>(
                                                       mRequest->type(), mRequest->elementid(), mRequest->xf86keycode());
     std::shared_ptr<UiDevice> obj = UiDevice::getInstance();

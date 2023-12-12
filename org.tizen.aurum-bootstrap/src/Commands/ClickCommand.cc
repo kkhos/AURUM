@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  *
  */
 
-#include "bootstrap.h"
 #include "ClickCommand.h"
 #include "UiObject.h"
 #include "UiDevice.h"
@@ -47,9 +46,10 @@ std::unique_ptr<ClickCommand> ClickCommand::createCommand(const ::aurum::ReqClic
 
 ::grpc::Status ClickElementCommand::execute()
 {
+    LOGI("ClickElement --------------- ");
+
     ObjectMapper *mObjMap = ObjectMapper::getInstance();
     std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
-    LOGI("ClickElementCommand execute %p", obj.get());
 
     if (obj) {
         obj->click();
@@ -64,18 +64,21 @@ std::unique_ptr<ClickCommand> ClickCommand::createCommand(const ::aurum::ReqClic
 {
     std::shared_ptr<UiDevice> obj = UiDevice::getInstance();
     const ::aurum::Point& point = mRequest->coordination();
-    LOGI("ClickCoordCommand execute %p @ (%d, %d)", obj.get(), point.x(), point.y());
+
+    LOGI("ClickCoord (%d, %d) --------------- ", point.x(), point.y());
+
     obj->click(point.x(), point.y());
     mResponse->set_status(::aurum::RspStatus::OK);
+
     return grpc::Status::OK;
 }
 
 ::grpc::Status ClickAtspiCommand::execute()
 {
+    LOGI("ClickAtspi --------------- ");
+
     ObjectMapper *mObjMap = ObjectMapper::getInstance();
     std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());
-
-    LOGI("ClickAtspiCommand execute %p", obj.get());
 
     if (obj) {
         if (obj->DoAtspiActivate()) mResponse->set_status(::aurum::RspStatus::OK);

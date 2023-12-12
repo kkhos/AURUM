@@ -34,7 +34,6 @@ service Bootstrap {
    rpc setFocus(ReqSetFocus) returns (RspSetFocus) {}
    rpc findElements(ReqFindElements) returns (RspFindElements) {}
    rpc getActiveAppToolkitName(ReqGetActiveAppToolkitName) returns (RspGetActiveAppToolkitName) {}
-   rpc enableScreenAnalyzer(ReqEnableScreenAnalyzer) returns (RspEnableScreenAnalyzer) {}
    rpc getTextMinBoundingRect(ReqGetTextMinBoundingRect) returns (RspGetTextMinBoundingRect) {}
    rpc setTimeout(ReqSetTimeout) returns (RspSetTimeout) {}
    rpc setXMLSync(ReqSetXMLSync) returns (RspSetXMLSync) {}
@@ -629,15 +628,6 @@ message ReqGetActiveAppToolkitName {
 message RspGetActiveAppToolkitName {
    RspStatus status = 1;
    string toolkitName = 2;
-}
-
-message ReqEnableScreenAnalyzer {
-   bool enable = 1;
-   string serverIp = 2;
-}
-
-message RspEnableScreenAnalyzer {
-   RspStatus status = 1;
 }
 
 message ReqGetTextMinBoundingRect {

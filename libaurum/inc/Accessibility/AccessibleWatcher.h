@@ -152,6 +152,15 @@ public:
      */
     virtual void setXMLsync(bool sync) = 0;
 
+    /**
+     * @brief Gets the window related event has been emitted or not for window info cache
+     *
+     * @return true if window related event emitted, else false
+     *
+     * @since_tizen 8.0
+     */
+    virtual bool getWindowEventEmitted() = 0;
+
 public:
     /**
      * @brief Gets active application vector.

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
  *
  */
 
-#include "bootstrap.h"
-#include "InstallAppCommand.h"
 #include <fstream>
 #include <chrono>
 #include <thread>
 #include <package_manager.h>
+
+#include "InstallAppCommand.h"
 
 InstallAppCommand::InstallAppCommand(
     ::grpc::ServerReader<::aurum::ReqInstallApp> *request,

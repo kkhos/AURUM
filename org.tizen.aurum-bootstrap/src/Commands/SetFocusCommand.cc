@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  *
  */
 
-#include "bootstrap.h"
 #include "SetFocusCommand.h"
 #include "UiObject.h"
 
@@ -27,8 +26,9 @@ SetFocusCommand::SetFocusCommand(const ::aurum::ReqSetFocus *request,
 
 ::grpc::Status SetFocusCommand::execute()
 {
-    bool ret = false;
     LOGI("SetFocus --------------- ");
+
+    bool ret = false;
 
     ObjectMapper *mObjMap = ObjectMapper::getInstance();
     std::shared_ptr<UiObject> obj = mObjMap->getElement(mRequest->elementid());

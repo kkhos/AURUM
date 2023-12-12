@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,12 +15,9 @@
  *
  */
 
-#ifndef _AURUM_SERVICE_IMPL_H_
-#define _AURUM_SERVICE_IMPL_H_
+#pragma once
 
-#include <grpcpp/grpcpp.h>
-#include "Commands/Command.h"
-#include <aurum.grpc.pb.h>
+#include "bootstrap.h"
 
 class aurumServiceImpl final : public aurum::Bootstrap::Service {
 public:
@@ -123,9 +120,6 @@ public:
     ::grpc::Status getActiveAppToolkitName(::grpc::ServerContext *context,
                                            const ::aurum::ReqGetActiveAppToolkitName *request,
                                            ::aurum::RspGetActiveAppToolkitName *response) override;
-    ::grpc::Status enableScreenAnalyzer(::grpc::ServerContext *context,
-                                        const ::aurum::ReqEnableScreenAnalyzer *request,
-                                        ::aurum::RspEnableScreenAnalyzer *response) override;
     ::grpc::Status getTextMinBoundingRect(::grpc::ServerContext *context,
                             const ::aurum::ReqGetTextMinBoundingRect *request,
                             ::aurum::RspGetTextMinBoundingRect *response) override;
@@ -141,6 +135,3 @@ public:
 public:
     int WAIT_TIMEOUT_MS;
 };
-
-#endif
-
