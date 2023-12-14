@@ -142,6 +142,11 @@ public:
     void updateTextMinBoundingRect() override;
 
     /**
+     * @copydoc UiObject::updateInterface()
+     */
+    void updateInterface() override;
+
+    /**
      * @copydoc UiObject::setFocus()
      */
     bool setFocus() override;

@@ -312,6 +312,11 @@ public:
     Rect<int> getTextMinBoundingRect() const;
 
     /**
+     * @copydoc UiObject::getInterface()
+     */
+    std::string getInterface() const;
+
+    /**
      * @copydoc UiObject::isCheckable()
      */
     bool isCheckable() const;
@@ -451,6 +456,11 @@ public:
     virtual void updateTextMinBoundingRect() = 0;
 
     /**
+     * @copydoc UiObject::updateInterface()
+     */
+    virtual void updateInterface() = 0;
+
+    /**
      * @brief Updates Node information from atspi server.
      *
      * @since_tizen 6.5
@@ -559,6 +569,7 @@ protected:
     std::string mStyle;
     std::string mXPath;
     std::string mToolkitName;
+    std::string mInterface;
     Rect<int> mScreenBoundingBox;
     Rect<int> mWindowBoundingBox;
     Rect<int> mTextMinBoundingRect;
