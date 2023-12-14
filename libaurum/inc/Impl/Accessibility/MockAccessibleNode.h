@@ -148,6 +148,11 @@ public:
     void updatePid() override;
 
     /**
+     * @copydoc UiObject::updateInterface()
+     */
+    void updateInterface() override;
+
+    /**
      * @brief TBD
      * @since_tizen 7.0
      */

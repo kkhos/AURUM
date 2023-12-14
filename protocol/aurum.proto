@@ -94,6 +94,8 @@ message Element {
 
    int32 windowAngle = 31;
    int32 targetAngle = 32;
+
+   string interface = 33;
 }
 
 message Point {

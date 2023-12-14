@@ -132,6 +132,10 @@ void MockAccessibleNode::updateToolkitName()
 {
 }
 
+void MockAccessibleNode::updateInterface()
+{
+}
+
 bool MockAccessibleNode::setFocus()
 {
     return false;

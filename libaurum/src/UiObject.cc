@@ -244,6 +244,11 @@ const Rect<int> UiObject::getTextMinBoundingRect() const
     return getAccessibleNode()->getTextMinBoundingRect();
 }
 
+std::string UiObject::getInterface() const
+{
+    return getAccessibleNode()->getInterface();
+}
+
 bool UiObject::setValue(double value)
 {
     return getAccessibleNode()->setValue(value);
