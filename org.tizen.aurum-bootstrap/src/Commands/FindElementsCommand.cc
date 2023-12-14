@@ -153,6 +153,8 @@ std::vector<std::shared_ptr<UiSelector>> FindElementsCommand::getSelectors(void)
 
             elm->set_windowangle(obj->getWindowAngle());
             elm->set_targetangle(obj->getTargetAngle());
+
+            elm->set_interface(obj->getInterface());
         }
         mResponse->set_status(::aurum::RspStatus::OK);
     } else {

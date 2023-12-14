@@ -201,6 +201,11 @@ const Rect<int> AccessibleNode::getWindowBoundingBox() const
     return mWindowBoundingBox;
 }
 
+std::string AccessibleNode::getInterface() const
+{
+    return mInterface;
+}
+
 bool AccessibleNode::isCheckable() const
 {
     return hasFeatureProperty(NodeFeatureProperties::CHECKABLE);

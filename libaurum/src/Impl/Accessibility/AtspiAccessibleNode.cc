@@ -308,6 +308,23 @@ void AtspiAccessibleNode::updateTextMinBoundingRect()
     }
 }
 
+void AtspiAccessibleNode::updateInterface()
+{
+    GArray *interfaces = AtspiWrapper::Atspi_accessible_get_interfaces(mNode);
+    if (interfaces)
+    {
+        for (unsigned int i = 0; i < interfaces->len; i++)
+        {
+            gchar *interface = g_array_index(interfaces, gchar *, i);
+            if (g_strcmp0(interface, "EditableText") == 0 || g_strcmp0(interface, "Value") == 0)
+            {
+                mInterface = interface;
+            }
+        }
+        g_array_free(interfaces, true);
+    }
+}
+
 bool AtspiAccessibleNode::setFocus()
 {
     AtspiComponent *component = AtspiWrapper::Atspi_accessible_get_component_iface(mNode);
@@ -429,6 +446,20 @@ void AtspiAccessibleNode::refresh(bool updateAll)
             mValue= AtspiWrapper::Atspi_value_get_current_value(value, NULL);
             mIncrement= AtspiWrapper::Atspi_value_get_minimum_increment(value, NULL);
             g_object_unref(value);
+        }
+
+        GArray *interfaces = AtspiWrapper::Atspi_accessible_get_interfaces(mNode);
+        if (interfaces)
+        {
+            for (unsigned int i = 0; i < interfaces->len; i++)
+            {
+                gchar *interface = g_array_index(interfaces, gchar *, i);
+                if (g_strcmp0(interface, "EditableText") == 0 || g_strcmp0(interface, "Value") == 0)
+                {
+                    mInterface = interface;
+                }
+            }
+            g_array_free(interfaces, true);
         }
 
         if (updateAll) updateXPath();

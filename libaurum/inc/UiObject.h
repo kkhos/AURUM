@@ -464,6 +464,15 @@ public:
     const Rect<int> getTextMinBoundingRect() const;
 
     /**
+     * @brief Gets object's interface information.
+     *
+     * @return string
+     *
+     * @since_tizen 8.0
+     */
+    std::string getInterface() const;
+
+    /**
      * @brief Sets object's value.
      *
      * @param[in] double value
@@ -660,6 +669,13 @@ public:
      * @since_tizen 7.0
      */
     void updateTextMinBoundingRect() const;
+
+    /*
+     * @brief Updates object's interface information from atspi server.
+     *
+     * @since_tizen 8.0
+     */
+    void updateInterface() const;
 
     /**
      * @brief Sets focus to object.
