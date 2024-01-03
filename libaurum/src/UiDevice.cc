@@ -128,6 +128,20 @@ std::vector<std::shared_ptr<UiObject>> UiDevice::getMatches(
     return ret;
 }
 
+std::vector<std::shared_ptr<UiObject>> UiDevice::getMatchesInMatches(
+    const std::shared_ptr<UiSelector> firstSelector, const std::shared_ptr<UiSelector> secondSelector, const bool earlyReturn) const
+{
+    std::vector<std::shared_ptr<UiObject>> ret{};
+
+    auto rootNodes = getWindowRoot();
+    for (const auto &window : rootNodes) {
+        auto nodes = window->getMatchesInMatches(firstSelector, secondSelector, earlyReturn);
+        for (auto &node : nodes)
+            ret.push_back(std::make_shared<UiObject>(getInstance(), nullptr, node));
+    }
+    return ret;
+}
+
 bool UiDevice::waitFor(
     const std::function<bool(const ISearchable *)> condition) const
 {

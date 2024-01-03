@@ -641,3 +641,35 @@ std::vector<std::shared_ptr<AccessibleNode>> AtspiAccessibleNode::getMatches(con
 
     return ret;
 }
+
+std::vector<std::shared_ptr<AccessibleNode>> AtspiAccessibleNode::getMatchesInMatches(const std::shared_ptr<UiSelector> firstSelector, const std::shared_ptr<UiSelector> secondSelector, const bool ealryReturn) const
+{
+    std::vector<std::shared_ptr<AccessibleNode>> ret{};
+
+    AtspiCollection *collection = AtspiWrapper::Atspi_accessible_get_collection_iface(mNode);
+    if (collection) {
+        AtspiMatchRule *firstRule = AtspiMatchRuleConvertor(firstSelector);
+        if (!firstRule) return ret;
+
+        AtspiMatchRule *secondRule = AtspiMatchRuleConvertor(secondSelector);
+        if (!secondRule) return ret;
+
+        int count = ealryReturn ? 1 : 0;
+        GArray *matches = AtspiWrapper::Atspi_collection_get_matches_in_matches(collection, firstRule, secondRule, ATSPI_Collection_SORT_ORDER_CANONICAL, 0, count, false, NULL);
+        if (matches) {
+            ret.reserve(matches->len);
+            AtspiAccessible *match = nullptr;
+            for (unsigned int i = 0; i < matches->len; i++) {
+                match = g_array_index(matches, AtspiAccessible *, i);
+               if (match) {
+                   ret.push_back(std::make_shared<AtspiAccessibleNode>(match));
+               }
+            }
+            g_array_free(matches, true);
+        }
+        g_object_unref(secondRule);
+        g_object_unref(firstRule);
+    }
+
+    return ret;
+}
