@@ -249,6 +249,12 @@ GArray *AtspiWrapper::Atspi_collection_get_matches(AtspiCollection *obj, AtspiMa
     return atspi_collection_get_matches(obj, rule, sortby, count, traverse, error);
 }
 
+GArray *AtspiWrapper::Atspi_collection_get_matches_in_matches(AtspiCollection *obj, AtspiMatchRule *first_rule, AtspiMatchRule *second_rule,  AtspiCollectionSortOrder sortby, gint first_count, gint second_count, gboolean traverse, GError **error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_collection_get_matches_in_matches(obj, first_rule, second_rule, sortby, first_count, second_count, traverse, error);
+}
+
 AtspiAccessibleNodeInfo *AtspiWrapper::Atspi_accessible_get_node_info(AtspiAccessible *obj, GError **error)
 {
     std::unique_lock<std::recursive_mutex> lock(mMutex);

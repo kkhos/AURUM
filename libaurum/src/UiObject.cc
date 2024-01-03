@@ -117,6 +117,18 @@ std::vector<std::shared_ptr<UiObject>> UiObject::getMatches(
     return result;
 }
 
+std::vector<std::shared_ptr<UiObject>> UiObject::getMatchesInMatches(
+    const std::shared_ptr<UiSelector> firstSelector, const std::shared_ptr<UiSelector> secondSelector, const bool earlyReturn) const
+{
+    std::vector<std::shared_ptr<UiObject>> result{};
+
+    auto nodes = getAccessibleNode()->getMatchesInMatches(firstSelector, secondSelector, earlyReturn);
+    for (auto &node : nodes) {
+        result.push_back(std::make_shared<UiObject>(mDevice, nullptr, std::move(node)));
+    }
+    return result;
+}
+
 bool UiObject::waitFor(
     const std::function<bool(const ISearchable *)> condition) const
 {
