@@ -73,6 +73,7 @@ public:
     static void Atspi_accessible_set_listen_post_render(AtspiAccessible *obj, gboolean enabled, GError **error);
     static AtspiCollection *Atspi_accessible_get_collection_iface(AtspiAccessible *node);
     static GArray *Atspi_collection_get_matches(AtspiCollection *obj, AtspiMatchRule *rule, AtspiCollectionSortOrder sortby, gint count, gboolean traverse, GError **error);
+    static GArray *Atspi_collection_get_matches_in_matches(AtspiCollection *obj, AtspiMatchRule *first_rule, AtspiMatchRule *second_rule, AtspiCollectionSortOrder sortby, gint first_count, gint second_count, gboolean traverse, GError **error);
     static AtspiAccessibleNodeInfo *Atspi_accessible_get_node_info(AtspiAccessible *obj, GError **error);
     static void Atspi_accessible_free_node_info(AtspiAccessibleNodeInfo *node_info);
 

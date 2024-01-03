@@ -328,6 +328,20 @@ public:
         const std::shared_ptr<UiSelector> selector, const bool earlyReturn) const;
 
     /**
+     * @brief Get the object that satisfied with both condition in the object tree.
+     *
+     * @param[in] firstSelector @UiSelector
+     * @param[in] secondSelector @UiSelector
+     * @param[in] earlyReturn boolean
+     *
+     * @return the list of found UiObject pointer vector
+     *
+     * @since_tizen 8.0
+     */
+    std::vector<std::shared_ptr<UiObject>> getMatchesInMatches(
+        const std::shared_ptr<UiSelector> firstSelector, const std::shared_ptr<UiSelector> secondSelector, const bool earlyReturn) const;
+
+    /**
      * TODO
      */
     bool waitFor(
