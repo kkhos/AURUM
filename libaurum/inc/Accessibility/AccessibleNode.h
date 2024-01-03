@@ -138,6 +138,11 @@ public:
     virtual std::vector<std::shared_ptr<AccessibleNode>> getMatches(const std::shared_ptr<UiSelector> selector, const bool ealryReturn) const = 0;
 
     /**
+     * @copydoc UiObject::getMatchesInMatches()
+     */
+    virtual std::vector<std::shared_ptr<AccessibleNode>> getMatchesInMatches(const std::shared_ptr<UiSelector> firstSelector, const std::shared_ptr<UiSelector> secondSelector, const bool ealryReturn) const = 0;
+
+    /**
      * @brief Called by @AccessibleWatcher::notifyAll.
      *        Changes Node property If it's @EventType, @ObjectEventType are matches.
      *
