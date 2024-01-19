@@ -120,8 +120,6 @@ void AtspiAccessibleNode::updateRoleName()
 {
     if (!mRole.empty()) return;
 
-    AtspiWrapper::Atspi_accessible_clear_cache(mNode);
-
     gchar *rolename = AtspiWrapper::Atspi_accessible_get_role_name(mNode, NULL);
     if (rolename) {
         mRole = rolename;
@@ -132,8 +130,6 @@ void AtspiAccessibleNode::updateRoleName()
 void AtspiAccessibleNode::updateUniqueId()
 {
     if (!mId.empty()) return;
-
-    AtspiWrapper::Atspi_accessible_clear_cache(mNode);
 
     #ifdef TIZEN
     gchar *uID = AtspiWrapper::Atspi_accessible_get_unique_id(mNode, NULL);
@@ -175,8 +171,6 @@ void AtspiAccessibleNode::updateToolkitName()
 void AtspiAccessibleNode::updateApplication()
 {
     if (!mPkg.empty()) return;
-
-    AtspiWrapper::Atspi_accessible_clear_cache(mNode);
 
     AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(mNode, NULL);
     if (app) {
@@ -220,6 +214,7 @@ void AtspiAccessibleNode::updateStates()
     resetFeatureProperty();
 
     AtspiWrapper::Atspi_accessible_clear_cache(mNode);
+
     AtspiStateSet *st = AtspiWrapper::Atspi_accessible_get_state_set(mNode);
     if (st) {
         GArray *states = AtspiWrapper::Atspi_state_set_get_states(st);
@@ -410,106 +405,15 @@ void AtspiAccessibleNode::refresh(bool updateAll)
             // TODO: Add Atspi_accessible_get_node_info() for efl.
             //       In case of efl, there are not many objects nomally so its not big advantage for performance though
             //       need to add interface for consistency.
-            if (mRole.empty()) {
-                gchar *rolename = AtspiWrapper::Atspi_accessible_get_role_name(mNode, NULL);
-                if (rolename) {
-                    mRole = rolename;
-                    g_free(rolename);
-                }
-            }
-            #ifdef TIZEN
-            if (mId.empty()) {
-                gchar *uID = AtspiWrapper::Atspi_accessible_get_unique_id(mNode, NULL);
-                if (uID) {
-                    mId = uID;
-                    g_free(uID);
-                }
-            }
-            #else
-            mId = std::string{"N/A"};
-            #endif
-            gchar *name = AtspiWrapper::Atspi_accessible_get_name(mNode, NULL);
-            if (name) {
-                mText = name;
-                g_free(name);
-            }
-
-            if (mToolkitName.empty()) {
-                gchar *toolkitName = AtspiWrapper::Atspi_accessible_get_toolkit_name(mNode, NULL);
-                if (toolkitName) {
-                    mToolkitName = toolkitName;
-                    g_free(toolkitName);
-                }
-            }
-
-            if (mPkg.empty()) {
-                AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(mNode, NULL);
-                if (app) {
-                    gchar *pkg = AtspiWrapper::Atspi_accessible_get_name(app, NULL);
-                    if (pkg) {
-                        mPkg = pkg;
-                        g_free(pkg);
-                    }
-                    g_object_unref(app);
-                }
-            }
-
-            if (mType.empty()) {
-                GHashTable *attributes = AtspiWrapper::Atspi_accessible_get_attributes(mNode, NULL);
-                if (attributes) {
-                    char *t = (char *)g_hash_table_lookup(attributes, "type");
-                    if (!t) t = (char *)g_hash_table_lookup(attributes, "t");
-                    if (!t) t = (char *)g_hash_table_lookup(attributes, "class");
-                    char *s = (char *)g_hash_table_lookup(attributes, "style");
-                    char *a = (char *)g_hash_table_lookup(attributes, "automationId");
-
-                    if (t) mType = std::string(t);
-                    else mType = mRole;
-                    if (s) mStyle = std::string(s);
-                    if (a) mAutomationId = std::string(a);
-
-                    g_hash_table_unref(attributes);
-                }
-            }
-
-            AtspiStateSet *st = AtspiWrapper::Atspi_accessible_get_state_set(mNode);
-            if (st) {
-                GArray *states = AtspiWrapper::Atspi_state_set_get_states(st);
-                if (states) {
-                    AtspiStateType stat;
-                    for (unsigned int i = 0; states && (i < states->len); ++i) {
-                        stat = g_array_index(states, AtspiStateType, i);
-                        setFeatureProperty(stat);
-                    }
-                    g_array_free(states, 1);
-                }
-                g_object_unref(st);
-            }
-            AtspiComponent *component = AtspiWrapper::Atspi_accessible_get_component_iface(mNode);
-            if (component) {
-                AtspiRect *screenExtent = AtspiWrapper::Atspi_component_get_extents(component, ATSPI_COORD_TYPE_SCREEN, NULL);
-                if (screenExtent) {
-                    mScreenBoundingBox = Rect<int>{screenExtent->x, screenExtent->y, screenExtent->x + screenExtent->width, screenExtent->y + screenExtent->height};
-                    g_free(screenExtent);
-                }
-
-                AtspiRect *windowExtent = AtspiWrapper::Atspi_component_get_extents(component, ATSPI_COORD_TYPE_WINDOW, NULL);
-                if (windowExtent) {
-                    mWindowBoundingBox =
-                        Rect<int>{windowExtent->x, windowExtent->y, windowExtent->x + windowExtent->width, windowExtent->y + windowExtent->height};
-                    g_free(windowExtent);
-                }
-                g_object_unref(component);
-            }
-
-            AtspiValue *value = AtspiWrapper::Atspi_accessible_get_value(mNode);
-            if (value) {
-                mMinValue = AtspiWrapper::Atspi_value_get_minimum_value(value, NULL);
-                mMaxValue = AtspiWrapper::Atspi_value_get_maximum_value(value, NULL);
-                mValue = AtspiWrapper::Atspi_value_get_current_value(value, NULL);
-                mIncrement = AtspiWrapper::Atspi_value_get_minimum_increment(value, NULL);
-                g_object_unref(value);
-            }
+            updateRoleName();
+            updateUniqueId();
+            updateName();
+            updateToolkitName();
+            updateApplication();
+            updateAttributes();
+            updateStates();
+            updateExtents();
+            updateValue();
         }
 
         //FIXME: It should be belongs into Atspi_accessible_get_node_info()

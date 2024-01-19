@@ -208,6 +208,16 @@ void MockAccessibleNode::updateTextMinBoundingRect()
 
 void MockAccessibleNode::refresh(bool updateAll)
 {
+    mText = "refreshText";
+    mPkg = "refreshPkg";
+    mRole = "refreshRole";
+    mId = "refreshId";
+    mAutomationId = "refreshAutomationId";
+    mType = "refreshType";
+    mStyle = "refreshStyle";
+    mScreenBoundingBox = {0,0,500,500};
+    mSupportingIfaces = 1;
+    mFeatureProperty = (int)NodeFeatureProperties::SELECTABLE | (int)NodeFeatureProperties::SELECTED;
 }
 
 std::vector<std::string> MockAccessibleNode::getActions() const
