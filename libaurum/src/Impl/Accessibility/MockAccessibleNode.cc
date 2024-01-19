@@ -27,7 +27,6 @@ using namespace AurumInternal::Mock;
 MockAccessibleNode::MockAccessibleNode(std::shared_ptr<AccessibleNode> parent, std::string text, std::string pkg, std::string role, std::string res, std::string type, std::string style,std::string automationId,  Rect<int> screenBoundingBox, int supportingIfaces,int featureProperty)
 : mParentNode(parent), mChildrenList{}, mActionSet{}
 {
-    printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
     const auto trickDontRemove = std::shared_ptr<MockAccessibleNode>( this, [](MockAccessibleNode *){} );
 
     setProperties(text,pkg,role,res,type,style,automationId, screenBoundingBox, supportingIfaces, featureProperty);
@@ -37,7 +36,6 @@ MockAccessibleNode::MockAccessibleNode(std::shared_ptr<AccessibleNode> parent, s
 
 MockAccessibleNode::~MockAccessibleNode()
 {
-    printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
     auto watcher = AccessibleWatcher::getInstance();
     watcher->detach(shared_from_this());
 }
@@ -70,7 +68,6 @@ std::vector<std::shared_ptr<AccessibleNode>> MockAccessibleNode::getMatches(cons
 
 void* MockAccessibleNode::getRawHandler(void) const
 {
-    printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
     return (void*)1;
 }
 
@@ -147,6 +144,16 @@ void MockAccessibleNode::updateTextMinBoundingRect()
 
 void MockAccessibleNode::refresh(bool updateAll)
 {
+    mText = "refreshText";
+    mPkg = "refreshPkg";
+    mRole = "refreshRole";
+    mId = "refreshId";
+    mAutomationId = "refreshAutomationId";
+    mType = "refreshType";
+    mStyle = "refreshStyle";
+    mScreenBoundingBox = {0,0,500,500};
+    mSupportingIfaces = 1;
+    mFeatureProperty = (int)NodeFeatureProperties::SELECTABLE | (int)NodeFeatureProperties::SELECTED;
 }
 
 std::vector<std::string> MockAccessibleNode::getActions() const
