@@ -516,6 +516,39 @@ TEST_F(AurumTestUiObject, getScreenBoundingBox_N1)
     ASSERT_NE(box.mTopLeft.x, 0 );
     ASSERT_NE(box.mTopLeft.y, 0 );
 }
+TEST_F(AurumTestUiObject, refresh_P1)
+{
+    auto obj = UiDevice::getInstance();
+    auto targetNode = obj->findObject(Sel::text("test2"));
+    targetNode->refresh();
+
+    ASSERT_EQ(targetNode->getText(), "refreshText");
+    ASSERT_EQ(targetNode->getApplicationPackage(), "refreshPkg");
+    ASSERT_EQ(targetNode->getRole(), "refreshRole");
+    ASSERT_EQ(targetNode->getId(), "refreshId");
+    ASSERT_EQ(targetNode->getAutomationId(), "refreshAutomationId");
+    ASSERT_EQ(targetNode->getType(), "refreshType");
+    ASSERT_EQ(targetNode->getScreenBoundingBox().width(), 500);
+    ASSERT_EQ(targetNode->getScreenBoundingBox().height(), 500);
+    ASSERT_EQ(targetNode->isSelectable(), true);
+    ASSERT_EQ(targetNode->isSelected(), true);
+}
+
+TEST_F(AurumTestUiObject, refresh_N1)
+{
+    auto obj = UiDevice::getInstance();
+    auto targetNode = obj->findObject(Sel::text("test2"));
+    targetNode->refresh();
+
+    ASSERT_NE(targetNode->getText(), "test2");
+    ASSERT_NE(targetNode->getApplicationPackage(), "pkg");
+    ASSERT_NE(targetNode->getRole(), "TeSt1234!@#$");
+    ASSERT_NE(targetNode->getId(), "res");
+    ASSERT_NE(targetNode->getAutomationId(), "type");
+    ASSERT_NE(targetNode->getType(), "style");
+    ASSERT_NE(targetNode->getScreenBoundingBox().width(), 200);
+    ASSERT_NE(targetNode->getScreenBoundingBox().height(), 200);
+}
 
 TEST_F(AurumTestUiObject, getMatches_P1)
 {
