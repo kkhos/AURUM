@@ -150,14 +150,12 @@ bool MockDeviceImpl::pressBack(KeyRequestType type)
 {
     mKeyDevice.push_back(std::tuple<MockKeyType, KeyRequestType, std::string>(MockKeyType::BACK, type, ""));
     return true;
-
 }
 
 bool MockDeviceImpl::pressHome(KeyRequestType type)
 {
     mKeyDevice.push_back(std::tuple<MockKeyType, KeyRequestType, std::string>(MockKeyType::HOME, type, ""));
     return true;
-
 }
 
 bool MockDeviceImpl::pressMenu(KeyRequestType type)
