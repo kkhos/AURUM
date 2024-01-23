@@ -27,7 +27,6 @@ using namespace AurumInternal::Mock;
 MockAccessibleNode::MockAccessibleNode(std::shared_ptr<AccessibleNode> parent, std::string text, std::string pkg, std::string role, std::string res, std::string type, std::string style,std::string automationId,  Rect<int> screenBoundingBox, int supportingIfaces,int featureProperty)
 : mParentNode(parent), mChildrenList{}, mActionSet{}
 {
-    printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
     const auto trickDontRemove = std::shared_ptr<MockAccessibleNode>( this, [](MockAccessibleNode *){} );
 
     setProperties(text,pkg,role,res,type,style,automationId, screenBoundingBox, supportingIfaces, featureProperty);
@@ -37,7 +36,6 @@ MockAccessibleNode::MockAccessibleNode(std::shared_ptr<AccessibleNode> parent, s
 
 MockAccessibleNode::~MockAccessibleNode()
 {
-    printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
     auto watcher = AccessibleWatcher::getInstance();
     watcher->detach(shared_from_this());
 }
@@ -65,12 +63,68 @@ std::vector<std::shared_ptr<AccessibleNode>> MockAccessibleNode::getMatches(cons
 {
     std::vector<std::shared_ptr<AccessibleNode>> ret{};
 
+    if (selector->mMatchText) {
+        for (auto &child : mChildrenList) {
+            if (selector->mText == child->getText()) {
+                ret.push_back(child);
+                if (ealryReturn) break;
+            }
+        }
+    }
+
+    if (selector->mMatchType) {
+        for (auto &child : mChildrenList) {
+            if (selector->mType == child->getType()) {
+                ret.push_back(child);
+                if (ealryReturn) break;
+            }
+        }
+    }
+
+    if (selector->mMatchStyle) {
+        for (auto &child : mChildrenList) {
+            if (selector->mStyle == child->getStyle()) {
+                ret.push_back(child);
+                if (ealryReturn) break;
+            }
+        }
+    }
     return ret;
 }
 
 std::vector<std::shared_ptr<AccessibleNode>> MockAccessibleNode::getMatchesInMatches(const std::shared_ptr<UiSelector> firstSelector, const std::shared_ptr<UiSelector> secondSelector, const bool ealryReturn) const
 {
+    std::vector<std::shared_ptr<AccessibleNode>> tempRet{};
     std::vector<std::shared_ptr<AccessibleNode>> ret{};
+
+    tempRet = getMatches(firstSelector, ealryReturn);
+
+    if (secondSelector->mMatchText) {
+        for (auto &child : tempRet) {
+            if (secondSelector->mText == child->getText()) {
+                ret.push_back(child);
+                if (ealryReturn) break;
+            }
+        }
+    }
+
+    if (secondSelector->mMatchType) {
+        for (auto &child : tempRet) {
+            if (secondSelector->mType == child->getType()) {
+                ret.push_back(child);
+                if (ealryReturn) break;
+            }
+        }
+    }
+
+    if (secondSelector->mMatchStyle) {
+        for (auto &child : tempRet) {
+            if (secondSelector->mStyle == child->getStyle()) {
+                ret.push_back(child);
+                if (ealryReturn) break;
+            }
+        }
+    }
 
     return ret;
 }
@@ -78,7 +132,6 @@ std::vector<std::shared_ptr<AccessibleNode>> MockAccessibleNode::getMatchesInMat
 
 void* MockAccessibleNode::getRawHandler(void) const
 {
-    printf("%s:%d / %s\n",__FILE__, __LINE__, __PRETTY_FUNCTION__);
     return (void*)1;
 }
 

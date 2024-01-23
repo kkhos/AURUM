@@ -516,3 +516,87 @@ TEST_F(AurumTestUiObject, getScreenBoundingBox_N1)
     ASSERT_NE(box.mTopLeft.x, 0 );
     ASSERT_NE(box.mTopLeft.y, 0 );
 }
+
+TEST_F(AurumTestUiObject, getMatches_P1)
+{
+    auto obj = UiDevice::getInstance();
+    auto parent = obj->findObject(Sel::text("test2"));
+
+    auto matchedNodes = obj->getMatches(Sel::text("ACTIVE"), 0);
+    ASSERT_EQ(matchedNodes.size(), 1);
+
+    matchedNodes = obj->getMatches(Sel::type("type"), 0);
+    ASSERT_EQ(matchedNodes.size(), 16);
+
+    matchedNodes = obj->getMatches(Sel::style("style"), 0);
+    ASSERT_EQ(matchedNodes.size(), 16);
+}
+
+TEST_F(AurumTestUiObject, getMatches_P2)
+{
+    auto obj = UiDevice::getInstance();
+    auto parent = obj->findObject(Sel::text("test2"));
+
+    auto matchedNodes = obj->getMatches(Sel::text("ACTIVE"), 1);
+    ASSERT_EQ(matchedNodes.size(), 1);
+    ASSERT_EQ(matchedNodes[0]->getText(), "ACTIVE");
+
+    matchedNodes = obj->getMatches(Sel::type("type"), 1);
+    ASSERT_EQ(matchedNodes.size(), 1);
+    ASSERT_EQ(matchedNodes[0]->getType(), "type");
+
+    matchedNodes = obj->getMatches(Sel::style("style"), 1);
+    ASSERT_EQ(matchedNodes.size(), 1);
+}
+
+TEST_F(AurumTestUiObject, getMatches_N1)
+{
+    auto obj = UiDevice::getInstance();
+    auto parent = obj->findObject(Sel::text("test2"));
+
+    auto matchedNodes = obj->getMatches(Sel::text("testText"), 1);
+    ASSERT_NE(matchedNodes.size(), 1);
+
+    matchedNodes = obj->getMatches(Sel::type("testType"), 1);
+    ASSERT_NE(matchedNodes.size(), 1);
+
+    matchedNodes = obj->getMatches(Sel::style("testStyle"), 1);
+    ASSERT_NE(matchedNodes.size(), 1);
+}
+
+TEST_F(AurumTestUiObject, getMatchesInMatches_P1)
+{
+    auto obj = UiDevice::getInstance();
+    auto parent = obj->findObject(Sel::text("test2"));
+
+    auto matchedNodes = obj->getMatchesInMatches(Sel::type("type"), Sel::text("ACTIVE"), 0);
+    ASSERT_EQ(matchedNodes.size(), 1);
+    ASSERT_EQ(matchedNodes[0]->getText(), "ACTIVE");
+
+    matchedNodes = obj->getMatchesInMatches(Sel::type("type"), Sel::style("style"), 0);
+    ASSERT_EQ(matchedNodes.size(), 16);
+}
+
+TEST_F(AurumTestUiObject, getMatchesInMatches_P2)
+{
+    auto obj = UiDevice::getInstance();
+    auto parent = obj->findObject(Sel::text("test2"));
+
+    auto matchedNodes = obj->getMatchesInMatches(Sel::type("type"), Sel::text("ACTIVE"), 1);
+    ASSERT_EQ(matchedNodes.size(), 0);
+
+    matchedNodes = obj->getMatchesInMatches(Sel::type("type"), Sel::style("style"), 1);
+    ASSERT_EQ(matchedNodes.size(), 1);
+}
+
+TEST_F(AurumTestUiObject, getMatchesInMatches_N1)
+{
+    auto obj = UiDevice::getInstance();
+    auto parent = obj->findObject(Sel::text("test2"));
+
+    auto matchedNodes = obj->getMatchesInMatches(Sel::type("testType"), Sel::text("testText"), 1);
+    ASSERT_NE(matchedNodes.size(), 1);
+
+    matchedNodes = obj->getMatchesInMatches(Sel::type("testType"), Sel::style("testStyle"), 1);
+    ASSERT_NE(matchedNodes.size(), 1);
+}
