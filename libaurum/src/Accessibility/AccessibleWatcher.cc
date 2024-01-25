@@ -59,21 +59,6 @@ AccessibleWatcher *AccessibleWatcher::getInstance(AccessibleWatcher *watcherImpl
     return mInstance;
 }
 
-std::vector<std::shared_ptr<AccessibleApplication>> AccessibleWatcher::getActiveApplications(void) const
-{
-    std::vector<std::shared_ptr<AccessibleApplication>> ret{};
-    auto apps = this->getApplications();
-    LOGI("available app process size %d", (int)apps.size());
-
-    apps.erase(std::remove_if(apps.begin(), apps.end(), [](auto app){
-        return !app->isActive();
-    }), apps.end());
-
-    LOGI("active apps size %d", (int)apps.size());
-
-    return apps;
-}
-
 void AccessibleWatcher::attach(std::shared_ptr<IEventConsumer> source)
 {
     std::unique_lock<std::mutex> lock(mLock);

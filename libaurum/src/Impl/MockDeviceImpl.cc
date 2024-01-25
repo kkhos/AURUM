@@ -16,7 +16,7 @@
  */
 
 #include "Aurum.h"
-#include "AccessibleWatcher.h"
+#include "AccessibleAppManager.h"
 #include "MockDeviceImpl.h"
 
 #include <functional>
@@ -268,7 +268,7 @@ std::vector<std::shared_ptr<AccessibleNode>> MockDeviceImpl::getWindowRoot() con
 {
     std::vector<std::shared_ptr<AccessibleNode>> ret{};
 
-    auto apps = AccessibleWatcher::getInstance()->getApplications();
+    auto apps = AccessibleAppManager::getInstance()->getApplications();
 
     for (auto &app : apps)
     {
