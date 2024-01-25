@@ -9,8 +9,11 @@
 
 #include <iostream>
 #include <algorithm>
+#include <chrono>
+#include <thread>
 
 #include "MockAccessibleWatcher.h"
+#include "MockAccessibleAppManager.h"
 #include "MockAccessibleApplication.h"
 #include "MockAccessibleWindow.h"
 #include "MockAccessibleNode.h"
@@ -20,7 +23,7 @@ using namespace AurumInternal::Mock;
 
 class AurumTestUiSelector : public ::testing::Test {
     public:
-        AurumTestUiSelector(): mDevice{nullptr}, mWatcher{nullptr}, mApps{}, mWins{}, mNodes{}{
+        AurumTestUiSelector(): mDevice{nullptr}, mWatcher{nullptr}, mAppManager{nullptr}, mApps{}, mWins{}, mNodes{}{
         }
     protected:
         void SetUp() override {
@@ -30,8 +33,11 @@ class AurumTestUiSelector : public ::testing::Test {
             mWatcher = new MockAccessibleWatcher();
             AccessibleWatcher::getInstance(mWatcher);
 
-            mApps.push_back(mWatcher->addApplication("org.tizen.aurum.test.app1", {0,0,1024,1024}, 0, 0));
-            mApps.push_back(mWatcher->addApplication("org.tizen.aurum.test.app2", {0,0,1024,1024}, 0, 0));
+            mAppManager = new MockAccessibleAppManager();
+            AccessibleAppManager::getInstance(mAppManager);
+
+            mApps.push_back(mAppManager->addApplication("org.tizen.aurum.test.app1", {0,0,1024,1024}, 0, 0));
+            mApps.push_back(mAppManager->addApplication("org.tizen.aurum.test.app2", {0,0,1024,1024}, 0, 0));
 
             mWins.push_back(mApps[0]->addWindow("win1", "Elm_Win", {100,100,200,200}, (int)NodeFeatureProperties::SHOWING|(int)NodeFeatureProperties::VISIBLE|(int)NodeFeatureProperties::ACTIVE));
             mWins.push_back(mApps[0]->addWindow("win2", "Elm_Win", {200,200,200,200}, (int)NodeFeatureProperties::VISIBLE|(int)NodeFeatureProperties::SHOWING|(int)NodeFeatureProperties::ACTIVE));
@@ -50,7 +56,7 @@ class AurumTestUiSelector : public ::testing::Test {
 
         MockDeviceImpl *mDevice;
         MockAccessibleWatcher *mWatcher;
-
+        MockAccessibleAppManager *mAppManager;
         std::vector<std::shared_ptr<MockAccessibleApplication>> mApps;
         std::vector<std::shared_ptr<MockAccessibleWindow>> mWins;
         std::vector<std::shared_ptr<MockAccessibleNode>> mNodes;

@@ -15,6 +15,7 @@
 #include <thread>
 
 #include "MockAccessibleWatcher.h"
+#include "MockAccessibleAppManager.h"
 #include "MockAccessibleApplication.h"
 #include "MockAccessibleWindow.h"
 #include "MockAccessibleNode.h"
@@ -24,7 +25,7 @@ using namespace AurumInternal::Mock;
 
 class AurumTestUiObject : public ::testing::Test {
     public:
-        AurumTestUiObject() : mDevice{nullptr},mWatcher{nullptr}, mApp{nullptr}, mWin{nullptr}, mNode{nullptr} {
+        AurumTestUiObject() : mDevice{nullptr}, mAppManager{nullptr}, mWatcher{nullptr}, mApp{nullptr}, mWin{nullptr}, mNode{nullptr} {
         }
 
         void SetUp() override {
@@ -34,7 +35,10 @@ class AurumTestUiObject : public ::testing::Test {
             mWatcher = new MockAccessibleWatcher();
             AccessibleWatcher::getInstance(mWatcher);
 
-            mApp = mWatcher->addApplication("org.tizen.aurum.test.app", {0,0,1024,1024}, 0, 0);
+            mAppManager = new MockAccessibleAppManager();
+            AccessibleAppManager::getInstance(mAppManager);
+
+            mApp = mAppManager->addApplication("org.tizen.aurum.test.app", {0,0,1024,1024}, 0, 0);
             mWin = mApp->addWindow("title", "Elm_Win", {100,100,200,200}, (int)NodeFeatureProperties::SHOWING|(int)NodeFeatureProperties::VISIBLE|(int)NodeFeatureProperties::ACTIVE);
             mWin->addNode("test", "pkg", "TeSt1234!@#$", "res", "type", "style", "", {0,0,100,100}, 0, 0);
             mNode = mWin->addNode("test2", "pkg", "TeSt1234!@#$", "res", "type", "style", "", {100,100,200,200}, 0, 0);
@@ -63,6 +67,7 @@ class AurumTestUiObject : public ::testing::Test {
 
     public:
         MockDeviceImpl *mDevice;
+        MockAccessibleAppManager *mAppManager;
         MockAccessibleWatcher *mWatcher;
         std::shared_ptr<MockAccessibleApplication> mApp;
         std::shared_ptr<MockAccessibleWindow> mWin;
