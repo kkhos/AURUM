@@ -146,7 +146,7 @@ public:
     /**
      * @copydoc @IEventSource::notifyAll()
      */
-    void notifyAll(int type1, int type2, void *src) override;
+    void notifyAll(EventType type, void *src) override;
 
 private:
     std::set<std::shared_ptr<IEventConsumer>> mSources;

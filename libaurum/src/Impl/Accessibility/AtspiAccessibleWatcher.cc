@@ -354,7 +354,7 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
 void AtspiAccessibleWatcher::onObjectDefunct(AtspiAccessible *node)
 {
     LOGI("onObjectDefunct obj:%p", node);
-    notifyAll((int)EventType::Object, (int)ObjectEventType::ObjectStateDefunct, node);
+    notifyAll(EventType::ObjectDefunct, node);
 }
 
 bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName, std::shared_ptr<AccessibleNode> obj, const int count)

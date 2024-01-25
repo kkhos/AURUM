@@ -76,10 +76,10 @@ void AccessibleWatcher::detach(std::shared_ptr<IEventConsumer> source)
     }
 }
 
-void AccessibleWatcher::notifyAll(int type1, int type2, void *src)
+void AccessibleWatcher::notifyAll(EventType type, void *src)
 {
     std::unique_lock<std::mutex> lock(mLock);
     std::for_each(mSources.begin(), mSources.end(), [&](auto source){
-        source->notify(type1, type2, src);
+        source->notify(type, src);
     });
 }
