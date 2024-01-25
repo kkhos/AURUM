@@ -26,6 +26,31 @@
 
 using namespace Aurum;
 
+class Event {
+public:
+
+    Event(std::shared_ptr<AccessibleNode> node)
+    : mNode{node} {}
+
+    virtual ~Event(){};
+    virtual void handleEvent() = 0;
+protected:
+
+    std::shared_ptr<AccessibleNode> mNode;
+};
+
+class ObjectDefunctEvent : public Event {
+public:
+
+    ObjectDefunctEvent(std::shared_ptr<AccessibleNode> node)
+    : Event{node} {}
+
+    virtual ~ObjectDefunctEvent(){};
+    void handleEvent() override {
+        mNode->invalidate();
+    }
+};
+
 AccessibleNode::~AccessibleNode()
 {
 }
@@ -53,13 +78,15 @@ std::string AccessibleNode::description() {
     return ss.str();
 }
 
-void AccessibleNode::notify(int type1, int type2, void *src)
+void AccessibleNode::notify(EventType type, void *src)
 {
-    void *handler = getRawHandler();
+    if (src != getRawHandler()) return;
 
-    if ((EventType)type1 == EventType::Object && (ObjectEventType)type2 == ObjectEventType::ObjectStateDefunct) {
-        if (handler == src) invalidate();
-    }
+    std::unique_ptr<Event> event;
+    if (type == EventType::ObjectDefunct)
+        event = std::make_unique<ObjectDefunctEvent>(this->shared_from_this());
+
+    event->handleEvent();
 }
 
 void AccessibleNode::invalidate()

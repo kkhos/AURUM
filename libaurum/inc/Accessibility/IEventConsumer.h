@@ -29,19 +29,7 @@ namespace Aurum {
  */
 enum class EventType {
     none = 0,
-    Object = 1,
-};
-
-/**
- * @class ObjectEventType
- *
- * @ingroup aurum
- *
- * @brief Enum class for Object Event Type.
- */
-enum class ObjectEventType {
-    none = 0,
-    ObjectStateDefunct = 1,
+    ObjectDefunct = 1,
 };
 
 /**
@@ -64,13 +52,12 @@ public:
     /**
      * @brief Notifies event to source node.
      *
-     * @param[in] type1 @EventType
-     * @param[in] type2 @ObjectEventType
+     * @param[in] type @EventType
      * @param[in] src source Node ptr
      *
      * @since_tizen 6.5
      */
-    virtual void notify(int type1, int type2, void *src) = 0;
+    virtual void notify(EventType type, void *src) = 0;
 };
 
 }
