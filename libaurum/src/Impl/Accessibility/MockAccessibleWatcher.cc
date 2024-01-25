@@ -16,9 +16,6 @@
  */
 
 #include "MockAccessibleWatcher.h"
-#include "MockAccessibleWindow.h"
-#include "MockAccessibleApplication.h"
-#include "MockAccessibleNode.h"
 
 using namespace Aurum;
 using namespace AurumInternal::Mock;
@@ -31,26 +28,6 @@ MockAccessibleWatcher::~MockAccessibleWatcher()
 {
 }
 
-int MockAccessibleWatcher::getApplicationCount(void) const
-{
-    return mApplicationList.size();
-}
-
-std::shared_ptr<AccessibleApplication> MockAccessibleWatcher::getApplicationAt(int index) const
-{
-    return mApplicationList.at(index);
-}
-
-std::vector<std::shared_ptr<AccessibleApplication>> MockAccessibleWatcher::getApplications(void) const
-{
-    return mApplicationList;
-}
-
-void MockAccessibleWatcher::addApplication(std::shared_ptr<AccessibleApplication> application)
-{
-    mApplicationList.push_back(application);
-}
-
 std::map<std::string, std::shared_ptr<AurumXML>> MockAccessibleWatcher::getXMLDocMap(void)
 {
     return mXMLDocMap;
@@ -59,14 +36,6 @@ std::map<std::string, std::shared_ptr<AurumXML>> MockAccessibleWatcher::getXMLDo
 std::shared_ptr<AurumXML> MockAccessibleWatcher::getXMLDoc(std::string pkgName)
 {
     return std::shared_ptr<AurumXML>();
-}
-
-std::shared_ptr<MockAccessibleApplication> MockAccessibleWatcher::addApplication(std::string pkgName, Rect<int> geometry, int ifaces, int properties)
-{
-    std::shared_ptr<MockAccessibleNode> appNode = std::make_shared<MockAccessibleNode>(nullptr, pkgName, pkgName, "application", "", "Elm_Win", "default", "", geometry, ifaces, properties);
-    std::shared_ptr<MockAccessibleApplication> app = std::make_shared<MockAccessibleApplication>(appNode);
-    this->addApplication(app);
-    return app;
 }
 
 bool MockAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName, std::shared_ptr<AccessibleNode> obj, const int count)

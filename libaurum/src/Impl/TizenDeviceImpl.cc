@@ -454,7 +454,7 @@ std::vector<std::shared_ptr<AccessibleNode>> TizenDeviceImpl::getWindowRoot() co
     std::vector<std::shared_ptr<AccessibleNode>> ret{};
     std::unordered_map<int, std::shared_ptr<AccessibleApplication>> pidToAppNode{};
 
-    auto apps = AccessibleWatcher::getInstance()->getApplications();
+    auto apps = AccessibleAppManager::getInstance()->getApplications();
     for (auto &app : apps)
     {
         app->getAccessibleNode()->updateName();

@@ -30,14 +30,10 @@ MockAccessibleNode::MockAccessibleNode(std::shared_ptr<AccessibleNode> parent, s
     const auto trickDontRemove = std::shared_ptr<MockAccessibleNode>( this, [](MockAccessibleNode *){} );
 
     setProperties(text,pkg,role,res,type,style,automationId, screenBoundingBox, supportingIfaces, featureProperty);
-    auto watcher = AccessibleWatcher::getInstance();
-    watcher->attach(shared_from_this());
 }
 
 MockAccessibleNode::~MockAccessibleNode()
 {
-    auto watcher = AccessibleWatcher::getInstance();
-    watcher->detach(shared_from_this());
 }
 
 int MockAccessibleNode::getChildCount() const

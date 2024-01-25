@@ -54,6 +54,7 @@ void MockAccessibleApplication::clearWindows(void)
 
 std::shared_ptr<MockAccessibleWindow> MockAccessibleApplication::addWindow(std::string title, std::string widget, Rect<int> geometry, int properties)
 {
+
     auto node = std::make_shared<MockAccessibleNode>(nullptr, title, title, "window", "res",widget,"style", "", geometry, 0, properties);
     auto win = std::make_shared<MockAccessibleWindow>(shared_from_this(), node);
     this->addWindow(win);
