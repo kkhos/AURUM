@@ -152,7 +152,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    void notify(int type, int type2, void *src) override;
+    void notify(EventType type, void *src) override;
 
     /**
      * @brief Changes Node state to invalidate.
