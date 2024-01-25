@@ -19,6 +19,7 @@
 #define _ACCESSIBLE_H_
 
 #include "AccessibleNode.h"
+#include "AccessibleAppManager.h"
 #include "AccessibleWatcher.h"
 #include "AccessibleApplication.h"
 #include "AccessibleWindow.h"
