@@ -10,6 +10,7 @@ libaurum_install_inc = [
   './inc/Interface/ISearchable.h',
   './inc/Interface/IDevice.h',
   './inc/Interface/IObject.h',
+  './inc/Interface/IMatches.h',
   './inc/A11yEvent.h',
   './inc/PartialMatch.h',
   './inc/UiScrollable.h',
