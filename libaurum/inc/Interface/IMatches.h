@@ -15,11 +15,12 @@
  *
  */
 
-#ifndef _ISEARCHABLE_H_
-#define _ISEARCHABLE_H_
+#ifndef _IMATCHES_H_
+#define _IMATCHES_H_
 
 #include "config.h"
 
+#include "UiObject.h"
 #include "UiSelector.h"
 
 #include <memory>
@@ -27,67 +28,28 @@
 
 namespace Aurum {
 
-class UiObject;
-
 /**
- * @class ISearchable
+ * @class IMatches
  *
  * @ingroup aurum
  *
- * @brief ISearchable interface that defines a methods for the behavior search object in ui layout hierarchy.
+ * @brief IMatches interface that defines a methods for the behavior search object in ui layout hierarchy.
  */
-class ISearchable {
+class IMatches {
 public:
     /**
-     * @brief ISearchable Destructor.
+     * @brief IMatches Destructor.
      *
      * @since_tizen 6.5
      */
-    virtual ~ISearchable() {}
-
-    /**
-     * @brief Checks that there is an object that are satisfied with selector condition.
-     *
-     * @param[in] selector @UiSelector
-     *
-     * @return true if object has, else false
-     *
-     * @since_tizen 6.5
-     */
-    virtual bool hasObject(const std::shared_ptr<UiSelector> selector) const = 0;
-
-    /**
-     * @brief Finds object that is satisfied with selector condition.
-     *
-     * @param[in] selector @UiSelector
-     *
-     * @return UiObject if succeed, else nullptr
-     *
-     * @since_tizen 6.5
-     */
-    virtual std::shared_ptr<UiObject> findObject(
-        const std::shared_ptr<UiSelector> selector) const = 0;
-
-    /**
-     * @brief Finds objects that are satisfied with selector condition.
-     *
-     * @param[in] selector @UiSelector
-     *
-     * @return UiObject vector if succeed, else nullptr
-     *
-     * @since_tizen 6.5
-     */
-    virtual std::vector<std::shared_ptr<UiObject>> findObjects(
-        const std::shared_ptr<UiSelector> selector) const = 0;
+    virtual ~IMatches() {}
 
     /**
      * @brief Get the Matches object that satisfied with the selector condition in the object tree.
      *        This method is similar to findObjects, but getMatches is more faster than findObjects.
-     *        A single dbus method call occurs internally and retrieves a list of objects
-     *        that satisfy the selector specified in uifw.
      *
      * @param[in] selector @UiSelector
-     * @param[in] earlyReturn boolean Returns immediately when a matched object is found
+     * @param[in] earlyReturn boolean
      *
      * @return the list of found UiObject pointer vector
      *
@@ -98,12 +60,10 @@ public:
 
     /**
      * @brief Get the object that satisfied with both condition in the object tree.
-     *        Additional object detection is performed using the second selector for the object
-     *        found in the first selector.
      *
      * @param[in] firstSelector @UiSelector
      * @param[in] secondSelector @UiSelector
-     * @param[in] earlyReturn boolean Returns immediately when a matched object is found
+     * @param[in] earlyReturn boolean
      *
      * @return the list of found UiObject pointer vector
      *
@@ -111,6 +71,7 @@ public:
      */
     virtual std::vector<std::shared_ptr<UiObject>> getMatchesInMatches(
         const std::shared_ptr<UiSelector> firstSelector, const std::shared_ptr<UiSelector> secondSelector, const bool earlyReturn) const = 0;
+
 };
 
 }
