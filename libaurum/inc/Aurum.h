@@ -53,6 +53,7 @@
 #include "ISearchable.h"
 #include "IDevice.h"
 #include "IObject.h"
+#include "IMatches.h"
 #include "Accessible.h"
 #include "Point2D.h"
 #include "Size2D.h"
