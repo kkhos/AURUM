@@ -50,6 +50,21 @@ enum class KeyRequestType {
 };
 
 /**
+ * @brief KeyType enum class.
+ *
+ * @since_tizen 8.0
+*/
+enum class KeyType {
+    BACK,
+    HOME,
+    MENU,
+    VOLUP,
+    VOLDOWN,
+    POWER,
+    KEY
+};
+
+/**
  * @brief IDevice interface.
  *        It defines common device controls such as touch, key events
  *
@@ -168,72 +183,6 @@ public:
      * @since_tizen 6.5
      */
     virtual bool wheelDown(int amount, const int durationMs) = 0;
-
-    /**
-     * @brief Simulates a press on the back key.
-     *
-     * @param[in] type one of @KeyRequestType
-     *
-     * @return true if the press back succeeded else false
-     *
-     * @since_tizen 6.5
-     */
-    virtual bool pressBack(KeyRequestType type) = 0;
-
-    /**
-     * @brief Simulates a press on the home key.
-     *
-     * @param[in] type one of @KeyRequestType
-     *
-     * @return true if the press home succeeded else false
-     *
-     * @since_tizen 6.5
-     */
-    virtual bool pressHome(KeyRequestType type) = 0;
-
-    /**
-     * @brief Simulates a press on the menu key.
-     *
-     * @param[in] type one of @KeyRequestType
-     *
-     * @return true if the press menu succeeded else false
-     *
-     * @since_tizen 6.5
-     */
-    virtual bool pressMenu(KeyRequestType type) = 0;
-
-    /**
-     * @brief Simulates a press on the volume up key.
-     *
-     * @param[in] type one of @KeyRequestType
-     *
-     * @return true if the press volume up succeeded else false
-     *
-     * @since_tizen 6.5
-     */
-    virtual bool pressVolUp(KeyRequestType type) = 0;
-
-    /**
-     * @brief Simulates a press on the volume down key.
-     *
-     * @param[in] type one of @KeyRequestType
-     *
-     * @return true if the press volume down succeeded else false
-     *
-     * @since_tizen 6.5
-     */
-    virtual bool pressVolDown(KeyRequestType type) = 0;
-
-    /**
-     * @brief Simulates a press on the power key.
-     *
-     * @param[in] type one of @KeyRequestType
-     *
-     * @return true if the press power succeeded else false
-     *
-     * @since_tizen 6.5
-     */
-    virtual bool pressPower(KeyRequestType type) = 0;
 
     /**
      * @brief Simulates a press on the given keycode key.

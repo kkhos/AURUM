@@ -146,46 +146,20 @@ bool MockDeviceImpl::wheelDown(int amount, const int durationMs)
 
 }
 
-bool MockDeviceImpl::pressBack(KeyRequestType type)
-{
-    mKeyDevice.push_back(std::tuple<MockKeyType, KeyRequestType, std::string>(MockKeyType::BACK, type, ""));
-    return true;
-}
-
-bool MockDeviceImpl::pressHome(KeyRequestType type)
-{
-    mKeyDevice.push_back(std::tuple<MockKeyType, KeyRequestType, std::string>(MockKeyType::HOME, type, ""));
-    return true;
-}
-
-bool MockDeviceImpl::pressMenu(KeyRequestType type)
-{
-    mKeyDevice.push_back(std::tuple<MockKeyType, KeyRequestType, std::string>(MockKeyType::MENU, type, ""));
-    return true;
-}
-
-bool MockDeviceImpl::pressVolUp(KeyRequestType type)
-{
-    mKeyDevice.push_back(std::tuple<MockKeyType, KeyRequestType, std::string>(MockKeyType::VOLUP, type, ""));
-    return true;
-}
-
-bool MockDeviceImpl::pressVolDown(KeyRequestType type)
-{
-    mKeyDevice.push_back(std::tuple<MockKeyType, KeyRequestType, std::string>(MockKeyType::VOLDOWN, type, ""));
-    return true;
-}
-
-bool MockDeviceImpl::pressPower(KeyRequestType type)
-{
-    mKeyDevice.push_back(std::tuple<MockKeyType, KeyRequestType, std::string>(MockKeyType::POWER, type, ""));
-    return true;
-}
-
 bool MockDeviceImpl::pressKeyCode(std::string keycode, KeyRequestType type)
 {
-    mKeyDevice.push_back(std::tuple<MockKeyType, KeyRequestType, std::string>(MockKeyType::KEY, type, keycode));
+    mKeyDevice.push_back(std::tuple<KeyType, KeyRequestType, std::string>(KeyType::KEY, type, keycode));
     return true;
+}
+
+std::vector<std::tuple<KeyType, KeyRequestType, std::string>> MockDeviceImpl::getGeneratedKeys()
+{
+    return mKeyDevice;
+}
+
+void MockDeviceImpl::clearGeneratedKeys()
+{
+    mKeyDevice.clear();
 }
 
 bool MockDeviceImpl::repeatKeyCode(std::string keycode, int intervalMs, int durationMs)

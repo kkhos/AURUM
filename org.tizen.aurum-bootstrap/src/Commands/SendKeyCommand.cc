@@ -34,17 +34,17 @@ SendKeyCommand::SendKeyCommand(const ::aurum::ReqKey *request,
     KeyRequestType actionType = static_cast<KeyRequestType>(action_type);
 
     if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_BACK)
-        mDevice->pressBack(actionType);
+        mDevice->generateKey(KeyType::BACK, KeyRequestType::PRESS);
     else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_HOME)
-        mDevice->pressHome(actionType);
+        mDevice->generateKey(KeyType::HOME, KeyRequestType::PRESS);
     else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_MENU)
-        mDevice->pressMenu(actionType);
+        mDevice->generateKey(KeyType::MENU, KeyRequestType::PRESS);
     else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_VOLUP)
-        mDevice->pressVolUp(actionType);
+        mDevice->generateKey(KeyType::VOLUP, KeyRequestType::PRESS);
     else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_VOLDOWN)
-        mDevice->pressVolDown(actionType);
+        mDevice->generateKey(KeyType::VOLDOWN, KeyRequestType::PRESS);
     else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_POWER)
-        mDevice->pressPower(actionType);
+        mDevice->generateKey(KeyType::POWER, KeyRequestType::PRESS);
     else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_WHEELUP)
         mDevice->wheelUp(1, 167);
     else if (type == ::aurum::ReqKey_KeyType::ReqKey_KeyType_WHEELDOWN)
