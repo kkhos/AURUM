@@ -153,72 +153,6 @@ public:
     bool wheelDown(int amount, const int durationMs) override;
 
     /**
-     * @brief Simulates a press on the back key.
-     *
-     * @param[in] type one of @KeyRequestType
-     *
-     * @return true if the press back succeeded else false
-     *
-     * @since_tizen 6.5
-     */
-    bool pressBack(KeyRequestType type) override;
-
-    /**
-     * @brief Simulates a press on the home key.
-     *
-     * @param[in] type one of @KeyRequestType
-     *
-     * @return true if the press home succeeded else false
-     *
-     * @since_tizen 6.5
-     */
-    bool pressHome(KeyRequestType type) override;
-
-    /**
-     * @brief Simulates a press on the menu key.
-     *
-     * @param[in] type one of @KeyRequestType
-     *
-     * @return true if the press menu succeeded else false
-     *
-     * @since_tizen 6.5
-     */
-    bool pressMenu(KeyRequestType type) override;
-
-    /**
-     * @brief Simulates a press on the volume up key.
-     *
-     * @param[in] type one of @KeyRequestType
-     *
-     * @return true if the press volume up succeeded else false
-     *
-     * @since_tizen 6.5
-     */
-    bool pressVolUp(KeyRequestType type) override;
-
-    /**
-     * @brief Simulates a press on the volume down key.
-     *
-     * @param[in] type one of @KeyRequestType
-     *
-     * @return true if the press volume down succeeded else false
-     *
-     * @since_tizen 6.5
-     */
-    bool pressVolDown(KeyRequestType type) override;
-
-    /**
-     * @brief Simulates a press on the power key.
-     *
-     * @param[in] type one of @KeyRequestType
-     *
-     * @return true if the press power succeeded else false
-     *
-     * @since_tizen 6.5
-     */
-    bool pressPower(KeyRequestType type) override;
-
-    /**
      * @brief Simulates a press on the given keycode key.
      *
      * @param[in] keycode keycode
@@ -438,6 +372,18 @@ public:
      * @since_tizen 7.5
      */
     int getTargetAngle();
+
+    /**
+     * @brief Simulates a press on the key.
+     *
+     * @param[in] keyType one of @KeyType
+     * @param[in] keyReqestType one of @KeyRequestType
+     *
+     * @return true if the press key succeeded else false
+     *
+     * @since_tizen 8.0
+     */
+    bool generateKey(KeyType keyType, KeyRequestType keyReqestType);
 
 private:
     /**
