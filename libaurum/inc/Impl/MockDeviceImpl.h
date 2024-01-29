@@ -34,16 +34,6 @@ namespace AurumInternal {
 
 namespace Mock {
 
-enum class MockKeyType {
-    BACK,
-    HOME,
-    MENU,
-    VOLUP,
-    VOLDOWN,
-    POWER,
-    KEY
-};
-
 struct TouchData { int x; int y; long long stamp1; long long stamp2;};
 class MockDeviceImpl : public IDevice {
 public:
@@ -112,42 +102,6 @@ public:
      * @brief TBD
      * @since_tizen 6.5
      */
-    bool pressBack(KeyRequestType type) override;
-
-    /**
-     * @brief TBD
-     * @since_tizen 6.5
-     */
-    bool pressHome(KeyRequestType type) override;
-
-    /**
-     * @brief TBD
-     * @since_tizen 6.5
-     */
-    bool pressMenu(KeyRequestType type) override;
-
-    /**
-     * @brief TBD
-     * @since_tizen 6.5
-     */
-    bool pressVolUp(KeyRequestType type) override;
-
-    /**
-     * @brief TBD
-     * @since_tizen 6.5
-     */
-    bool pressVolDown(KeyRequestType type) override;
-
-    /**
-     * @brief TBD
-     * @since_tizen 6.5
-     */
-    bool pressPower(KeyRequestType type) override;
-
-    /**
-     * @brief TBD
-     * @since_tizen 6.5
-     */
     bool pressKeyCode(std::string keycode, KeyRequestType type) override;
 
      /**
@@ -178,6 +132,20 @@ public:
      * @copydoc IDevice::getWindowRoot()
      */
     std::vector<std::shared_ptr<AccessibleNode>> getWindowRoot() const override;
+
+public:
+
+    /**
+     * @brief Gets list of keys simulated on Mock device
+     *
+     * @return std::tuple<KeyType, KeyRequestType, std::string> vector
+    */
+    std::vector<std::tuple<KeyType, KeyRequestType, std::string>> getGeneratedKeys();
+
+    /**
+     * @brief Clear list of keys simulated on Mock device
+    */
+    void clearGeneratedKeys();
 
 protected:
     /**
@@ -299,7 +267,7 @@ public:
     /**
      * @brief TBD
      */
-    std::vector<std::tuple<MockKeyType, KeyRequestType, std::string>> mKeyDevice;
+    std::vector<std::tuple<KeyType, KeyRequestType, std::string>> mKeyDevice;
 
     /**
      * @brief TBD

@@ -35,6 +35,89 @@
 using namespace Aurum;
 using namespace AurumInternal;
 
+class KeyAction {
+public:
+    KeyAction(IDevice *deviceImpl)
+    : mDeviceImpl(deviceImpl) {}
+    virtual ~KeyAction(){};
+
+    virtual bool perform(KeyRequestType type) = 0;
+protected:
+    IDevice *mDeviceImpl;
+};
+
+class BackKeyAction : public KeyAction {
+public:
+    BackKeyAction(IDevice *deviceImpl)
+    : KeyAction(deviceImpl) {}
+
+    virtual ~BackKeyAction(){};
+
+    bool perform(KeyRequestType type) override {
+        return mDeviceImpl->pressKeyCode("XF86Back", type);
+    }
+};
+
+class HomeKeyAction : public KeyAction {
+public:
+    HomeKeyAction(IDevice *deviceImpl)
+    : KeyAction(deviceImpl) {}
+
+    virtual ~HomeKeyAction(){};
+
+    bool perform(KeyRequestType type) override {
+        return mDeviceImpl->pressKeyCode("XF86Home", type);
+    }
+};
+
+class MenuKeyAction : public KeyAction {
+public:
+    MenuKeyAction(IDevice *deviceImpl)
+    : KeyAction(deviceImpl) {}
+
+    virtual ~MenuKeyAction(){};
+
+    bool perform(KeyRequestType type) override {
+        return mDeviceImpl->pressKeyCode("XF86Menu", type);
+    }
+};
+
+class VolUpKeyAction : public KeyAction {
+public:
+    VolUpKeyAction(IDevice *deviceImpl)
+    : KeyAction(deviceImpl) {}
+
+    virtual ~VolUpKeyAction(){};
+
+    bool perform(KeyRequestType type) override {
+        return mDeviceImpl->pressKeyCode("XF86AudioRaiseVolume", type);
+    }
+};
+
+class VolDownKeyAction : public KeyAction {
+public:
+    VolDownKeyAction(IDevice *deviceImpl)
+    : KeyAction(deviceImpl) {}
+
+    virtual ~VolDownKeyAction(){};
+
+    bool perform(KeyRequestType type) override {
+        return mDeviceImpl->pressKeyCode("XF86AudioLowerVolume", type);
+    }
+};
+
+class PowerKeyAction : public KeyAction {
+public:
+    PowerKeyAction(IDevice *deviceImpl)
+    : KeyAction(deviceImpl) {}
+
+    virtual ~PowerKeyAction(){};
+
+    bool perform(KeyRequestType type) override {
+        return mDeviceImpl->pressKeyCode("XF86PowerOff", type);
+    }
+};
+
 std::once_flag UiDevice::mOnceFlag;
 
 UiDevice::UiDevice() : UiDevice(nullptr) {}
@@ -244,45 +327,25 @@ bool UiDevice::wheelDown(int amount, const int durationMs)
     return result;
 }
 
-bool UiDevice::pressBack(KeyRequestType type)
+bool UiDevice::generateKey(KeyType keyType, KeyRequestType keyReqestType)
 {
-    bool result =  mDeviceImpl->pressBack(type);
-    waitForIdle();
-    return result;
-}
+    std::unique_ptr<KeyAction> keyAction;
 
-bool UiDevice::pressHome(KeyRequestType type)
-{
-    bool result =  mDeviceImpl->pressHome(type);
-    waitForIdle();
-    return result;
-}
+    if (keyType == KeyType::BACK)
+        keyAction = std::make_unique<BackKeyAction>(mDeviceImpl);
+    else if (keyType == KeyType::HOME)
+        keyAction = std::make_unique<HomeKeyAction>(mDeviceImpl);
+    else if (keyType == KeyType::MENU)
+        keyAction = std::make_unique<MenuKeyAction>(mDeviceImpl);
+    else if (keyType == KeyType::VOLUP)
+        keyAction = std::make_unique<VolUpKeyAction>(mDeviceImpl);
+    else if (keyType == KeyType::VOLDOWN)
+        keyAction = std::make_unique<VolDownKeyAction>(mDeviceImpl);
+    else if (keyType == KeyType::POWER)
+        keyAction = std::make_unique<PowerKeyAction>(mDeviceImpl);
 
-bool UiDevice::pressMenu(KeyRequestType type)
-{
-    bool result =  mDeviceImpl->pressMenu(type);
-    waitForIdle();
-    return result;
-}
+    bool result = keyAction->perform(keyReqestType);
 
-bool UiDevice::pressVolUp(KeyRequestType type)
-{
-    bool result =  mDeviceImpl->pressVolUp(type);
-    waitForIdle();
-    return result;
-}
-
-bool UiDevice::pressVolDown(KeyRequestType type)
-{
-    bool result =  mDeviceImpl->pressVolDown(type);
-    waitForIdle();
-    return result;
-}
-
-bool UiDevice::pressPower(KeyRequestType type)
-{
-    bool result =  mDeviceImpl->pressPower(type);
-    waitForIdle();
     return result;
 }
 
