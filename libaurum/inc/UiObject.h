@@ -22,7 +22,6 @@
 
 #include "Accessible.h"
 #include "ISearchable.h"
-#include "IObject.h"
 
 #include "UiSelector.h"
 #include "Waiter.h"
@@ -56,7 +55,7 @@ public:
  *        such as object's properties, states, geometry information.
  *        also user can send and receive event via this class.
  */
-class UiObject : public ISearchable , public std::enable_shared_from_this<UiObject>,  public IObject {
+class UiObject : public ISearchable , public std::enable_shared_from_this<UiObject> {
 public:
     /**
      * @brief UiObject constructor with device, selector, node pointer.
@@ -177,7 +176,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    std::string getId() const override;
+    std::string getId() const;
 
     /**
      * @brief Gets object's type.
@@ -186,7 +185,7 @@ public:
      *
      * @since_tizen 7.0
      */
-    std::string getType() const override;
+    std::string getType() const;
 
     /**
      * @brief Gets object's geometry of the screen.
@@ -195,7 +194,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    const Rect<int> getScreenBoundingBox() const override;
+    const Rect<int> getScreenBoundingBox() const;
 
     /**
      * @brief Gets object's ocr text.
@@ -204,7 +203,7 @@ public:
      *
      * @since_tizen 7.0
      */
-    std::string getOcrText() const override;
+    std::string getOcrText() const;
 
     /**
      * @brief Gets object's angle of window.
@@ -213,7 +212,7 @@ public:
      *
      * @since_tizen 7.5
      */
-    int getWindowAngle() const override;
+    int getWindowAngle() const;
 
     /**
      * @brief Gets object's angle of target device.
@@ -222,7 +221,7 @@ public:
      *
      * @since_tizen 7.5
      */
-    int getTargetAngle() const override;
+    int getTargetAngle() const;
 
     /**
      * @brief Gets object's focusable property.
@@ -231,7 +230,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    bool isFocusable() const override;
+    bool isFocusable() const;
 
     /**
      * @brief Gets object's focused property.
@@ -240,7 +239,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    bool isFocused() const override;
+    bool isFocused() const;
 
     /**
      * @brief Gets object's clickable property.
@@ -249,7 +248,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    bool isClickable() const override;
+    bool isClickable() const;
 
     /**
      * @brief Gets object's active property.
@@ -258,7 +257,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    bool isActive() const override;
+    bool isActive() const;
 
     /**
      * @brief Gets object's showing property.
@@ -267,7 +266,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    bool isShowing() const override;
+    bool isShowing() const;
 
 public:
     /**
