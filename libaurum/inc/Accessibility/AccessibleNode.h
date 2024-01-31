@@ -25,7 +25,6 @@
 #include <mutex>
 
 #include "IEventConsumer.h"
-#include "IObject.h"
 #include "Rect.h"
 #include "UiSelector.h"
 #include "config.h"
@@ -86,7 +85,7 @@ enum class NodeFeatureProperties {
  *
  * @since_tizen 6.5
  */
-class AccessibleNode : public std::enable_shared_from_this<AccessibleNode>, public IEventConsumer, public IObject {
+class AccessibleNode : public std::enable_shared_from_this<AccessibleNode>, public IEventConsumer {
 public:
     /**
      * @brief AccessibleNode constructor.
@@ -165,57 +164,57 @@ public:
     /**
      * @copydoc UiObject::getId()
      */
-    std::string getId() const override;
+    std::string getId() const;
 
     /**
      * @copydoc UiObject::getType()
      */
-    std::string getType() const override;
+    std::string getType() const;
 
     /**
      * @copydoc UiObject::getScreenBoundingBox()
      */
-    const Rect<int> getScreenBoundingBox() const override;
+    const Rect<int> getScreenBoundingBox() const;
 
     /**
      * @copydoc UiObject::getOcrText()
      */
-    std::string getOcrText() const override;
+    std::string getOcrText() const;
 
     /**
      * @copydoc UiObject::getWindowAngle()
      */
-    int getWindowAngle() const override;
+    int getWindowAngle() const;
 
     /**
      * @copydoc UiObject::getTargetAngle()
      */
-    int getTargetAngle() const override;
+    int getTargetAngle() const;
 
     /**
      * @copydoc UiObject::isFocusable()
      */
-    bool isFocusable() const override;
+    bool isFocusable() const;
 
     /**
      * @copydoc UiObject::isFocused()
      */
-    bool isFocused() const override;
+    bool isFocused() const;
 
     /**
      * @copydoc UiObject::isClickable()
      */
-    bool isClickable() const override;
+    bool isClickable() const;
 
     /**
      * @copydoc UiObject::isActive()
      */
-    bool isActive() const override;
+    bool isActive() const;
 
     /**
      * @copydoc UiObject::isShowing()
      */
-    bool isShowing() const override;
+    bool isShowing() const;
 
 public:
     /**
