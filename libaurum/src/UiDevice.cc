@@ -349,6 +349,36 @@ bool UiDevice::generateKey(KeyType keyType, KeyRequestType keyReqestType)
     return result;
 }
 
+bool UiDevice::pressBack(KeyRequestType type)
+{
+    return generateKey(KeyType::BACK, type);
+}
+
+bool UiDevice::pressHome(KeyRequestType type)
+{
+    return generateKey(KeyType::HOME, type);
+}
+
+bool UiDevice::pressMenu(KeyRequestType type)
+{
+    return generateKey(KeyType::MENU, type);
+}
+
+bool UiDevice::pressVolUp(KeyRequestType type)
+{
+    return generateKey(KeyType::VOLUP, type);
+}
+
+bool UiDevice::pressVolDown(KeyRequestType type)
+{
+    return generateKey(KeyType::VOLDOWN, type);
+}
+
+bool UiDevice::pressPower(KeyRequestType type)
+{
+    return generateKey(KeyType::POWER, type);
+}
+
 bool UiDevice::pressKeyCode(std::string keycode, KeyRequestType type)
 {
     bool result =  mDeviceImpl->pressKeyCode(keycode, type);

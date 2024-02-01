@@ -385,6 +385,22 @@ public:
      */
     bool generateKey(KeyType keyType, KeyRequestType keyReqestType);
 
+    /**
+     * @brief Simulates a hardware key.
+     *
+     * @param[in] type one of @KeyRequestType
+     *
+     * @return true if the press back succeeded else false
+     *
+     * @deprecated Since 9.0
+     */
+    bool pressBack(KeyRequestType type);
+    bool pressHome(KeyRequestType type);
+    bool pressMenu(KeyRequestType type);
+    bool pressVolUp(KeyRequestType type);
+    bool pressVolDown(KeyRequestType type);
+    bool pressPower(KeyRequestType type);
+
 private:
     /**
      * @brief Waits process idle.
