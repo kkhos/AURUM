@@ -56,8 +56,8 @@ AccessibleNode::~AccessibleNode()
 }
 
 AccessibleNode::AccessibleNode()
-: mText{""}, mOcrText{""}, mPkg{""}, mRole{""}, mId{""}, mAutomationId{""}, mType{""}, mStyle{""}, mXPath{""}, mToolkitName{""},
-  mScreenBoundingBox{0,0,0,0}, mWindowBoundingBox{0,0,0,0}, mSupportingIfaces(0), mFeatureProperty(0), mPid(0), mWindowAngle(0), mTargetAngle(0), mMinValue{0.0}, mMaxValue{0.0}, mValue{0.0}, mIncrement{0.0}, mValid{true}, mLock{}
+: mText{""}, mOcrText{""}, mPkg{""}, mRole{""}, mId{""}, mAutomationId{""}, mType{""}, mStyle{""}, mXPath{""}, mToolkitName{""}, mInterface{""}, mDescription{""},
+  mScreenBoundingBox{0,0,0,0}, mWindowBoundingBox{0,0,0,0}, mTextMinBoundingRect{0,0,0,0}, mSupportingIfaces(0), mFeatureProperty(0), mPid(0), mWindowAngle(0), mTargetAngle(0), mMinValue{0.0}, mMaxValue{0.0}, mValue{0.0}, mIncrement{0.0}, mValid{true}, mLock{}
 {
 }
 
@@ -69,6 +69,7 @@ std::string AccessibleNode::description() {
     ss << "\"mAutomationId\":\"" << this->mAutomationId << "\", ";
     ss << "\"mRole\":\"" << this->mRole << "\", ";
     ss << "\"mText\":\"" << this->mText << "\", ";
+    ss << "\"mDescription\":\"" << this->mDescription << "\", ";
     ss << "\"mOcrText\":\"" << this->mOcrText << "\", ";
     ss << "\"mPkg\":\"" << this->mPkg << "\", ";
     ss << "\"mType\":\"" << this->mType << "\", ";
@@ -233,6 +234,11 @@ std::string AccessibleNode::getInterface() const
     return mInterface;
 }
 
+std::string AccessibleNode::getDescription() const
+{
+    return mDescription;
+}
+    
 bool AccessibleNode::isCheckable() const
 {
     return hasFeatureProperty(NodeFeatureProperties::CHECKABLE);

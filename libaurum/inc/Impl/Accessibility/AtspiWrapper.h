@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -43,6 +43,7 @@ public:
     static GArray *Atspi_accessible_get_children(AtspiAccessible *node, GError **error);
     static AtspiAccessible *Atspi_accessible_get_child_at_index(AtspiAccessible *node, int index, GError **error);
     static AtspiAccessible *Atspi_accessible_get_parent(AtspiAccessible *node, GError **error);
+    static gchar *Atspi_accessible_get_description(AtspiAccessible *node, GError **error);
     static AtspiStateSet *Atspi_accessible_get_state_set(AtspiAccessible *node);
     static gboolean Atspi_state_set_contains(AtspiStateSet *set , AtspiStateType state);
     static gchar *Atspi_accessible_get_role_name(AtspiAccessible *node, GError **error);

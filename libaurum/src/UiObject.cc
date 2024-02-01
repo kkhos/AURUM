@@ -261,6 +261,11 @@ std::string UiObject::getInterface() const
     return mNode->getInterface();
 }
 
+std::string UiObject::getDescription() const
+{
+    return mNode->getDescription();
+}
+
 bool UiObject::setValue(double value)
 {
     return mNode->setValue(value);

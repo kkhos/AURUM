@@ -72,6 +72,8 @@ std::vector<std::shared_ptr<UiSelector>> FindElementsCommand::getSelectors(void)
     if(mRequest->_isvisible_case())        sel->isVisible(mRequest->isvisible());
     if(mRequest->_isselectable_case())     sel->isSelectable(mRequest->isselectable());
     if(mRequest->_ishighlightable_case())  sel->isHighlightable(mRequest->ishighlightable());
+    if(mRequest->_description_case())      sel->description(mRequest->description());
+
 
     return std::vector<std::shared_ptr<UiSelector>>{sel};
 }
@@ -155,6 +157,8 @@ std::vector<std::shared_ptr<UiSelector>> FindElementsCommand::getSelectors(void)
             elm->set_targetangle(obj->getTargetAngle());
 
             elm->set_interface(obj->getInterface());
+            elm->set_description(obj->getDescription());
+
         }
         mResponse->set_status(::aurum::RspStatus::OK);
     } else {
