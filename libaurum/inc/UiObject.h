@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -480,6 +480,15 @@ public:
      * @since_tizen 7.0
      */
     bool setValue(double value);
+
+    /**
+     * @brief Gets object's description.
+     *
+     * @return string
+     *
+     * @since_tizen 7.0
+     */
+    std::string getDescription() const;
 
     /**
      * @brief Gets object's checkable property.
