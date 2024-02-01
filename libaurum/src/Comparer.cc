@@ -116,7 +116,7 @@ void Comparer::findObjects(std::vector<std::shared_ptr<AccessibleNode>> &ret,
             continue;
         }
 
-        if (mSelector->mMatchShowing && !curNode->isShowing()) continue;
+        if (mSelector->mMatchShowing && mSelector->mIsshowing && !curNode->isShowing()) continue;
 
         int partialMatchSize = (int)partialMatches.size();
         mStack.push_back({curNode, curIndex, curDepth, true, partialMatchSize});
