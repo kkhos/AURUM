@@ -393,6 +393,17 @@ public:
      */
     UiSelector *geometry(Rect<int> geometry, bool isEqual);
 
+    /**
+     * @brief Sets the search criteria to match the object's description.
+     *
+     * @param[in] description object description
+     *
+     * @return UiSelector class instance
+     *
+     * @since_tizen 7.0
+     */
+    UiSelector *description(std::string description);
+
 public:
     std::string mId;
     std::string mAutomationId;
@@ -404,6 +415,7 @@ public:
     std::string mTextPartialMatch;
     std::string mXPath;
     std::string mOcrText;
+    std::string mDescription;
 
     bool mMatchId;
     bool mMatchAutomationId;
@@ -416,6 +428,7 @@ public:
     bool mMatchXPath;
     bool mMatchOcrText;
     bool mMatchGeometry;
+    bool mMatchDescription;
 
     bool mMatchChecked;
     bool mMatchCheckable;

@@ -69,6 +69,12 @@ AtspiAccessible *AtspiWrapper::Atspi_accessible_get_parent(AtspiAccessible *node
     return atspi_accessible_get_parent(node, error);
 }
 
+gchar *AtspiWrapper::Atspi_accessible_get_description(AtspiAccessible *node, GError **error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_accessible_get_description(node, error);
+}
+
 AtspiStateSet *AtspiWrapper::Atspi_accessible_get_state_set(AtspiAccessible *node)
 {
     std::unique_lock<std::recursive_mutex> lock(mMutex);

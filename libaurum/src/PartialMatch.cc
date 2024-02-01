@@ -92,6 +92,10 @@ bool PartialMatch::checkCriteria(const std::shared_ptr<UiSelector> selector,
         node->updateExtents();
         if (checkCriteria(selector->mGeometry, node->getScreenBoundingBox(), selector->mGeometryIsEqual)) return false;
     }
+    if (selector->mMatchDescription) {
+        node->updateName();
+        if (checkCriteria(selector->mDescription, node->getDescription(), 0)) return false;
+    }
     if (selector->mMatchChecked && checkCriteria(selector->mIschecked, node->isChecked())) return false;
     if (selector->mMatchCheckable && checkCriteria(selector->mIscheckable, node->isCheckable())) return false;
     if (selector->mMatchClickable && checkCriteria(selector->mIsclickable, node->isClickable())) return false;
