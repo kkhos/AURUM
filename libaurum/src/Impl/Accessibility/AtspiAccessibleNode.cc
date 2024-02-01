@@ -151,6 +151,12 @@ void AtspiAccessibleNode::updateName()
         mText = name;
         g_free(name);
     }
+
+    gchar *description = AtspiWrapper::Atspi_accessible_get_description(mNode, NULL);
+    if (description) {
+        mDescription = description;
+        g_free(description);
+    }
 }
 
 void AtspiAccessibleNode::updateToolkitName()

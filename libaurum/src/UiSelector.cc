@@ -22,9 +22,9 @@
 using namespace Aurum;
 
 UiSelector::UiSelector()
-: mId{}, mAutomationId{}, mRole{}, mText{}, mPkg{}, mType{}, mStyle{}, mTextPartialMatch{}, mXPath{}, mOcrText{},
+: mId{}, mAutomationId{}, mRole{}, mText{}, mPkg{}, mType{}, mStyle{}, mTextPartialMatch{}, mXPath{}, mOcrText{}, mDescription{},
   mMatchId{}, mMatchAutomationId{}, mMatchRole{}, mMatchText{}, mMatchPkg{}, mMatchType{}, mMatchStyle{},
-  mMatchTextPartialMatch{}, mMatchXPath{}, mMatchOcrText{}, mMatchGeometry{}, mMatchChecked{}, mMatchCheckable{}, mMatchClickable{}, mMatchEnabled{},
+  mMatchTextPartialMatch{}, mMatchXPath{}, mMatchOcrText{}, mMatchGeometry{}, mMatchDescription{}, mMatchChecked{}, mMatchCheckable{}, mMatchClickable{}, mMatchEnabled{},
   mMatchFocused{}, mMatchFocusable{}, mMatchScrollable{}, mMatchSelected{}, mMatchShowing{}, mMatchActive{}, mMatchVisible{},
   mMatchSelectable{}, mMatchHighlightable{}, mMinDepth{}, mMaxDepth{}, mIschecked{}, mIscheckable{}, mIsclickable{}, mIsenabled{},
   mIsfocused{}, mIsfocusable{}, mIsscrollable{}, mIsselected{}, mIsshowing{}, mIsactive{}, mIsvisible{},
@@ -40,6 +40,7 @@ std::string UiSelector::description()
     if(!this->mAutomationId.empty()) ss << "\"mAutomationId\":\"" << this->mAutomationId << "\", ";
     if(!this->mRole.empty()) ss << "\"mRole\":\"" << this->mRole << "\", ";
     if(!this->mText.empty()) ss << "\"mText\":\"" << this->mText << "\", ";
+    if(!this->mDescription.empty()) ss << "\"mDescription\":\"" << this->mDescription << "\", ";
     if(!this->mOcrText.empty()) ss << "\"mOcrText\":\"" << this->mOcrText << "\", ";
     if(!this->mTextPartialMatch.empty()) ss << "\"mTextPartialMatch\":\"" << this->mTextPartialMatch << "\", ";
     if(!this->mXPath.empty()) ss << "\"mXPath\":\"" << this->mXPath << "\", ";
@@ -58,6 +59,7 @@ std::string UiSelector::description()
     if(this->mMatchType) ss << "\"mMatchType\":\"" << ((this->mMatchType)?"true":"false") << "\", ";
     if(this->mMatchStyle) ss << "\"mMatchStyle\":\"" << ((this->mMatchStyle)?"true":"false" )<< "\", ";
     if(this->mMatchGeometry) ss << "\"mMatchGeometry\":\"" << ((this->mMatchGeometry)?"true":"false" )<< "\", ";
+    if(this->mMatchDescription) ss << "\"mMatchDescription\":\"" << ((this->mMatchDescription)?"true":"false") << "\", ";
     if(this->mMinDepth) ss << "\"mMinDepth\":\"" << this->mMinDepth << "\", ";
     if(this->mMaxDepth) ss << "\"mMaxDepth\":\"" << this->mMaxDepth << "\", ";
     if(this->mMatchChecked) ss << "\"mMatchChecked\":\"" << ((this->mMatchChecked)?"true":"false") << "\", ";
@@ -291,5 +293,12 @@ UiSelector *UiSelector::geometry(Rect<int> geometry, bool isEqual)
     this->mGeometry = geometry;
     this->mGeometryIsEqual = isEqual;
     this->mMatchGeometry = true;
+    return this;
+}
+
+UiSelector *UiSelector::description(std::string description)
+{
+    this->mDescription = description;
+    this->mMatchDescription = true;
     return this;
 }
