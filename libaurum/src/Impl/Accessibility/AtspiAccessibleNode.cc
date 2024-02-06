@@ -361,8 +361,6 @@ void AtspiAccessibleNode::refresh(bool updateAll)
                     else mType = mRole;
                     if (s) mStyle = std::string(s);
                     if (a) mAutomationId = std::string(a);
-
-                    g_hash_table_unref(attributes);
                 }
             }
             if (ni->states) {
