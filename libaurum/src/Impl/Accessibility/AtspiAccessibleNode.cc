@@ -18,6 +18,7 @@
 #include "Aurum.h"
 
 #include "AtspiAccessibleNode.h"
+#include "AtspiMatchRuleConvertor.h"
 #include "AtspiWrapper.h"
 
 #include <gio/gio.h>
@@ -119,8 +120,6 @@ void AtspiAccessibleNode::updateRoleName()
 {
     if (!mRole.empty()) return;
 
-    AtspiWrapper::Atspi_accessible_clear_cache(mNode);
-
     gchar *rolename = AtspiWrapper::Atspi_accessible_get_role_name(mNode, NULL);
     if (rolename) {
         mRole = rolename;
@@ -131,8 +130,6 @@ void AtspiAccessibleNode::updateRoleName()
 void AtspiAccessibleNode::updateUniqueId()
 {
     if (!mId.empty()) return;
-
-    AtspiWrapper::Atspi_accessible_clear_cache(mNode);
 
     #ifdef TIZEN
     gchar *uID = AtspiWrapper::Atspi_accessible_get_unique_id(mNode, NULL);
@@ -154,6 +151,12 @@ void AtspiAccessibleNode::updateName()
         mText = name;
         g_free(name);
     }
+
+    gchar *description = AtspiWrapper::Atspi_accessible_get_description(mNode, NULL);
+    if (description) {
+        mDescription = description;
+        g_free(description);
+    }
 }
 
 void AtspiAccessibleNode::updateToolkitName()
@@ -174,8 +177,6 @@ void AtspiAccessibleNode::updateToolkitName()
 void AtspiAccessibleNode::updateApplication()
 {
     if (!mPkg.empty()) return;
-
-    AtspiWrapper::Atspi_accessible_clear_cache(mNode);
 
     AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(mNode, NULL);
     if (app) {
@@ -219,6 +220,7 @@ void AtspiAccessibleNode::updateStates()
     resetFeatureProperty();
 
     AtspiWrapper::Atspi_accessible_clear_cache(mNode);
+
     AtspiStateSet *st = AtspiWrapper::Atspi_accessible_get_state_set(mNode);
     if (st) {
         GArray *states = AtspiWrapper::Atspi_state_set_get_states(st);
@@ -307,6 +309,23 @@ void AtspiAccessibleNode::updateTextMinBoundingRect()
     }
 }
 
+void AtspiAccessibleNode::updateInterface()
+{
+    GArray *interfaces = AtspiWrapper::Atspi_accessible_get_interfaces(mNode);
+    if (interfaces)
+    {
+        for (unsigned int i = 0; i < interfaces->len; i++)
+        {
+            gchar *interface = g_array_index(interfaces, gchar *, i);
+            if (g_strcmp0(interface, "EditableText") == 0 || g_strcmp0(interface, "Value") == 0)
+            {
+                mInterface = interface;
+            }
+        }
+        g_array_free(interfaces, true);
+    }
+}
+
 bool AtspiAccessibleNode::setFocus()
 {
     AtspiComponent *component = AtspiWrapper::Atspi_accessible_get_component_iface(mNode);
@@ -324,111 +343,85 @@ void AtspiAccessibleNode::refresh(bool updateAll)
     AtspiWrapper::Atspi_accessible_clear_cache(mNode);
 
     if (isValid()) {
-        if (mRole.empty()) {
-            gchar *rolename = AtspiWrapper::Atspi_accessible_get_role_name(mNode, NULL);
-            if (rolename) {
-                mRole = rolename;
-                g_free(rolename);
-            }
-        }
-    #ifdef TIZEN
-        if (mId.empty()) {
-            gchar *uID = AtspiWrapper::Atspi_accessible_get_unique_id(mNode, NULL);
-            if (uID) {
-                mId = uID;
-                g_free(uID);
-            }
-        }
-    #else
-        mId = std::string{"N/A"};
-    #endif
-        gchar *name = AtspiWrapper::Atspi_accessible_get_name(mNode, NULL);
-        if (name) {
-            mText = name;
-            g_free(name);
-        }
+        AtspiAccessibleNodeInfo *ni = AtspiWrapper::Atspi_accessible_get_node_info(mNode, NULL);
+        if (ni) {
+            if (mRole.empty()) mRole = ni->role_name;
+            mText = ni->name;
+            if (mToolkitName.empty()) mToolkitName = ni->toolkit_name;
+            if (mType.empty()) {
+                GHashTable *attributes = ni->attributes;
+                if (attributes) {
+                    char *t = (char *)g_hash_table_lookup(attributes, "type");
+                    if (!t) t = (char *)g_hash_table_lookup(attributes, "t");
+                    if (!t) t = (char *)g_hash_table_lookup(attributes, "class");
+                    char *s = (char *)g_hash_table_lookup(attributes, "style");
+                    char *a = (char *)g_hash_table_lookup(attributes, "automationId");
 
-        if (mToolkitName.empty()) {
-            gchar *toolkitName = AtspiWrapper::Atspi_accessible_get_toolkit_name(mNode, NULL);
-            if (toolkitName) {
-                mToolkitName = toolkitName;
-                g_free(toolkitName);
-            }
-        }
-
-        if (mPkg.empty()) {
-            AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(mNode, NULL);
-            if (app) {
-                gchar *pkg = AtspiWrapper::Atspi_accessible_get_name(app, NULL);
-                if (pkg) {
-                    mPkg = pkg;
-                    g_free(pkg);
+                    if (t) mType = std::string(t);
+                    else mType = mRole;
+                    if (s) mStyle = std::string(s);
+                    if (a) mAutomationId = std::string(a);
                 }
-                g_object_unref(app);
             }
-        }
+            if (ni->states) {
+                gint i = 0;
+                guint64 val = 1;
+                GArray *ret;
 
-        if (mType.empty()) {
-            GHashTable *attributes = AtspiWrapper::Atspi_accessible_get_attributes(mNode, NULL);
-            if (attributes) {
-                char *t = (char*)g_hash_table_lookup(attributes, "type");
-                if (!t) t = (char*)g_hash_table_lookup(attributes, "t");
-                if (!t) t = (char*)g_hash_table_lookup(attributes, "class");
-                char *s = (char*)g_hash_table_lookup(attributes, "style");
-                char *a = (char*)g_hash_table_lookup(attributes, "automationId");
-
-                if (t) mType =  std::string(t);
-                else mType = mRole;
-                if (s) mStyle = std::string(s);
-                if (a) mAutomationId = std::string(a);
-
-                g_hash_table_unref(attributes);
-            }
-        }
-
-        AtspiStateSet *st = AtspiWrapper::Atspi_accessible_get_state_set(mNode);
-        if (st) {
-            GArray *states = AtspiWrapper::Atspi_state_set_get_states(st);
-            if (states) {
-                AtspiStateType stat;
-                for (unsigned int i = 0; states && (i < states->len); ++i) {
-                    stat = g_array_index(states, AtspiStateType, i);
-                    setFeatureProperty(stat);
+                ret = g_array_new(TRUE, TRUE, sizeof(int));
+                if (!ret) {
+                    LOGE("Fail to alloc array for states");
+                    return;
                 }
-                g_array_free(states, 1);
-            }
-            g_object_unref(st);
-        }
-        AtspiComponent *component = AtspiWrapper::Atspi_accessible_get_component_iface(mNode);
-        if (component) {
-            AtspiRect *screenExtent = AtspiWrapper::Atspi_component_get_extents(
-                component, ATSPI_COORD_TYPE_SCREEN, NULL);
-            if (screenExtent) {
-                mScreenBoundingBox =
-                    Rect<int>{screenExtent->x, screenExtent->y, screenExtent->x + screenExtent->width,
-                            screenExtent->y + screenExtent->height};\
-                g_free(screenExtent);
-            }
 
-            AtspiRect *windowExtent = AtspiWrapper::Atspi_component_get_extents(
-                component, ATSPI_COORD_TYPE_WINDOW, NULL);
-            if (windowExtent) {
-                mWindowBoundingBox =
-                    Rect<int>{windowExtent->x, windowExtent->y, windowExtent->x + windowExtent->width,
-                            windowExtent->y + windowExtent->height};\
-                g_free(windowExtent);
+                for (i = 0; i < 64; i++) {
+                    if (ni->states & val) ret = g_array_append_val(ret, i);
+                    val <<= 1;
+                }
+
+                if (ret) {
+                    AtspiStateType stat;
+                    for (unsigned int i = 0; ret && (i < ret->len); ++i) {
+                        stat = g_array_index(ret, AtspiStateType, i);
+                        setFeatureProperty(stat);
+                    }
+                    g_array_free(ret, 1);
+                }
             }
-            g_object_unref(component);
+            if (ni->screen_extents)
+                mScreenBoundingBox = Rect<int>{
+                    ni->screen_extents->x, ni->screen_extents->y,
+                    ni->screen_extents->x + ni->screen_extents->width,
+                    ni->screen_extents->y + ni->screen_extents->height};
+            if (ni->window_extents)
+                mWindowBoundingBox = Rect<int>{
+                    ni->window_extents->x, ni->window_extents->y,
+                    ni->window_extents->x + ni->window_extents->width,
+                    ni->window_extents->y + ni->window_extents->height};
+
+            mMinValue = ni->lower;
+            mMaxValue = ni->upper;
+            mValue = ni->value;
+            mIncrement = ni->increment;
+
+            AtspiWrapper::Atspi_accessible_free_node_info(ni);
+        } else {
+            // TODO: Add Atspi_accessible_get_node_info() for efl.
+            //       In case of efl, there are not many objects nomally so its not big advantage for performance though
+            //       need to add interface for consistency.
+            updateRoleName();
+            updateUniqueId();
+            updateName();
+            updateToolkitName();
+            updateApplication();
+            updateAttributes();
+            updateStates();
+            updateExtents();
+            updateValue();
         }
 
-        AtspiValue *value = AtspiWrapper::Atspi_accessible_get_value(mNode);
-        if (value) {
-            mMinValue= AtspiWrapper::Atspi_value_get_minimum_value(value, NULL);
-            mMaxValue= AtspiWrapper::Atspi_value_get_maximum_value(value, NULL);
-            mValue= AtspiWrapper::Atspi_value_get_current_value(value, NULL);
-            mIncrement= AtspiWrapper::Atspi_value_get_minimum_increment(value, NULL);
-            g_object_unref(value);
-        }
+        //FIXME: It should be belongs into Atspi_accessible_get_node_info()
+        updateInterface();
 
         if (updateAll) updateXPath();
 
@@ -611,4 +604,64 @@ void AtspiAccessibleNode::setFeatureProperty(AtspiStateType type)
         default:
         break;
     }
+}
+
+std::vector<std::shared_ptr<AccessibleNode>> AtspiAccessibleNode::getMatches(const std::shared_ptr<UiSelector> selector, const bool ealryReturn) const
+{
+    std::vector<std::shared_ptr<AccessibleNode>> ret{};
+
+    AtspiCollection *collection = AtspiWrapper::Atspi_accessible_get_collection_iface(mNode);
+    if (collection) {
+        AtspiMatchRule *rule = AtspiMatchRuleConvertor(selector);
+        if (!rule) return ret;
+
+        int count = ealryReturn ? 1 : 0;
+        GArray *matches = AtspiWrapper::Atspi_collection_get_matches(collection, rule, ATSPI_Collection_SORT_ORDER_CANONICAL, count, false, NULL);
+        if (matches) {
+            ret.reserve(matches->len);
+            AtspiAccessible *match = nullptr;
+            for (unsigned int i = 0; i < matches->len; i++) {
+                match = g_array_index(matches, AtspiAccessible *, i);
+               if (match) {
+                   ret.push_back(std::make_shared<AtspiAccessibleNode>(match));
+               }
+            }
+            g_array_free(matches, true);
+        }
+        g_object_unref(rule);
+    }
+
+    return ret;
+}
+
+std::vector<std::shared_ptr<AccessibleNode>> AtspiAccessibleNode::getMatchesInMatches(const std::shared_ptr<UiSelector> firstSelector, const std::shared_ptr<UiSelector> secondSelector, const bool ealryReturn) const
+{
+    std::vector<std::shared_ptr<AccessibleNode>> ret{};
+
+    AtspiCollection *collection = AtspiWrapper::Atspi_accessible_get_collection_iface(mNode);
+    if (collection) {
+        AtspiMatchRule *firstRule = AtspiMatchRuleConvertor(firstSelector);
+        if (!firstRule) return ret;
+
+        AtspiMatchRule *secondRule = AtspiMatchRuleConvertor(secondSelector);
+        if (!secondRule) return ret;
+
+        int count = ealryReturn ? 1 : 0;
+        GArray *matches = AtspiWrapper::Atspi_collection_get_matches_in_matches(collection, firstRule, secondRule, ATSPI_Collection_SORT_ORDER_CANONICAL, 0, count, false, NULL);
+        if (matches) {
+            ret.reserve(matches->len);
+            AtspiAccessible *match = nullptr;
+            for (unsigned int i = 0; i < matches->len; i++) {
+                match = g_array_index(matches, AtspiAccessible *, i);
+               if (match) {
+                   ret.push_back(std::make_shared<AtspiAccessibleNode>(match));
+               }
+            }
+            g_array_free(matches, true);
+        }
+        g_object_unref(secondRule);
+        g_object_unref(firstRule);
+    }
+
+    return ret;
 }

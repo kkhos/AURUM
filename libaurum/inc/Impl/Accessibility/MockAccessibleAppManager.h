@@ -15,10 +15,11 @@
  *
  */
 
-#ifndef _MOCK_ACCESSIBLE_WATCHER_H_
-#define _MOCK_ACCESSIBLE_WATCHER_H_
+#ifndef _MOCK_ACCESSIBLE_APPMANAGER_H_
+#define _MOCK_ACCESSIBLE_APPMANAGER_H_
 
-#include "AccessibleWatcher.h"
+#include "AccessibleNode.h"
+#include "AccessibleAppManager.h"
 
 #include "MockAccessibleApplication.h"
 
@@ -33,42 +34,55 @@ namespace AurumInternal {
 
 namespace Mock {
 
-class MockAccessibleWatcher : public AccessibleWatcher {
+class MockAccessibleAppManager : public AccessibleAppManager {
 public:
     /**
      * @brief TBD
      * @since_tizen 6.5
      */
-    MockAccessibleWatcher();
+    MockAccessibleAppManager();
 
     /**
      * @brief TBD
      * @since_tizen 6.5
      */
-    virtual ~MockAccessibleWatcher();
+    virtual ~MockAccessibleAppManager();
 
 public:
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    virtual int getApplicationCount(void) const override;
 
     /**
      * @brief TBD
      * @since_tizen 6.5
      */
-    virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName, std::shared_ptr<AccessibleNode> obj, const int count)  override;
+    virtual std::shared_ptr<AccessibleApplication> getApplicationAt(int index) const override;
 
-    virtual bool registerCallback(const A11yEvent type, EventHandler cb, void *data) override;
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    virtual std::vector<std::shared_ptr<AccessibleApplication>> getApplications(void) const override;
 
-    std::map<std::string, std::shared_ptr<AurumXML>> getXMLDocMap(void);
+public:
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    void addApplication(std::shared_ptr<AccessibleApplication> application);
 
-    std::shared_ptr<AurumXML> getXMLDoc(std::string pkgName);
-
-    void setXMLsync(bool sync);
-
-    bool getWindowEventEmitted();
+    /**
+     * @brief TBD
+     * @since_tizen 6.5
+     */
+    std::shared_ptr<MockAccessibleApplication> addApplication(std::string pkgName, Rect<int> geometry, int ifaces, int properties);
 
 private:
 
-    std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> mActiveAppMap;
-    std::map<std::string, std::shared_ptr<AurumXML>> mXMLDocMap;
+    std::vector<std::shared_ptr<AccessibleApplication>> mApplicationList;
 };
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
 
 #include "Accessible.h"
 #include "ISearchable.h"
-#include "IObject.h"
+
 #include "UiSelector.h"
 #include "Waiter.h"
 
@@ -55,7 +55,7 @@ public:
  *        such as object's properties, states, geometry information.
  *        also user can send and receive event via this class.
  */
-class UiObject : public ISearchable , public std::enable_shared_from_this<UiObject>,  public IObject {
+class UiObject : public ISearchable , public std::enable_shared_from_this<UiObject> {
 public:
     /**
      * @brief UiObject constructor with device, selector, node pointer.
@@ -139,6 +139,18 @@ public:
         const std::shared_ptr<UiSelector> selector) const override;
 
     /**
+     * @copydoc ISearchable::getMatches()
+     */
+    std::vector<std::shared_ptr<UiObject>> getMatches(
+        const std::shared_ptr<UiSelector> selector, const bool earlyReturn) const override;
+
+    /**
+     * @copydoc ISearchable::getMatchesInMatches()
+     */
+    std::vector<std::shared_ptr<UiObject>> getMatchesInMatches(
+        const std::shared_ptr<UiSelector> firstSelector, const std::shared_ptr<UiSelector> secondSelector, const bool earlyReturn) const override;
+
+    /**
      * TODO
      */
     bool waitFor(
@@ -164,7 +176,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    std::string getId() const override;
+    std::string getId() const;
 
     /**
      * @brief Gets object's type.
@@ -173,7 +185,7 @@ public:
      *
      * @since_tizen 7.0
      */
-    std::string getType() const override;
+    std::string getType() const;
 
     /**
      * @brief Gets object's geometry of the screen.
@@ -182,7 +194,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    const Rect<int> getScreenBoundingBox() const override;
+    const Rect<int> getScreenBoundingBox() const;
 
     /**
      * @brief Gets object's ocr text.
@@ -191,7 +203,7 @@ public:
      *
      * @since_tizen 7.0
      */
-    std::string getOcrText() const override;
+    std::string getOcrText() const;
 
     /**
      * @brief Gets object's angle of window.
@@ -200,7 +212,7 @@ public:
      *
      * @since_tizen 7.5
      */
-    int getWindowAngle() const override;
+    int getWindowAngle() const;
 
     /**
      * @brief Gets object's angle of target device.
@@ -209,7 +221,7 @@ public:
      *
      * @since_tizen 7.5
      */
-    int getTargetAngle() const override;
+    int getTargetAngle() const;
 
     /**
      * @brief Gets object's focusable property.
@@ -218,7 +230,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    bool isFocusable() const override;
+    bool isFocusable() const;
 
     /**
      * @brief Gets object's focused property.
@@ -227,7 +239,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    bool isFocused() const override;
+    bool isFocused() const;
 
     /**
      * @brief Gets object's clickable property.
@@ -236,7 +248,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    bool isClickable() const override;
+    bool isClickable() const;
 
     /**
      * @brief Gets object's active property.
@@ -245,7 +257,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    bool isActive() const override;
+    bool isActive() const;
 
     /**
      * @brief Gets object's showing property.
@@ -254,7 +266,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    bool isShowing() const override;
+    bool isShowing() const;
 
 public:
     /**
@@ -450,6 +462,15 @@ public:
     const Rect<int> getTextMinBoundingRect() const;
 
     /**
+     * @brief Gets object's interface information.
+     *
+     * @return string
+     *
+     * @since_tizen 8.0
+     */
+    std::string getInterface() const;
+
+    /**
      * @brief Sets object's value.
      *
      * @param[in] double value
@@ -459,6 +480,15 @@ public:
      * @since_tizen 7.0
      */
     bool setValue(double value);
+
+    /**
+     * @brief Gets object's description.
+     *
+     * @return string
+     *
+     * @since_tizen 7.0
+     */
+    std::string getDescription() const;
 
     /**
      * @brief Gets object's checkable property.
@@ -646,6 +676,13 @@ public:
      * @since_tizen 7.0
      */
     void updateTextMinBoundingRect() const;
+
+    /*
+     * @brief Updates object's interface information from atspi server.
+     *
+     * @since_tizen 8.0
+     */
+    void updateInterface() const;
 
     /**
      * @brief Sets focus to object.

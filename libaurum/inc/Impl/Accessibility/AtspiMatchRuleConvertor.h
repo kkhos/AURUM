@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,15 +15,30 @@
  *
  */
 
-#ifndef _ACCESSIBLE_H_
-#define _ACCESSIBLE_H_
+#ifndef _ATSPI_MATCH_RULE_CONVERTOR_H_
+#define _ATSPI_MATCH_RULE_CONVERTOR_H_
 
-#include "AccessibleNode.h"
-#include "AccessibleAppManager.h"
-#include "AccessibleWatcher.h"
-#include "AccessibleApplication.h"
-#include "AccessibleWindow.h"
-#include "IEventConsumer.h"
-#include "IEventSource.h"
+#include <memory>
+
+#include <atspi/atspi.h>
+
+#include "UiSelector.h"
+
+using namespace Aurum;
+
+namespace AurumInternal {
+
+class AtspiMatchRuleConvertor {
+public:
+    AtspiMatchRuleConvertor(const std::shared_ptr<UiSelector> selector);
+    ~AtspiMatchRuleConvertor();
+
+    operator AtspiMatchRule*();
+
+private:
+    std::shared_ptr<UiSelector>  mSelector;
+};
+
+}
 
 #endif

@@ -103,21 +103,6 @@ public:
 
 public:
     /**
-     * @copydoc @AccessibleWatcher::getApplicationCount()
-     */
-    virtual int getApplicationCount(void) const override;
-
-    /**
-     * @copydoc @AccessibleWatcher::getApplicationAt()
-     */
-    virtual std::shared_ptr<AccessibleApplication> getApplicationAt(int index) const override;
-
-    /**
-     * @copydoc @AccessibleWatcher::getApplications()
-     */
-    virtual std::vector<std::shared_ptr<AccessibleApplication>> getApplications(void) const override;
-
-    /**
      * @copydoc @AccessibleWatcher::executeAndWaitForEvents()
      */
     virtual bool executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName, std::shared_ptr<AccessibleNode> obj, const int count)  override;

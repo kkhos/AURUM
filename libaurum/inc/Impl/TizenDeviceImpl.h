@@ -79,36 +79,6 @@ public:
     bool wheelDown(int amount, const int durationMs) override;
 
     /**
-     * @copydoc IDevice::pressBack()
-     */
-    bool pressBack(KeyRequestType type) override;
-
-    /**
-     * @copydoc IDevice::pressHome()
-     */
-    bool pressHome(KeyRequestType type) override;
-
-    /**
-     * @copydoc IDevice::pressMenu()
-     */
-    bool pressMenu(KeyRequestType type) override;
-
-    /**
-     * @copydoc IDevice::pressVolUp()
-     */
-    bool pressVolUp(KeyRequestType type) override;
-
-    /**
-     * @copydoc IDevice::pressVolDown()
-     */
-    bool pressVolDown(KeyRequestType type) override;
-
-    /**
-     * @copydoc IDevice::pressPower()
-     */
-    bool pressPower(KeyRequestType type) override;
-
-    /**
      * @copydoc IDevice::pressKeyCode()
      */
     bool pressKeyCode(std::string keycode, KeyRequestType type) override;

@@ -10,10 +10,10 @@
 #include <iostream>
 #include <algorithm>
 
-#include "MockAccessibleWatcher.h"
 #include "MockAccessibleApplication.h"
 #include "MockAccessibleWindow.h"
 #include "MockAccessibleNode.h"
+#include "MockAccessibleAppManager.h"
 
 class AurumTestMisc : public ::testing::Test {
     public:

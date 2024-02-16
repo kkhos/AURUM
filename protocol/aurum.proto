@@ -94,6 +94,9 @@ message Element {
 
    int32 windowAngle = 31;
    int32 targetAngle = 32;
+
+   string interface = 33;
+   string description = 34;
 }
 
 message Point {
@@ -215,7 +218,11 @@ message ReqFindElement {
       bool isHighlightable = 25;
    }
 
-   repeated ReqFindElement children = 26;
+   oneof _description {
+      string description = 26;
+   }
+
+   repeated ReqFindElement children = 27;
 }
 
 message RspFindElement {
@@ -324,7 +331,11 @@ message ReqFindElements {
       bool isHighlightable = 25;
    }
 
-   repeated ReqFindElements children = 26;
+   oneof _description {
+      string description = 26;
+   }
+
+   repeated ReqFindElements children = 27;
 }
 
 message RspFindElements {

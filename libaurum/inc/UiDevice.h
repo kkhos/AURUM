@@ -153,72 +153,6 @@ public:
     bool wheelDown(int amount, const int durationMs) override;
 
     /**
-     * @brief Simulates a press on the back key.
-     *
-     * @param[in] type one of @KeyRequestType
-     *
-     * @return true if the press back succeeded else false
-     *
-     * @since_tizen 6.5
-     */
-    bool pressBack(KeyRequestType type) override;
-
-    /**
-     * @brief Simulates a press on the home key.
-     *
-     * @param[in] type one of @KeyRequestType
-     *
-     * @return true if the press home succeeded else false
-     *
-     * @since_tizen 6.5
-     */
-    bool pressHome(KeyRequestType type) override;
-
-    /**
-     * @brief Simulates a press on the menu key.
-     *
-     * @param[in] type one of @KeyRequestType
-     *
-     * @return true if the press menu succeeded else false
-     *
-     * @since_tizen 6.5
-     */
-    bool pressMenu(KeyRequestType type) override;
-
-    /**
-     * @brief Simulates a press on the volume up key.
-     *
-     * @param[in] type one of @KeyRequestType
-     *
-     * @return true if the press volume up succeeded else false
-     *
-     * @since_tizen 6.5
-     */
-    bool pressVolUp(KeyRequestType type) override;
-
-    /**
-     * @brief Simulates a press on the volume down key.
-     *
-     * @param[in] type one of @KeyRequestType
-     *
-     * @return true if the press volume down succeeded else false
-     *
-     * @since_tizen 6.5
-     */
-    bool pressVolDown(KeyRequestType type) override;
-
-    /**
-     * @brief Simulates a press on the power key.
-     *
-     * @param[in] type one of @KeyRequestType
-     *
-     * @return true if the press power succeeded else false
-     *
-     * @since_tizen 6.5
-     */
-    bool pressPower(KeyRequestType type) override;
-
-    /**
      * @brief Simulates a press on the given keycode key.
      *
      * @param[in] keycode keycode
@@ -312,6 +246,18 @@ public:
      */
     std::vector<std::shared_ptr<UiObject>> findObjects(
         const std::shared_ptr<UiSelector> selector) const override;
+
+    /**
+     * @copydoc ISearchable::getMatches()
+     */
+    std::vector<std::shared_ptr<UiObject>> getMatches(
+        const std::shared_ptr<UiSelector> selector, const bool earlyReturn) const override;
+
+    /**
+     * @copydoc ISearchable::getMatchesInMatches()
+     */
+    std::vector<std::shared_ptr<UiObject>> getMatchesInMatches(
+        const std::shared_ptr<UiSelector> firstSelector, const std::shared_ptr<UiSelector> secondSelector, const bool earlyReturn) const override;
 
     /**
      * TODO
@@ -426,6 +372,34 @@ public:
      * @since_tizen 7.5
      */
     int getTargetAngle();
+
+    /**
+     * @brief Simulates a press on the key.
+     *
+     * @param[in] keyType one of @KeyType
+     * @param[in] keyReqestType one of @KeyRequestType
+     *
+     * @return true if the press key succeeded else false
+     *
+     * @since_tizen 8.0
+     */
+    bool generateKey(KeyType keyType, KeyRequestType keyReqestType);
+
+    /**
+     * @brief Simulates a hardware key.
+     *
+     * @param[in] type one of @KeyRequestType
+     *
+     * @return true if the press back succeeded else false
+     *
+     * @deprecated Since 9.0
+     */
+    bool pressBack(KeyRequestType type);
+    bool pressHome(KeyRequestType type);
+    bool pressMenu(KeyRequestType type);
+    bool pressVolUp(KeyRequestType type);
+    bool pressVolDown(KeyRequestType type);
+    bool pressPower(KeyRequestType type);
 
 private:
     /**

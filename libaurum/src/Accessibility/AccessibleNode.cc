@@ -26,13 +26,38 @@
 
 using namespace Aurum;
 
+class Event {
+public:
+
+    Event(std::shared_ptr<AccessibleNode> node)
+    : mNode{node} {}
+
+    virtual ~Event(){};
+    virtual void handleEvent() = 0;
+protected:
+
+    std::shared_ptr<AccessibleNode> mNode;
+};
+
+class ObjectDefunctEvent : public Event {
+public:
+
+    ObjectDefunctEvent(std::shared_ptr<AccessibleNode> node)
+    : Event{node} {}
+
+    virtual ~ObjectDefunctEvent(){};
+    void handleEvent() override {
+        mNode->invalidate();
+    }
+};
+
 AccessibleNode::~AccessibleNode()
 {
 }
 
 AccessibleNode::AccessibleNode()
-: mText{""}, mOcrText{""}, mPkg{""}, mRole{""}, mId{""}, mAutomationId{""}, mType{""}, mStyle{""}, mXPath{""}, mToolkitName{""},
-  mScreenBoundingBox{0,0,0,0}, mWindowBoundingBox{0,0,0,0}, mSupportingIfaces(0), mFeatureProperty(0), mPid(0), mWindowAngle(0), mTargetAngle(0), mMinValue{0.0}, mMaxValue{0.0}, mValue{0.0}, mIncrement{0.0}, mValid{true}, mLock{}
+: mText{""}, mOcrText{""}, mPkg{""}, mRole{""}, mId{""}, mAutomationId{""}, mType{""}, mStyle{""}, mXPath{""}, mToolkitName{""}, mInterface{""}, mDescription{""},
+  mScreenBoundingBox{0,0,0,0}, mWindowBoundingBox{0,0,0,0}, mTextMinBoundingRect{0,0,0,0}, mSupportingIfaces(0), mFeatureProperty(0), mPid(0), mWindowAngle(0), mTargetAngle(0), mMinValue{0.0}, mMaxValue{0.0}, mValue{0.0}, mIncrement{0.0}, mValid{true}, mLock{}
 {
 }
 
@@ -44,6 +69,7 @@ std::string AccessibleNode::description() {
     ss << "\"mAutomationId\":\"" << this->mAutomationId << "\", ";
     ss << "\"mRole\":\"" << this->mRole << "\", ";
     ss << "\"mText\":\"" << this->mText << "\", ";
+    ss << "\"mDescription\":\"" << this->mDescription << "\", ";
     ss << "\"mOcrText\":\"" << this->mOcrText << "\", ";
     ss << "\"mPkg\":\"" << this->mPkg << "\", ";
     ss << "\"mType\":\"" << this->mType << "\", ";
@@ -53,13 +79,15 @@ std::string AccessibleNode::description() {
     return ss.str();
 }
 
-void AccessibleNode::notify(int type1, int type2, void *src)
+void AccessibleNode::notify(EventType type, void *src)
 {
-    void *handler = getRawHandler();
+    if (src != getRawHandler()) return;
 
-    if ((EventType)type1 == EventType::Object && (ObjectEventType)type2 == ObjectEventType::ObjectStateDefunct) {
-        if (handler == src) invalidate();
-    }
+    std::unique_ptr<Event> event;
+    if (type == EventType::ObjectDefunct)
+        event = std::make_unique<ObjectDefunctEvent>(this->shared_from_this());
+
+    event->handleEvent();
 }
 
 void AccessibleNode::invalidate()
@@ -199,6 +227,16 @@ const Rect<int> AccessibleNode::getScreenBoundingBox() const
 const Rect<int> AccessibleNode::getWindowBoundingBox() const
 {
     return mWindowBoundingBox;
+}
+
+std::string AccessibleNode::getInterface() const
+{
+    return mInterface;
+}
+
+std::string AccessibleNode::getDescription() const
+{
+    return mDescription;
 }
 
 bool AccessibleNode::isCheckable() const

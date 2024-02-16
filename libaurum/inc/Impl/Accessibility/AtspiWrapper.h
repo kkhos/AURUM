@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -43,6 +43,7 @@ public:
     static GArray *Atspi_accessible_get_children(AtspiAccessible *node, GError **error);
     static AtspiAccessible *Atspi_accessible_get_child_at_index(AtspiAccessible *node, int index, GError **error);
     static AtspiAccessible *Atspi_accessible_get_parent(AtspiAccessible *node, GError **error);
+    static gchar *Atspi_accessible_get_description(AtspiAccessible *node, GError **error);
     static AtspiStateSet *Atspi_accessible_get_state_set(AtspiAccessible *node);
     static gboolean Atspi_state_set_contains(AtspiStateSet *set , AtspiStateType state);
     static gchar *Atspi_accessible_get_role_name(AtspiAccessible *node, GError **error);
@@ -71,6 +72,11 @@ public:
     static gchar *Atspi_accessible_get_toolkit_name(AtspiAccessible *node, GError **error);
     static AtspiRect *Atspi_text_get_minimum_bounding_rectangles(AtspiText* obj, gint start_offset, gint end_offset, AtspiCoordType type, GError** error);
     static void Atspi_accessible_set_listen_post_render(AtspiAccessible *obj, gboolean enabled, GError **error);
+    static AtspiCollection *Atspi_accessible_get_collection_iface(AtspiAccessible *node);
+    static GArray *Atspi_collection_get_matches(AtspiCollection *obj, AtspiMatchRule *rule, AtspiCollectionSortOrder sortby, gint count, gboolean traverse, GError **error);
+    static GArray *Atspi_collection_get_matches_in_matches(AtspiCollection *obj, AtspiMatchRule *first_rule, AtspiMatchRule *second_rule, AtspiCollectionSortOrder sortby, gint first_count, gint second_count, gboolean traverse, GError **error);
+    static AtspiAccessibleNodeInfo *Atspi_accessible_get_node_info(AtspiAccessible *obj, GError **error);
+    static void Atspi_accessible_free_node_info(AtspiAccessibleNodeInfo *node_info);
 
 private:
     static std::recursive_mutex mMutex;

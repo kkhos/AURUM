@@ -3,7 +3,9 @@
         files('AtspiAccessibleWindow.cc'),
         files('AtspiAccessibleNode.cc'),
         files('AtspiAccessibleWatcher.cc'),
+        files('AtspiAccessibleAppManager.cc'),
         files('AtspiWrapper.cc'),
+        files('AtspiMatchRuleConvertor.cc'),
     ]
 
     libaurum_src += [
@@ -11,4 +13,5 @@
         files('MockAccessibleWindow.cc'),
         files('MockAccessibleNode.cc'),
         files('MockAccessibleWatcher.cc'),
+        files('MockAccessibleAppManager.cc'),
     ]

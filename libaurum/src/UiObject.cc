@@ -70,7 +70,7 @@ std::shared_ptr<UiSelector> UiObject::getSelector()
 bool UiObject::hasObject(const std::shared_ptr<UiSelector> selector) const
 {
     std::shared_ptr<AccessibleNode> node =
-        Comparer::findObject(mDevice, selector, getAccessibleNode());
+        Comparer::findObject(mDevice, selector, mNode);
     if (node != nullptr) {
         // todo : what is this node.recycle()
         return true;
@@ -81,7 +81,7 @@ bool UiObject::hasObject(const std::shared_ptr<UiSelector> selector) const
 std::shared_ptr<UiObject> UiObject::findObject(const std::shared_ptr<UiSelector> selector) const
 {
     std::shared_ptr<AccessibleNode> node =
-        Comparer::findObject(mDevice, selector, getAccessibleNode());
+        Comparer::findObject(mDevice, selector, mNode);
     if (node)
         return std::make_shared<UiObject>(mDevice, selector, std::move(node));
     else
@@ -94,13 +94,37 @@ std::vector<std::shared_ptr<UiObject>> UiObject::findObjects(
     std::vector<std::shared_ptr<UiObject>> result{};
 
     std::vector<std::shared_ptr<AccessibleNode>> nodes{};
-    Comparer::findObjects(nodes, mDevice, selector, getAccessibleNode());
+    Comparer::findObjects(nodes, mDevice, selector, mNode);
     for ( auto& node : nodes) {
         if (!node) {
             LOGI("Skipped! (node == nullptr)");
             continue;
         }
         result.push_back(std::make_shared<UiObject>(mDevice, selector, std::move(node)));
+    }
+    return result;
+}
+
+std::vector<std::shared_ptr<UiObject>> UiObject::getMatches(
+    const std::shared_ptr<UiSelector> selector, const bool earlyReturn) const
+{
+    std::vector<std::shared_ptr<UiObject>> result{};
+
+    auto nodes = mNode->getMatches(selector, earlyReturn);
+    for (auto &node : nodes) {
+        result.push_back(std::make_shared<UiObject>(mDevice, selector, std::move(node)));
+    }
+    return result;
+}
+
+std::vector<std::shared_ptr<UiObject>> UiObject::getMatchesInMatches(
+    const std::shared_ptr<UiSelector> firstSelector, const std::shared_ptr<UiSelector> secondSelector, const bool earlyReturn) const
+{
+    std::vector<std::shared_ptr<UiObject>> result{};
+
+    auto nodes = mNode->getMatchesInMatches(firstSelector, secondSelector, earlyReturn);
+    for (auto &node : nodes) {
+        result.push_back(std::make_shared<UiObject>(mDevice, nullptr, std::move(node)));
     }
     return result;
 }
@@ -126,18 +150,18 @@ bool UiObject::waitFor(
 
 UiObject *UiObject::getParent() const
 {
-    std::shared_ptr<AccessibleNode> node = getAccessibleNode()->getParent();
+    std::shared_ptr<AccessibleNode> node = mNode->getParent();
     if (!node) return nullptr;
     return new UiObject(mDevice, mSelector, std::move(node));
 }
 
 int UiObject::getChildCount() const
 {
-    return getAccessibleNode()->getChildCount();
+    return mNode->getChildCount();
 }
 
 std::shared_ptr<UiObject> UiObject::getChildAt(int index) const {
-    auto childNode = getAccessibleNode()->getChildAt(index);
+    auto childNode = mNode->getChildAt(index);
     if (childNode) {
         return std::make_shared<UiObject>(mDevice, mSelector, childNode);
     }
@@ -148,7 +172,7 @@ std::vector<std::shared_ptr<UiObject>> UiObject::getChildren() const
 {
     std::vector<std::shared_ptr<UiObject>> ret{};
 
-    auto children = getAccessibleNode()->getChildren();
+    auto children = mNode->getChildren();
     for (auto &child : children) {
         ret.push_back(std::make_shared<UiObject>(mDevice, mSelector, child));
     }
@@ -169,173 +193,183 @@ std::shared_ptr<Node> UiObject::getDescendant()
 
 std::string UiObject::getApplicationPackage() const
 {
-    return getAccessibleNode()->getPkg();
+    return mNode->getPkg();
 }
 
 std::string UiObject::getId() const
 {
-    return getAccessibleNode()->getId();
+    return mNode->getId();
 }
 
 std::string UiObject::getAutomationId() const
 {
-    return getAccessibleNode()->getAutomationId();
+    return mNode->getAutomationId();
 }
 
 std::string UiObject::getType() const
 {
-    return getAccessibleNode()->getType();
+    return mNode->getType();
 }
 
 std::string UiObject::getElementStyle() const
 {
-    return getAccessibleNode()->getStyle();
+    return mNode->getStyle();
 }
 
 std::string UiObject::getText() const
 {
-    return getAccessibleNode()->getText();
+    return mNode->getText();
 }
 
 std::string UiObject::getRole() const
 {
-    return getAccessibleNode()->getRole();
+    return mNode->getRole();
 }
 
 std::string UiObject::getXPath() const
 {
-    return getAccessibleNode()->getXPath();
+    return mNode->getXPath();
 }
 
 const double UiObject::getMinValue() const
 {
-    return getAccessibleNode()->getMinValue();
+    return mNode->getMinValue();
 }
 
 const double UiObject::getMaxValue() const
 {
-    return getAccessibleNode()->getMaxValue();
+    return mNode->getMaxValue();
 }
 
 const double UiObject::getValue() const
 {
-    return getAccessibleNode()->getValue();
+    return mNode->getValue();
 }
 
 const double UiObject::getIncrement() const
 {
-    return getAccessibleNode()->getIncrement();
+    return mNode->getIncrement();
 }
 
 const Rect<int> UiObject::getTextMinBoundingRect() const
 {
-    return getAccessibleNode()->getTextMinBoundingRect();
+    return mNode->getTextMinBoundingRect();
+}
+
+std::string UiObject::getInterface() const
+{
+    return mNode->getInterface();
+}
+
+std::string UiObject::getDescription() const
+{
+    return mNode->getDescription();
 }
 
 bool UiObject::setValue(double value)
 {
-    return getAccessibleNode()->setValue(value);
+    return mNode->setValue(value);
 }
 
 bool UiObject::setText(std::string text)
 {
-    return getAccessibleNode()->setValue(text);
+    return mNode->setValue(text);
 }
 
 std::string UiObject::getOcrText() const
 {
-    return getAccessibleNode()->getOcrText();
+    return mNode->getOcrText();
 }
 
 int UiObject::getWindowAngle() const
 {
-    return getAccessibleNode()->getWindowAngle();
+    return mNode->getWindowAngle();
 }
 
 int UiObject::getTargetAngle() const
 {
-    return getAccessibleNode()->getTargetAngle();
+    return mNode->getTargetAngle();
 }
 
 std::string UiObject::getToolkitName() const
 {
-    getAccessibleNode()->updateToolkitName();
-    return getAccessibleNode()->getToolkitName();
+    mNode->updateToolkitName();
+    return mNode->getToolkitName();
 }
 
 void UiObject::setOcrText(std::string text)
 {
-    getAccessibleNode()->setOcrText(text);
+    mNode->setOcrText(text);
 }
 
 bool UiObject::isCheckable() const
 {
-    return getAccessibleNode()->isCheckable();
+    return mNode->isCheckable();
 }
 
 bool UiObject::isChecked() const
 {
-    return getAccessibleNode()->isChecked();
+    return mNode->isChecked();
 }
 
 bool UiObject::isClickable() const
 {
-    return getAccessibleNode()->isClickable();
+    return mNode->isClickable();
 }
 
 bool UiObject::isEnabled() const
 {
-    return getAccessibleNode()->isEnabled();
+    return mNode->isEnabled();
 }
 
 bool UiObject::isFocusable() const
 {
-    return getAccessibleNode()->isFocusable();
+    return mNode->isFocusable();
 }
 
 bool UiObject::isFocused() const
 {
-    return getAccessibleNode()->isFocused();
+    return mNode->isFocused();
 }
 
 bool UiObject::isLongClickable() const
 {
-    return getAccessibleNode()->isLongClickable();
+    return mNode->isLongClickable();
 }
 
 bool UiObject::isScrollable() const
 {
-    return getAccessibleNode()->isScrollable();
+    return mNode->isScrollable();
 }
 
 bool UiObject::isSelectable() const
 {
-    return getAccessibleNode()->isSelectable();
+    return mNode->isSelectable();
 }
 
 bool UiObject::isSelected() const
 {
-    return getAccessibleNode()->isSelected();
+    return mNode->isSelected();
 }
 
 bool UiObject::isVisible() const
 {
-    return getAccessibleNode()->isVisible();
+    return mNode->isVisible();
 }
 
 bool UiObject::isShowing() const
 {
-    return getAccessibleNode()->isShowing();
+    return mNode->isShowing();
 }
 
 bool UiObject::isActive() const
 {
-    return getAccessibleNode()->isActive();
+    return mNode->isActive();
 }
 
 bool UiObject::isHighlightable() const
 {
-    return getAccessibleNode()->isHighlightable();
+    return mNode->isHighlightable();
 }
 
 void UiObject::refresh() const
@@ -423,19 +457,22 @@ const Rect<int> UiObject::getWindowBoundingBox() const
     return mNode->getWindowBoundingBox();
 }
 
+const Point2D<int> getMidPoint(std::shared_ptr<Aurum::AccessibleNode> node)
+{
+    node->updateExtents();
+    const Rect<int> rect = node->getScreenBoundingBox();
+    return rect.midPoint();
+}
+
 void UiObject::click() const
 {
-    mNode->updateExtents();
-    const Rect<int> rect = mNode->getScreenBoundingBox();
-    const Point2D<int> midPoint = rect.midPoint();
+    const Point2D<int> midPoint = getMidPoint(mNode);
     mDevice->click(midPoint.x, midPoint.y);
 }
 
 void UiObject::longClick(const unsigned int durationMs) const
 {
-    mNode->updateExtents();
-    const Rect<int> rect = mNode->getScreenBoundingBox();
-    const Point2D<int> midPoint = rect.midPoint();
+    const Point2D<int> midPoint = getMidPoint(mNode);
     mDevice->click(midPoint.x, midPoint.y, durationMs);
 }
 

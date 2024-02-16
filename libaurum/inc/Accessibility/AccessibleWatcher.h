@@ -18,7 +18,6 @@
 #ifndef _ACCESSIBLE_WATCHER_H_
 #define _ACCESSIBLE_WATCHER_H_
 
-#include "AccessibleApplication.h"
 #include "AccessibleWindow.h"
 #include "AccessibleNode.h"
 #include "IEventSource.h"
@@ -69,34 +68,6 @@ public:
     static AccessibleWatcher *getInstance(AccessibleWatcher *watcherImpl = nullptr);
 
 public:
-    /**
-     * @brief Gets current running application count in device.
-     *
-     * @return application count
-     *
-     * @since_tizen 6.5
-     */
-    virtual int getApplicationCount(void) const = 0;
-
-    /**
-     * @brief Gets application class at specific index.
-     *
-     * @param[in] index application index
-     *
-     * @return @AccessibleApplication ptr
-     *
-     * @since_tizen 6.5
-     */
-    virtual std::shared_ptr<AccessibleApplication> getApplicationAt(int index) const = 0;
-
-    /**
-     * @brief Gets application node vector.
-     *
-     * @return @AccessibleApplication vector
-     *
-     * @since_tizen 6.5
-     */
-    virtual std::vector<std::shared_ptr<AccessibleApplication>> getApplications(void) const = 0;
 
     /**
      * @brief Executes runnable command and wait given event.
@@ -163,16 +134,6 @@ public:
 
 public:
     /**
-     * @brief Gets active application vector.
-     *
-     * @return @AccessibleApplication vector
-     *
-     * @since_tizen 6.5
-     */
-    virtual std::vector<std::shared_ptr<AccessibleApplication>> getActiveApplications(void) const;
-
-public:
-    /**
      * @copydoc @IEventSource::attach()
      */
     void attach(std::shared_ptr<IEventConsumer> source) override;
@@ -185,7 +146,7 @@ public:
     /**
      * @copydoc @IEventSource::notifyAll()
      */
-    void notifyAll(int type1, int type2, void *src) override;
+    void notifyAll(EventType type, void *src) override;
 
 private:
     std::set<std::shared_ptr<IEventConsumer>> mSources;

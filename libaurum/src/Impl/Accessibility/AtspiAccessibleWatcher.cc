@@ -18,6 +18,7 @@
 #include "Aurum.h"
 
 #include "AtspiAccessibleWatcher.h"
+#include "AtspiAccessibleAppManager.h"
 #include "AtspiAccessibleApplication.h"
 #include "AtspiAccessibleWindow.h"
 #include "AtspiAccessibleNode.h"
@@ -353,46 +354,7 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
 void AtspiAccessibleWatcher::onObjectDefunct(AtspiAccessible *node)
 {
     LOGI("onObjectDefunct obj:%p", node);
-    notifyAll((int)EventType::Object, (int)ObjectEventType::ObjectStateDefunct, node);
-}
-
-int AtspiAccessibleWatcher::getApplicationCount(void) const
-{
-    AtspiAccessible *root = AtspiWrapper::Atspi_get_desktop(0);
-    int nchild = AtspiWrapper::Atspi_accessible_get_child_count(root, NULL);
-    g_object_unref(root);
-
-    if (nchild <= 0) return 0;
-    return nchild;
-}
-
-std::shared_ptr<AccessibleApplication> AtspiAccessibleWatcher::getApplicationAt(int index) const
-{
-    AtspiAccessible *root = AtspiWrapper::Atspi_get_desktop(0);
-    AtspiAccessible *child = AtspiWrapper::Atspi_accessible_get_child_at_index(root, index, NULL);
-    g_object_unref(root);
-    return std::make_shared<AtspiAccessibleApplication>(std::make_shared<AtspiAccessibleNode>(child));
-}
-
-std::vector<std::shared_ptr<AccessibleApplication>> AtspiAccessibleWatcher::getApplications(void) const
-{
-    std::vector<std::shared_ptr<AccessibleApplication>> ret{};
-    AtspiAccessible *root = AtspiWrapper::Atspi_get_desktop(0);
-    GArray *children = AtspiWrapper::Atspi_accessible_get_children(root, NULL);
-    if (children) {
-        ret.reserve(children->len);
-        AtspiAccessible *child = nullptr;
-        for (unsigned int i = 0; i < children->len; i++) {
-            child = g_array_index(children, AtspiAccessible *, i);
-            if (child) {
-                ret.push_back(std::make_shared<AtspiAccessibleApplication>(std::make_shared<AtspiAccessibleNode>(child)));
-            }
-        }
-        g_array_free(children, true);
-    }
-    g_object_unref(root);
-
-    return ret;
+    notifyAll(EventType::ObjectDefunct, node);
 }
 
 bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName, std::shared_ptr<AccessibleNode> obj, const int count)
@@ -579,7 +541,7 @@ void AtspiAccessibleWatcher::setXMLsync(bool sync)
         mAppCount = 0;
         mAppXMLLoadedCount = 0;
     } else {
-        auto apps = getApplications();
+        auto apps = AccessibleAppManager::getInstance()->getApplications();
         for (auto &app : apps)
         {
             app->getAccessibleNode()->updateName();

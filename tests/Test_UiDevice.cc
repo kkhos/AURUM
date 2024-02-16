@@ -14,6 +14,7 @@
 #include <thread>
 
 #include "MockAccessibleWatcher.h"
+#include "MockAccessibleAppManager.h"
 #include "MockAccessibleApplication.h"
 #include "MockAccessibleWindow.h"
 #include "MockAccessibleNode.h"
@@ -24,7 +25,7 @@ using namespace AurumInternal::Mock;
 class AurumTestUiDevice : public ::testing::Test {
     public:
         AurumTestUiDevice()
-        : mDevice{nullptr}, mWatcher{nullptr}, mApp{nullptr}, mWin{nullptr}, mNode{nullptr} {
+        : mDevice{nullptr}, mAppManager{nullptr}, mWatcher{nullptr}, mApp{nullptr}, mWin{nullptr}, mNode{nullptr} {
         }
 
         void SetUp() override {
@@ -34,7 +35,10 @@ class AurumTestUiDevice : public ::testing::Test {
             mWatcher = new MockAccessibleWatcher();
             AccessibleWatcher::getInstance(mWatcher);
 
-            mApp = mWatcher->addApplication("org.tizen.aurum.test.app", {0,0,1024,1024}, 0, 0);
+            mAppManager = new MockAccessibleAppManager();
+            AccessibleAppManager::getInstance(mAppManager);
+
+            mApp = mAppManager->addApplication("org.tizen.aurum.test.app", {0,0,1024,1024}, 0, 0);
             mWin = mApp->addWindow("title", "Elm_Win", {100,100,200,200}, (int)NodeFeatureProperties::SHOWING|(int)NodeFeatureProperties::VISIBLE|(int)NodeFeatureProperties::ACTIVE);
             mWin->addNode("test", "pkg", "TeSt1234!@#$", "res", "type", "style", "", {0,0,100,100}, 0, 0);
             mNode = mWin->addNode("test", "pkg", "TeSt1234!@#$", "res", "type", "style", "", {100,100,200,200}, 0, 0);
@@ -44,6 +48,7 @@ class AurumTestUiDevice : public ::testing::Test {
         }
 
         MockDeviceImpl *mDevice;
+        MockAccessibleAppManager *mAppManager;
         MockAccessibleWatcher *mWatcher;
         std::shared_ptr<MockAccessibleApplication> mApp;
         std::shared_ptr<MockAccessibleWindow> mWin;
@@ -220,4 +225,30 @@ TEST_F(AurumTestUiDevice, getWindowRoot_N1)
 {
     auto windowroot = UiDevice::getInstance()->getWindowRoot();
     ASSERT_NE(windowroot.size(), 0);
+}
+
+TEST_F(AurumTestUiDevice, pressKeyCode_P1)
+{
+    mDevice->pressKeyCode("BACK", KeyRequestType::PRESS);
+    mDevice->pressKeyCode("HOME", KeyRequestType::PRESS);
+    mDevice->pressKeyCode("MENU", KeyRequestType::PRESS);
+    mDevice->pressKeyCode("VOLUP", KeyRequestType::PRESS);
+    mDevice->pressKeyCode("VOLDOWN", KeyRequestType::PRESS);
+    mDevice->pressKeyCode("POWER", KeyRequestType::PRESS);
+
+    auto listOfKeys = mDevice->getGeneratedKeys();
+    auto key = listOfKeys[0];
+    ASSERT_EQ(std::get<2>(key), "BACK");
+    key = listOfKeys[1];
+    ASSERT_EQ(std::get<2>(key), "HOME");
+    key = listOfKeys[2];
+    ASSERT_EQ(std::get<2>(key), "MENU");
+    key = listOfKeys[3];
+    ASSERT_EQ(std::get<2>(key), "VOLUP");
+    key = listOfKeys[4];
+    ASSERT_EQ(std::get<2>(key), "VOLDOWN");
+    key = listOfKeys[5];
+    ASSERT_EQ(std::get<2>(key), "POWER");
+
+    mDevice->clearGeneratedKeys();
 }

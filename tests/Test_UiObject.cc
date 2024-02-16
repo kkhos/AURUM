@@ -15,6 +15,7 @@
 #include <thread>
 
 #include "MockAccessibleWatcher.h"
+#include "MockAccessibleAppManager.h"
 #include "MockAccessibleApplication.h"
 #include "MockAccessibleWindow.h"
 #include "MockAccessibleNode.h"
@@ -24,7 +25,7 @@ using namespace AurumInternal::Mock;
 
 class AurumTestUiObject : public ::testing::Test {
     public:
-        AurumTestUiObject() : mDevice{nullptr},mWatcher{nullptr}, mApp{nullptr}, mWin{nullptr}, mNode{nullptr} {
+        AurumTestUiObject() : mDevice{nullptr}, mAppManager{nullptr}, mWatcher{nullptr}, mApp{nullptr}, mWin{nullptr}, mNode{nullptr} {
         }
 
         void SetUp() override {
@@ -34,7 +35,10 @@ class AurumTestUiObject : public ::testing::Test {
             mWatcher = new MockAccessibleWatcher();
             AccessibleWatcher::getInstance(mWatcher);
 
-            mApp = mWatcher->addApplication("org.tizen.aurum.test.app", {0,0,1024,1024}, 0, 0);
+            mAppManager = new MockAccessibleAppManager();
+            AccessibleAppManager::getInstance(mAppManager);
+
+            mApp = mAppManager->addApplication("org.tizen.aurum.test.app", {0,0,1024,1024}, 0, 0);
             mWin = mApp->addWindow("title", "Elm_Win", {100,100,200,200}, (int)NodeFeatureProperties::SHOWING|(int)NodeFeatureProperties::VISIBLE|(int)NodeFeatureProperties::ACTIVE);
             mWin->addNode("test", "pkg", "TeSt1234!@#$", "res", "type", "style", "", {0,0,100,100}, 0, 0);
             mNode = mWin->addNode("test2", "pkg", "TeSt1234!@#$", "res", "type", "style", "", {100,100,200,200}, 0, 0);
@@ -63,6 +67,7 @@ class AurumTestUiObject : public ::testing::Test {
 
     public:
         MockDeviceImpl *mDevice;
+        MockAccessibleAppManager *mAppManager;
         MockAccessibleWatcher *mWatcher;
         std::shared_ptr<MockAccessibleApplication> mApp;
         std::shared_ptr<MockAccessibleWindow> mWin;
@@ -515,4 +520,121 @@ TEST_F(AurumTestUiObject, getScreenBoundingBox_N1)
     ASSERT_NE(box.mBottomRight.y, 0 );
     ASSERT_NE(box.mTopLeft.x, 0 );
     ASSERT_NE(box.mTopLeft.y, 0 );
+}
+TEST_F(AurumTestUiObject, refresh_P1)
+{
+    auto obj = UiDevice::getInstance();
+    auto targetNode = obj->findObject(Sel::text("test2"));
+    targetNode->refresh();
+
+    ASSERT_EQ(targetNode->getText(), "refreshText");
+    ASSERT_EQ(targetNode->getApplicationPackage(), "refreshPkg");
+    ASSERT_EQ(targetNode->getRole(), "refreshRole");
+    ASSERT_EQ(targetNode->getId(), "refreshId");
+    ASSERT_EQ(targetNode->getAutomationId(), "refreshAutomationId");
+    ASSERT_EQ(targetNode->getType(), "refreshType");
+    ASSERT_EQ(targetNode->getScreenBoundingBox().width(), 500);
+    ASSERT_EQ(targetNode->getScreenBoundingBox().height(), 500);
+    ASSERT_EQ(targetNode->isSelectable(), true);
+    ASSERT_EQ(targetNode->isSelected(), true);
+}
+
+TEST_F(AurumTestUiObject, refresh_N1)
+{
+    auto obj = UiDevice::getInstance();
+    auto targetNode = obj->findObject(Sel::text("test2"));
+    targetNode->refresh();
+
+    ASSERT_NE(targetNode->getText(), "test2");
+    ASSERT_NE(targetNode->getApplicationPackage(), "pkg");
+    ASSERT_NE(targetNode->getRole(), "TeSt1234!@#$");
+    ASSERT_NE(targetNode->getId(), "res");
+    ASSERT_NE(targetNode->getAutomationId(), "type");
+    ASSERT_NE(targetNode->getType(), "style");
+    ASSERT_NE(targetNode->getScreenBoundingBox().width(), 200);
+    ASSERT_NE(targetNode->getScreenBoundingBox().height(), 200);
+}
+
+TEST_F(AurumTestUiObject, getMatches_P1)
+{
+    auto obj = UiDevice::getInstance();
+    auto parent = obj->findObject(Sel::text("test2"));
+
+    auto matchedNodes = obj->getMatches(Sel::text("ACTIVE"), 0);
+    ASSERT_EQ(matchedNodes.size(), 1);
+
+    matchedNodes = obj->getMatches(Sel::type("type"), 0);
+    ASSERT_EQ(matchedNodes.size(), 16);
+
+    matchedNodes = obj->getMatches(Sel::style("style"), 0);
+    ASSERT_EQ(matchedNodes.size(), 16);
+}
+
+TEST_F(AurumTestUiObject, getMatches_P2)
+{
+    auto obj = UiDevice::getInstance();
+    auto parent = obj->findObject(Sel::text("test2"));
+
+    auto matchedNodes = obj->getMatches(Sel::text("ACTIVE"), 1);
+    ASSERT_EQ(matchedNodes.size(), 1);
+    ASSERT_EQ(matchedNodes[0]->getText(), "ACTIVE");
+
+    matchedNodes = obj->getMatches(Sel::type("type"), 1);
+    ASSERT_EQ(matchedNodes.size(), 1);
+    ASSERT_EQ(matchedNodes[0]->getType(), "type");
+
+    matchedNodes = obj->getMatches(Sel::style("style"), 1);
+    ASSERT_EQ(matchedNodes.size(), 1);
+}
+
+TEST_F(AurumTestUiObject, getMatches_N1)
+{
+    auto obj = UiDevice::getInstance();
+    auto parent = obj->findObject(Sel::text("test2"));
+
+    auto matchedNodes = obj->getMatches(Sel::text("testText"), 1);
+    ASSERT_NE(matchedNodes.size(), 1);
+
+    matchedNodes = obj->getMatches(Sel::type("testType"), 1);
+    ASSERT_NE(matchedNodes.size(), 1);
+
+    matchedNodes = obj->getMatches(Sel::style("testStyle"), 1);
+    ASSERT_NE(matchedNodes.size(), 1);
+}
+
+TEST_F(AurumTestUiObject, getMatchesInMatches_P1)
+{
+    auto obj = UiDevice::getInstance();
+    auto parent = obj->findObject(Sel::text("test2"));
+
+    auto matchedNodes = obj->getMatchesInMatches(Sel::type("type"), Sel::text("ACTIVE"), 0);
+    ASSERT_EQ(matchedNodes.size(), 1);
+    ASSERT_EQ(matchedNodes[0]->getText(), "ACTIVE");
+
+    matchedNodes = obj->getMatchesInMatches(Sel::type("type"), Sel::style("style"), 0);
+    ASSERT_EQ(matchedNodes.size(), 16);
+}
+
+TEST_F(AurumTestUiObject, getMatchesInMatches_P2)
+{
+    auto obj = UiDevice::getInstance();
+    auto parent = obj->findObject(Sel::text("test2"));
+
+    auto matchedNodes = obj->getMatchesInMatches(Sel::type("type"), Sel::text("ACTIVE"), 1);
+    ASSERT_EQ(matchedNodes.size(), 0);
+
+    matchedNodes = obj->getMatchesInMatches(Sel::type("type"), Sel::style("style"), 1);
+    ASSERT_EQ(matchedNodes.size(), 1);
+}
+
+TEST_F(AurumTestUiObject, getMatchesInMatches_N1)
+{
+    auto obj = UiDevice::getInstance();
+    auto parent = obj->findObject(Sel::text("test2"));
+
+    auto matchedNodes = obj->getMatchesInMatches(Sel::type("testType"), Sel::text("testText"), 1);
+    ASSERT_NE(matchedNodes.size(), 1);
+
+    matchedNodes = obj->getMatchesInMatches(Sel::type("testType"), Sel::style("testStyle"), 1);
+    ASSERT_NE(matchedNodes.size(), 1);
 }

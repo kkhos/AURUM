@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -71,6 +71,16 @@ public:
     std::shared_ptr<AccessibleNode> getParent() const override;
 
     /**
+     * @copydoc UiObject::getMatches()
+     */
+    std::vector<std::shared_ptr<AccessibleNode>> getMatches(const std::shared_ptr<UiSelector> selector, const bool ealryReturn) const override;
+
+    /**
+     * @copydoc UiObject::getMatchesInMatches()
+     */
+    std::vector<std::shared_ptr<AccessibleNode>> getMatchesInMatches(const std::shared_ptr<UiSelector> firstSelector, const std::shared_ptr<UiSelector> secondSelector, const bool ealryReturn) const override;
+
+    /**
      * @copydoc AccessibleNode::isValid()
      */
     bool isValid() const override;
@@ -140,6 +150,11 @@ public:
      * @copydoc UiObject::updateTextMinBoundingRect()
      */
     void updateTextMinBoundingRect() override;
+
+    /**
+     * @copydoc UiObject::updateInterface()
+     */
+    void updateInterface() override;
 
     /**
      * @copydoc UiObject::setFocus()

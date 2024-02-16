@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2024 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25,8 +25,8 @@
 #include <mutex>
 
 #include "IEventConsumer.h"
-#include "IObject.h"
 #include "Rect.h"
+#include "UiSelector.h"
 #include "config.h"
 
 namespace Aurum {
@@ -85,7 +85,7 @@ enum class NodeFeatureProperties {
  *
  * @since_tizen 6.5
  */
-class AccessibleNode : public std::enable_shared_from_this<AccessibleNode>, public IEventConsumer, public IObject {
+class AccessibleNode : public std::enable_shared_from_this<AccessibleNode>, public IEventConsumer {
 public:
     /**
      * @brief AccessibleNode constructor.
@@ -132,6 +132,16 @@ public:
     virtual std::shared_ptr<AccessibleNode> getParent() const = 0;
 
     /**
+     * @copydoc UiObject::getMatches()
+     */
+    virtual std::vector<std::shared_ptr<AccessibleNode>> getMatches(const std::shared_ptr<UiSelector> selector, const bool ealryReturn) const = 0;
+
+    /**
+     * @copydoc UiObject::getMatchesInMatches()
+     */
+    virtual std::vector<std::shared_ptr<AccessibleNode>> getMatchesInMatches(const std::shared_ptr<UiSelector> firstSelector, const std::shared_ptr<UiSelector> secondSelector, const bool ealryReturn) const = 0;
+
+    /**
      * @brief Called by @AccessibleWatcher::notifyAll.
      *        Changes Node property If it's @EventType, @ObjectEventType are matches.
      *
@@ -141,7 +151,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    void notify(int type, int type2, void *src) override;
+    void notify(EventType type, void *src) override;
 
     /**
      * @brief Changes Node state to invalidate.
@@ -154,57 +164,57 @@ public:
     /**
      * @copydoc UiObject::getId()
      */
-    std::string getId() const override;
+    std::string getId() const;
 
     /**
      * @copydoc UiObject::getType()
      */
-    std::string getType() const override;
+    std::string getType() const;
 
     /**
      * @copydoc UiObject::getScreenBoundingBox()
      */
-    const Rect<int> getScreenBoundingBox() const override;
+    const Rect<int> getScreenBoundingBox() const;
 
     /**
      * @copydoc UiObject::getOcrText()
      */
-    std::string getOcrText() const override;
+    std::string getOcrText() const;
 
     /**
      * @copydoc UiObject::getWindowAngle()
      */
-    int getWindowAngle() const override;
+    int getWindowAngle() const;
 
     /**
      * @copydoc UiObject::getTargetAngle()
      */
-    int getTargetAngle() const override;
+    int getTargetAngle() const;
 
     /**
      * @copydoc UiObject::isFocusable()
      */
-    bool isFocusable() const override;
+    bool isFocusable() const;
 
     /**
      * @copydoc UiObject::isFocused()
      */
-    bool isFocused() const override;
+    bool isFocused() const;
 
     /**
      * @copydoc UiObject::isClickable()
      */
-    bool isClickable() const override;
+    bool isClickable() const;
 
     /**
      * @copydoc UiObject::isActive()
      */
-    bool isActive() const override;
+    bool isActive() const;
 
     /**
      * @copydoc UiObject::isShowing()
      */
-    bool isShowing() const override;
+    bool isShowing() const;
 
 public:
     /**
@@ -310,6 +320,16 @@ public:
      *
      */
     Rect<int> getTextMinBoundingRect() const;
+
+    /**
+     * @copydoc UiObject::getInterface()
+     */
+    std::string getInterface() const;
+
+    /**
+     * @copydoc UiObject::getDescription()
+     */
+    std::string getDescription() const;
 
     /**
      * @copydoc UiObject::isCheckable()
@@ -451,6 +471,11 @@ public:
     virtual void updateTextMinBoundingRect() = 0;
 
     /**
+     * @copydoc UiObject::updateInterface()
+     */
+    virtual void updateInterface() = 0;
+
+    /**
      * @brief Updates Node information from atspi server.
      *
      * @since_tizen 6.5
@@ -559,6 +584,8 @@ protected:
     std::string mStyle;
     std::string mXPath;
     std::string mToolkitName;
+    std::string mInterface;
+    std::string mDescription;
     Rect<int> mScreenBoundingBox;
     Rect<int> mWindowBoundingBox;
     Rect<int> mTextMinBoundingRect;

@@ -68,6 +68,17 @@ public:
      */
     std::shared_ptr<AccessibleNode> getParent() const override;
 
+    /**
+     * @brief TBD
+     * @since_tizen 8.0
+     */
+    std::vector<std::shared_ptr<AccessibleNode>> getMatches(const std::shared_ptr<UiSelector> selector, const bool ealryReturn) const override;
+
+    /**
+     * @copydoc UiObject::getMatchesInMatches()
+     */
+    std::vector<std::shared_ptr<AccessibleNode>> getMatchesInMatches(const std::shared_ptr<UiSelector> firstSelector, const std::shared_ptr<UiSelector> secondSelector, const bool ealryReturn) const override;
+
 public:
     /**
      * @brief TBD
@@ -140,6 +151,11 @@ public:
      * @since_tizen 7.0
      */
     void updatePid() override;
+
+    /**
+     * @copydoc UiObject::updateInterface()
+     */
+    void updateInterface() override;
 
     /**
      * @brief TBD

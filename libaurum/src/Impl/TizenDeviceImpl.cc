@@ -215,36 +215,6 @@ bool TizenDeviceImpl::drag(const int sx, const int sy, const int ex, const int e
     return true;
 }
 
-bool TizenDeviceImpl::pressBack(KeyRequestType type)
-{
-    return pressKeyCode("XF86Back", type);
-}
-
-bool TizenDeviceImpl::pressHome(KeyRequestType type)
-{
-    return pressKeyCode("XF86Home", type);
-}
-
-bool TizenDeviceImpl::pressMenu(KeyRequestType type)
-{
-    return pressKeyCode("XF86Menu", type);
-}
-
-bool TizenDeviceImpl::pressVolUp(KeyRequestType type)
-{
-    return pressKeyCode("XF86AudioRaiseVolume", type);
-}
-
-bool TizenDeviceImpl::pressVolDown(KeyRequestType type)
-{
-    return pressKeyCode("XF86AudioLowerVolume", type);
-}
-
-bool TizenDeviceImpl::pressPower(KeyRequestType type)
-{
-    return pressKeyCode("XF86PowerOff", type);
-}
-
 bool TizenDeviceImpl::pressKeyCode(std::string keycode, KeyRequestType type)
 {
     LOGI("pressKeyCode(%s)", keycode.c_str());
@@ -454,7 +424,7 @@ std::vector<std::shared_ptr<AccessibleNode>> TizenDeviceImpl::getWindowRoot() co
     std::vector<std::shared_ptr<AccessibleNode>> ret{};
     std::unordered_map<int, std::shared_ptr<AccessibleApplication>> pidToAppNode{};
 
-    auto apps = AccessibleWatcher::getInstance()->getApplications();
+    auto apps = AccessibleAppManager::getInstance()->getApplications();
     for (auto &app : apps)
     {
         app->getAccessibleNode()->updateName();

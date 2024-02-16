@@ -69,6 +69,12 @@ AtspiAccessible *AtspiWrapper::Atspi_accessible_get_parent(AtspiAccessible *node
     return atspi_accessible_get_parent(node, error);
 }
 
+gchar *AtspiWrapper::Atspi_accessible_get_description(AtspiAccessible *node, GError **error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_accessible_get_description(node, error);
+}
+
 AtspiStateSet *AtspiWrapper::Atspi_accessible_get_state_set(AtspiAccessible *node)
 {
     std::unique_lock<std::recursive_mutex> lock(mMutex);
@@ -235,4 +241,34 @@ void AtspiWrapper::Atspi_accessible_set_listen_post_render(AtspiAccessible *obj,
 {
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     atspi_accessible_set_listen_post_render(obj, enabled, error);
+}
+
+AtspiCollection *AtspiWrapper::Atspi_accessible_get_collection_iface(AtspiAccessible *node)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_accessible_get_collection_iface(node);
+}
+
+GArray *AtspiWrapper::Atspi_collection_get_matches(AtspiCollection *obj, AtspiMatchRule *rule, AtspiCollectionSortOrder sortby, gint count, gboolean traverse, GError **error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_collection_get_matches(obj, rule, sortby, count, traverse, error);
+}
+
+GArray *AtspiWrapper::Atspi_collection_get_matches_in_matches(AtspiCollection *obj, AtspiMatchRule *first_rule, AtspiMatchRule *second_rule,  AtspiCollectionSortOrder sortby, gint first_count, gint second_count, gboolean traverse, GError **error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_collection_get_matches_in_matches(obj, first_rule, second_rule, sortby, first_count, second_count, traverse, error);
+}
+
+AtspiAccessibleNodeInfo *AtspiWrapper::Atspi_accessible_get_node_info(AtspiAccessible *obj, GError **error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_accessible_get_node_info(obj, error);
+}
+
+void AtspiWrapper::Atspi_accessible_free_node_info(AtspiAccessibleNodeInfo *node_info)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    atspi_accessible_free_node_info(node_info);
 }

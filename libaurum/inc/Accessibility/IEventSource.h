@@ -61,13 +61,12 @@ public:
     /**
      * @brief Notifies all attached event.
      *
-     * @param[in] type1 @EventType
-     * @param[in] type2 @ObjectEventType
+     * @param[in] type @EventType
      * @param[in] src source Node ptr
      *
      * @since_tizen 6.5
      */
-    virtual void notifyAll(int type1, int type2, void *src) = 0;
+    virtual void notifyAll(EventType type, void *src) = 0;
 };
 
 }
