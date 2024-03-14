@@ -371,6 +371,7 @@ void AtspiAccessibleNode::refresh(bool updateAll)
                 ret = g_array_new(TRUE, TRUE, sizeof(int));
                 if (!ret) {
                     LOGE("Fail to alloc array for states");
+                    AtspiWrapper::Atspi_accessible_free_node_info(ni);
                     return;
                 }
 
