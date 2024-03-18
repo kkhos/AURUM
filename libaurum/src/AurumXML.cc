@@ -77,7 +77,7 @@ void AurumXML::traverse(xml_node& element, const std::shared_ptr<AccessibleNode>
 
         if (aRect.mTopLeft.x != bRect.mTopLeft.x) return aRect.mTopLeft.x < bRect.mTopLeft.x;
         if (aRect.mTopLeft.y != bRect.mTopLeft.y) return aRect.mTopLeft.y < bRect.mTopLeft.y;
-        else return aRect.width() * aRect.height() <= bRect.width() * bRect.height();
+        else return aRect.width() * aRect.height() < bRect.width() * bRect.height();
     });
 
     for (const auto &child : children)
