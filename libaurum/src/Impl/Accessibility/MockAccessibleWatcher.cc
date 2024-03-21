@@ -28,12 +28,12 @@ MockAccessibleWatcher::~MockAccessibleWatcher()
 {
 }
 
-std::map<std::string, std::shared_ptr<AurumXML>> MockAccessibleWatcher::getXMLDocMap(void)
+std::map<std::pair<std::string, int>, std::shared_ptr<AurumXML>> MockAccessibleWatcher::getXMLDocMap(void)
 {
     return mXMLDocMap;
 }
 
-std::shared_ptr<AurumXML> MockAccessibleWatcher::getXMLDoc(std::string pkgName)
+std::shared_ptr<AurumXML> MockAccessibleWatcher::getXMLDoc(std::pair<std::string, int> process)
 {
     return std::shared_ptr<AurumXML>();
 }

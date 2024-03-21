@@ -263,7 +263,8 @@ void AtspiAccessibleNode::updateExtents()
 
 void AtspiAccessibleNode::updateXPath()
 {
-    auto XMLDoc = AccessibleWatcher::getInstance()->getXMLDoc(mPkg);
+    updatePid();
+    auto XMLDoc = AccessibleWatcher::getInstance()->getXMLDoc({mPkg, mPid});
     if (XMLDoc.get() == nullptr) return;
 
     mXPath = XMLDoc->getXPath(shared_from_this());
