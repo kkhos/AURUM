@@ -90,17 +90,17 @@ public:
      * @return map (package std::string, @AurumXML)
      * @since_tizen 7.0
      */
-    virtual std::map<std::string, std::shared_ptr<AurumXML>> getXMLDocMap(void) = 0;
+    virtual std::map<std::pair<std::string, int>, std::shared_ptr<AurumXML>> getXMLDocMap(void) = 0;
 
     /**
      * @brief Gets AurumXML pointer of a specific package name.
      *
-     * @param[in] pkgName name of package.
+     * @param[in] process
      *
      * @return pointer of AurumXML the package if exist, else null pointer
      * @since_tizen 7.5
      */
-    virtual std::shared_ptr<AurumXML> getXMLDoc(std::string pkgName) = 0;
+    virtual std::shared_ptr<AurumXML> getXMLDoc(std::pair<std::string, int> process) = 0;
 
     /**
      * @brief Register atspi event callback.

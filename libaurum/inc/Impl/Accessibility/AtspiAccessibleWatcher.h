@@ -110,12 +110,12 @@ public:
     /**
      * @copydoc @AccessibleWatcher::getXMLDocMap()
      */
-    virtual std::map<std::string, std::shared_ptr<AurumXML>> getXMLDocMap(void) override;
+    virtual std::map<std::pair<std::string, int>, std::shared_ptr<AurumXML>> getXMLDocMap(void) override;
 
     /**
      * @copydoc @AccessibleWatcher::getXMLDoc()
      */
-    virtual std::shared_ptr<AurumXML> getXMLDoc(std::string pkgName) override;
+    virtual std::shared_ptr<AurumXML> getXMLDoc(std::pair<std::string, int> process) override;
 
     /**
      * @copydoc @AccessibleWatcher::registerCallback()
@@ -160,8 +160,8 @@ private:
     bool addToWindowSet(AtspiAccessible *node);
     static gpointer eventThreadLoop(gpointer data);
     static gpointer timerThread(gpointer data);
-    void appendApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg);
-    void removeApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg);
+    void appendApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg, int pid);
+    void removeApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg, int pid);
     void setXMLsync();
     void processCallback(char *type, char *name, char *pkg);
 
@@ -170,7 +170,7 @@ private:
     std::list<AtspiAccessible *> mActivatedWindowList;
     std::list<AtspiAccessible *> mActivatedApplicationList;
     std::set<AtspiAccessible *> mWindowSet;
-    std::map<std::string, std::shared_ptr<AurumXML>> mXMLDocMap;
+    std::map<std::pair<std::string, int>, std::shared_ptr<AurumXML>> mXMLDocMap;
     static GThread *mEventThread;
     static std::vector<std::shared_ptr<A11yEventInfo>> mEventQueue;
     static std::mutex mMutex;

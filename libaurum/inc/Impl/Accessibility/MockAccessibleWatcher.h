@@ -57,9 +57,9 @@ public:
 
     virtual bool registerCallback(const A11yEvent type, EventHandler cb, void *data) override;
 
-    std::map<std::string, std::shared_ptr<AurumXML>> getXMLDocMap(void);
+    std::map<std::pair<std::string, int>, std::shared_ptr<AurumXML>> getXMLDocMap(void);
 
-    std::shared_ptr<AurumXML> getXMLDoc(std::string pkgName);
+    std::shared_ptr<AurumXML> getXMLDoc(std::pair<std::string, int> process);
 
     void setXMLsync(bool sync);
 
@@ -68,7 +68,7 @@ public:
 private:
 
     std::map<AtspiAccessible *, std::shared_ptr<AccessibleApplication>> mActiveAppMap;
-    std::map<std::string, std::shared_ptr<AurumXML>> mXMLDocMap;
+    std::map<std::pair<std::string, int>, std::shared_ptr<AurumXML>> mXMLDocMap;
 };
 
 }
