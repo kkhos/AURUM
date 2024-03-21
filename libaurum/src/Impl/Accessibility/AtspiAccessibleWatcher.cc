@@ -195,36 +195,37 @@ AtspiAccessibleWatcher::~AtspiAccessibleWatcher()
     atspi_exit();
 }
 
-void AtspiAccessibleWatcher::appendApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg)
+void AtspiAccessibleWatcher::appendApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg, int pid)
 {
-    LOGI("window activated in app(%s)", pkg);
+    LOGI("window activated in app(%s:%d)", pkg, pid);
     if (mXMLSync)
     {
         std::string package(pkg);
         if (!package.empty()) {
 
-            if (instance->mXMLDocMap.count(package)) {
+            if (instance->mXMLDocMap.count({package, pid})) {
                 mAppCount--;
                 mAppXMLLoadedCount--;
-                instance->mXMLDocMap.erase(package);
+                instance->mXMLDocMap.erase({package, pid});
             }
 
             mAppCount++;
-            instance->mXMLDocMap.insert(std::pair<std::string, std::shared_ptr<AurumXML>>(package,
-                    std::make_shared<AurumXML>(std::make_shared<AtspiAccessibleNode>(app), &mAppXMLLoadedCount, &mXMLMutex, &mXMLConditionVar)));
+            instance->mXMLDocMap.insert({{package, pid},
+                    std::make_shared<AurumXML>(std::make_shared<AtspiAccessibleNode>(app), &mAppXMLLoadedCount, &mXMLMutex, &mXMLConditionVar)});
         }
     }
 }
 
-void AtspiAccessibleWatcher::removeApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg)
+void AtspiAccessibleWatcher::removeApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg, int pid)
 {
-    LOGI("window deactivate in app(%s)", pkg);
+    LOGI("window deactivate in app(%s:%d)", pkg, pid);
     if (mXMLSync)
     {
-        if (instance->mXMLDocMap.count(std::string(pkg))) {
+        std::string package(pkg);
+        if (instance->mXMLDocMap.count({package, pid})) {
             mAppCount--;
             mAppXMLLoadedCount--;
-            instance->mXMLDocMap.erase(std::string(pkg));
+            instance->mXMLDocMap.erase({package, pid});
         }
     }
 
@@ -291,6 +292,7 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
         isWindowEventEmitted = true;
 
     char *name = NULL, *pkg = NULL;
+    int pid = 0;
     AtspiAccessibleWatcher *instance = (AtspiAccessibleWatcher *)watcher;
     name = AtspiWrapper::Atspi_accessible_get_name(event->source, NULL);
 
@@ -326,16 +328,17 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
     if (name && app)
     {
         pkg = AtspiWrapper::Atspi_accessible_get_name(app, NULL);
-        if (!strncmp(event->type, "window:create", 13)) instance->appendApp(instance, app, pkg);
-        else if (!strncmp(event->type, "window:activate", 15) && instance->mXMLDocMap.count(pkg) == 0) instance->appendApp(instance, app, pkg);
-        else if (!strncmp(event->type, "window:destroy", 14)) instance->removeApp(instance, app, pkg);
+        pid = AtspiWrapper::Atspi_accessible_get_process_id(app, NULL);
+        if (!strncmp(event->type, "window:create", 13)) instance->appendApp(instance, app, pkg, pid);
+        else if (!strncmp(event->type, "window:activate", 15) && instance->mXMLDocMap.count({pkg, pid}) == 0) instance->appendApp(instance, app, pkg, pid);
+        else if (!strncmp(event->type, "window:destroy", 14)) instance->removeApp(instance, app, pkg, pid);
 
         // To support focus skipped window
         if (instance->isTv) {
             if (!strncmp(event->type, "window:restore", 14) && (!strncmp(name, "volume-app", 10) || !strncmp(name, "tv-viewer", 9)))
-                instance->appendApp(instance, app, pkg);
+                instance->appendApp(instance, app, pkg, pid);
             else if (!strncmp(event->type, "window:minimize", 15) && (!strncmp(name, "volume-app", 10) || !strncmp(name, "tv-viewer", 9)))
-                instance->removeApp(instance, app, pkg);
+                instance->removeApp(instance, app, pkg, pid);
         }
     }
     else
@@ -428,7 +431,7 @@ bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const 
     return false;
 }
 
-std::map<std::string, std::shared_ptr<AurumXML>> AtspiAccessibleWatcher::getXMLDocMap(void)
+std::map<std::pair<std::string, int>, std::shared_ptr<AurumXML>> AtspiAccessibleWatcher::getXMLDocMap(void)
 {
     if(mXMLSync)
     {
@@ -443,7 +446,7 @@ std::map<std::string, std::shared_ptr<AurumXML>> AtspiAccessibleWatcher::getXMLD
     return mXMLDocMap;
 }
 
-std::shared_ptr<AurumXML> AtspiAccessibleWatcher::getXMLDoc(std::string pkgName)
+std::shared_ptr<AurumXML> AtspiAccessibleWatcher::getXMLDoc(std::pair<std::string, int> process)
 {
     if(mXMLSync)
     {
@@ -455,8 +458,8 @@ std::shared_ptr<AurumXML> AtspiAccessibleWatcher::getXMLDoc(std::string pkgName)
         lk.unlock();
     }
 
-    if (mXMLDocMap.count(pkgName) > 0)
-        return mXMLDocMap[pkgName];
+    if (mXMLDocMap.count(process) > 0)
+        return mXMLDocMap[process];
     else
         return std::shared_ptr<AurumXML>(nullptr);
 
@@ -535,19 +538,19 @@ void AtspiAccessibleWatcher::setXMLsync(bool sync)
 {
     LOGI("setXMLSync: %s", (sync ? "TRUE" : "FALSE"));
     mXMLSync = sync;
+    mXMLDocMap.clear();
+    mAppCount = 0;
+    mAppXMLLoadedCount = 0;
 
-    if(!sync) {
-        mXMLDocMap.clear();
-        mAppCount = 0;
-        mAppXMLLoadedCount = 0;
-    } else {
+    if (sync) {
         auto apps = AccessibleAppManager::getInstance()->getApplications();
         for (auto &app : apps)
         {
             app->getAccessibleNode()->updateName();
+            app->getAccessibleNode()->updatePid();
             mAppCount++;
-            mXMLDocMap.insert(std::pair<std::string, std::shared_ptr<AurumXML>>(app->getPackageName(),
-                    std::make_shared<AurumXML>(app->getAccessibleNode(), &mAppXMLLoadedCount, &mXMLMutex, &mXMLConditionVar)));
+            mXMLDocMap.insert({{app->getPackageName(), app->getAccessibleNode()->getPid()},
+                    std::make_shared<AurumXML>(app->getAccessibleNode(), &mAppXMLLoadedCount, &mXMLMutex, &mXMLConditionVar)});
         }
     }
 }
