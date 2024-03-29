@@ -283,8 +283,18 @@ void AtspiAccessibleWatcher::processCallback(char *type, char *name, char *pkg)
 
 void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
 {
-    if (!event->source)
+    if ((!event) || (!event->source))
     {
+        if(event)
+        {
+            g_boxed_free(ATSPI_TYPE_EVENT, event);
+        }
+        return;
+    }
+
+    if (!watcher)
+    {
+        g_boxed_free(ATSPI_TYPE_EVENT, event);
         return;
     }
 
@@ -316,11 +326,13 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
         }
 
         if (name) free(name);
+        g_boxed_free(ATSPI_TYPE_EVENT, event);
         return;
     }
     else if (isIdle == IdleEventState::IDLE_LISTEN_DONE && !strncmp(event->type, "window:post-render", 18))
     {
         if (name) free(name);
+        g_boxed_free(ATSPI_TYPE_EVENT, event);
         return;
     }
 
@@ -352,6 +364,7 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
     }
     if (name) free(name);
     if (pkg) free(pkg);
+    g_boxed_free(ATSPI_TYPE_EVENT, event);
 }
 
 void AtspiAccessibleWatcher::onObjectDefunct(AtspiAccessible *node)
