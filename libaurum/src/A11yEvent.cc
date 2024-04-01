@@ -23,13 +23,17 @@ using namespace Aurum;
 
 A11yEventInfo::A11yEventInfo() : A11yEventInfo(A11yEvent::EVENT_NONE, nullptr, nullptr) {}
 
-A11yEventInfo::~A11yEventInfo() {}
+A11yEventInfo::~A11yEventInfo()
+{
+    LOGI("A11yEventInfo destruct name: %s, pkg: %s", mName.c_str(), mPkg.c_str());
+}
 
 A11yEventInfo::A11yEventInfo(A11yEvent event, std::string name, std::string pkg)
 	: mEvent(event),
 	  mName(name),
 	  mPkg(pkg)
 {
+    LOGI("A11yEventInfo construct name: %s, pkg: %s", name.c_str(), pkg.c_str());
 }
 
 A11yEventInfo::A11yEventInfo(std::string event, std::string name, std::string pkg)
@@ -37,6 +41,7 @@ A11yEventInfo::A11yEventInfo(std::string event, std::string name, std::string pk
 	  mName(name),
 	  mPkg(pkg)
 {
+    LOGI("A11yEventInfo construct event: %s, name: %s, pkg: %s", event.c_str(), name.c_str(), pkg.c_str());
 }
 
 

@@ -212,6 +212,8 @@ void AtspiAccessibleWatcher::appendApp(AtspiAccessibleWatcher *instance, AtspiAc
             mAppCount++;
             instance->mXMLDocMap.insert({{package, pid},
                     std::make_shared<AurumXML>(std::make_shared<AtspiAccessibleNode>(app), &mAppXMLLoadedCount, &mXMLMutex, &mXMLConditionVar)});
+            LOGI("increase reference count: app %p", app);
+            g_object_ref(app);
         }
     }
 }
@@ -226,10 +228,10 @@ void AtspiAccessibleWatcher::removeApp(AtspiAccessibleWatcher *instance, AtspiAc
             mAppCount--;
             mAppXMLLoadedCount--;
             instance->mXMLDocMap.erase({package, pid});
+            LOGI("descrease reference count: app %p", app);
+            g_object_unref(app);
         }
     }
-
-    g_object_unref(app);
 }
 
 gpointer AtspiAccessibleWatcher::timerThread(gpointer data)
@@ -258,27 +260,11 @@ gpointer AtspiAccessibleWatcher::timerThread(gpointer data)
     return NULL;
 }
 
+static int CallbackCount;
+
 void AtspiAccessibleWatcher::processCallback(char *type, char *name, char *pkg)
 {
-    mMutex.lock();
-    auto a11yEvent = std::make_shared<A11yEventInfo>(std::string(type), std::string(name), std::string(pkg));
-    mEventQueue.push_back(a11yEvent);
-    mMutex.unlock();
-
-    if (this->mHandlers.count(a11yEvent->getEvent())) {
-        auto &list = this->mHandlers[a11yEvent->getEvent()];
-        auto it = list.begin();
-
-        while (it != list.end())
-        {
-            LOGI("Callback call type %s pkg %s", type, pkg);
-            auto handler = *it;
-            bool res = (*handler)(std::string(pkg));
-            if (!res) it = list.erase(it);
-            else ++it;
-        }
-    }
-
+    LOGI("AtspiAccessibleWatcher::processCallback: type %s, name: %s, pkg: %s, count: %d", type, name, pkg, ++CallbackCount);
 }
 
 void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
@@ -310,7 +296,6 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
     {
         if (mTimerThread == nullptr)
         {
-            LOGI("Timer Thread Start");
             mTimerThread = g_thread_new("TimerThread", timerThread, instance);
         }
         else
@@ -321,7 +306,6 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
         mRenderCount--;
         if (mRenderCount == 0)
         {
-          LOGI("RenderCount is 0. Stop to listen RenderPost");
           isIdle = IdleEventState::IDLE_LISTEN_DONE;
         }
 
@@ -337,6 +321,7 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
     }
 
     AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(event->source, NULL);
+    LOGI("increase reference count: app %p", app);
     if (name && app)
     {
         pkg = AtspiWrapper::Atspi_accessible_get_name(app, NULL);
@@ -356,14 +341,24 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
     else
         pkg = strdup("");
 
-    instance->processCallback(event->type, name, pkg);
-
-    if (!strcmp(event->type, "object:state-changed:defunct")) {
-         instance->onObjectDefunct(
-            static_cast<AtspiAccessible *>(event->source));
+    if(app)
+    {
+        LOGI("descrease reference count: app %p", app);
+        g_object_unref(app);
     }
+
+    //instance->processCallback(event->type, name, pkg);
+
     if (name) free(name);
     if (pkg) free(pkg);
+
+
+//    if (!strcmp(event->type, "object:state-changed:defunct")) {
+//         instance->onObjectDefunct(
+//            static_cast<AtspiAccessible *>(event->source));
+//    }
+//    if (name) free(name);
+//    if (pkg) free(pkg);
     g_boxed_free(ATSPI_TYPE_EVENT, event);
 }
 
@@ -534,6 +529,7 @@ bool AtspiAccessibleWatcher::addToWindowSet(AtspiAccessible *node)
 
 bool AtspiAccessibleWatcher::registerCallback(const A11yEvent type, EventHandler cb, void *data)
 {
+    LOGI("registerCallback:: data:%p", data);
     auto handler = std::make_shared<A11yEventHandler>(type, cb, data);
     if (mHandlers.count(type)) {
         auto list = mHandlers[type];
