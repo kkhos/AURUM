@@ -15,7 +15,10 @@
  *
  */
 
+#include "Aurum.h"
+
 #include "AtspiWrapper.h"
+#include <system_info.h>
 
 using namespace AurumInternal;
 
@@ -23,150 +26,175 @@ std::recursive_mutex AtspiWrapper::mMutex = std::recursive_mutex{};
 
 GArray *AtspiWrapper::Atspi_state_set_get_states(AtspiStateSet *set)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_state_set_get_states(set);
 }
 
 GArray *AtspiWrapper::Atspi_accessible_get_interfaces(AtspiAccessible *node)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_get_interfaces(node);
 }
 
 gchar *AtspiWrapper::Atspi_accessible_get_name(AtspiAccessible *node, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_get_name(node, error);
 }
 
 AtspiAccessible *AtspiWrapper::Atspi_get_desktop(int n)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_get_desktop(n);
 }
 
 int AtspiWrapper::Atspi_accessible_get_child_count(AtspiAccessible *node, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_get_child_count(node, error);
 }
 
 GArray *AtspiWrapper::Atspi_accessible_get_children(AtspiAccessible *node, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_get_children(node, error);
 }
 
 AtspiAccessible *AtspiWrapper::Atspi_accessible_get_child_at_index(AtspiAccessible *node, int index, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_get_child_at_index(node, index, error);
 }
 
 AtspiAccessible *AtspiWrapper::Atspi_accessible_get_parent(AtspiAccessible *node, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_get_parent(node, error);
 }
 
 gchar *AtspiWrapper::Atspi_accessible_get_description(AtspiAccessible *node, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_get_description(node, error);
 }
 
 AtspiStateSet *AtspiWrapper::Atspi_accessible_get_state_set(AtspiAccessible *node)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_get_state_set(node);
 }
 
 gboolean AtspiWrapper::Atspi_state_set_contains(AtspiStateSet *set , AtspiStateType state)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_state_set_contains(set , state);
 }
 
 gchar *AtspiWrapper::Atspi_accessible_get_role_name(AtspiAccessible *node, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_get_role_name(node, error);
 }
 
 gchar *AtspiWrapper::Atspi_accessible_get_unique_id(AtspiAccessible *node, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_get_unique_id(node, error);
 }
 
 GHashTable *AtspiWrapper::Atspi_accessible_get_attributes(AtspiAccessible *node, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_get_attributes(node, error);
 }
 
 AtspiComponent *AtspiWrapper::Atspi_accessible_get_component_iface(AtspiAccessible *node)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_get_component_iface(node);
 }
 
 AtspiRect *AtspiWrapper::Atspi_component_get_extents(AtspiComponent *obj, AtspiCoordType ctype, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_component_get_extents(obj, ctype, error);
 }
 
 AtspiAction *AtspiWrapper::Atspi_accessible_get_action_iface(AtspiAccessible *node)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_get_action_iface(node);
 }
 
 int AtspiWrapper::Atspi_action_get_n_actions(AtspiAction *action, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_action_get_n_actions(action, error);
 }
 
 gchar *AtspiWrapper::Atspi_action_get_action_name(AtspiAction *action, int index, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_action_get_action_name(action, index, error);
 }
 
 gboolean AtspiWrapper::Atspi_action_do_action(AtspiAction *action, int index, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_action_do_action(action, index, error);
 }
 
 AtspiEditableText *AtspiWrapper::Atspi_accessible_get_editable_text(AtspiAccessible *node)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_get_editable_text_iface(node);
 }
 
 gboolean AtspiWrapper::Atspi_editable_text_delete_text(AtspiEditableText *iface, int start, int end, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_editable_text_delete_text(iface, start, end, error);
 }
 
 gboolean AtspiWrapper::Atspi_editable_text_insert_text(AtspiEditableText *iface, int pos, const gchar *text, int len, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_editable_text_insert_text(iface, pos, text, len, error);
 }
 
 AtspiAccessible *AtspiWrapper::Atspi_accessible_get_application (AtspiAccessible *node, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_get_application(node, error);
 }
 
 void AtspiWrapper::Atspi_accessible_clear_cache (AtspiAccessible *node)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_clear_cache(node);
 }
@@ -179,96 +207,112 @@ gboolean AtspiWrapper::Atspi_component_grab_focus(AtspiComponent *obj, GError **
 
 void AtspiWrapper::Atspi_accessible_set_cache_mask(AtspiAccessible *node, AtspiCache mask)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_set_cache_mask (node, mask);
 }
 
 AtspiValue *AtspiWrapper::Atspi_accessible_get_value(AtspiAccessible *node)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_get_value_iface(node);
 }
 
 gdouble AtspiWrapper::Atspi_value_get_minimum_value(AtspiValue *iface, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_value_get_minimum_value(iface, error);
 }
 
 gdouble AtspiWrapper::Atspi_value_get_current_value(AtspiValue *iface, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_value_get_current_value(iface, error);
 }
 
 gdouble AtspiWrapper::Atspi_value_get_maximum_value(AtspiValue *iface, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_value_get_maximum_value(iface, error);
 }
 
 gboolean AtspiWrapper::Atspi_value_set_current_value(AtspiValue *iface, gdouble value, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_value_set_current_value(iface, value, error);
 }
 
 gdouble AtspiWrapper::Atspi_value_get_minimum_increment(AtspiValue *iface, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_value_get_minimum_increment(iface, error);
 }
 
 guint AtspiWrapper::Atspi_accessible_get_process_id(AtspiAccessible *node, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_get_process_id(node, error);
 }
 
 gchar *AtspiWrapper::Atspi_accessible_get_toolkit_name(AtspiAccessible *node, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_get_toolkit_name(node, error);
 }
 
 AtspiRect *AtspiWrapper::Atspi_text_get_minimum_bounding_rectangles(AtspiText* obj, gint start_offset, gint end_offset, AtspiCoordType type, GError** error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_text_get_range_extents(obj, start_offset, end_offset, type, error);
 }
 
 void AtspiWrapper::Atspi_accessible_set_listen_post_render(AtspiAccessible *obj, gboolean enabled, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     atspi_accessible_set_listen_post_render(obj, enabled, error);
 }
 
 AtspiCollection *AtspiWrapper::Atspi_accessible_get_collection_iface(AtspiAccessible *node)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_get_collection_iface(node);
 }
 
 GArray *AtspiWrapper::Atspi_collection_get_matches(AtspiCollection *obj, AtspiMatchRule *rule, AtspiCollectionSortOrder sortby, gint count, gboolean traverse, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_collection_get_matches(obj, rule, sortby, count, traverse, error);
 }
 
 GArray *AtspiWrapper::Atspi_collection_get_matches_in_matches(AtspiCollection *obj, AtspiMatchRule *first_rule, AtspiMatchRule *second_rule,  AtspiCollectionSortOrder sortby, gint first_count, gint second_count, gboolean traverse, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_collection_get_matches_in_matches(obj, first_rule, second_rule, sortby, first_count, second_count, traverse, error);
 }
 
 AtspiAccessibleNodeInfo *AtspiWrapper::Atspi_accessible_get_node_info(AtspiAccessible *obj, GError **error)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_get_node_info(obj, error);
 }
 
 void AtspiWrapper::Atspi_accessible_free_node_info(AtspiAccessibleNodeInfo *node_info)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     atspi_accessible_free_node_info(node_info);
 }

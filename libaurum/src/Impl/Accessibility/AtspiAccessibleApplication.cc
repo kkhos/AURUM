@@ -15,6 +15,8 @@
  *
  */
 
+#include "Aurum.h"
+
 #include "AtspiAccessibleApplication.h"
 #include "AtspiAccessibleWindow.h"
 #include "AtspiWrapper.h"
@@ -28,14 +30,17 @@ using namespace AurumInternal;
 AtspiAccessibleApplication::AtspiAccessibleApplication(std::shared_ptr<AccessibleNode> node)
 : AccessibleApplication(node)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
 }
 
 AtspiAccessibleApplication::~AtspiAccessibleApplication()
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
 }
 
 std::vector<std::shared_ptr<AccessibleWindow>> AtspiAccessibleApplication::getWindows(void)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::vector<std::shared_ptr<AccessibleWindow>> ret{};
     auto children = getAccessibleNode()->getChildren();
 
@@ -50,5 +55,6 @@ std::vector<std::shared_ptr<AccessibleWindow>> AtspiAccessibleApplication::getWi
 
 std::string AtspiAccessibleApplication::getPackageName(void)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     return getAccessibleNode()->getText();
 }

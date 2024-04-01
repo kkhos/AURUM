@@ -29,6 +29,7 @@ using namespace AurumInternal;
 AtspiAccessibleNode::AtspiAccessibleNode(AtspiAccessible *node)
 : mNode{node}
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     const auto trickDontRemove = std::shared_ptr<AtspiAccessibleNode>( this, [](AtspiAccessibleNode *){} );
     auto watcher = AccessibleWatcher::getInstance();
     watcher->attach(shared_from_this());
@@ -43,6 +44,7 @@ AtspiAccessibleNode::AtspiAccessibleNode(AtspiAccessible *node)
 
 AtspiAccessibleNode::~AtspiAccessibleNode()
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     auto watcher = AccessibleWatcher::getInstance();
     watcher->detach(shared_from_this());
     if(mNode) g_object_unref(mNode);
@@ -50,6 +52,7 @@ AtspiAccessibleNode::~AtspiAccessibleNode()
 
 int AtspiAccessibleNode::getChildCount() const
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     if (!isValid()) {
         return 0;
     }
@@ -60,6 +63,7 @@ int AtspiAccessibleNode::getChildCount() const
 
 std::shared_ptr<AccessibleNode> AtspiAccessibleNode::getChildAt(int index) const
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     if (!isValid()) {
         return std::make_shared<AtspiAccessibleNode>(nullptr);
     }
@@ -69,6 +73,7 @@ std::shared_ptr<AccessibleNode> AtspiAccessibleNode::getChildAt(int index) const
 
 std::vector<std::shared_ptr<AccessibleNode>> AtspiAccessibleNode::getChildren() const
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::vector<std::shared_ptr<AccessibleNode>> ret{};
 
     GArray *children = AtspiWrapper::Atspi_accessible_get_children(mNode, NULL);
@@ -89,6 +94,7 @@ std::vector<std::shared_ptr<AccessibleNode>> AtspiAccessibleNode::getChildren() 
 
 std::shared_ptr<AccessibleNode> AtspiAccessibleNode::getParent() const
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     if (!isValid()) {
         return std::make_shared<AtspiAccessibleNode>(nullptr);
     }
@@ -98,6 +104,7 @@ std::shared_ptr<AccessibleNode> AtspiAccessibleNode::getParent() const
 
 bool AtspiAccessibleNode::isValid() const
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     if(!AccessibleNode::isValid())  return false;
 
     AtspiStateSet *st = AtspiWrapper::Atspi_accessible_get_state_set(mNode);
@@ -113,11 +120,13 @@ bool AtspiAccessibleNode::isValid() const
 
 void* AtspiAccessibleNode::getRawHandler(void) const
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     return static_cast<void *>(mNode);
 }
 
 void AtspiAccessibleNode::updateRoleName()
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     if (!mRole.empty()) return;
 
     gchar *rolename = AtspiWrapper::Atspi_accessible_get_role_name(mNode, NULL);
@@ -129,6 +138,7 @@ void AtspiAccessibleNode::updateRoleName()
 
 void AtspiAccessibleNode::updateUniqueId()
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     if (!mId.empty()) return;
 
     #ifdef TIZEN
@@ -144,6 +154,7 @@ void AtspiAccessibleNode::updateUniqueId()
 
 void AtspiAccessibleNode::updateName()
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     AtspiWrapper::Atspi_accessible_clear_cache(mNode);
 
     gchar *name = AtspiWrapper::Atspi_accessible_get_name(mNode, NULL);
@@ -161,6 +172,7 @@ void AtspiAccessibleNode::updateName()
 
 void AtspiAccessibleNode::updateToolkitName()
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     if (!mToolkitName.empty()) return;
 
     AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(mNode, NULL);
@@ -176,6 +188,7 @@ void AtspiAccessibleNode::updateToolkitName()
 
 void AtspiAccessibleNode::updateApplication()
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     if (!mPkg.empty()) return;
 
     AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(mNode, NULL);
@@ -191,6 +204,7 @@ void AtspiAccessibleNode::updateApplication()
 
 void AtspiAccessibleNode::updateAttributes()
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     if (!mType.empty()) return;
 
     AtspiWrapper::Atspi_accessible_clear_cache(mNode);
@@ -217,6 +231,7 @@ void AtspiAccessibleNode::updateAttributes()
 
 void AtspiAccessibleNode::updateStates()
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     resetFeatureProperty();
 
     AtspiWrapper::Atspi_accessible_clear_cache(mNode);
@@ -238,6 +253,7 @@ void AtspiAccessibleNode::updateStates()
 
 void AtspiAccessibleNode::updateExtents()
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     AtspiComponent *component = AtspiWrapper::Atspi_accessible_get_component_iface(mNode);
     if (component) {
         AtspiRect *screenExtent = AtspiWrapper::Atspi_component_get_extents(
@@ -263,6 +279,7 @@ void AtspiAccessibleNode::updateExtents()
 
 void AtspiAccessibleNode::updateXPath()
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     updateApplication();
     updatePid();
     auto XMLDoc = AccessibleWatcher::getInstance()->getXMLDoc({mPkg, mPid});
@@ -273,6 +290,7 @@ void AtspiAccessibleNode::updateXPath()
 
 void AtspiAccessibleNode::updateValue()
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     AtspiWrapper::Atspi_accessible_clear_cache(mNode);
 
     AtspiValue *value = AtspiWrapper::Atspi_accessible_get_value(mNode);
@@ -287,6 +305,7 @@ void AtspiAccessibleNode::updateValue()
 
 void AtspiAccessibleNode::updatePid()
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     if (mPid > 0) return;
 
     mPid = AtspiWrapper::Atspi_accessible_get_process_id(mNode, NULL);
@@ -294,6 +313,7 @@ void AtspiAccessibleNode::updatePid()
 
 void AtspiAccessibleNode::updateTextMinBoundingRect()
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     AtspiText *text = atspi_accessible_get_text_iface(mNode);
     if (text)
     {
@@ -313,6 +333,7 @@ void AtspiAccessibleNode::updateTextMinBoundingRect()
 
 void AtspiAccessibleNode::updateInterface()
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     GArray *interfaces = AtspiWrapper::Atspi_accessible_get_interfaces(mNode);
     if (interfaces)
     {
@@ -330,6 +351,7 @@ void AtspiAccessibleNode::updateInterface()
 
 bool AtspiAccessibleNode::setFocus()
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     AtspiComponent *component = AtspiWrapper::Atspi_accessible_get_component_iface(mNode);
     if (component) {
         bool ret = AtspiWrapper::Atspi_component_grab_focus(component, NULL);
@@ -342,6 +364,7 @@ bool AtspiAccessibleNode::setFocus()
 
 void AtspiAccessibleNode::refresh(bool updateAll)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     AtspiWrapper::Atspi_accessible_clear_cache(mNode);
 
     if (isValid()) {
@@ -435,6 +458,7 @@ void AtspiAccessibleNode::refresh(bool updateAll)
 
 std::vector<std::string> AtspiAccessibleNode::getActions() const
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::vector<std::string> result{};
     AtspiAction *action;
     if (!isValid()) {
@@ -460,6 +484,7 @@ std::vector<std::string> AtspiAccessibleNode::getActions() const
 
 bool AtspiAccessibleNode::doAction(std::string actionName)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     AtspiAction *action;
 
     if (!isValid()) {
@@ -492,6 +517,7 @@ bool AtspiAccessibleNode::doAction(std::string actionName)
 
 bool AtspiAccessibleNode::setValue(std::string text)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     if (!isValid()){
         return false;
     }
@@ -513,6 +539,7 @@ bool AtspiAccessibleNode::setValue(std::string text)
 
 bool AtspiAccessibleNode::setValue(double value)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     if (!isValid()){
         return false;
     }
@@ -531,6 +558,7 @@ bool AtspiAccessibleNode::setValue(double value)
 
 void AtspiAccessibleNode::setFeatureProperty(AtspiStateType type)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     switch(type) {
         case ATSPI_STATE_CHECKED:
             setFeatureProperty(NodeFeatureProperties::CHECKED, true);
@@ -611,6 +639,7 @@ void AtspiAccessibleNode::setFeatureProperty(AtspiStateType type)
 
 std::vector<std::shared_ptr<AccessibleNode>> AtspiAccessibleNode::getMatches(const std::shared_ptr<UiSelector> selector, const bool ealryReturn) const
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::vector<std::shared_ptr<AccessibleNode>> ret{};
 
     AtspiCollection *collection = AtspiWrapper::Atspi_accessible_get_collection_iface(mNode);
@@ -639,6 +668,7 @@ std::vector<std::shared_ptr<AccessibleNode>> AtspiAccessibleNode::getMatches(con
 
 std::vector<std::shared_ptr<AccessibleNode>> AtspiAccessibleNode::getMatchesInMatches(const std::shared_ptr<UiSelector> firstSelector, const std::shared_ptr<UiSelector> secondSelector, const bool ealryReturn) const
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::vector<std::shared_ptr<AccessibleNode>> ret{};
 
     AtspiCollection *collection = AtspiWrapper::Atspi_accessible_get_collection_iface(mNode);

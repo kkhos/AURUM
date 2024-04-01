@@ -51,6 +51,7 @@ std::vector<std::shared_ptr<AccessibleNode>> TizenDeviceImpl::mCachedNode;
 TizenDeviceImpl::TizenDeviceImpl()
 : mFakeTouchHandle{0}, mFakeKeyboardHandle{0}, mFakeWheelHandle{0}, tStart{}, isTimerStarted{false}, mTouchSeq{}
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     LOGI("device implementation init");
     TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
     obj->mFakeTouchHandle = efl_util_input_initialize_generator_with_sync(EFL_UTIL_INPUT_DEVTYPE_TOUCHSCREEN, "SMSRC Fake Input");
@@ -67,6 +68,7 @@ TizenDeviceImpl::TizenDeviceImpl()
 
 TizenDeviceImpl::~TizenDeviceImpl()
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
    TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
    efl_util_input_deinitialize_generator(obj->mFakeTouchHandle);
    efl_util_input_deinitialize_generator(obj->mFakeKeyboardHandle);
@@ -74,11 +76,13 @@ TizenDeviceImpl::~TizenDeviceImpl()
 
 bool TizenDeviceImpl::click(const int x, const int y)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     return click(x, y, INTV_CLICK);
 }
 
 bool TizenDeviceImpl::click(const int x, const int y, const unsigned int durationMs)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     LOGI("click %d %d , durationMs:%d", x, y, durationMs);
 
     int seq = touchDown(x, y);
@@ -92,6 +96,7 @@ bool TizenDeviceImpl::click(const int x, const int y, const unsigned int duratio
 
 int TizenDeviceImpl::touchDown(const int x, const int y)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     int seq = grabTouchSeqNumber();
     LOGI("touch down %d %d , seq:%d", x, y, seq);
     if (seq >= 0) {
@@ -109,6 +114,7 @@ int TizenDeviceImpl::touchDown(const int x, const int y)
 
 bool TizenDeviceImpl::touchMove(const int x, const int y, const int seq)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     LOGI("touch move %d %d, seq:%d", x, y, seq);
     if (seq >= 0) {
          TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
@@ -121,6 +127,7 @@ bool TizenDeviceImpl::touchMove(const int x, const int y, const int seq)
 
 bool TizenDeviceImpl::touchUp(const int x, const int y, const int seq)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
    LOGI("touch up %d %d, seq:%d", x, y, seq);
    if (seq >= 0) {
         TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
@@ -133,6 +140,7 @@ bool TizenDeviceImpl::touchUp(const int x, const int y, const int seq)
 
 bool TizenDeviceImpl::wheelUp(int amount, const int durationMs)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     LOGI("wheel up %d for %d", amount, durationMs);
     long result = -1;
     TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
@@ -149,6 +157,7 @@ bool TizenDeviceImpl::wheelUp(int amount, const int durationMs)
 
 bool TizenDeviceImpl::wheelDown(int amount, const int durationMs)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     LOGI("wheel down %d for %d", amount, durationMs);
     long result = -1;
     TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
@@ -164,12 +173,14 @@ bool TizenDeviceImpl::wheelDown(int amount, const int durationMs)
 }
 void TizenDeviceImpl::startTimer(void)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     isTimerStarted = true;
     clock_gettime(CLOCK_MONOTONIC, &tStart);
 }
 
 int TizenDeviceImpl::stopTimer(void)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     struct timespec tEnd;
     if (!isTimerStarted) return 0;
     isTimerStarted = false;
@@ -180,6 +191,7 @@ int TizenDeviceImpl::stopTimer(void)
 bool TizenDeviceImpl::drag(const int sx, const int sy, const int ex, const int ey,
                          const int steps, const int durationMs)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     int _stepUs;
     int _durationUs, _steps;
     int consumptionUs;
@@ -217,6 +229,7 @@ bool TizenDeviceImpl::drag(const int sx, const int sy, const int ex, const int e
 
 bool TizenDeviceImpl::pressKeyCode(std::string keycode, KeyRequestType type)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     LOGI("pressKeyCode(%s)", keycode.c_str());
     if (type == KeyRequestType::STROKE)
         return strokeKeyCode(keycode, INTV_SHORTSTROKE);
@@ -237,6 +250,7 @@ bool TizenDeviceImpl::pressKeyCode(std::string keycode, KeyRequestType type)
 
 bool TizenDeviceImpl::repeatKeyCode(std::string keycode, int intervalMs, int durationMs)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     if (intervalMs < MINIMUM_REPEAT_INTERVAL)
     {
         LOGI("Minimum intervalMs is %d, but user has set it to %d, so changed it to %d", MINIMUM_REPEAT_INTERVAL, intervalMs, MINIMUM_REPEAT_INTERVAL);
@@ -257,6 +271,7 @@ bool TizenDeviceImpl::repeatKeyCode(std::string keycode, int intervalMs, int dur
 
 bool TizenDeviceImpl::strokeKeyCode(std::string keycode, unsigned int durationMs)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     pressKeyCode(keycode);
     usleep(durationMs * USEC_PER_MSEC);
     releaseKeyCode(keycode);
@@ -265,6 +280,7 @@ bool TizenDeviceImpl::strokeKeyCode(std::string keycode, unsigned int durationMs
 
 bool TizenDeviceImpl::pressKeyCode(std::string keycode)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
    TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
    long result = (long)efl_util_input_generate_key(obj->mFakeKeyboardHandle, keycode.c_str(), 1);
    return result == EFL_UTIL_ERROR_NONE;
@@ -272,6 +288,7 @@ bool TizenDeviceImpl::pressKeyCode(std::string keycode)
 
 bool TizenDeviceImpl::releaseKeyCode(std::string keycode)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
    TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
     long result = (long)efl_util_input_generate_key(obj->mFakeKeyboardHandle, keycode.c_str(), 0);
     return result == EFL_UTIL_ERROR_NONE;
@@ -279,6 +296,7 @@ bool TizenDeviceImpl::releaseKeyCode(std::string keycode)
 
 bool TizenDeviceImpl::takeScreenshot(std::string path, bool asPixels, void **pixels, int angle)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     efl_util_screenshot_h screenshot = NULL;
     tbm_surface_h tbm_surface = NULL;
 
@@ -371,6 +389,7 @@ public:
 
 long long TizenDeviceImpl::getSystemTime(TimeRequestType type)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     std::unique_ptr<Clock> clock;
     if (type == TimeRequestType::MONOTONIC)
         clock = std::make_unique<MonotonicClock>();
@@ -383,6 +402,7 @@ long long TizenDeviceImpl::getSystemTime(TimeRequestType type)
 
 const Size2D<int> TizenDeviceImpl::getScreenSize()
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
     LOGI("getScreenSize : %d %d", obj->mScreenSize.width , obj->mScreenSize.height);
     return obj->mScreenSize;
@@ -390,6 +410,7 @@ const Size2D<int> TizenDeviceImpl::getScreenSize()
 
 int TizenDeviceImpl::grabTouchSeqNumber()
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     for (unsigned int i = 0 ; i < MAX_FINGER_NUMBER; i++) {
         if (mTouchSeq.count(i) == 0) {
             mTouchSeq.insert(i);
@@ -401,6 +422,7 @@ int TizenDeviceImpl::grabTouchSeqNumber()
 
 bool TizenDeviceImpl::releaseTouchSeqNumber(int seq)
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     auto k = mTouchSeq.find(seq);
     if (k != mTouchSeq.end()) {
         mTouchSeq.erase(k);
@@ -411,6 +433,7 @@ bool TizenDeviceImpl::releaseTouchSeqNumber(int seq)
 
 std::vector<std::shared_ptr<AccessibleNode>> TizenDeviceImpl::getWindowRoot() const
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     if (!AccessibleWatcher::getInstance()->getWindowEventEmitted() && mCachedNode.size() > 0)
     {
         for (auto &win : mCachedNode)
@@ -463,6 +486,7 @@ std::vector<std::shared_ptr<AccessibleNode>> TizenDeviceImpl::getWindowRoot() co
 
 void TizenDeviceImpl::getTizenWindowInfo(std::vector<std::shared_ptr<TizenWindow>> &mTizenWindows) const
 {
+    LOGI("(%s:) Start~~~~", __FUNCTION__);
     GError *err = NULL;
     GDBusMessage *msg;
     GDBusMessage *reply;
