@@ -212,6 +212,7 @@ void AtspiAccessibleWatcher::appendApp(AtspiAccessibleWatcher *instance, AtspiAc
             mAppCount++;
             instance->mXMLDocMap.insert({{package, pid},
                     std::make_shared<AurumXML>(std::make_shared<AtspiAccessibleNode>(app), &mAppXMLLoadedCount, &mXMLMutex, &mXMLConditionVar)});
+            g_object_ref(app);
         }
     }
 }
@@ -226,10 +227,10 @@ void AtspiAccessibleWatcher::removeApp(AtspiAccessibleWatcher *instance, AtspiAc
             mAppCount--;
             mAppXMLLoadedCount--;
             instance->mXMLDocMap.erase({package, pid});
+            LOGI("descrease reference count: app %p", app);
+            g_object_unref(app);
         }
     }
-
-    g_object_unref(app);
 }
 
 gpointer AtspiAccessibleWatcher::timerThread(gpointer data)
@@ -355,6 +356,11 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
     }
     else
         pkg = strdup("");
+
+    if(app)
+    {
+        g_object_unref(app);
+    }
 
     instance->processCallback(event->type, name, pkg);
 
