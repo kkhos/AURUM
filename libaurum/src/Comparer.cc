@@ -63,8 +63,8 @@ void Comparer::findObjects(std::vector<std::shared_ptr<AccessibleNode>> &ret,
     }
 
     if (selector->mMatchXPath) {
-	    root->updateApplication();
-	    root->updatePid();
+        root->updateApplication();
+        root->updatePid();
         std::string pkg = root->getPkg();
         int pid = root->getPid();
         auto XMLDoc = AccessibleWatcher::getInstance()->getXMLDoc({pkg, pid});
