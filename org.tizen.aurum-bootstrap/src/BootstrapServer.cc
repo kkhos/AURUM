@@ -20,6 +20,7 @@
 #include <glib.h>
 #include <vconf.h>
 #include <system_info.h>
+#include <bundle_internal.h>
 
 #include "AurumServiceImpl.h"
 #include "config.h"
@@ -30,6 +31,7 @@ typedef struct _ServiceContext {
     GThread *thread;
     std::unique_ptr<Server> server;
     bool forceTouchEnabled;
+    int port;
 } ServiceContext;
 
 static void _vconf_force_enable_touch_set(void *data, bool enable)
@@ -52,7 +54,8 @@ static gpointer
 _grpc_thread_func(gpointer data)
 {
     ServiceContext *ctx = (ServiceContext *)data;
-    std::string binding("0.0.0.0:50051");
+    std::string binding("0.0.0.0:");
+    binding.append(std::to_string(ctx->port));
     aurumServiceImpl service;
     ServerBuilder builder;
     char *value;
@@ -122,6 +125,21 @@ int main(int argc, char **argv)
     event_callback.app_control = _service_app_control;
 
     int result = -1;
+
+    bundle *b  = bundle_import_from_argv(argc, argv);
+    char *port = NULL;
+    bundle_get_str (b, "port",  &port);
+    if (!port) {
+        ctx.port = 50051;
+    }
+    else {
+	ctx.port = atoi(port);
+	if (ctx.port < 50051 || ctx.port > 50061) {
+	    LOGE("Port number is invalid!");
+	    ctx.port = 50051;
+	}
+    }
+    bundle_free(b);
 
     try {
        result = service_app_main(argc, argv, &event_callback, &ctx);
