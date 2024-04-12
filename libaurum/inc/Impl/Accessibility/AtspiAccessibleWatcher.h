@@ -193,6 +193,7 @@ private:
     static IdleEventState isIdle;
     static int mRenderCount;
     static bool isWindowEventEmitted;
+    static bool mWaitingForEvent;
 };
 
 }
