@@ -46,6 +46,7 @@ IdleEventState AtspiAccessibleWatcher::isIdle = IdleEventState::IDLE_LISTEN_READ
 static const unsigned int WAIT_FOR_IDLE_MILLI_SEC = 1000; // 1sec
 int AtspiAccessibleWatcher::mRenderCount = 10;
 bool AtspiAccessibleWatcher::isWindowEventEmitted = false;
+bool AtspiAccessibleWatcher::mWaitingForEvent = false;
 
 static bool iShowingNode(AtspiAccessible *node)
 {
@@ -262,7 +263,7 @@ void AtspiAccessibleWatcher::processCallback(char *type, char *name, char *pkg)
 {
     mMutex.lock();
     auto a11yEvent = std::make_shared<A11yEventInfo>(std::string(type), std::string(name), std::string(pkg));
-    mEventQueue.push_back(a11yEvent);
+    if (mWaitingForEvent) mEventQueue.push_back(a11yEvent);
     mMutex.unlock();
 
     if (this->mHandlers.count(a11yEvent->getEvent())) {
@@ -377,6 +378,7 @@ bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const 
 {
     mMutex.lock();
     mEventQueue.clear();
+    mWaitingForEvent = true;
     mMutex.unlock();
 
     // Call atspi method for start to listen atspi event.
@@ -413,6 +415,10 @@ bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const 
                 if (COMPARE(type, event->getEvent()) && (packageName.empty() || packageName == event->getPkg()))
                 {
                     LOGI("type %d == %d name %s pkg %s",static_cast<int>(type), static_cast<int>(event->getEvent()), event->getName().c_str(), event->getPkg().c_str());
+                    mMutex.lock();
+                    mWaitingForEvent = false;
+                    mEventQueue.clear();
+                    mMutex.unlock();
                     return true;
                 }
             }
@@ -423,6 +429,11 @@ bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const 
         std::this_thread::sleep_for(
             std::chrono::milliseconds{100});
     }
+
+    mMutex.lock();
+    mWaitingForEvent = false;
+    mEventQueue.clear();
+    mMutex.unlock();
 
     if (isIdle != IdleEventState::IDLE_LISTEN_READY)
     {
