@@ -112,8 +112,28 @@ gpointer AtspiAccessibleWatcher::eventThreadLoop(gpointer data)
     AtspiEventListener *listener =
         atspi_event_listener_new(AtspiAccessibleWatcher::onAtspiEvents, instance, NULL);
 
-    atspi_event_listener_register(listener, "window:", NULL);
-    atspi_event_listener_register(listener, "object:", NULL);
+    atspi_event_listener_register(listener, "window:create", NULL);
+    atspi_event_listener_register(listener, "window:destroy", NULL);
+    atspi_event_listener_register(listener, "window:minimize", NULL);
+    atspi_event_listener_register(listener, "window:maximize", NULL);
+    atspi_event_listener_register(listener, "window:restore", NULL);
+    atspi_event_listener_register(listener, "window:activate", NULL);
+    atspi_event_listener_register(listener, "window:deactivate", NULL);
+    atspi_event_listener_register(listener, "window:raise", NULL);
+    atspi_event_listener_register(listener, "window:lower", NULL);
+    atspi_event_listener_register(listener, "window:resize", NULL);
+    atspi_event_listener_register(listener, "window:move", NULL);
+    atspi_event_listener_register(listener, "window:post-render", NULL);
+    atspi_event_listener_register(listener, "object:text-changed:insert", NULL);
+    atspi_event_listener_register(listener, "object:text-changed:delete", NULL);
+    atspi_event_listener_register(listener, "object:state-changed:visible", NULL);
+    atspi_event_listener_register(listener, "object:state-changed:focused", NULL);
+    atspi_event_listener_register(listener, "object:state-changed:checked", NULL);
+    atspi_event_listener_register(listener, "object:state-changed:pressed", NULL);
+    atspi_event_listener_register(listener, "object:state-changed:selected", NULL);
+    atspi_event_listener_register(listener, "object:state-changed:defunct", NULL);
+    atspi_event_listener_register(listener, "object:scroll-started", NULL);
+    atspi_event_listener_register(listener, "object:scroll-finished", NULL);
 
     mContext = g_main_context_new();
     g_main_context_push_thread_default(mContext);
@@ -122,8 +142,28 @@ gpointer AtspiAccessibleWatcher::eventThreadLoop(gpointer data)
 
     g_main_loop_run(instance->mLoop);
     LOGI("event thread end");
-    atspi_event_listener_deregister(listener, "object:", NULL);
-    atspi_event_listener_deregister(listener, "window:", NULL);
+    atspi_event_listener_deregister(listener, "window:create", NULL);
+    atspi_event_listener_deregister(listener, "window:destroy", NULL);
+    atspi_event_listener_deregister(listener, "window:minimize", NULL);
+    atspi_event_listener_deregister(listener, "window:maximize", NULL);
+    atspi_event_listener_deregister(listener, "window:restore", NULL);
+    atspi_event_listener_deregister(listener, "window:activate", NULL);
+    atspi_event_listener_deregister(listener, "window:deactivate", NULL);
+    atspi_event_listener_deregister(listener, "window:raise", NULL);
+    atspi_event_listener_deregister(listener, "window:lower", NULL);
+    atspi_event_listener_deregister(listener, "window:resize", NULL);
+    atspi_event_listener_deregister(listener, "window:move", NULL);
+    atspi_event_listener_deregister(listener, "window:post-render", NULL);
+    atspi_event_listener_deregister(listener, "object:text-changed:insert", NULL);
+    atspi_event_listener_deregister(listener, "object:text-changed:delete", NULL);
+    atspi_event_listener_deregister(listener, "object:state-changed:visible", NULL);
+    atspi_event_listener_deregister(listener, "object:state-changed:focused", NULL);
+    atspi_event_listener_deregister(listener, "object:state-changed:checked", NULL);
+    atspi_event_listener_deregister(listener, "object:state-changed:pressed", NULL);
+    atspi_event_listener_deregister(listener, "object:state-changed:selected", NULL);
+    atspi_event_listener_deregister(listener, "object:state-changed:defunct", NULL);
+    atspi_event_listener_deregister(listener, "object:scroll-started", NULL);
+    atspi_event_listener_deregister(listener, "object:scroll-finished", NULL);
 
     g_object_unref(listener);
 
