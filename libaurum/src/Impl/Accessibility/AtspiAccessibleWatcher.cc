@@ -236,7 +236,7 @@ AtspiAccessibleWatcher::~AtspiAccessibleWatcher()
     atspi_exit();
 }
 
-void AtspiAccessibleWatcher::appendApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg, int pid)
+void AtspiAccessibleWatcher::appendApp(AtspiAccessible *app, char *pkg, int pid)
 {
     LOGI("window activated in app(%s:%d)", pkg, pid);
     if (mXMLSync)
@@ -244,30 +244,30 @@ void AtspiAccessibleWatcher::appendApp(AtspiAccessibleWatcher *instance, AtspiAc
         std::string package(pkg);
         if (!package.empty()) {
 
-            if (instance->mXMLDocMap.count({package, pid})) {
+            if (mXMLDocMap.count({package, pid})) {
                 mAppCount--;
                 mAppXMLLoadedCount--;
-                instance->mXMLDocMap.erase({package, pid});
+                mXMLDocMap.erase({package, pid});
             }
 
             mAppCount++;
-            instance->mXMLDocMap.insert({{package, pid},
+            mXMLDocMap.insert({{package, pid},
                     std::make_shared<AurumXML>(std::make_shared<AtspiAccessibleNode>(app), &mAppXMLLoadedCount, &mXMLMutex, &mXMLConditionVar)});
             g_object_ref(app);
         }
     }
 }
 
-void AtspiAccessibleWatcher::removeApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg, int pid)
+void AtspiAccessibleWatcher::removeApp(char *pkg, int pid)
 {
     LOGI("window deactivate in app(%s:%d)", pkg, pid);
     if (mXMLSync)
     {
         std::string package(pkg);
-        if (instance->mXMLDocMap.count({package, pid})) {
+        if (mXMLDocMap.count({package, pid})) {
             mAppCount--;
             mAppXMLLoadedCount--;
-            instance->mXMLDocMap.erase({package, pid});
+            mXMLDocMap.erase({package, pid});
         }
     }
 }
@@ -300,6 +300,7 @@ gpointer AtspiAccessibleWatcher::timerThread(gpointer data)
 
 void AtspiAccessibleWatcher::processCallback(char *type, char *name, char *pkg)
 {
+    LOGI("processed callback");
     mMutex.lock();
     auto a11yEvent = std::make_shared<A11yEventInfo>(std::string(type), std::string(name), std::string(pkg));
     if (mWaitingForEvent) mEventQueue.push_back(a11yEvent);
@@ -318,7 +319,52 @@ void AtspiAccessibleWatcher::processCallback(char *type, char *name, char *pkg)
             else ++it;
         }
     }
+}
 
+void AtspiAccessibleWatcher::processPostRender()
+{
+    if (isIdle == IdleEventState::IDLE_LISTEN_START)
+    {
+        if (mTimerThread == nullptr)
+        {
+            LOGI("Timer Thread Start");
+            mTimerThread = g_thread_new("TimerThread", timerThread, nullptr);
+        }
+        else
+        {
+            mStartTime = std::chrono::system_clock::now();
+        }
+
+        mRenderCount--;
+        if (mRenderCount == 0)
+        {
+          LOGI("RenderCount is 0. Stop to listen RenderPost");
+          isIdle = IdleEventState::IDLE_LISTEN_DONE;
+        }
+    }
+}
+void AtspiAccessibleWatcher::processWindowEvent(AtspiEvent *event)
+{
+    char *name = NULL, *pkg = NULL;
+    int pid = 0;
+    name = AtspiWrapper::Atspi_accessible_get_name(event->source, NULL);
+    pkg = AtspiWrapper::Atspi_accessible_get_name(event->sender, NULL);
+    pid = AtspiWrapper::Atspi_accessible_get_process_id(event->sender, NULL);
+
+    if (!strncmp(event->type, "window:create", 13)) appendApp(event->sender, pkg, pid);
+    else if (!strncmp(event->type, "window:activate", 15) && mXMLDocMap.count({pkg, pid}) == 0) appendApp(event->sender, pkg, pid);
+    else if (!strncmp(event->type, "window:destroy", 14)) removeApp(pkg, pid);
+
+    // To support focus skipped window
+    if (isTv) {
+        if (!strncmp(event->type, "window:restore", 14) && (!strncmp(name, "volume-app", 10) || !strncmp(name, "tv-viewer", 9)))
+            appendApp(event->sender, pkg, pid);
+        else if (!strncmp(event->type, "window:minimize", 15) && (!strncmp(name, "volume-app", 10) || !strncmp(name, "tv-viewer", 9)))
+            removeApp(pkg, pid);
+    }
+
+    if (name) g_free(name);
+    if (pkg) g_free(pkg);    
 }
 
 void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
@@ -338,77 +384,38 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
         return;
     }
 
-    if (!strncmp(event->type, "w", 1))
-        isWindowEventEmitted = true;
-
-    char *name = NULL, *pkg = NULL;
-    int pid = 0;
     AtspiAccessibleWatcher *instance = (AtspiAccessibleWatcher *)watcher;
-    name = AtspiWrapper::Atspi_accessible_get_name(event->source, NULL);
-
-    if (isIdle == IdleEventState::IDLE_LISTEN_START && !strncmp(event->type, "window:post-render", 18))
-    {
-        if (mTimerThread == nullptr)
-        {
-            LOGI("Timer Thread Start");
-            mTimerThread = g_thread_new("TimerThread", timerThread, instance);
-        }
-        else
-        {
-            mStartTime = std::chrono::system_clock::now();
-        }
-
-        mRenderCount--;
-        if (mRenderCount == 0)
-        {
-          LOGI("RenderCount is 0. Stop to listen RenderPost");
-          isIdle = IdleEventState::IDLE_LISTEN_DONE;
-        }
-
-        if (name) free(name);
-        g_boxed_free(ATSPI_TYPE_EVENT, event);
-        return;
-    }
-    else if (isIdle == IdleEventState::IDLE_LISTEN_DONE && !strncmp(event->type, "window:post-render", 18))
-    {
-        if (name) free(name);
-        g_boxed_free(ATSPI_TYPE_EVENT, event);
-        return;
-    }
-
-    AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(event->source, NULL);
-    if (name && app)
-    {
-        pkg = AtspiWrapper::Atspi_accessible_get_name(app, NULL);
-        pid = AtspiWrapper::Atspi_accessible_get_process_id(app, NULL);
-        if (!strncmp(event->type, "window:create", 13)) instance->appendApp(instance, app, pkg, pid);
-        else if (!strncmp(event->type, "window:activate", 15) && instance->mXMLDocMap.count({pkg, pid}) == 0) instance->appendApp(instance, app, pkg, pid);
-        else if (!strncmp(event->type, "window:destroy", 14)) instance->removeApp(instance, app, pkg, pid);
-
-        // To support focus skipped window
-        if (instance->isTv) {
-            if (!strncmp(event->type, "window:restore", 14) && (!strncmp(name, "volume-app", 10) || !strncmp(name, "tv-viewer", 9)))
-                instance->appendApp(instance, app, pkg, pid);
-            else if (!strncmp(event->type, "window:minimize", 15) && (!strncmp(name, "volume-app", 10) || !strncmp(name, "tv-viewer", 9)))
-                instance->removeApp(instance, app, pkg, pid);
-        }
-    }
-    else
-        pkg = strdup("");
-
-    if(app)
-    {
-        g_object_unref(app);
-    }
-
-    instance->processCallback(event->type, name, pkg);
 
     if (!strcmp(event->type, "object:state-changed:defunct")) {
-         instance->onObjectDefunct(
+        instance->onObjectDefunct(
             static_cast<AtspiAccessible *>(event->source));
+        g_boxed_free(ATSPI_TYPE_EVENT, event);
+        return;
     }
-    if (name) free(name);
-    if (pkg) free(pkg);
+
+    if (!strncmp(event->type, "window:post-render", 18))
+    {
+        instance->processPostRender();
+        g_boxed_free(ATSPI_TYPE_EVENT, event);
+        return;
+    }
+
+    if (!strncmp(event->type, "w", 1))
+    {
+        isWindowEventEmitted = true;
+        instance->processWindowEvent(event);
+    }
+
+    if (mWaitingForEvent || !instance->mHandlers.empty())
+    {
+        char *name = NULL, *pkg = NULL;
+        name = AtspiWrapper::Atspi_accessible_get_name(event->source, NULL);
+        pkg = AtspiWrapper::Atspi_accessible_get_name(event->sender, NULL);
+        instance->processCallback(event->type, name, pkg);
+        if (name) g_free(name);
+        if (pkg) g_free(pkg);
+    }
+
     g_boxed_free(ATSPI_TYPE_EVENT, event);
 }
 
