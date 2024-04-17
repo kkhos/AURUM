@@ -165,6 +165,12 @@ public:
 
     /**
      * @brief TBD
+     * @since_tizen 9.0
+     */
+    bool moveTo() override;
+
+    /**
+     * @brief TBD
      * @since_tizen 7.0
      */
     void updateTextMinBoundingRect() override;

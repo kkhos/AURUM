@@ -61,6 +61,7 @@ public:
     static AtspiAccessible *Atspi_accessible_get_application (AtspiAccessible *node, GError **error);
     static void Atspi_accessible_clear_cache (AtspiAccessible *node);
     static gboolean Atspi_component_grab_focus(AtspiComponent *obj, GError **error);
+    static gboolean Atspi_component_grab_highlight(AtspiComponent *obj, GError **error);
     static void Atspi_accessible_set_cache_mask(AtspiAccessible *node, AtspiCache mask);
     static AtspiValue *Atspi_accessible_get_value(AtspiAccessible *node);
     static gdouble Atspi_value_get_minimum_value(AtspiValue *iface, GError **error);
