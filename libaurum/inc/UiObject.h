@@ -692,6 +692,13 @@ public:
     bool setFocus() const;
 
     /**
+     * @brief Moves to object.
+     *
+     * @since_tizen 7.0
+     */
+    bool moveTo() const;
+
+    /**
      * @brief Updates object's information from atspi server.
      *
      * @since_tizen 6.5

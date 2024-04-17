@@ -466,6 +466,11 @@ public:
     virtual bool setFocus() = 0;
 
     /**
+     * @copydoc UiObject::moveTo()
+     */
+    virtual bool moveTo() = 0;
+
+    /**
      * @copydoc UIObject::updateTextMinBoundingRect()
      */
     virtual void updateTextMinBoundingRect() = 0;
