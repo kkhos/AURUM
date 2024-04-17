@@ -340,6 +340,18 @@ bool AtspiAccessibleNode::setFocus()
         return false;
 }
 
+bool AtspiAccessibleNode::setHighlight()
+{
+    AtspiComponent *component = AtspiWrapper::Atspi_accessible_get_component_iface(mNode);
+    if (component) {
+        bool ret = AtspiWrapper::Atspi_component_grab_highlight(component, NULL);
+        g_object_unref(component);
+        return ret;
+    }
+    else
+        return false;
+}
+
 void AtspiAccessibleNode::refresh(bool updateAll)
 {
     AtspiWrapper::Atspi_accessible_clear_cache(mNode);

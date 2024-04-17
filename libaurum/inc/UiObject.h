@@ -692,6 +692,13 @@ public:
     bool setFocus() const;
 
     /**
+     * @brief Sets highlight to object.
+     *
+     * @since_tizen 7.0
+     */
+    bool setHighlight() const;
+
+    /**
      * @brief Updates object's information from atspi server.
      *
      * @since_tizen 6.5

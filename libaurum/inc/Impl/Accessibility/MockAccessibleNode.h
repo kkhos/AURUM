@@ -167,6 +167,12 @@ public:
      * @brief TBD
      * @since_tizen 7.0
      */
+    bool setHighlight() override;
+
+    /**
+     * @brief TBD
+     * @since_tizen 7.0
+     */
     void updateTextMinBoundingRect() override;
 
 	/**

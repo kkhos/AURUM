@@ -132,6 +132,9 @@ public:
     ::grpc::Status getAngle(::grpc::ServerContext *context,
                             const ::aurum::ReqGetAngle *request,
                             ::aurum::RspGetAngle *response) override;
+    ::grpc::Status setHighlight(::grpc::ServerContext *context,
+                            const ::aurum::ReqSetHighlight *request,
+                            ::aurum::RspSetHighlight *response) override;
 public:
     int WAIT_TIMEOUT_MS;
 };

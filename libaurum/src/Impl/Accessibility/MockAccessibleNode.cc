@@ -198,6 +198,11 @@ bool MockAccessibleNode::setFocus()
     return false;
 }
 
+bool MockAccessibleNode::setHighlight()
+{
+    return false;
+}
+
 void MockAccessibleNode::updateTextMinBoundingRect()
 {
 }

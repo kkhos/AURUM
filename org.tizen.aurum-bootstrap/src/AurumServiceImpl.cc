@@ -304,3 +304,11 @@ aurumServiceImpl::~aurumServiceImpl()
     std::unique_ptr<GetAngleCommand> cmd = std::make_unique<GetAngleCommand>(request, response);
     return execute(cmd.get(), true);
 }
+
+::grpc::Status aurumServiceImpl::setHighlight(::grpc::ServerContext *context,
+                                         const ::aurum::ReqSetHighlight *request,
+                                         ::aurum::RspSetHighlight *response)
+{
+    std::unique_ptr<SetHighlightCommand> cmd = std::make_unique<SetHighlightCommand>(request, response);
+    return execute(cmd.get(), true);
+}
