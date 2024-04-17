@@ -162,6 +162,11 @@ public:
     bool setFocus() override;
 
     /**
+     * @copydoc UiObject::moveTo()
+     */
+    bool moveTo() override;
+
+    /**
      * @copydoc AccessibleNode::refresh()
      */
     void refresh(bool updateAll = true) override;

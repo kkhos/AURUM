@@ -42,6 +42,7 @@
 #include "Commands/GetScreenSizeCommand.h"
 #include "Commands/ActionAndWaitEventCommand.h"
 #include "Commands/SetFocusCommand.h"
+#include "Commands/MoveToCommand.h"
 #include "Commands/GetActiveAppToolkitNameCommand.h"
 #include "Commands/GetTextMinBoundingRectCommand.h"
 #include "Commands/SetXMLSyncCommand.h"
