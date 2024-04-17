@@ -442,6 +442,11 @@ bool UiObject::setFocus() const
     return mNode->setFocus();
 }
 
+bool UiObject::moveTo() const
+{
+    return mNode->moveTo();
+}
+
 bool UiObject::isValid() const
 {
     return mNode->isValid();

@@ -38,6 +38,7 @@ service Bootstrap {
    rpc setTimeout(ReqSetTimeout) returns (RspSetTimeout) {}
    rpc setXMLSync(ReqSetXMLSync) returns (RspSetXMLSync) {}
    rpc getAngle(ReqGetAngle) returns (RspGetAngle) {}
+   rpc moveTo(ReqMoveTo) returns (RspMoveTo) {}
 }
 
 // ------------------------------------ //
@@ -630,6 +631,14 @@ message ReqSetFocus {
 }
 
 message RspSetFocus {
+   RspStatus status = 1;
+}
+
+message ReqMoveTo {
+   string elementId = 1;
+}
+
+message RspMoveTo {
    RspStatus status = 1;
 }
 
