@@ -78,6 +78,7 @@ public:
     static GArray *Atspi_collection_get_matches_in_matches(AtspiCollection *obj, AtspiMatchRule *first_rule, AtspiMatchRule *second_rule, AtspiCollectionSortOrder sortby, gint first_count, gint second_count, gboolean traverse, GError **error);
     static AtspiAccessibleNodeInfo *Atspi_accessible_get_node_info(AtspiAccessible *obj, GError **error);
     static void Atspi_accessible_free_node_info(AtspiAccessibleNodeInfo *node_info);
+    static AtspiAccessible *Atspi_accessible_get_neighbor(AtspiAccessible *root, AtspiAccessible *start, AtspiNeighborSearchDirection direction, GError **error);
 
 private:
     static std::recursive_mutex mMutex;

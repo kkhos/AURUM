@@ -312,3 +312,34 @@ aurumServiceImpl::~aurumServiceImpl()
     std::unique_ptr<SetHighlightCommand> cmd = std::make_unique<SetHighlightCommand>(request, response);
     return execute(cmd.get(), true);
 }
+
+::grpc::Status aurumServiceImpl::next(::grpc::ServerContext *context,
+                                         const ::aurum::ReqNext *request,
+                                         ::aurum::RspNext *response)
+{
+    std::unique_ptr<NextCommand> cmd = std::make_unique<NextCommand>(request, response);
+    return execute(cmd.get(), true);
+}
+
+::grpc::Status aurumServiceImpl::prev(::grpc::ServerContext *context,
+                                         const ::aurum::ReqPrev *request,
+                                         ::aurum::RspPrev *response)
+{
+    std::unique_ptr<PrevCommand> cmd = std::make_unique<PrevCommand>(request, response);
+    return execute(cmd.get(), true);
+}
+
+::grpc::Status aurumServiceImpl::first(::grpc::ServerContext *context,
+                                         const ::aurum::ReqFirst *request,
+                                         ::aurum::RspFirst *response)
+{
+    std::unique_ptr<FirstCommand> cmd = std::make_unique<FirstCommand>(request, response);
+    return execute(cmd.get(), true);
+}
+::grpc::Status aurumServiceImpl::last(::grpc::ServerContext *context,
+                                         const ::aurum::ReqLast *request,
+                                         ::aurum::RspLast *response)
+{
+    std::unique_ptr<LastCommand> cmd = std::make_unique<LastCommand>(request, response);
+    return execute(cmd.get(), true);
+}
