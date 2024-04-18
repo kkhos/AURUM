@@ -79,6 +79,26 @@ public:
      */
     std::vector<std::shared_ptr<AccessibleNode>> getMatchesInMatches(const std::shared_ptr<UiSelector> firstSelector, const std::shared_ptr<UiSelector> secondSelector, const bool ealryReturn) const override;
 
+    /**
+     * @copydoc UiObject::next()
+     */
+    std::shared_ptr<AccessibleNode> next() const override;
+
+    /**
+     * @copydoc UiObject::prev()
+     */
+    std::shared_ptr<AccessibleNode> prev() const override;
+
+    /**
+     * @copydoc UiObject::first()
+     */
+    std::shared_ptr<AccessibleNode> first() const override;
+
+    /**
+     * @copydoc UiObject::last()
+     */
+    std::shared_ptr<AccessibleNode> last() const override;
+
 public:
     /**
      * @brief TBD

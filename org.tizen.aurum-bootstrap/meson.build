@@ -50,6 +50,10 @@ bootstrap_svr_src += [
    files('src/Commands/GetTextMinBoundingRectCommand.cc'),
    files('src/Commands/SetXMLSyncCommand.cc'),
    files('src/Commands/GetAngleCommand.cc'),
+   files('src/Commands/NextCommand.cc'),
+   files('src/Commands/PrevCommand.cc'),
+   files('src/Commands/FirstCommand.cc'),
+   files('src/Commands/LastCommand.cc'),
 ]
 
 bootstrap_svr_dep = [
