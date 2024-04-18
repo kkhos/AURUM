@@ -135,6 +135,18 @@ public:
     ::grpc::Status setHighlight(::grpc::ServerContext *context,
                             const ::aurum::ReqSetHighlight *request,
                             ::aurum::RspSetHighlight *response) override;
+    ::grpc::Status next(::grpc::ServerContext *context,
+                            const ::aurum::ReqNext *request,
+                            ::aurum::RspNext *response) override;
+    ::grpc::Status prev(::grpc::ServerContext *context,
+                            const ::aurum::ReqPrev *request,
+                            ::aurum::RspPrev *response) override;
+    ::grpc::Status first(::grpc::ServerContext *context,
+                            const ::aurum::ReqFirst *request,
+                            ::aurum::RspFirst *response) override;
+    ::grpc::Status last(::grpc::ServerContext *context,
+                            const ::aurum::ReqLast *request,
+                            ::aurum::RspLast *response) override;
 public:
     int WAIT_TIMEOUT_MS;
 };
