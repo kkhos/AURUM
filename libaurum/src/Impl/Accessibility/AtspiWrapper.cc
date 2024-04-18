@@ -278,3 +278,10 @@ void AtspiWrapper::Atspi_accessible_free_node_info(AtspiAccessibleNodeInfo *node
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     atspi_accessible_free_node_info(node_info);
 }
+
+AtspiAccessible *AtspiWrapper::Atspi_accessible_get_neighbor(AtspiAccessible *root, AtspiAccessible *start, AtspiNeighborSearchDirection direction, GError **error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_accessible_get_neighbor(root, start, direction, error);
+}
+

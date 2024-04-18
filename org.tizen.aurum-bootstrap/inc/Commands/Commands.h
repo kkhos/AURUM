@@ -47,3 +47,8 @@
 #include "Commands/GetTextMinBoundingRectCommand.h"
 #include "Commands/SetXMLSyncCommand.h"
 #include "Commands/GetAngleCommand.h"
+#include "Commands/NextCommand.h"
+#include "Commands/PrevCommand.h"
+#include "Commands/FirstCommand.h"
+#include "Commands/LastCommand.h"
+

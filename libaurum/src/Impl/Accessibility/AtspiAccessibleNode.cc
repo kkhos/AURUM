@@ -680,3 +680,68 @@ std::vector<std::shared_ptr<AccessibleNode>> AtspiAccessibleNode::getMatchesInMa
 
     return ret;
 }
+
+std::shared_ptr<AccessibleNode> AtspiAccessibleNode::next() const
+{
+    if (!isValid()) {
+        return nullptr;
+    }
+    AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(mNode, NULL);
+    if (app) {
+        AtspiAccessible *next = AtspiWrapper::Atspi_accessible_get_neighbor(app, mNode, ATSPI_NEIGHBOR_SEARCH_FORWARD, NULL);        
+        if (!next) {
+            next =  AtspiWrapper::Atspi_accessible_get_neighbor(app, NULL, ATSPI_NEIGHBOR_SEARCH_FORWARD, NULL);
+        }
+        g_object_unref(app);
+        if (next) return std::make_shared<AtspiAccessibleNode>(next);
+    }
+
+    return nullptr;
+}
+
+std::shared_ptr<AccessibleNode> AtspiAccessibleNode::prev() const
+{
+    if (!isValid()) {
+        return nullptr;
+    }
+    AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(mNode, NULL);
+    if (app) {
+        AtspiAccessible *prev = AtspiWrapper::Atspi_accessible_get_neighbor(app, mNode, ATSPI_NEIGHBOR_SEARCH_BACKWARD, NULL);
+        if (!prev) {
+            prev = AtspiWrapper::Atspi_accessible_get_neighbor(app, NULL, ATSPI_NEIGHBOR_SEARCH_BACKWARD, NULL);
+        }
+        g_object_unref(app);
+        if (prev) return std::make_shared<AtspiAccessibleNode>(prev);
+    }
+    
+    return nullptr;
+}
+
+std::shared_ptr<AccessibleNode> AtspiAccessibleNode::first() const
+{
+    if (!isValid()) {
+        return nullptr;
+    }
+    AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(mNode, NULL);
+    if (app) {
+        AtspiAccessible *first = AtspiWrapper::Atspi_accessible_get_neighbor(app, NULL, ATSPI_NEIGHBOR_SEARCH_FORWARD, NULL);
+        g_object_unref(app);
+        if (first) return std::make_shared<AtspiAccessibleNode>(first);
+    }    
+    return nullptr;
+}
+
+std::shared_ptr<AccessibleNode> AtspiAccessibleNode::last() const
+{
+    if (!isValid()) {
+        return nullptr;
+    }
+    AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(mNode, NULL);
+    if (app) {
+        AtspiAccessible *last = AtspiWrapper::Atspi_accessible_get_neighbor(app, NULL, ATSPI_NEIGHBOR_SEARCH_BACKWARD, NULL);
+        g_object_unref(app);
+        if (last) return std::make_shared<AtspiAccessibleNode>(last);
+    }
+    
+    return nullptr;
+}
