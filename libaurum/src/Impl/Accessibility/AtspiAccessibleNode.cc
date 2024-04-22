@@ -390,7 +390,7 @@ void AtspiAccessibleNode::refresh(bool updateAll)
                 }
 
                 for (i = 0; i < 64; i++) {
-                    if (ni->states & val) ret = g_array_append_val(ret, i);
+                    if ((ni->states & val) != 0) ret = g_array_append_val(ret, i);
                     val <<= 1;
                 }
 
