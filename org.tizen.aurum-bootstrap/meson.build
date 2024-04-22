@@ -45,10 +45,15 @@ bootstrap_svr_src += [
    files('src/Commands/GetScreenSizeCommand.cc'),
    files('src/Commands/ActionAndWaitEventCommand.cc'),
    files('src/Commands/SetFocusCommand.cc'),
+   files('src/Commands/MoveToCommand.cc'),
    files('src/Commands/GetActiveAppToolkitNameCommand.cc'),
    files('src/Commands/GetTextMinBoundingRectCommand.cc'),
    files('src/Commands/SetXMLSyncCommand.cc'),
    files('src/Commands/GetAngleCommand.cc'),
+   files('src/Commands/NextCommand.cc'),
+   files('src/Commands/PrevCommand.cc'),
+   files('src/Commands/FirstCommand.cc'),
+   files('src/Commands/LastCommand.cc'),
 ]
 
 bootstrap_svr_dep = [

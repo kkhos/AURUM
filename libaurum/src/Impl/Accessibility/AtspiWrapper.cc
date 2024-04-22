@@ -177,6 +177,12 @@ gboolean AtspiWrapper::Atspi_component_grab_focus(AtspiComponent *obj, GError **
     return atspi_component_grab_focus(obj, error);
 }
 
+gboolean AtspiWrapper::Atspi_component_grab_highlight(AtspiComponent *obj, GError **error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_component_grab_highlight(obj, error);
+}
+
 void AtspiWrapper::Atspi_accessible_set_cache_mask(AtspiAccessible *node, AtspiCache mask)
 {
     std::unique_lock<std::recursive_mutex> lock(mMutex);
@@ -272,3 +278,10 @@ void AtspiWrapper::Atspi_accessible_free_node_info(AtspiAccessibleNodeInfo *node
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     atspi_accessible_free_node_info(node_info);
 }
+
+AtspiAccessible *AtspiWrapper::Atspi_accessible_get_neighbor(AtspiAccessible *root, AtspiAccessible *start, AtspiNeighborSearchDirection direction, GError **error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_accessible_get_neighbor(root, start, direction, error);
+}
+

@@ -142,6 +142,26 @@ public:
     virtual std::vector<std::shared_ptr<AccessibleNode>> getMatchesInMatches(const std::shared_ptr<UiSelector> firstSelector, const std::shared_ptr<UiSelector> secondSelector, const bool ealryReturn) const = 0;
 
     /**
+     * @copydoc UiObject::next()
+     */
+    virtual std::shared_ptr<AccessibleNode> next() const = 0;
+
+    /**
+     * @copydoc UiObject::prev()
+     */
+    virtual std::shared_ptr<AccessibleNode> prev() const = 0;
+
+    /**
+     * @copydoc UiObject::first()
+     */
+    virtual std::shared_ptr<AccessibleNode> first() const = 0;
+
+    /**
+     * @copydoc UiObject::last()
+     */
+    virtual std::shared_ptr<AccessibleNode> last() const = 0;
+
+    /**
      * @brief Called by @AccessibleWatcher::notifyAll.
      *        Changes Node property If it's @EventType, @ObjectEventType are matches.
      *
@@ -464,6 +484,11 @@ public:
      * @copydoc UiObject::setFocus()
      */
     virtual bool setFocus() = 0;
+
+    /**
+     * @copydoc UiObject::moveTo()
+     */
+    virtual bool moveTo() = 0;
 
     /**
      * @copydoc UIObject::updateTextMinBoundingRect()

@@ -198,6 +198,11 @@ bool MockAccessibleNode::setFocus()
     return false;
 }
 
+bool MockAccessibleNode::moveTo()
+{
+    return false;
+}
+
 void MockAccessibleNode::updateTextMinBoundingRect()
 {
 }
@@ -310,4 +315,24 @@ void MockAccessibleNode::addAction(std::string action)
 void MockAccessibleNode::clearActions(void)
 {
     mActionSet.clear();
+}
+
+std::shared_ptr<AccessibleNode> MockAccessibleNode::next() const
+{
+    return nullptr;
+}
+
+std::shared_ptr<AccessibleNode> MockAccessibleNode::prev() const
+{
+    return nullptr;
+}
+
+std::shared_ptr<AccessibleNode> MockAccessibleNode::first() const
+{
+    return nullptr;
+}
+
+std::shared_ptr<AccessibleNode> MockAccessibleNode::last() const
+{
+    return nullptr;
 }

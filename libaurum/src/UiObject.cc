@@ -442,6 +442,11 @@ bool UiObject::setFocus() const
     return mNode->setFocus();
 }
 
+bool UiObject::moveTo() const
+{
+    return mNode->moveTo();
+}
+
 bool UiObject::isValid() const
 {
     return mNode->isValid();
@@ -488,4 +493,36 @@ std::shared_ptr<AccessibleNode> UiObject::getAccessibleNode() const
     // TODO : wait for animation and refresh current node
     // mDevice->waitForIdle();
     return mNode;
+}
+
+std::shared_ptr<UiObject> UiObject::next() const {
+    auto nextNode = mNode->next();
+    if (nextNode) {
+        return std::make_shared<UiObject>(mDevice, mSelector, nextNode);
+    }
+    return nullptr;
+}
+
+std::shared_ptr<UiObject> UiObject::prev() const {
+    auto prevNode = mNode->prev();
+    if (prevNode) {
+        return std::make_shared<UiObject>(mDevice, mSelector, prevNode);
+    }
+    return nullptr;
+}
+
+std::shared_ptr<UiObject> UiObject::first() const {
+    auto firstNode = mNode->first();
+    if (firstNode) {
+        return std::make_shared<UiObject>(mDevice, mSelector, firstNode);
+    }
+    return nullptr;
+}
+
+std::shared_ptr<UiObject> UiObject::last() const {
+    auto lastNode = mNode->last();
+    if (lastNode) {
+        return std::make_shared<UiObject>(mDevice, mSelector, lastNode);
+    }
+    return nullptr;
 }

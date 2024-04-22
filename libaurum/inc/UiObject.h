@@ -692,6 +692,13 @@ public:
     bool setFocus() const;
 
     /**
+     * @brief Moves to object.
+     *
+     * @since_tizen 9.0
+     */
+    bool moveTo() const;
+
+    /**
      * @brief Updates object's information from atspi server.
      *
      * @since_tizen 6.5
@@ -715,6 +722,42 @@ public:
      * @since_tizen 6.5
      */
     std::shared_ptr<AccessibleNode> getAccessibleNode() const;
+
+    /**
+     * @brief Gets object's next.
+     *
+     * @return UiObject pointer
+     *
+     * @since_tizen 9.0
+     */
+    std::shared_ptr<UiObject> next() const;
+
+    /**
+     * @brief Gets object's prev.
+     *
+     * @return UiObject pointer
+     *
+     * @since_tizen 9.0
+     */
+    std::shared_ptr<UiObject> prev() const;
+
+    /**
+     * @brief Gets object's first.
+     *
+     * @return UiObject pointer
+     *
+     * @since_tizen 9.0
+     */
+    std::shared_ptr<UiObject> first() const;
+
+    /**
+     * @brief Gets object's last.
+     *
+     * @return UiObject pointer
+     *
+     * @since_tizen 9.0
+     */
+    std::shared_ptr<UiObject> last() const;
 
 private:
     std::shared_ptr<UiDevice> mDevice;

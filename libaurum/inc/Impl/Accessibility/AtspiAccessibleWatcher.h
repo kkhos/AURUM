@@ -160,10 +160,12 @@ private:
     bool addToWindowSet(AtspiAccessible *node);
     static gpointer eventThreadLoop(gpointer data);
     static gpointer timerThread(gpointer data);
-    void appendApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg, int pid);
-    void removeApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg, int pid);
+    void appendApp(AtspiAccessible *app, char *pkg, int pid);
+    void removeApp(char *pkg, int pid);
     void setXMLsync();
     void processCallback(char *type, char *name, char *pkg);
+    void processWindowEvent(AtspiEvent *event);
+    void processPostRender();
 
 private:
     GDBusProxy *mDbusProxy;
@@ -193,6 +195,7 @@ private:
     static IdleEventState isIdle;
     static int mRenderCount;
     static bool isWindowEventEmitted;
+    static bool mWaitingForEvent;
 };
 
 }

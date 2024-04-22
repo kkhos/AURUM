@@ -38,6 +38,11 @@ service Bootstrap {
    rpc setTimeout(ReqSetTimeout) returns (RspSetTimeout) {}
    rpc setXMLSync(ReqSetXMLSync) returns (RspSetXMLSync) {}
    rpc getAngle(ReqGetAngle) returns (RspGetAngle) {}
+   rpc moveTo(ReqMoveTo) returns (RspMoveTo) {}
+   rpc next(ReqNext) returns (RspNext) {}
+   rpc prev(ReqPrev) returns (RspPrev) {}
+   rpc first(ReqFirst) returns (RspFirst) {}
+   rpc last(ReqLast) returns (RspLast) {}
 }
 
 // ------------------------------------ //
@@ -633,6 +638,14 @@ message RspSetFocus {
    RspStatus status = 1;
 }
 
+message ReqMoveTo {
+   string elementId = 1;
+}
+
+message RspMoveTo {
+   RspStatus status = 1;
+}
+
 message ReqGetActiveAppToolkitName {
 }
 
@@ -673,4 +686,40 @@ message RspGetAngle {
    RspStatus status = 1;
    int32 windowAngle = 2;
    int32 targetAngle = 3;
+}
+
+message ReqNext {
+   string elementId = 1;
+}
+
+message RspNext {
+   RspStatus status = 1;
+   Element element = 2;
+}
+
+message ReqPrev {
+   string elementId = 1;
+}
+
+message RspPrev {
+   RspStatus status = 1;
+   Element element = 2;
+}
+
+message ReqFirst {
+   string elementId = 1;
+}
+
+message RspFirst {
+   RspStatus status = 1;
+   Element element = 2;
+}
+
+message ReqLast {
+   string elementId = 1;
+}
+
+message RspLast {
+   RspStatus status = 1;
+   Element element = 2;
 }

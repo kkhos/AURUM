@@ -46,6 +46,7 @@ IdleEventState AtspiAccessibleWatcher::isIdle = IdleEventState::IDLE_LISTEN_READ
 static const unsigned int WAIT_FOR_IDLE_MILLI_SEC = 1000; // 1sec
 int AtspiAccessibleWatcher::mRenderCount = 10;
 bool AtspiAccessibleWatcher::isWindowEventEmitted = false;
+bool AtspiAccessibleWatcher::mWaitingForEvent = false;
 
 static bool iShowingNode(AtspiAccessible *node)
 {
@@ -112,8 +113,28 @@ gpointer AtspiAccessibleWatcher::eventThreadLoop(gpointer data)
     AtspiEventListener *listener =
         atspi_event_listener_new(AtspiAccessibleWatcher::onAtspiEvents, instance, NULL);
 
-    atspi_event_listener_register(listener, "window:", NULL);
-    atspi_event_listener_register(listener, "object:", NULL);
+    atspi_event_listener_register(listener, "window:create", NULL);
+    atspi_event_listener_register(listener, "window:destroy", NULL);
+    atspi_event_listener_register(listener, "window:minimize", NULL);
+    atspi_event_listener_register(listener, "window:maximize", NULL);
+    atspi_event_listener_register(listener, "window:restore", NULL);
+    atspi_event_listener_register(listener, "window:activate", NULL);
+    atspi_event_listener_register(listener, "window:deactivate", NULL);
+    atspi_event_listener_register(listener, "window:raise", NULL);
+    atspi_event_listener_register(listener, "window:lower", NULL);
+    atspi_event_listener_register(listener, "window:resize", NULL);
+    atspi_event_listener_register(listener, "window:move", NULL);
+    atspi_event_listener_register(listener, "window:post-render", NULL);
+    atspi_event_listener_register(listener, "object:text-changed:insert", NULL);
+    atspi_event_listener_register(listener, "object:text-changed:delete", NULL);
+    atspi_event_listener_register(listener, "object:state-changed:visible", NULL);
+    atspi_event_listener_register(listener, "object:state-changed:focused", NULL);
+    atspi_event_listener_register(listener, "object:state-changed:checked", NULL);
+    atspi_event_listener_register(listener, "object:state-changed:pressed", NULL);
+    atspi_event_listener_register(listener, "object:state-changed:selected", NULL);
+    atspi_event_listener_register(listener, "object:state-changed:defunct", NULL);
+    atspi_event_listener_register(listener, "object:scroll-started", NULL);
+    atspi_event_listener_register(listener, "object:scroll-finished", NULL);
 
     mContext = g_main_context_new();
     g_main_context_push_thread_default(mContext);
@@ -122,8 +143,28 @@ gpointer AtspiAccessibleWatcher::eventThreadLoop(gpointer data)
 
     g_main_loop_run(instance->mLoop);
     LOGI("event thread end");
-    atspi_event_listener_deregister(listener, "object:", NULL);
-    atspi_event_listener_deregister(listener, "window:", NULL);
+    atspi_event_listener_deregister(listener, "window:create", NULL);
+    atspi_event_listener_deregister(listener, "window:destroy", NULL);
+    atspi_event_listener_deregister(listener, "window:minimize", NULL);
+    atspi_event_listener_deregister(listener, "window:maximize", NULL);
+    atspi_event_listener_deregister(listener, "window:restore", NULL);
+    atspi_event_listener_deregister(listener, "window:activate", NULL);
+    atspi_event_listener_deregister(listener, "window:deactivate", NULL);
+    atspi_event_listener_deregister(listener, "window:raise", NULL);
+    atspi_event_listener_deregister(listener, "window:lower", NULL);
+    atspi_event_listener_deregister(listener, "window:resize", NULL);
+    atspi_event_listener_deregister(listener, "window:move", NULL);
+    atspi_event_listener_deregister(listener, "window:post-render", NULL);
+    atspi_event_listener_deregister(listener, "object:text-changed:insert", NULL);
+    atspi_event_listener_deregister(listener, "object:text-changed:delete", NULL);
+    atspi_event_listener_deregister(listener, "object:state-changed:visible", NULL);
+    atspi_event_listener_deregister(listener, "object:state-changed:focused", NULL);
+    atspi_event_listener_deregister(listener, "object:state-changed:checked", NULL);
+    atspi_event_listener_deregister(listener, "object:state-changed:pressed", NULL);
+    atspi_event_listener_deregister(listener, "object:state-changed:selected", NULL);
+    atspi_event_listener_deregister(listener, "object:state-changed:defunct", NULL);
+    atspi_event_listener_deregister(listener, "object:scroll-started", NULL);
+    atspi_event_listener_deregister(listener, "object:scroll-finished", NULL);
 
     g_object_unref(listener);
 
@@ -195,7 +236,7 @@ AtspiAccessibleWatcher::~AtspiAccessibleWatcher()
     atspi_exit();
 }
 
-void AtspiAccessibleWatcher::appendApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg, int pid)
+void AtspiAccessibleWatcher::appendApp(AtspiAccessible *app, char *pkg, int pid)
 {
     LOGI("window activated in app(%s:%d)", pkg, pid);
     if (mXMLSync)
@@ -203,33 +244,32 @@ void AtspiAccessibleWatcher::appendApp(AtspiAccessibleWatcher *instance, AtspiAc
         std::string package(pkg);
         if (!package.empty()) {
 
-            if (instance->mXMLDocMap.count({package, pid})) {
+            if (mXMLDocMap.count({package, pid})) {
                 mAppCount--;
                 mAppXMLLoadedCount--;
-                instance->mXMLDocMap.erase({package, pid});
+                mXMLDocMap.erase({package, pid});
             }
 
             mAppCount++;
-            instance->mXMLDocMap.insert({{package, pid},
+            mXMLDocMap.insert({{package, pid},
                     std::make_shared<AurumXML>(std::make_shared<AtspiAccessibleNode>(app), &mAppXMLLoadedCount, &mXMLMutex, &mXMLConditionVar)});
+            g_object_ref(app);
         }
     }
 }
 
-void AtspiAccessibleWatcher::removeApp(AtspiAccessibleWatcher *instance, AtspiAccessible *app, char *pkg, int pid)
+void AtspiAccessibleWatcher::removeApp(char *pkg, int pid)
 {
     LOGI("window deactivate in app(%s:%d)", pkg, pid);
     if (mXMLSync)
     {
         std::string package(pkg);
-        if (instance->mXMLDocMap.count({package, pid})) {
+        if (mXMLDocMap.count({package, pid})) {
             mAppCount--;
             mAppXMLLoadedCount--;
-            instance->mXMLDocMap.erase({package, pid});
+            mXMLDocMap.erase({package, pid});
         }
     }
-
-    g_object_unref(app);
 }
 
 gpointer AtspiAccessibleWatcher::timerThread(gpointer data)
@@ -262,7 +302,7 @@ void AtspiAccessibleWatcher::processCallback(char *type, char *name, char *pkg)
 {
     mMutex.lock();
     auto a11yEvent = std::make_shared<A11yEventInfo>(std::string(type), std::string(name), std::string(pkg));
-    mEventQueue.push_back(a11yEvent);
+    if (mWaitingForEvent) mEventQueue.push_back(a11yEvent);
     mMutex.unlock();
 
     if (this->mHandlers.count(a11yEvent->getEvent())) {
@@ -278,30 +318,16 @@ void AtspiAccessibleWatcher::processCallback(char *type, char *name, char *pkg)
             else ++it;
         }
     }
-
 }
 
-void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
+void AtspiAccessibleWatcher::processPostRender()
 {
-    if (!event->source)
-    {
-        return;
-    }
-
-    if (!strncmp(event->type, "w", 1))
-        isWindowEventEmitted = true;
-
-    char *name = NULL, *pkg = NULL;
-    int pid = 0;
-    AtspiAccessibleWatcher *instance = (AtspiAccessibleWatcher *)watcher;
-    name = AtspiWrapper::Atspi_accessible_get_name(event->source, NULL);
-
-    if (isIdle == IdleEventState::IDLE_LISTEN_START && !strncmp(event->type, "window:post-render", 18))
+    if (isIdle == IdleEventState::IDLE_LISTEN_START)
     {
         if (mTimerThread == nullptr)
         {
             LOGI("Timer Thread Start");
-            mTimerThread = g_thread_new("TimerThread", timerThread, instance);
+            mTimerThread = g_thread_new("TimerThread", timerThread, nullptr);
         }
         else
         {
@@ -314,44 +340,82 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
           LOGI("RenderCount is 0. Stop to listen RenderPost");
           isIdle = IdleEventState::IDLE_LISTEN_DONE;
         }
-
-        if (name) free(name);
-        return;
     }
-    else if (isIdle == IdleEventState::IDLE_LISTEN_DONE && !strncmp(event->type, "window:post-render", 18))
-    {
-        if (name) free(name);
-        return;
+}
+void AtspiAccessibleWatcher::processWindowEvent(AtspiEvent *event)
+{
+    char *name = NULL, *pkg = NULL;
+    int pid = 0;
+    name = AtspiWrapper::Atspi_accessible_get_name(event->source, NULL);
+    pkg = AtspiWrapper::Atspi_accessible_get_name(event->sender, NULL);
+    pid = AtspiWrapper::Atspi_accessible_get_process_id(event->sender, NULL);
+
+    if (!strncmp(event->type, "window:create", 13)) appendApp(event->sender, pkg, pid);
+    else if (!strncmp(event->type, "window:activate", 15) && mXMLDocMap.count({pkg, pid}) == 0) appendApp(event->sender, pkg, pid);
+    else if (!strncmp(event->type, "window:destroy", 14)) removeApp(pkg, pid);
+
+    // To support focus skipped window
+    if (isTv) {
+        if (!strncmp(event->type, "window:restore", 14) && (!strncmp(name, "volume-app", 10) || !strncmp(name, "tv-viewer", 9)))
+            appendApp(event->sender, pkg, pid);
+        else if (!strncmp(event->type, "window:minimize", 15) && (!strncmp(name, "volume-app", 10) || !strncmp(name, "tv-viewer", 9)))
+            removeApp(pkg, pid);
     }
 
-    AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(event->source, NULL);
-    if (name && app)
-    {
-        pkg = AtspiWrapper::Atspi_accessible_get_name(app, NULL);
-        pid = AtspiWrapper::Atspi_accessible_get_process_id(app, NULL);
-        if (!strncmp(event->type, "window:create", 13)) instance->appendApp(instance, app, pkg, pid);
-        else if (!strncmp(event->type, "window:activate", 15) && instance->mXMLDocMap.count({pkg, pid}) == 0) instance->appendApp(instance, app, pkg, pid);
-        else if (!strncmp(event->type, "window:destroy", 14)) instance->removeApp(instance, app, pkg, pid);
+    if (name) g_free(name);
+    if (pkg) g_free(pkg);
+}
 
-        // To support focus skipped window
-        if (instance->isTv) {
-            if (!strncmp(event->type, "window:restore", 14) && (!strncmp(name, "volume-app", 10) || !strncmp(name, "tv-viewer", 9)))
-                instance->appendApp(instance, app, pkg, pid);
-            else if (!strncmp(event->type, "window:minimize", 15) && (!strncmp(name, "volume-app", 10) || !strncmp(name, "tv-viewer", 9)))
-                instance->removeApp(instance, app, pkg, pid);
+void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
+{
+    if ((!event) || (!event->source))
+    {
+        if(event)
+        {
+            g_boxed_free(ATSPI_TYPE_EVENT, event);
         }
+        return;
     }
-    else
-        pkg = strdup("");
 
-    instance->processCallback(event->type, name, pkg);
+    if (!watcher)
+    {
+        g_boxed_free(ATSPI_TYPE_EVENT, event);
+        return;
+    }
 
-    if (!strcmp(event->type, "object:state-changed:defunct")) {
-         instance->onObjectDefunct(
+    AtspiAccessibleWatcher *instance = (AtspiAccessibleWatcher *)watcher;
+
+    if (!strncmp(event->type, "object:state-changed:defunct", 28)) {
+        instance->onObjectDefunct(
             static_cast<AtspiAccessible *>(event->source));
+        g_boxed_free(ATSPI_TYPE_EVENT, event);
+        return;
     }
-    if (name) free(name);
-    if (pkg) free(pkg);
+
+    if (!strncmp(event->type, "window:post-render", 18))
+    {
+        instance->processPostRender();
+        g_boxed_free(ATSPI_TYPE_EVENT, event);
+        return;
+    }
+
+    if (!strncmp(event->type, "w", 1))
+    {
+        isWindowEventEmitted = true;
+        instance->processWindowEvent(event);
+    }
+
+    if (mWaitingForEvent || !instance->mHandlers.empty())
+    {
+        char *name = NULL, *pkg = NULL;
+        name = AtspiWrapper::Atspi_accessible_get_name(event->source, NULL);
+        pkg = AtspiWrapper::Atspi_accessible_get_name(event->sender, NULL);
+        instance->processCallback(event->type, name, pkg);
+        if (name) g_free(name);
+        if (pkg) g_free(pkg);
+    }
+
+    g_boxed_free(ATSPI_TYPE_EVENT, event);
 }
 
 void AtspiAccessibleWatcher::onObjectDefunct(AtspiAccessible *node)
@@ -364,6 +428,7 @@ bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const 
 {
     mMutex.lock();
     mEventQueue.clear();
+    mWaitingForEvent = true;
     mMutex.unlock();
 
     // Call atspi method for start to listen atspi event.
@@ -400,6 +465,10 @@ bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const 
                 if (COMPARE(type, event->getEvent()) && (packageName.empty() || packageName == event->getPkg()))
                 {
                     LOGI("type %d == %d name %s pkg %s",static_cast<int>(type), static_cast<int>(event->getEvent()), event->getName().c_str(), event->getPkg().c_str());
+                    mMutex.lock();
+                    mWaitingForEvent = false;
+                    mEventQueue.clear();
+                    mMutex.unlock();
                     return true;
                 }
             }
@@ -410,6 +479,11 @@ bool AtspiAccessibleWatcher::executeAndWaitForEvents(const Runnable *cmd, const 
         std::this_thread::sleep_for(
             std::chrono::milliseconds{100});
     }
+
+    mMutex.lock();
+    mWaitingForEvent = false;
+    mEventQueue.clear();
+    mMutex.unlock();
 
     if (isIdle != IdleEventState::IDLE_LISTEN_READY)
     {
