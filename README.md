@@ -19,6 +19,7 @@ Please refer [grpc](https://grpc.io/) and [proto buffers](https://developers.goo
 [Github Pages](https://pages.github.sec.samsung.net/tizen/aurum/)**
 
 ### Reference and Tip
+- [Aurum python library](https://github.sec.samsung.net/tizen/aurum-python)
 - [How to run aurum on TM1](https://code.sec.samsung.net/confluence/display/GFX/04.+NUITizenGallery+Test+Script+Guide)
 - [NUI automation test](https://github.com/nui-dali/NUIAutomationTest)
 - [Aurum test sciprts(samples)](https://github.sec.samsung.net/NUI/AurumTestScript)
