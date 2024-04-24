@@ -43,6 +43,7 @@ service Bootstrap {
    rpc prev(ReqPrev) returns (RspPrev) {}
    rpc first(ReqFirst) returns (RspFirst) {}
    rpc last(ReqLast) returns (RspLast) {}
+   rpc getParent(ReqGetParent) returns (RspGetParent) {}
 }
 
 // ------------------------------------ //
@@ -720,6 +721,15 @@ message ReqLast {
 }
 
 message RspLast {
+   RspStatus status = 1;
+   Element element = 2;
+}
+
+message ReqGetParent {
+   string elementId = 1;
+}
+
+message RspGetParent {
    RspStatus status = 1;
    Element element = 2;
 }

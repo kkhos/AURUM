@@ -276,7 +276,7 @@ public:
      *
      * @since_tizen 6.5
      */
-    UiObject *getParent() const;
+    std::shared_ptr<UiObject>  getParent() const;
 
     /**
      * @brief Gets object's child count.
