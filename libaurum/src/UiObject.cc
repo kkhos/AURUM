@@ -148,11 +148,11 @@ bool UiObject::waitFor(
     return mWaiter->waitFor(condition);
 }
 
-UiObject *UiObject::getParent() const
+std::shared_ptr<UiObject> UiObject::getParent() const
 {
     std::shared_ptr<AccessibleNode> node = mNode->getParent();
     if (!node) return nullptr;
-    return new UiObject(mDevice, mSelector, std::move(node));
+    return std::make_shared<UiObject>(mDevice, mSelector, node);
 }
 
 int UiObject::getChildCount() const
