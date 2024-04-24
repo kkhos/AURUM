@@ -54,6 +54,7 @@ bootstrap_svr_src += [
    files('src/Commands/PrevCommand.cc'),
    files('src/Commands/FirstCommand.cc'),
    files('src/Commands/LastCommand.cc'),
+   files('src/Commands/GetParentCommand.cc'),
 ]
 
 bootstrap_svr_dep = [

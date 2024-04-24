@@ -51,3 +51,4 @@
 #include "Commands/PrevCommand.h"
 #include "Commands/FirstCommand.h"
 #include "Commands/LastCommand.h"
+#include "Commands/GetParentCommand.h"

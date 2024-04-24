@@ -343,3 +343,11 @@ aurumServiceImpl::~aurumServiceImpl()
     std::unique_ptr<LastCommand> cmd = std::make_unique<LastCommand>(request, response);
     return execute(cmd.get(), true);
 }
+
+::grpc::Status aurumServiceImpl::getParent(::grpc::ServerContext *context,
+                                         const ::aurum::ReqGetParent *request,
+                                         ::aurum::RspGetParent *response)
+{
+    std::unique_ptr<GetParentCommand> cmd = std::make_unique<GetParentCommand>(request, response);
+    return execute(cmd.get(), true);
+}

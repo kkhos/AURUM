@@ -147,6 +147,9 @@ public:
     ::grpc::Status last(::grpc::ServerContext *context,
                             const ::aurum::ReqLast *request,
                             ::aurum::RspLast *response) override;
+    ::grpc::Status getParent(::grpc::ServerContext *context,
+                            const ::aurum::ReqGetParent *request,
+                            ::aurum::RspGetParent *response) override;
 public:
     int WAIT_TIMEOUT_MS;
 };
