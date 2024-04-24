@@ -419,6 +419,13 @@ void AtspiAccessibleNode::refresh(bool updateAll)
             mValue = ni->value;
             mIncrement = ni->increment;
 
+            // TODO: It should be belongs into Atspi_accessible_get_node_info()
+            gchar *description = AtspiWrapper::Atspi_accessible_get_description(mNode, NULL);
+            if (description) {
+                mDescription = description;
+                g_free(description);
+            }
+
             AtspiWrapper::Atspi_accessible_free_node_info(ni);
         } else {
             // TODO: Add Atspi_accessible_get_node_info() for efl.
