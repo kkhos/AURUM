@@ -352,6 +352,12 @@ public:
     std::string getDescription() const;
 
     /**
+     * @copydoc UiObject::getlayzerZIndex()
+     *
+     */
+    double getlayzerZIndex() const;
+
+    /**
      * @copydoc UiObject::isCheckable()
      */
     bool isCheckable() const;
@@ -619,6 +625,7 @@ protected:
     int mPid;
     int mWindowAngle;
     int mTargetAngle;
+    int mLayerZIndex;
     double mMinValue;
     double mMaxValue;
     double mValue;

@@ -26,7 +26,7 @@ UiSelector::UiSelector()
   mMatchId{}, mMatchAutomationId{}, mMatchRole{}, mMatchText{}, mMatchPkg{}, mMatchType{}, mMatchStyle{},
   mMatchTextPartialMatch{}, mMatchXPath{}, mMatchOcrText{}, mMatchGeometry{}, mMatchDescription{}, mMatchChecked{}, mMatchCheckable{}, mMatchClickable{}, mMatchEnabled{},
   mMatchFocused{}, mMatchFocusable{}, mMatchScrollable{}, mMatchSelected{}, mMatchShowing{}, mMatchActive{}, mMatchVisible{},
-  mMatchSelectable{}, mMatchHighlightable{}, mMinDepth{}, mMaxDepth{}, mIschecked{}, mIscheckable{}, mIsclickable{}, mIsenabled{},
+  mMatchSelectable{}, mMatchHighlightable{}, mMatchLayerZIndex{}, mMinDepth{}, mMaxDepth{}, mLayerZIndex{-1}, mIschecked{}, mIscheckable{}, mIsclickable{}, mIsenabled{},
   mIsfocused{}, mIsfocusable{}, mIsscrollable{}, mIsselected{}, mIsshowing{}, mIsactive{}, mIsvisible{},
   mIsselectable{}, mIshighlightable{}, mGeometryIsEqual{}, mChild{}, mParent{}, mGeometry{}
 {
@@ -75,6 +75,7 @@ std::string UiSelector::description()
     if(this->mMatchVisible) ss << "\"mMatchVisible\":\"" << ((this->mMatchVisible)?"true":"false") << "\", ";
     if(this->mMatchSelectable) ss << "\"mMatchSelectable\":\"" << ((this->mMatchSelectable)?"true":"false") << "\", ";
     if(this->mMatchHighlightable) ss << "\"mMatchHighlightable\":\"" << ((this->mMatchHighlightable)?"true":"false") << "\", ";
+    if(this->mMatchLayerZIndex) ss << "\"mMatchLayerZIndex\":\"" << ((this->mMatchLayerZIndex)?"true":"false") << "\", ";
     if(this->mParent) {
         ss << "\"mParent\":" << this->mParent->description();
     }
@@ -300,5 +301,12 @@ UiSelector *UiSelector::description(std::string description)
 {
     this->mDescription = description;
     this->mMatchDescription = true;
+    return this;
+}
+
+UiSelector *UiSelector::layerZIndex(int zIndex)
+{
+    this->mLayerZIndex = zIndex;
+    this->mMatchLayerZIndex = true;
     return this;
 }

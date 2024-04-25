@@ -521,6 +521,22 @@ TEST_F(AurumTestUiObject, getScreenBoundingBox_N1)
     ASSERT_NE(box.mTopLeft.x, 0 );
     ASSERT_NE(box.mTopLeft.y, 0 );
 }
+
+TEST_F(AurumTestUiObject, getAutomationId)
+{
+    auto obj = UiDevice::getInstance();
+    auto parent = obj->findObject(Sel::text("test2"));
+    ASSERT_EQ(parent->getAutomationId(), "");
+}
+
+TEST_F(AurumTestUiObject, getLayerZIndex)
+{
+    auto obj = UiDevice::getInstance();
+    auto parent = obj->findObject(Sel::text("test2"));
+    ASSERT_EQ(parent->getAutomationId(), "");
+}
+
+
 TEST_F(AurumTestUiObject, refresh_P1)
 {
     auto obj = UiDevice::getInstance();

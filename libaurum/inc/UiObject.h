@@ -491,6 +491,15 @@ public:
     std::string getDescription() const;
 
     /**
+     * @brief Gets object's Z-Index if the object is layer.
+     *
+     * @return int
+     *
+     * @since_tizen 9.0
+     */
+    int getLayerZIndex() const;
+
+    /**
      * @brief Gets object's checkable property.
      *
      * @return true if checkable else false

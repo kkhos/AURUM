@@ -99,6 +99,8 @@ PrevCommand::PrevCommand(const ::aurum::ReqPrev *request,
         elm->set_interface(obj->getInterface());
         elm->set_description(obj->getDescription());
 
+        elm->set_
+
         mResponse->set_status(::aurum::RspStatus::OK);
     } else {
         mResponse->set_status(::aurum::RspStatus::ERROR);

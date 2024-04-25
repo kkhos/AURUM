@@ -74,11 +74,12 @@ bool PartialMatch::checkCriteria(const std::shared_ptr<UiSelector> selector,
         node->updateUniqueId();
         if (checkCriteria(selector->mId, node->getId(), 0)) return false;
     }
-    if (selector->mMatchType || selector->mMatchAutomationId || selector->mMatchStyle) {
+    if (selector->mMatchType || selector->mMatchAutomationId || selector->mMatchStyle || (selector->mLayerZIndex > -1)) {
         node->updateAttributes();
         if (selector->mMatchAutomationId && checkCriteria(selector->mAutomationId, node->getAutomationId(), 0)) return false;
         if (selector->mMatchType && checkCriteria(selector->mType, node->getType(), 0)) return false;
         if (selector->mMatchStyle && checkCriteria(selector->mStyle, node->getStyle(), 0)) return false;
+        if (selector->mMatchLayerZIndex && checkCriteria(selector->mLayerZIndex, node->getLayerZIndex(), 0)) return false;
     }
     if (selector->mMatchPkg) {
         node->updateApplication();
@@ -95,6 +96,10 @@ bool PartialMatch::checkCriteria(const std::shared_ptr<UiSelector> selector,
     if (selector->mMatchDescription) {
         node->updateName();
         if (checkCriteria(selector->mDescription, node->getDescription(), 0)) return false;
+    }
+    if (selector->mLayerZIndex > -1) {
+        node->updateName();
+        if (selector->mLayerZIndex != node->getZIndex) return false;
     }
     if (selector->mMatchChecked && checkCriteria(selector->mIschecked, node->isChecked())) return false;
     if (selector->mMatchCheckable && checkCriteria(selector->mIscheckable, node->isCheckable())) return false;

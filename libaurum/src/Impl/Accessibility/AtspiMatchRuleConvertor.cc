@@ -77,6 +77,11 @@ AtspiMatchRuleConvertor::operator AtspiMatchRule *()
         g_hash_table_insert(attributes, g_strdup("automationId"), g_strdup(mSelector->mAutomationId.c_str()));
     }
 
+    if (mSelector->mMatchLayerZIndex)
+    {
+        g_hash_table_insert(attributes, g_strdup("layerZIndex"), g_strdup((std::to_string(mSelector->mLayerZIndex)).c_str()));
+    }
+
     if (g_hash_table_size(attributes) == 0)
     {
         g_hash_table_unref (attributes);

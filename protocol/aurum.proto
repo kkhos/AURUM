@@ -102,6 +102,8 @@ message Element {
 
    string interface = 33;
    string description = 34;
+
+   int32 layerZIndex = 35;
 }
 
 message Point {
@@ -227,7 +229,11 @@ message ReqFindElement {
       string description = 26;
    }
 
-   repeated ReqFindElement children = 27;
+   oneof _layerZIndex {
+      string layerZIndex = 27;
+   }
+
+   repeated ReqFindElement children = 28;
 }
 
 message RspFindElement {
@@ -340,7 +346,11 @@ message ReqFindElements {
       string description = 26;
    }
 
-   repeated ReqFindElements children = 27;
+   oneof _layerZIndex {
+      int32 layerZIndex = 27;
+   }
+
+   repeated ReqFindElements children = 28;
 }
 
 message RspFindElements {

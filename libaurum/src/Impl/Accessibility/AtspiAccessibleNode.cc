@@ -202,6 +202,7 @@ void AtspiAccessibleNode::updateAttributes()
         if (!t) t = (char*)g_hash_table_lookup(attributes, "class");
         char *s = (char*)g_hash_table_lookup(attributes, "style");
         char *a = (char*)g_hash_table_lookup(attributes, "automationId");
+        char *zIndex = (char*)g_hash_table_lookup(attributes, "LayerZIndex");
 
         if (t) mType =  std::string(t);
         else {
@@ -210,6 +211,7 @@ void AtspiAccessibleNode::updateAttributes()
         }
         if (s) mStyle = std::string(s);
         if (a) mAutomationId = std::string(a);
+        if (zIndex) mLayerZIndex = stoi(zIndex);
 
         g_hash_table_unref(attributes);
     }
@@ -370,11 +372,13 @@ void AtspiAccessibleNode::refresh(bool updateAll)
                     if (!t) t = (char *)g_hash_table_lookup(attributes, "class");
                     char *s = (char *)g_hash_table_lookup(attributes, "style");
                     char *a = (char *)g_hash_table_lookup(attributes, "automationId");
+                    char *zIndex = (char *)g_hash_table_lookup(attributes, "layerZIndex");
 
                     if (t) mType = std::string(t);
                     else mType = mRole;
                     if (s) mStyle = std::string(s);
                     if (a) mAutomationId = std::string(a);
+                    if (zIndex) mLayerZIndex = std::string(zIndex);
                 }
             }
             if (ni->states) {
