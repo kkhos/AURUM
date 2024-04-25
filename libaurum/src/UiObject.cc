@@ -526,3 +526,12 @@ std::shared_ptr<UiObject> UiObject::last() const {
     }
     return nullptr;
 }
+
+std::shared_ptr<UiObject> UiObject::getTopLayer() const
+{
+    LOGI("UiObject::getTopLayer() Start!!!!\n");
+    std::shared_ptr<AccessibleNode> node = mNode->getTopLayer();
+    LOGI("UiObject::getTopLayer() toplayer node\n");
+    if (!node) return nullptr;
+    return std::make_shared<UiObject>(mDevice, mSelector, node);
+}

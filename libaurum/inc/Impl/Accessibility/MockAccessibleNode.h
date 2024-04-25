@@ -99,6 +99,11 @@ public:
      */
     std::shared_ptr<AccessibleNode> last() const override;
 
+    /**
+     * @copydoc UiObject::getTopLayer()
+     */
+    std::shared_ptr<AccessibleNode> getTopLayer() const override;
+
 public:
     /**
      * @brief TBD

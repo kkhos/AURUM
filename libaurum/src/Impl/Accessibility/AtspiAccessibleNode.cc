@@ -753,3 +753,15 @@ std::shared_ptr<AccessibleNode> AtspiAccessibleNode::last() const
 
     return nullptr;
 }
+
+std::shared_ptr<AccessibleNode> AtspiAccessibleNode::getTopLayer() const
+{
+    LOGI("AtspiAccessibleNode::getTopLayer() Start!!!!\n");
+    if (!isValid()) {
+        return std::make_shared<AtspiAccessibleNode>(nullptr);
+    }
+    LOGI("AtspiAccessibleNode::getTopLayer() 1\n");
+    AtspiAccessible *topLayer = AtspiWrapper::Atspi_accessible_get_top_layer(mNode, NULL);
+    LOGI("AtspiWrapper::Atspi_accessible_get_top_layer() :%p\n", topLayer);
+    return std::make_shared<AtspiAccessibleNode>(topLayer);
+}

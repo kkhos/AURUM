@@ -351,3 +351,11 @@ aurumServiceImpl::~aurumServiceImpl()
     std::unique_ptr<GetParentCommand> cmd = std::make_unique<GetParentCommand>(request, response);
     return execute(cmd.get(), true);
 }
+
+::grpc::Status aurumServiceImpl::getTopLayer(::grpc::ServerContext *context,
+                                         const ::aurum::ReqGetTopLayer *request,
+                                         ::aurum::RspGetTopLayer *response)
+{
+    std::unique_ptr<GetTopLayerCommand> cmd = std::make_unique<GetTopLayerCommand>(request, response);
+    return execute(cmd.get(), true);
+}

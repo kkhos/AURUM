@@ -52,3 +52,4 @@
 #include "Commands/FirstCommand.h"
 #include "Commands/LastCommand.h"
 #include "Commands/GetParentCommand.h"
+#include "Commands/GetTopLayerCommand.h"

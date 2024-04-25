@@ -150,6 +150,10 @@ public:
     ::grpc::Status getParent(::grpc::ServerContext *context,
                             const ::aurum::ReqGetParent *request,
                             ::aurum::RspGetParent *response) override;
+    ::grpc::Status getTopLayer(::grpc::ServerContext *context,
+                            const ::aurum::ReqGetTopLayer *request,
+                            ::aurum::RspGetTopLayer *response) override;
+
 public:
     int WAIT_TIMEOUT_MS;
 };

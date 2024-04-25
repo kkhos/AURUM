@@ -336,3 +336,8 @@ std::shared_ptr<AccessibleNode> MockAccessibleNode::last() const
 {
     return nullptr;
 }
+
+std::shared_ptr<AccessibleNode> MockAccessibleNode::getTopLayer() const
+{
+    return nullptr;
+}

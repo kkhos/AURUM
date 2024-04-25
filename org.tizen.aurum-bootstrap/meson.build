@@ -55,6 +55,7 @@ bootstrap_svr_src += [
    files('src/Commands/FirstCommand.cc'),
    files('src/Commands/LastCommand.cc'),
    files('src/Commands/GetParentCommand.cc'),
+   files('src/Commands/GetTopLayerCommand.cc'),
 ]
 
 bootstrap_svr_dep = [

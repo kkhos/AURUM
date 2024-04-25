@@ -162,6 +162,11 @@ public:
     virtual std::shared_ptr<AccessibleNode> last() const = 0;
 
     /**
+     * @copydoc UiObject::getTopLayer()
+     */
+    virtual std::shared_ptr<AccessibleNode> getTopLayer() const = 0;
+
+    /**
      * @brief Called by @AccessibleWatcher::notifyAll.
      *        Changes Node property If it's @EventType, @ObjectEventType are matches.
      *

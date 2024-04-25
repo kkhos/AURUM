@@ -85,20 +85,25 @@ public:
      */
     std::shared_ptr<AccessibleNode> next() const override;
 
-        /**
+    /**
      * @copydoc UiObject::prev()
      */
     std::shared_ptr<AccessibleNode> prev() const override;
 
-        /**
+    /**
      * @copydoc UiObject::first()
      */
     std::shared_ptr<AccessibleNode> first() const override;
 
-        /**
+    /**
      * @copydoc UiObject::last()
      */
     std::shared_ptr<AccessibleNode> last() const override;
+
+    /**
+     * @copydoc UiObject::getTopLayer()
+     */
+    std::shared_ptr<AccessibleNode> getTopLayer() const override;
 
     /**
      * @copydoc AccessibleNode::isValid()

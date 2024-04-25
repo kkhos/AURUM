@@ -285,3 +285,8 @@ AtspiAccessible *AtspiWrapper::Atspi_accessible_get_neighbor(AtspiAccessible *ro
     return atspi_accessible_get_neighbor(root, start, direction, error);
 }
 
+AtspiAccessible *AtspiWrapper::Atspi_accessible_get_top_layer(AtspiAccessible *node, GError **error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_accessible_get_top_layer(node, error);
+}

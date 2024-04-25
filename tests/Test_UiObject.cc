@@ -154,6 +154,14 @@ TEST_F(AurumTestUiObject, getParent_P1)
     ASSERT_EQ(parent.get()->getAccessibleNode(), child->getParent()->getAccessibleNode());
 }
 
+TEST_F(AurumTestUiObject, getTopLayer_P1)
+{
+    auto obj = UiDevice::getInstance();
+    auto node = obj->findObject(Sel::text("test2"));
+    auto topLayer = node->getTopLayer();
+    ASSERT_NE(topLayer, nullptr);
+}
+
 TEST_F(AurumTestUiObject, getChildCount_P1)
 {
     auto obj = UiDevice::getInstance();
@@ -432,6 +440,14 @@ TEST_F(AurumTestUiObject, getParent_N1)
     auto child = obj->findObject(Sel::text("test2_2"));
     ASSERT_NE(child, nullptr);
     ASSERT_NE(child->getParent()->getAccessibleNode(), nullptr);
+}
+
+TEST_F(AurumTestUiObject, getTopLayer_N1)
+{
+    auto obj = UiDevice::getInstance();
+    auto node = obj->findObject(Sel::text("test2"));
+    auto topLayer = node->getTopLayer();
+    ASSERT_EQ(topLayer, nullptr);
 }
 
 TEST_F(AurumTestUiObject, getChildCount_N1)

@@ -759,6 +759,15 @@ public:
      */
     std::shared_ptr<UiObject> last() const;
 
+    /**
+     * @brief Gets the object of top layer in current window.
+     *
+     * @return UiObject pointer
+     *
+     * @since_tizen 9.0
+     */
+    std::shared_ptr<UiObject>  getTopLayer() const;
+
 private:
     std::shared_ptr<UiDevice> mDevice;
     std::shared_ptr<UiSelector>  mSelector;

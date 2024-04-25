@@ -44,6 +44,7 @@ service Bootstrap {
    rpc first(ReqFirst) returns (RspFirst) {}
    rpc last(ReqLast) returns (RspLast) {}
    rpc getParent(ReqGetParent) returns (RspGetParent) {}
+   rpc getTopLayer(ReqGetTopLayer) returns (RspGetTopLayer) {}
 }
 
 // ------------------------------------ //
@@ -730,6 +731,15 @@ message ReqGetParent {
 }
 
 message RspGetParent {
+   RspStatus status = 1;
+   Element element = 2;
+}
+
+message ReqGetTopLayer {
+   string elementId = 1;
+}
+
+message RspGetTopLayer {
    RspStatus status = 1;
    Element element = 2;
 }
