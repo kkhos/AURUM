@@ -94,6 +94,7 @@ message Element {
 
    int32 windowAngle = 31;
    int32 targetAngle = 32;
+   int32 layerZIndex = 33;
 }
 
 message Point {
@@ -324,7 +325,11 @@ message ReqFindElements {
       bool isHighlightable = 25;
    }
 
-   repeated ReqFindElements children = 26;
+    oneof _layerZInde {
+      int32 layerZInde = 26;
+   }
+
+   repeated ReqFindElements children = 27;
 }
 
 message RspFindElements {

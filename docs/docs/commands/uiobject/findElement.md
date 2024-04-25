@@ -184,7 +184,11 @@ message ReqFindElement {
       bool isHighlightable = 25;
    }
 
-   repeated ReqFindElement children = 26;
+   oneof _layerZIndex {
+      int32 layerZIndex = 26;
+  }
+
+   repeated ReqFindElement children = 27;
 }
 {% endhighlight %}
 {% endcapture %}

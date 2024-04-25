@@ -202,6 +202,7 @@ void AtspiAccessibleNode::updateAttributes()
         if (!t) t = (char*)g_hash_table_lookup(attributes, "class");
         char *s = (char*)g_hash_table_lookup(attributes, "style");
         char *a = (char*)g_hash_table_lookup(attributes, "automationId");
+        char *zIndex = (char*)g_hash_table_lookup(attributes, "zIndex");
 
         if (t) mType =  std::string(t);
         else {

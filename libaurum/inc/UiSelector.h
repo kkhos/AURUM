@@ -404,6 +404,17 @@ public:
      */
     UiSelector *description(std::string description);
 
+    /**
+     * @brief Sets the search criteria to match the object's Z-Index if this .
+     *
+     * @param[in] layerZIndex object Z-Index
+     *
+     * @return UiSelector pointer
+     *
+     * @since_tizen 9.0
+     */
+    UiSelector *layerZIndex(double zIndex);
+
 public:
     std::string mId;
     std::string mAutomationId;
@@ -446,6 +457,7 @@ public:
 
     int mMinDepth;
     int mMaxDepth;
+    int mLayerZIndex;
 
     bool mIschecked;
     bool mIscheckable;

@@ -352,6 +352,12 @@ public:
     std::string getDescription() const;
 
     /**
+     * @copydoc UiObject::getlayzerZIndex()
+     *
+     */
+    double getlayzerZIndex() const;
+
+    /**
      * @copydoc UiObject::isCheckable()
      */
     bool isCheckable() const;
@@ -623,6 +629,7 @@ protected:
     double mMaxValue;
     double mValue;
     double mIncrement;
+    double mLayerZIndex;
 
 private:
     bool mValid;
