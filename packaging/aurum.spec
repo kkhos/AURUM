@@ -10,10 +10,7 @@ Source1001:     %{name}.manifest
 BuildRequires:  meson
 BuildRequires:  pkgconfig(grpc)
 BuildRequires:  pkgconfig(grpc++)
-
-Requires:       at-spi2-core
-BuildRequires:  at-spi2-core-devel
-
+BuildRequires:  pkgconfig(atspi-2)
 BuildRequires:  pkgconfig(capi-system-info)
 BuildRequires:  pkgconfig(capi-ui-efl-util)
 BuildRequires:  pkgconfig(elementary)
