@@ -399,6 +399,16 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
         return;
     }
 
+    if (!strncmp(event->type, "object:state-changed:visible", 28))
+    {
+        char *role = AtspiWrapper::Atspi_accessible_get_role_name(event->source, NULL);
+        if (!strncmp(role, "input method window", 19))
+        {
+            isWindowEventEmitted = true;
+        }
+        free(role);
+    }
+
     if (!strncmp(event->type, "w", 1))
     {
         isWindowEventEmitted = true;
