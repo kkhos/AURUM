@@ -39,6 +39,7 @@ AtspiMatchRuleConvertor::operator AtspiMatchRule *()
 
     AtspiCollectionMatchType stateMatchType = ATSPI_Collection_MATCH_INVALID;
     AtspiCollectionMatchType attributeMatchType = ATSPI_Collection_MATCH_INVALID;
+    AtspiCollectionMatchType roleMatchType = ATSPI_Collection_MATCH_INVALID;
 
     // Add rule of states
     AtspiStateSet *ss = atspi_state_set_new(nullptr);
@@ -87,14 +88,45 @@ AtspiMatchRuleConvertor::operator AtspiMatchRule *()
         attributeMatchType = ATSPI_Collection_MATCH_ALL;
     }
 
+    GArray *roles = g_array_new(true, true, sizeof(AtspiRole));
+    if (mSelector->mMatchRole)
+    {
+        if (!strncmp(mSelector->mRole.c_str(), "label", 5))
+        {
+            gint role = ATSPI_ROLE_LABEL;
+            roles = g_array_append_val(roles, role);
+        }
+	    else if (!strncmp(mSelector->mRole.c_str(), "image", 5))
+        {
+	        gint role = ATSPI_ROLE_IMAGE;
+            roles = g_array_append_val(roles, role);
+	    }
+	    else if (!strncmp(mSelector->mRole.c_str(), "window", 6))
+	    {
+	        gint role = ATSPI_ROLE_WINDOW;
+            roles = g_array_append_val(roles, role);
+	    }
+    }
+
+    if (roles->len == 0)
+    {
+        g_array_free(roles, true);
+        roles = nullptr;
+    }
+    else
+    {
+        roleMatchType = ATSPI_Collection_MATCH_ALL;
+    }
+
     AtspiMatchRule* rule = atspi_match_rule_new(ss, stateMatchType,
                                                 attributes, attributeMatchType,
-                                                nullptr, ATSPI_Collection_MATCH_INVALID,
+                                                roles, roleMatchType,
                                                 nullptr, ATSPI_Collection_MATCH_INVALID,
                                                 false);
 
     if (ss) g_object_unref(ss);
     if (attributes) g_hash_table_unref (attributes);
+    if (roles) g_array_free(roles, true);
 
     return rule;
 }
