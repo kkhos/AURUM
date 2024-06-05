@@ -23,6 +23,7 @@
 #include <tuple>
 #include <iostream>
 #include <memory>
+#include <algorithm>
 
 #include <stdlib.h>
 #include <time.h>

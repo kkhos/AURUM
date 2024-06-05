@@ -16,6 +16,7 @@
  */
 
 #include "Aurum.h"
+#include <algorithm>
 
 using namespace Aurum;
 
