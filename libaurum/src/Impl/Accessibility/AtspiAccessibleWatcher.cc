@@ -401,12 +401,12 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
 
     if (!strncmp(event->type, "object:state-changed:visible", 28))
     {
-        char *role = AtspiWrapper::Atspi_accessible_get_role_name(event->source, NULL);
-        if (!strncmp(role, "input method window", 19))
+        char *name = AtspiWrapper::Atspi_accessible_get_name(event->source, NULL);
+        if (!strncmp(name, "Keyboard", 8) || !strncmp(name, "Quickpanel Window", 17) || !strncmp(name, "volume", 6))
         {
             isWindowEventEmitted = true;
         }
-        free(role);
+        free(name);
     }
 
     if (!strncmp(event->type, "w", 1))
