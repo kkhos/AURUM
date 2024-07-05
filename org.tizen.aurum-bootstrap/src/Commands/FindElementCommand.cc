@@ -88,7 +88,7 @@ std::shared_ptr<UiSelector> FindElementCommand::getSelector(void)
     auto waiter = new Waiter(searchableObj.get(), nullptr, mTimeout);
     auto found = waiter->waitFor(Until::findObject(selector));
 
-    if (waiter) delete waiter;
+    delete waiter;
 
     if (found != nullptr) {
         UiObject *obj = found.get();
