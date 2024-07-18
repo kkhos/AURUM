@@ -113,6 +113,9 @@ ninja \
 #    -C gbsbuild \
 #    -v
 
+#VEAC Signing
+veac-sign.sh ./
+
 %install
 
 %define tizen_sign 1
