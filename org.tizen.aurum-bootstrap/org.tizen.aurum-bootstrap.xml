@@ -9,7 +9,8 @@
 	</service-application>
 	<privileges>
 		<privilege>http://tizen.org/privilege/datasharing</privilege>
-		<privilege>http://tizen.org/privilege/externalstroage</privilege>
+                <privilege>http://tizen.org/privilege/externalstorage</privilege>
+                <privilege>http://tizen.org/privilege/mediastorage</privilege>
 		<privilege>http://tizen.org/privilege/application.info</privilege>
 		<privilege>http://tizen.org/privilege/application.launch</privilege>
 		<privilege>http://tizen.org/privilege/packagemanager.info</privilege>
