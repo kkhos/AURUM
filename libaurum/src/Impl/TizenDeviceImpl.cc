@@ -53,10 +53,15 @@ TizenDeviceImpl::TizenDeviceImpl()
 : mFakeTouchHandle{0}, mFakeKeyboardHandle{0}, mFakeWheelHandle{0}, tStart{}, isTimerStarted{false}, mTouchSeq{}
 {
     LOGI("device implementation init");
-    TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
-    obj->mFakeTouchHandle = efl_util_input_initialize_generator_with_sync(EFL_UTIL_INPUT_DEVTYPE_TOUCHSCREEN, "SMSRC Fake Input");
-    obj->mFakeKeyboardHandle =
-       efl_util_input_initialize_generator_with_sync(EFL_UTIL_INPUT_DEVTYPE_KEYBOARD, "SMSRC Fake Input");
+    ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
+        TizenDeviceImpl *obj = static_cast<TizenDeviceImpl*>(data);
+        obj->mFakeTouchHandle = efl_util_input_initialize_generator_with_sync(EFL_UTIL_INPUT_DEVTYPE_TOUCHSCREEN, "SMSRC Fake Input");
+        obj->mFakeKeyboardHandle =
+        efl_util_input_initialize_generator_with_sync(EFL_UTIL_INPUT_DEVTYPE_KEYBOARD, "SMSRC Fake Input");
+        obj->mFakeWheelHandle = efl_util_input_initialize_generator_with_sync(EFL_UTIL_INPUT_DEVTYPE_POINTER, "SMSRC Fake Input");
+
+        return NULL;
+    }, this);
 
     int width = 0;
     int height = 0;
@@ -68,9 +73,14 @@ TizenDeviceImpl::TizenDeviceImpl()
 
 TizenDeviceImpl::~TizenDeviceImpl()
 {
-   TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
-   efl_util_input_deinitialize_generator(obj->mFakeTouchHandle);
-   efl_util_input_deinitialize_generator(obj->mFakeKeyboardHandle);
+    ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
+        TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(data);
+        efl_util_input_deinitialize_generator(obj->mFakeTouchHandle);
+        efl_util_input_deinitialize_generator(obj->mFakeKeyboardHandle);
+        efl_util_input_deinitialize_generator(obj->mFakeWheelHandle);
+
+        return NULL;
+    }, this);
 }
 
 bool TizenDeviceImpl::click(const int x, const int y)
@@ -137,13 +147,11 @@ bool TizenDeviceImpl::wheelUp(int amount, const int durationMs)
     LOGI("wheel up %d for %d", amount, durationMs);
     long result = -1;
     TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
-    obj->mFakeWheelHandle = efl_util_input_initialize_generator_with_sync(EFL_UTIL_INPUT_DEVTYPE_POINTER, "SMSRC Fake Input");
     for (int i = 0; i < amount; i++){
          TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
          result = (long)efl_util_input_generate_wheel(obj->mFakeWheelHandle, EFL_UTIL_INPUT_POINTER_WHEEL_HORZ, 1);
          usleep(durationMs * MSEC_PER_SEC/amount);
     }
-    efl_util_input_deinitialize_generator(obj->mFakeWheelHandle);
 
     return result == EFL_UTIL_ERROR_NONE;
 }
@@ -153,13 +161,11 @@ bool TizenDeviceImpl::wheelDown(int amount, const int durationMs)
     LOGI("wheel down %d for %d", amount, durationMs);
     long result = -1;
     TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
-    obj->mFakeWheelHandle = efl_util_input_initialize_generator_with_sync(EFL_UTIL_INPUT_DEVTYPE_POINTER, "SMSRC Fake Input");
     for (int i = 0; i < amount; i++){
         TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
         result = (long)efl_util_input_generate_wheel(obj->mFakeWheelHandle, EFL_UTIL_INPUT_POINTER_WHEEL_HORZ, -1);
         usleep(durationMs * MSEC_PER_SEC/amount);
     }
-    efl_util_input_deinitialize_generator(obj->mFakeWheelHandle);
 
     return result == EFL_UTIL_ERROR_NONE;
 }
