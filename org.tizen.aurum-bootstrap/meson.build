@@ -55,6 +55,9 @@ bootstrap_svr_src += [
    files('src/Commands/FirstCommand.cc'),
    files('src/Commands/LastCommand.cc'),
    files('src/Commands/GetParentCommand.cc'),
+   files('src/Commands/MouseDownCommand.cc'),
+   files('src/Commands/MouseMoveCommand.cc'),
+   files('src/Commands/MouseUpCommand.cc'),
 ]
 
 bootstrap_svr_dep = [

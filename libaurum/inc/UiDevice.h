@@ -153,6 +153,45 @@ public:
     bool wheelDown(int amount, const int durationMs) override;
 
     /**
+     * @brief Performs a mouse down at arbitrary coordinates specified by the user.
+     *
+     * @param[in] x x coordinate
+     * @param[in] y y coordinate
+     * @param[in] button mouse button number
+     *
+     * @return true if the mouse down succeeded else false
+     *
+     * @since_tizen 10.0
+     */
+    bool mouseDown(const int x, const int y, const int button) override;
+
+    /**
+     * @brief Performs a mouse move at arbitrary coordinates specified by the user.
+     *
+     * @param[in] x x coordinate
+     * @param[in] y y coordinate
+     * @param[in] button mouse button number
+     *
+     * @return true if the mouse move succeeded else false
+     *
+     * @since_tizen 10.0
+     */
+    bool mouseMove(const int x, const int y, const int button) override;
+
+    /**
+     * @brief Performs a mouse up at arbitrary coordinates specified by the user.
+     *
+     * @param[in] x x coordinate
+     * @param[in] y y coordinate
+     * @param[in] button mouse button number
+     *
+     * @return true if the mouse up succeeded else false
+     *
+     * @since_tizen 10.0
+     */
+    bool mouseUp(const int x, const int y, const int button) override;
+
+    /**
      * @brief Simulates a press on the given keycode key.
      *
      * @param[in] keycode keycode
