@@ -44,6 +44,9 @@ service Bootstrap {
    rpc first(ReqFirst) returns (RspFirst) {}
    rpc last(ReqLast) returns (RspLast) {}
    rpc getParent(ReqGetParent) returns (RspGetParent) {}
+   rpc mouseDown(ReqMouseDown) returns (RspMouseDown) {}
+   rpc mouseMove(ReqMouseMove) returns (RspMouseMove) {}
+   rpc mouseUp(ReqMouseUp) returns (RspMouseUp) {}
 }
 
 // ------------------------------------ //
@@ -473,6 +476,31 @@ message ReqTouchUp{
    Point coordination = 2;
 }
 message RspTouchUp{
+   RspStatus status = 1;
+}
+
+
+message ReqMouseDown{
+   int32 button = 1; // 1: left button, 2: right button, 3: middle button
+   Point coordination = 2;
+}
+message RspMouseDown{
+   RspStatus status = 1;
+}
+
+message ReqMouseMove{
+   int32 button = 1; // 1: left button, 2: right button, 3: middle button
+   Point coordination = 2;
+}
+message RspMouseMove{
+   RspStatus status = 1;
+}
+
+message ReqMouseUp{
+   int32 button = 1; // 1: left button, 2: right button, 3: middle button
+   Point coordination = 2;
+}
+message RspMouseUp{
    RspStatus status = 1;
 }
 

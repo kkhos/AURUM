@@ -150,6 +150,15 @@ public:
     ::grpc::Status getParent(::grpc::ServerContext *context,
                             const ::aurum::ReqGetParent *request,
                             ::aurum::RspGetParent *response) override;
+    ::grpc::Status mouseDown(::grpc::ServerContext *context,
+                             const ::aurum::ReqMouseDown *request,
+                             ::aurum::RspMouseDown *response) override;
+    ::grpc::Status mouseUp(::grpc::ServerContext *context,
+                           const ::aurum::ReqMouseUp *request,
+                           ::aurum::RspMouseUp *response) override;
+    ::grpc::Status mouseMove(::grpc::ServerContext *context,
+                             const ::aurum::ReqMouseMove *request,
+                             ::aurum::RspMouseMove *response) override;
 public:
     int WAIT_TIMEOUT_MS;
 };
