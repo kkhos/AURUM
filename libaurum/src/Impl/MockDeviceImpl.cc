@@ -146,6 +146,21 @@ bool MockDeviceImpl::wheelDown(int amount, const int durationMs)
 
 }
 
+bool MockDeviceImpl::mouseDown(const int x, const int y, const int button)
+{
+    return false;
+}
+
+bool MockDeviceImpl::mouseMove(const int x, const int y, const int button)
+{
+    return false;
+}
+
+bool MockDeviceImpl::mouseUp(const int x, const int y, const int button)
+{
+    return false;
+}
+
 bool MockDeviceImpl::pressKeyCode(std::string keycode, KeyRequestType type)
 {
     mKeyDevice.push_back(std::tuple<KeyType, KeyRequestType, std::string>(KeyType::KEY, type, keycode));

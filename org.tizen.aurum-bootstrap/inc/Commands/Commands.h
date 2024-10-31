@@ -52,3 +52,6 @@
 #include "Commands/FirstCommand.h"
 #include "Commands/LastCommand.h"
 #include "Commands/GetParentCommand.h"
+#include "Commands/MouseDownCommand.h"
+#include "Commands/MouseMoveCommand.h"
+#include "Commands/MouseUpCommand.h"
