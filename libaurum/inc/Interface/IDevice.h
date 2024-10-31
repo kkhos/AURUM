@@ -185,6 +185,45 @@ public:
     virtual bool wheelDown(int amount, const int durationMs) = 0;
 
     /**
+     * @brief Performs a mouse down at arbitrary coordinates specified by the user.
+     *
+     * @param[in] x x coordinate
+     * @param[in] y y coordinate
+     * @param[in] button mouse button number
+     *
+     * @return true if the mouse down succeeded else false
+     *
+     * @since_tizen 10.0
+     */
+    virtual bool mouseDown(const int x, const int y, const int button) = 0;
+
+    /**
+     * @brief Performs a mouse move at arbitrary coordinates specified by the user.
+     *
+     * @param[in] x x coordinate
+     * @param[in] y y coordinate
+     * @param[in] button mouse button number
+     *
+     * @return true if the mouse move succeeded else false
+     *
+     * @since_tizen 10.0
+     */
+    virtual bool mouseMove(const int x, const int y, const int button) = 0;
+
+    /**
+     * @brief Performs a mouse up at arbitrary coordinates specified by the user.
+     *
+     * @param[in] x x coordinate
+     * @param[in] y y coordinate
+     * @param[in] button mouse button number
+     *
+     * @return true if the mouse up succeeded else false
+     *
+     * @since_tizen 10.0
+     */
+    virtual bool mouseUp(const int x, const int y, const int button) = 0;
+
+    /**
      * @brief Simulates a press on the given keycode key.
      *
      * @param[in] keycode keycode
