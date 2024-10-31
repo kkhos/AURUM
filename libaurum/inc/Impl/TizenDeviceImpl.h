@@ -79,6 +79,21 @@ public:
     bool wheelDown(int amount, const int durationMs) override;
 
     /**
+     * @copydoc IDevice::mouseDown()
+     */
+    bool mouseDown(const int x, const int y, const int button) override;
+
+    /**
+     * @copydoc IDevice::mouseMove()
+     */
+    bool mouseMove(const int x, const int y, const int button) override;
+
+    /**
+     * @copydoc IDevice::mouseUp()
+     */
+    bool mouseUp(const int x, const int y, const int button) override;
+
+    /**
      * @copydoc IDevice::pressKeyCode()
      */
     bool pressKeyCode(std::string keycode, KeyRequestType type) override;
@@ -175,7 +190,7 @@ private:
 private:
     efl_util_inputgen_h mFakeTouchHandle;
     efl_util_inputgen_h mFakeKeyboardHandle;
-    efl_util_inputgen_h mFakeWheelHandle;
+    efl_util_inputgen_h mFakePointerHandle;
     static const int INTV_CLICK = 5;
     static const int INTV_SHORTSTROKE = 10;
     static const int INTV_LONGSTROKE = 2000;

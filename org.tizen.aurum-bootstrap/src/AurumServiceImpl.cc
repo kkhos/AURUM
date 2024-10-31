@@ -351,3 +351,27 @@ aurumServiceImpl::~aurumServiceImpl()
     std::unique_ptr<GetParentCommand> cmd = std::make_unique<GetParentCommand>(request, response);
     return execute(cmd.get(), true);
 }
+
+::grpc::Status aurumServiceImpl::mouseDown(::grpc::ServerContext *context,
+                                           const ::aurum::ReqMouseDown *request,
+                                           ::aurum::RspMouseDown *response)
+{
+    std::unique_ptr<MouseDownCommand> cmd = std::make_unique<MouseDownCommand>(request, response);
+    return execute(cmd.get(), false);
+}
+
+::grpc::Status aurumServiceImpl::mouseUp(::grpc::ServerContext *context,
+                                         const ::aurum::ReqMouseUp *request,
+                                         ::aurum::RspMouseUp *response)
+{
+    std::unique_ptr<MouseUpCommand> cmd = std::make_unique<MouseUpCommand>(request, response);
+    return execute(cmd.get(), false);
+}
+
+::grpc::Status aurumServiceImpl::mouseMove(::grpc::ServerContext *context,
+                                           const ::aurum::ReqMouseMove *request,
+                                           ::aurum::RspMouseMove *response)
+{
+    std::unique_ptr<MouseMoveCommand> cmd = std::make_unique<MouseMoveCommand>(request, response);
+    return execute(cmd.get(), false);
+}

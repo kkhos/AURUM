@@ -327,6 +327,27 @@ bool UiDevice::wheelDown(int amount, const int durationMs)
     return result;
 }
 
+bool UiDevice::mouseDown(const int x, const int y, const int button)
+{
+    bool result =  mDeviceImpl->mouseDown(x, y, button);
+    waitForIdle();
+    return result;
+}
+
+bool UiDevice::mouseMove(const int x, const int y, const int button)
+{
+    bool result =  mDeviceImpl->mouseMove(x, y, button);
+    waitForIdle();
+    return result;
+}
+
+bool UiDevice::mouseUp(const int x, const int y, const int button)
+{
+    bool result =  mDeviceImpl->mouseUp(x, y, button);
+    waitForIdle();
+    return result;
+}
+
 bool UiDevice::generateKey(KeyType keyType, KeyRequestType keyReqestType)
 {
     std::unique_ptr<KeyAction> keyAction;
