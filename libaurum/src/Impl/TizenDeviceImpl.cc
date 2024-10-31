@@ -50,7 +50,7 @@ static GDBusConnection *system_conn;
 std::vector<std::shared_ptr<AccessibleNode>> TizenDeviceImpl::mCachedNode;
 
 TizenDeviceImpl::TizenDeviceImpl()
-: mFakeTouchHandle{0}, mFakeKeyboardHandle{0}, mFakeWheelHandle{0}, tStart{}, isTimerStarted{false}, mTouchSeq{}
+: mFakeTouchHandle{0}, mFakeKeyboardHandle{0}, mFakePointerHandle{0}, tStart{}, isTimerStarted{false}, mTouchSeq{}
 {
     LOGI("device implementation init");
     ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
@@ -58,7 +58,7 @@ TizenDeviceImpl::TizenDeviceImpl()
         obj->mFakeTouchHandle = efl_util_input_initialize_generator_with_sync(EFL_UTIL_INPUT_DEVTYPE_TOUCHSCREEN, "SMSRC Fake Input");
         obj->mFakeKeyboardHandle =
         efl_util_input_initialize_generator_with_sync(EFL_UTIL_INPUT_DEVTYPE_KEYBOARD, "SMSRC Fake Input");
-        obj->mFakeWheelHandle = efl_util_input_initialize_generator_with_sync(EFL_UTIL_INPUT_DEVTYPE_POINTER, "SMSRC Fake Input");
+        obj->mFakePointerHandle = efl_util_input_initialize_generator_with_sync(EFL_UTIL_INPUT_DEVTYPE_POINTER, "SMSRC Fake Input");
 
         return NULL;
     }, this);
@@ -77,7 +77,7 @@ TizenDeviceImpl::~TizenDeviceImpl()
         TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(data);
         efl_util_input_deinitialize_generator(obj->mFakeTouchHandle);
         efl_util_input_deinitialize_generator(obj->mFakeKeyboardHandle);
-        efl_util_input_deinitialize_generator(obj->mFakeWheelHandle);
+        efl_util_input_deinitialize_generator(obj->mFakePointerHandle);
 
         return NULL;
     }, this);
@@ -99,7 +99,6 @@ bool TizenDeviceImpl::click(const int x, const int y, const unsigned int duratio
 
     return true;
 }
-
 
 int TizenDeviceImpl::touchDown(const int x, const int y)
 {
@@ -146,10 +145,9 @@ bool TizenDeviceImpl::wheelUp(int amount, const int durationMs)
 {
     LOGI("wheel up %d for %d", amount, durationMs);
     long result = -1;
-    TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
     for (int i = 0; i < amount; i++){
          TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
-         result = (long)efl_util_input_generate_wheel(obj->mFakeWheelHandle, EFL_UTIL_INPUT_POINTER_WHEEL_HORZ, 1);
+         result = (long)efl_util_input_generate_wheel(obj->mFakePointerHandle, EFL_UTIL_INPUT_POINTER_WHEEL_HORZ, 1);
          usleep(durationMs * MSEC_PER_SEC/amount);
     }
 
@@ -160,15 +158,54 @@ bool TizenDeviceImpl::wheelDown(int amount, const int durationMs)
 {
     LOGI("wheel down %d for %d", amount, durationMs);
     long result = -1;
-    TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
     for (int i = 0; i < amount; i++){
         TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
-        result = (long)efl_util_input_generate_wheel(obj->mFakeWheelHandle, EFL_UTIL_INPUT_POINTER_WHEEL_HORZ, -1);
+        result = (long)efl_util_input_generate_wheel(obj->mFakePointerHandle, EFL_UTIL_INPUT_POINTER_WHEEL_HORZ, -1);
         usleep(durationMs * MSEC_PER_SEC/amount);
     }
 
     return result == EFL_UTIL_ERROR_NONE;
 }
+
+bool TizenDeviceImpl::mouseDown(const int x, const int y, const int button)
+{
+    LOGI("mouse down %d %d, button:%d", x, y, button);
+    long result = -1;
+    if (button > 0) {
+         TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
+         result = (long)efl_util_input_generate_pointer(obj->mFakePointerHandle, button, EFL_UTIL_INPUT_POINTER_BUTTON_DOWN,
+                                                        x, y);
+    }
+
+    return result == EFL_UTIL_ERROR_NONE;
+}
+
+bool TizenDeviceImpl::mouseMove(const int x, const int y, const int button)
+{
+    LOGI("mouse move %d %d, button:%d", x, y, button);
+    long result = -1;
+    if (button > 0) {
+         TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
+         result = (long)efl_util_input_generate_pointer(obj->mFakePointerHandle, button, EFL_UTIL_INPUT_POINTER_MOVE,
+                                                        x, y);
+    }
+
+    return result == EFL_UTIL_ERROR_NONE;
+}
+
+bool TizenDeviceImpl::mouseUp(const int x, const int y, const int button)
+{
+   LOGI("mouse up %d %d, button:%d", x, y, button);
+   long result = -1;
+   if (button > 0) {
+        TizenDeviceImpl *obj = static_cast<TizenDeviceImpl *>(this);
+        result = (long)efl_util_input_generate_pointer(obj->mFakePointerHandle, button, EFL_UTIL_INPUT_POINTER_BUTTON_UP,
+                                                       x, y);      
+    }
+
+    return result == EFL_UTIL_ERROR_NONE;
+}
+
 void TizenDeviceImpl::startTimer(void)
 {
     isTimerStarted = true;

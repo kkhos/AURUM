@@ -97,7 +97,21 @@ public:
      * @since_tizen 6.5
      */
     bool wheelDown(int amount, const int durationMs) override;
+    
+    /**
+     * @copydoc IDevice::mouseDown()
+     */
+    bool mouseDown(const int x, const int y, const int button) override;
 
+    /**
+     * @copydoc IDevice::mouseMove()
+     */
+    bool mouseMove(const int x, const int y, const int button) override;
+
+    /**
+     * @copydoc IDevice::mouseUp()
+     */
+    bool mouseUp(const int x, const int y, const int button) override;
     /**
      * @brief TBD
      * @since_tizen 6.5
