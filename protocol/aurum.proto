@@ -128,106 +128,106 @@ message LaunchData {
 // ------------------------------------ //
 
 message ReqFindElement {
-   oneof _elementid {
+   oneof reqElementid {
       string elementId = 1;
    }
 
-   oneof _automationid {
+   oneof reqAutomationid {
       string automationId = 2;
    }
 
-   oneof _textfield {
+   oneof reqTextfield {
       string textField = 3;
    }
 
-   oneof _widgettype {
+   oneof reqWidgettype {
       string widgetType = 4;
    }
 
-   oneof _widgetstyle {
+   oneof reqWidgetstyle {
       string widgetStyle = 5;
    }
 
-   oneof _ischecked {
+   oneof reqIschecked {
       bool isChecked = 6;
    }
 
-   oneof _ischeckable {
+   oneof reqIscheckable {
       bool isCheckable= 7;
    }
 
-   oneof _isclickable {
+   oneof reqIsclickable {
       bool isClickable = 8;
    }
 
-   oneof _isenabled {
+   oneof reqIsenabled {
       bool isEnabled = 9;
    }
 
-   oneof _isfocused {
+   oneof reqIsfocused {
       bool isFocused = 10;
    }
 
-   oneof _isfocusable {
+   oneof reqIsfocusable {
       bool isFocusable = 11;
    }
 
-   oneof _isscrollable {
+   oneof reqIsscrollable {
       bool isScrollable = 12;
    }
 
-   oneof _isselected {
+   oneof reqIsselected {
       bool isSelected = 13;
    }
 
-   oneof _isshowing {
+   oneof reqIsshowing {
       bool isShowing = 14;
    }
 
-   oneof _isactive {
+   oneof reqIsactive {
       bool isActive = 15;
    }
 
-   oneof _mindepth {
+   oneof reqMindepth {
       int32 minDepth = 16;
    }
 
-   oneof _maxdepth {
+   oneof reqMaxdepth {
       int32 maxDepth = 17;
    }
 
-   oneof _packagename {
+   oneof reqPackagename {
       string packageName = 18;
    }
 
-   oneof _textpartialmatch {
+   oneof reqTextpartialmatch {
       string textPartialMatch = 19;
    }
 
-   oneof _xpath {
+   oneof reqXpath {
       string xpath = 20;
    }
 
-   oneof _ocrtext {
+   oneof reqOcrtext {
       string ocrText = 21;
    }
 
-   oneof _geometry {
+   oneof reqGeometry {
      Rect geometry = 22;
    }
-   oneof _isvisible {
+   oneof reqIsvisible {
       bool isVisible = 23;
    }
 
-   oneof _isselectable {
+   oneof reqIsselectable {
       bool isSelectable = 24;
    }
 
-   oneof _ishighlightable {
+   oneof reqIshighlightable {
       bool isHighlightable = 25;
    }
 
-   oneof _description {
+   oneof reqDescription {
       string description = 26;
    }
 
@@ -240,107 +240,106 @@ message RspFindElement {
 }
 
 message ReqFindElements {
-   oneof _elementid {
+   oneof reqElementid {
       string elementId = 1;
    }
 
-   oneof _automationid {
+   oneof reqAutomationid {
       string automationId = 2;
    }
 
-   oneof _textfield {
+   oneof reqTextfield {
       string textField = 3;
    }
 
-   oneof _widgettype {
+   oneof reqWidgettype {
       string widgetType = 4;
    }
 
-   oneof _widgetstyle {
+   oneof reqWidgetstyle {
       string widgetStyle = 5;
    }
 
-   oneof _ischecked {
+   oneof reqIschecked {
       bool isChecked = 6;
    }
 
-   oneof _ischeckable {
+   oneof reqIscheckable {
       bool isCheckable= 7;
    }
 
-   oneof _isclickable {
+   oneof reqIsclickable {
       bool isClickable = 8;
    }
 
-   oneof _isenabled {
+   oneof reqIsenabled {
       bool isEnabled = 9;
    }
 
-   oneof _isfocused {
+   oneof reqIsfocused {
       bool isFocused = 10;
    }
 
-   oneof _isfocusable {
+   oneof reqIsfocusable {
       bool isFocusable = 11;
    }
 
-   oneof _isscrollable {
+   oneof reqIsscrollable {
       bool isScrollable = 12;
    }
 
-   oneof _isselected {
+   oneof reqIsselected {
       bool isSelected = 13;
    }
 
-   oneof _isshowing {
+   oneof reqIsshowing {
       bool isShowing = 14;
    }
 
-   oneof _isactive {
+   oneof reqIsactive {
       bool isActive = 15;
    }
 
-   oneof _mindepth {
+   oneof reqMindepth {
       int32 minDepth = 16;
    }
 
-   oneof _maxdepth {
+   oneof reqMaxdepth {
       int32 maxDepth = 17;
    }
 
-   oneof _packagename {
+   oneof reqPackagename {
       string packageName = 18;
    }
 
-   oneof _textpartialmatch {
+   oneof reqTextpartialmatch {
       string textPartialMatch = 19;
    }
 
-   oneof _xpath {
+   oneof reqXpath {
       string xpath = 20;
    }
 
-   oneof _ocrtext {
+   oneof reqOcrtext {
       string ocrText = 21;
    }
 
-   oneof _geometry {
-      Rect geometry = 22;
+   oneof reqGeometry {
+     Rect geometry = 22;
    }
-
-   oneof _isvisible {
+   oneof reqIsvisible {
       bool isVisible = 23;
    }
 
-   oneof _isselectable {
+   oneof reqIsselectable {
       bool isSelectable = 24;
    }
 
-   oneof _ishighlightable {
+   oneof reqIshighlightable {
       bool isHighlightable = 25;
    }
 
-   oneof _description {
+   oneof reqDescription {
       string description = 26;
    }
 

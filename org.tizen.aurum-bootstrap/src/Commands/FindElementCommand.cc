@@ -35,7 +35,7 @@ std::shared_ptr<ISearchable> FindElementCommand::getSearchableTop(void)
 {
     std::shared_ptr<ISearchable> searchableObj{nullptr};
 
-    if (mRequest->_elementid_case() != 0) {
+    if (mRequest->reqElementid_case() != 0) {
         searchableObj = mObjMap->getElement(mRequest->elementid());
     }
     if (!searchableObj) searchableObj = UiDevice::getInstance();
@@ -47,32 +47,32 @@ std::shared_ptr<UiSelector> FindElementCommand::getSelector(void)
 {
     auto sel = std::make_shared<UiSelector>();
 
-    if(mRequest->_elementid_case())        sel->id(mRequest->elementid());
-    if(mRequest->_automationid_case())     sel->automationid(mRequest->automationid());
-    if(mRequest->_textfield_case())        sel->text(mRequest->textfield());
-    if(mRequest->_widgettype_case())       sel->type(mRequest->widgettype());
-    if(mRequest->_widgetstyle_case())      sel->style(mRequest->widgetstyle());
-    if(mRequest->_ischecked_case())        sel->isChecked(mRequest->ischecked());
-    if(mRequest->_ischeckable_case())      sel->isCheckable(mRequest->ischeckable());
-    if(mRequest->_isclickable_case())      sel->isClickable(mRequest->isclickable());
-    if(mRequest->_isenabled_case())        sel->isEnabled(mRequest->isenabled());
-    if(mRequest->_isfocused_case())        sel->isFocused(mRequest->isfocused());
-    if(mRequest->_isfocusable_case())      sel->isFocusable(mRequest->isfocusable());
-    if(mRequest->_isscrollable_case())     sel->isScrollable(mRequest->isscrollable());
-    if(mRequest->_isselected_case())       sel->isSelected(mRequest->isselected());
-    if(mRequest->_isshowing_case())        sel->isShowing(mRequest->isshowing());
-    if(mRequest->_isactive_case())         sel->isActive(mRequest->isactive());
-    if(mRequest->_mindepth_case())         sel->minDepth(mRequest->mindepth());
-    if(mRequest->_maxdepth_case())         sel->maxDepth(mRequest->maxdepth());
-    if(mRequest->_packagename_case())      sel->pkg(mRequest->packagename());
-    if(mRequest->_textpartialmatch_case()) sel->textPartialMatch(mRequest->textpartialmatch());
-    if(mRequest->_xpath_case())            sel->xpath(mRequest->xpath());
-    if(mRequest->_ocrtext_case())          sel->ocrText(mRequest->ocrtext());
-    if(mRequest->_geometry_case())         sel->geometry(Rect<int>{mRequest->geometry().x(), mRequest->geometry().y(), mRequest->geometry().x() + mRequest->geometry().width(), mRequest->geometry().y() + mRequest->geometry().height()}, true);
-    if(mRequest->_isvisible_case())        sel->isVisible(mRequest->isvisible());
-    if(mRequest->_isselectable_case())     sel->isSelectable(mRequest->isselectable());
-    if(mRequest->_ishighlightable_case())  sel->isHighlightable(mRequest->ishighlightable());
-    if(mRequest->_description_case())      sel->description(mRequest->description());
+    if(mRequest->reqElementid_case())        sel->id(mRequest->elementid());
+    if(mRequest->reqAutomationid_case())     sel->automationid(mRequest->automationid());
+    if(mRequest->reqTextfield_case())        sel->text(mRequest->textfield());
+    if(mRequest->reqWidgettype_case())       sel->type(mRequest->widgettype());
+    if(mRequest->reqWidgetstyle_case())      sel->style(mRequest->widgetstyle());
+    if(mRequest->reqIschecked_case())        sel->isChecked(mRequest->ischecked());
+    if(mRequest->reqIscheckable_case())      sel->isCheckable(mRequest->ischeckable());
+    if(mRequest->reqIsclickable_case())      sel->isClickable(mRequest->isclickable());
+    if(mRequest->reqIsenabled_case())        sel->isEnabled(mRequest->isenabled());
+    if(mRequest->reqIsfocused_case())        sel->isFocused(mRequest->isfocused());
+    if(mRequest->reqIsfocusable_case())      sel->isFocusable(mRequest->isfocusable());
+    if(mRequest->reqIsscrollable_case())     sel->isScrollable(mRequest->isscrollable());
+    if(mRequest->reqIsselected_case())       sel->isSelected(mRequest->isselected());
+    if(mRequest->reqIsshowing_case())        sel->isShowing(mRequest->isshowing());
+    if(mRequest->reqIsactive_case())         sel->isActive(mRequest->isactive());
+    if(mRequest->reqMindepth_case())         sel->minDepth(mRequest->mindepth());
+    if(mRequest->reqMaxdepth_case())         sel->maxDepth(mRequest->maxdepth());
+    if(mRequest->reqPackagename_case())      sel->pkg(mRequest->packagename());
+    if(mRequest->reqTextpartialmatch_case()) sel->textPartialMatch(mRequest->textpartialmatch());
+    if(mRequest->reqXpath_case())            sel->xpath(mRequest->xpath());
+    if(mRequest->reqOcrtext_case())          sel->ocrText(mRequest->ocrtext());
+    if(mRequest->reqGeometry_case())         sel->geometry(Rect<int>{mRequest->geometry().x(), mRequest->geometry().y(), mRequest->geometry().x() + mRequest->geometry().width(), mRequest->geometry().y() + mRequest->geometry().height()}, true);
+    if(mRequest->reqIsvisible_case())        sel->isVisible(mRequest->isvisible());
+    if(mRequest->reqIsselectable_case())     sel->isSelectable(mRequest->isselectable());
+    if(mRequest->reqIshighlightable_case())  sel->isHighlightable(mRequest->ishighlightable());
+    if(mRequest->reqDescription_case())      sel->description(mRequest->description());
 
     return sel;
 }
