@@ -79,6 +79,8 @@ public:
     static AtspiAccessibleNodeInfo *Atspi_accessible_get_node_info(AtspiAccessible *obj, GError **error);
     static void Atspi_accessible_free_node_info(AtspiAccessibleNodeInfo *node_info);
     static AtspiAccessible *Atspi_accessible_get_neighbor(AtspiAccessible *root, AtspiAccessible *start, AtspiNeighborSearchDirection direction, GError **error);
+    static void Atspi_accessible_set_include_hidden(AtspiAccessible *obj, gboolean enabled, GError **error);
+    static gboolean Atspi_accessible_get_include_hidden(AtspiAccessible *obj, GError **error);
 
 private:
     static std::recursive_mutex mMutex;

@@ -55,3 +55,5 @@
 #include "Commands/MouseDownCommand.h"
 #include "Commands/MouseMoveCommand.h"
 #include "Commands/MouseUpCommand.h"
+#include "Commands/SetIncludeHiddenCommand.h"
+#include "Commands/GetIncludeHiddenCommand.h"

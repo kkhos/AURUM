@@ -526,3 +526,11 @@ std::shared_ptr<UiObject> UiObject::last() const {
     }
     return nullptr;
 }
+
+void UiObject::setIncludeHidden(bool enabled) const {
+    mNode->setIncludeHidden(enabled);
+}
+
+bool UiObject::getIncludeHidden() const {
+    return mNode->getIncludeHidden();
+}
