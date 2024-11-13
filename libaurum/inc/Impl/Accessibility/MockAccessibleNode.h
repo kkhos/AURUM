@@ -225,6 +225,18 @@ public:
      */
     bool setValue(double value) override;
 
+    /**
+     * @brief TBD
+     * @since_tizen 9.0
+     */
+    void setIncludeHidden(bool enabled) const override;
+
+    /**
+     * @brief TBD
+     * @since_tizen 9.0
+     */
+    bool getIncludeHidden() const override;
+
 public:
     using AccessibleNode::setFeatureProperty;
     /**

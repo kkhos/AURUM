@@ -211,6 +211,16 @@ public:
      */
     bool setValue(double value) override;
 
+    /**
+     * @copydoc AccessibleNode::setIncludeHidden()
+     */
+    void setIncludeHidden(bool enabled) const override;
+
+    /**
+     * @copydoc AccessibleNode::getIncludeHidden()
+     */
+    bool getIncludeHidden() const override;
+
 private:
     using AccessibleNode::setFeatureProperty;
 
