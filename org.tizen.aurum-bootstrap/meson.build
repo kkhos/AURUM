@@ -58,6 +58,8 @@ bootstrap_svr_src += [
    files('src/Commands/MouseDownCommand.cc'),
    files('src/Commands/MouseMoveCommand.cc'),
    files('src/Commands/MouseUpCommand.cc'),
+   files('src/Commands/SetIncludeHiddenCommand.cc'),
+   files('src/Commands/GetIncludeHiddenCommand.cc'),
 ]
 
 bootstrap_svr_dep = [
