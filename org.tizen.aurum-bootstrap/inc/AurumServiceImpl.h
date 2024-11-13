@@ -159,6 +159,12 @@ public:
     ::grpc::Status mouseMove(::grpc::ServerContext *context,
                              const ::aurum::ReqMouseMove *request,
                              ::aurum::RspMouseMove *response) override;
+    ::grpc::Status setIncludeHidden(::grpc::ServerContext *context,
+                             const ::aurum::ReqSetIncludeHidden *request,
+                             ::aurum::RspSetIncludeHidden *response) override;
+    ::grpc::Status getIncludeHidden(::grpc::ServerContext *context,
+                             const ::aurum::ReqGetIncludeHidden *request,
+                             ::aurum::RspGetIncludeHidden *response) override;
 public:
     int WAIT_TIMEOUT_MS;
 };

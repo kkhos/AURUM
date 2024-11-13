@@ -759,6 +759,20 @@ public:
      */
     std::shared_ptr<UiObject> last() const;
 
+    /**
+     * @brief Sets object's include hidden flag.
+     *
+     * @since_tizen 7.0 
+     */
+    void setIncludeHidden(bool enabled) const;
+
+    /**
+     * @brief Gets object's include hidden flag.
+     * 
+     * @since_tizen 7.0
+     */
+    bool getIncludeHidden() const;
+
 private:
     std::shared_ptr<UiDevice> mDevice;
     std::shared_ptr<UiSelector>  mSelector;

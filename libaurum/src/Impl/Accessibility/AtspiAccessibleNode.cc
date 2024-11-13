@@ -753,3 +753,30 @@ std::shared_ptr<AccessibleNode> AtspiAccessibleNode::last() const
 
     return nullptr;
 }
+
+void AtspiAccessibleNode::setIncludeHidden(bool enabled) const
+{
+    if (!isValid()) {
+        return;
+    }
+    AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(mNode, NULL);
+    if (app) {
+        AtspiWrapper::Atspi_accessible_set_include_hidden(app, enabled, NULL);
+        g_object_unref(app);
+    }
+}
+
+bool AtspiAccessibleNode::getIncludeHidden() const
+{
+    if (!isValid()) {
+        return false;
+    }
+    AtspiAccessible *app = AtspiWrapper::Atspi_accessible_get_application(mNode, NULL);
+    if (app) {
+        bool ret = AtspiWrapper::Atspi_accessible_get_include_hidden(app, NULL);        
+        g_object_unref(app);
+        return ret;
+    }
+
+    return false;
+}

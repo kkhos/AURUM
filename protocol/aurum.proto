@@ -47,6 +47,8 @@ service Bootstrap {
    rpc mouseDown(ReqMouseDown) returns (RspMouseDown) {}
    rpc mouseMove(ReqMouseMove) returns (RspMouseMove) {}
    rpc mouseUp(ReqMouseUp) returns (RspMouseUp) {}
+   rpc setIncludeHidden(ReqSetIncludeHidden) returns (RspSetIncludeHidden) {}
+   rpc getIncludeHidden(ReqGetIncludeHidden) returns (RspGetIncludeHidden) {}
 }
 
 // ------------------------------------ //
@@ -759,4 +761,22 @@ message ReqGetParent {
 message RspGetParent {
    RspStatus status = 1;
    Element element = 2;
+}
+
+message ReqSetIncludeHidden {
+   string elementId = 1;
+   bool enabled = 2;
+}
+
+message RspSetIncludeHidden {
+   RspStatus status = 1;
+}
+
+message ReqGetIncludeHidden {
+   string elementId = 1;
+}
+
+message RspGetIncludeHidden {
+   RspStatus status = 1;
+   bool enabled = 2;
 }

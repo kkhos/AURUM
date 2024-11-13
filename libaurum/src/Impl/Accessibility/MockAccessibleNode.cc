@@ -336,3 +336,13 @@ std::shared_ptr<AccessibleNode> MockAccessibleNode::last() const
 {
     return nullptr;
 }
+
+void MockAccessibleNode::setIncludeHidden(bool enabled) const
+{
+    return;
+}
+
+bool MockAccessibleNode::getIncludeHidden() const
+{
+    return false;
+}
