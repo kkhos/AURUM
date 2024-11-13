@@ -285,3 +285,14 @@ AtspiAccessible *AtspiWrapper::Atspi_accessible_get_neighbor(AtspiAccessible *ro
     return atspi_accessible_get_neighbor(root, start, direction, error);
 }
 
+void AtspiWrapper::Atspi_accessible_set_include_hidden(AtspiAccessible *obj, gboolean enabled, GError **error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    atspi_accessible_set_include_hidden(obj, enabled, error);
+}
+
+gboolean AtspiWrapper::Atspi_accessible_get_include_hidden(AtspiAccessible *obj, GError **error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_accessible_get_include_hidden(obj, error);
+}

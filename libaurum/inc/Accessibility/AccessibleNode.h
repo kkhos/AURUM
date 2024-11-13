@@ -558,6 +558,16 @@ public:
      */
     virtual bool isValid() const;
 
+    /**
+     * @copydoc UIObject::setIncludeHidden()
+     */
+    virtual void setIncludeHidden(bool enabled) const = 0;
+
+    /**
+     * @copydoc UIObject::getIncludeHidden()
+     */
+    virtual bool getIncludeHidden() const = 0;
+
 public:
     /**
      * @brief Check Node support given interface or not.
