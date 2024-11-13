@@ -375,3 +375,19 @@ aurumServiceImpl::~aurumServiceImpl()
     std::unique_ptr<MouseMoveCommand> cmd = std::make_unique<MouseMoveCommand>(request, response);
     return execute(cmd.get(), false);
 }
+
+::grpc::Status aurumServiceImpl::setIncludeHidden(::grpc::ServerContext *context,
+                                                  const ::aurum::ReqSetIncludeHidden *request,
+                                                  ::aurum::RspSetIncludeHidden *response)
+{
+    std::unique_ptr<SetIncludeHiddenCommand> cmd = std::make_unique<SetIncludeHiddenCommand>(request, response);
+    return execute(cmd.get(), false);
+}
+
+::grpc::Status aurumServiceImpl::getIncludeHidden(::grpc::ServerContext *context,
+                                                  const ::aurum::ReqGetIncludeHidden *request,
+                                                  ::aurum::RspGetIncludeHidden *response)
+{
+    std::unique_ptr<GetIncludeHiddenCommand> cmd = std::make_unique<GetIncludeHiddenCommand>(request, response);
+    return execute(cmd.get(), false);
+}
