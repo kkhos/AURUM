@@ -61,6 +61,10 @@ TakeScreenshotCommand::TakeScreenshotCommand(
         }
         ifs.close();
         delete[] buf;
+        int ret = remove(name);
+        if(ret < 0) {
+            LOGE("Fail to remove screen shot file : %s", name);
+        }
     }
     else {
         void *pixels = NULL;
