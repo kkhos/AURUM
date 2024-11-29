@@ -491,6 +491,15 @@ public:
     std::string getDescription() const;
 
     /**
+     * @brief Gets object's image source.
+     *
+     * @return string
+     *
+     * @since_tizen 10.0
+     */
+    std::string getImgSrc() const;
+
+    /**
      * @brief Gets object's checkable property.
      *
      * @return true if checkable else false
