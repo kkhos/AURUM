@@ -63,6 +63,7 @@ void AurumXML::traverse(xml_node& element, const std::shared_ptr<AccessibleNode>
     element.append_attribute("name") = node->getText().c_str();
     element.append_attribute("id") = node->getId().c_str();
     element.append_attribute("automationid") = node->getAutomationId().c_str();
+    element.append_attribute("imgSrc") = node->getImgSrc().c_str();
 
     mXNodeMap[node->getId()] = node;
 
