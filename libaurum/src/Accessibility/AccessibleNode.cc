@@ -56,7 +56,7 @@ AccessibleNode::~AccessibleNode()
 }
 
 AccessibleNode::AccessibleNode()
-: mText{""}, mOcrText{""}, mPkg{""}, mRole{""}, mId{""}, mAutomationId{""}, mType{""}, mStyle{""}, mXPath{""}, mToolkitName{""}, mInterface{""}, mDescription{""},
+: mText{""}, mOcrText{""}, mPkg{""}, mRole{""}, mId{""}, mAutomationId{""}, mType{""}, mStyle{""}, mXPath{""}, mToolkitName{""}, mInterface{""}, mDescription{""}, mImgSrc{""},
   mScreenBoundingBox{0,0,0,0}, mWindowBoundingBox{0,0,0,0}, mTextMinBoundingRect{0,0,0,0}, mSupportingIfaces(0), mFeatureProperty(0), mPid(0), mWindowAngle(0), mTargetAngle(0), mMinValue{0.0}, mMaxValue{0.0}, mValue{0.0}, mIncrement{0.0}, mValid{true}, mLock{}
 {
 }
@@ -74,6 +74,7 @@ std::string AccessibleNode::description() {
     ss << "\"mPkg\":\"" << this->mPkg << "\", ";
     ss << "\"mType\":\"" << this->mType << "\", ";
     ss << "\"mStyle\":\"" << this->mStyle << "\", ";
+    ss << "\"mImgSrc\":\"" << this->mImgSrc << "\", ";
     ss << "}";
 
     return ss.str();
@@ -237,6 +238,11 @@ std::string AccessibleNode::getInterface() const
 std::string AccessibleNode::getDescription() const
 {
     return mDescription;
+}
+
+std::string AccessibleNode::getImgSrc() const
+{
+    return mImgSrc;
 }
 
 bool AccessibleNode::isCheckable() const
