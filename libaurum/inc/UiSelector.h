@@ -404,6 +404,17 @@ public:
      */
     UiSelector *description(std::string description);
 
+    /**
+     * @brief Sets the search criteria to match the object's image source.
+     *
+     * @param[in] imgSrc object image source
+     *
+     * @return UiSelector class instance
+     *
+     * @since_tizen 10.0
+     */
+    UiSelector *imgSrc(std::string imgSrc);
+
 public:
     std::string mId;
     std::string mAutomationId;
@@ -416,6 +427,7 @@ public:
     std::string mXPath;
     std::string mOcrText;
     std::string mDescription;
+    std::string mImgSrc;
 
     bool mMatchId;
     bool mMatchAutomationId;
@@ -429,6 +441,7 @@ public:
     bool mMatchOcrText;
     bool mMatchGeometry;
     bool mMatchDescription;
+    bool mMatchImgSrc;
 
     bool mMatchChecked;
     bool mMatchCheckable;

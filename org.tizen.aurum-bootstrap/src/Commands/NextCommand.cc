@@ -98,6 +98,7 @@ NextCommand::NextCommand(const ::aurum::ReqNext *request,
 
         elm->set_interface(obj->getInterface());
         elm->set_description(obj->getDescription());
+        elm->set_imgsrc(obj->getImgSrc());
 
         mResponse->set_status(::aurum::RspStatus::OK);
     } else {
