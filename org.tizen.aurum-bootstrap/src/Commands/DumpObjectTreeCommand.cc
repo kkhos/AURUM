@@ -88,6 +88,7 @@ void DumpObjectTreeCommand::traverse(::aurum::Element *root, std::shared_ptr<Nod
 
     root->set_interface(obj->getInterface());
     root->set_description(obj->getDescription());
+    root->set_imgsrc(obj->getImgSrc());
 
     for( auto && childNode : node->mChildren) {
         ::aurum::Element *child = root->add_child();
