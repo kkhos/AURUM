@@ -266,6 +266,11 @@ std::string UiObject::getDescription() const
     return mNode->getDescription();
 }
 
+std::string UiObject::getImgSrc() const
+{
+    return mNode->getImgSrc();
+}
+
 bool UiObject::setValue(double value)
 {
     return mNode->setValue(value);
