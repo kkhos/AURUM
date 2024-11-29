@@ -74,11 +74,12 @@ bool PartialMatch::checkCriteria(const std::shared_ptr<UiSelector> selector,
         node->updateUniqueId();
         if (checkCriteria(selector->mId, node->getId(), 0)) return false;
     }
-    if (selector->mMatchType || selector->mMatchAutomationId || selector->mMatchStyle) {
+    if (selector->mMatchType || selector->mMatchAutomationId || selector->mMatchStyle || selector->mMatchImgSrc) {
         node->updateAttributes();
         if (selector->mMatchAutomationId && checkCriteria(selector->mAutomationId, node->getAutomationId(), 0)) return false;
         if (selector->mMatchType && checkCriteria(selector->mType, node->getType(), 0)) return false;
         if (selector->mMatchStyle && checkCriteria(selector->mStyle, node->getStyle(), 0)) return false;
+        if (selector->mMatchImgSrc && checkCriteria(selector->mImgSrc, node->getImgSrc(), 0)) return false; 
     }
     if (selector->mMatchPkg) {
         node->updateApplication();

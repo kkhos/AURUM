@@ -73,6 +73,7 @@ std::shared_ptr<UiSelector> FindElementCommand::getSelector(void)
     if(mRequest->reqIsselectable_case())     sel->isSelectable(mRequest->isselectable());
     if(mRequest->reqIshighlightable_case())  sel->isHighlightable(mRequest->ishighlightable());
     if(mRequest->reqDescription_case())      sel->description(mRequest->description());
+    if(mRequest->reqImgSrc_case())           sel->imgSrc(mRequest->imgsrc());
 
     return sel;
 }
@@ -150,6 +151,7 @@ std::shared_ptr<UiSelector> FindElementCommand::getSelector(void)
 
         elm->set_interface(obj->getInterface());
         elm->set_description(obj->getDescription());
+        elm->set_imgsrc(obj->getImgSrc());
 
         mResponse->set_status(::aurum::RspStatus::OK);
     } else {
