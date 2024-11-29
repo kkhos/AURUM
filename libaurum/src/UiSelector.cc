@@ -22,9 +22,9 @@
 using namespace Aurum;
 
 UiSelector::UiSelector()
-: mId{}, mAutomationId{}, mRole{}, mText{}, mPkg{}, mType{}, mStyle{}, mTextPartialMatch{}, mXPath{}, mOcrText{}, mDescription{},
+: mId{}, mAutomationId{}, mRole{}, mText{}, mPkg{}, mType{}, mStyle{}, mTextPartialMatch{}, mXPath{}, mOcrText{}, mDescription{}, mImgSrc{},
   mMatchId{}, mMatchAutomationId{}, mMatchRole{}, mMatchText{}, mMatchPkg{}, mMatchType{}, mMatchStyle{},
-  mMatchTextPartialMatch{}, mMatchXPath{}, mMatchOcrText{}, mMatchGeometry{}, mMatchDescription{}, mMatchChecked{}, mMatchCheckable{}, mMatchClickable{}, mMatchEnabled{},
+  mMatchTextPartialMatch{}, mMatchXPath{}, mMatchOcrText{}, mMatchGeometry{}, mMatchDescription{}, mMatchImgSrc{}, mMatchChecked{}, mMatchCheckable{}, mMatchClickable{}, mMatchEnabled{},
   mMatchFocused{}, mMatchFocusable{}, mMatchScrollable{}, mMatchSelected{}, mMatchShowing{}, mMatchActive{}, mMatchVisible{},
   mMatchSelectable{}, mMatchHighlightable{}, mMinDepth{}, mMaxDepth{}, mIschecked{}, mIscheckable{}, mIsclickable{}, mIsenabled{},
   mIsfocused{}, mIsfocusable{}, mIsscrollable{}, mIsselected{}, mIsshowing{}, mIsactive{}, mIsvisible{},
@@ -47,6 +47,7 @@ std::string UiSelector::description()
     if(!this->mPkg.empty()) ss << "\"mPkg\":\"" << this->mPkg << "\", ";
     if(!this->mType.empty()) ss << "\"mType\":\"" << this->mType << "\", ";
     if(!this->mStyle.empty()) ss << "\"mStyle\":\"" << this->mStyle << "\", ";
+    if(!this->mImgSrc.empty()) ss << "\"mImgSrc\":\"" << this->mImgSrc << "\", ";
     if(this->mMatchGeometry) ss << "\"mGeometry\":\"" << this->mGeometry.mTopLeft.x << "//" << this->mGeometry.mTopLeft.y << "//" << this->mGeometry.width() << "//" << this->mGeometry.height() << "\", ";
     if(this->mMatchId) ss << "\"mMatchId\":\"" << ((this->mMatchId)?"true":"false") << "\", ";
     if(this->mMatchAutomationId) ss << "\"mMatchAutomationId\":\"" << ((this->mMatchAutomationId)?"true":"false") << "\", ";
@@ -60,6 +61,7 @@ std::string UiSelector::description()
     if(this->mMatchStyle) ss << "\"mMatchStyle\":\"" << ((this->mMatchStyle)?"true":"false" )<< "\", ";
     if(this->mMatchGeometry) ss << "\"mMatchGeometry\":\"" << ((this->mMatchGeometry)?"true":"false" )<< "\", ";
     if(this->mMatchDescription) ss << "\"mMatchDescription\":\"" << ((this->mMatchDescription)?"true":"false") << "\", ";
+    if(this->mMatchImgSrc) ss << "\"mMatchImgSrc\":\"" << ((this->mMatchImgSrc)?"true":"false") << "\", ";
     if(this->mMinDepth) ss << "\"mMinDepth\":\"" << this->mMinDepth << "\", ";
     if(this->mMaxDepth) ss << "\"mMaxDepth\":\"" << this->mMaxDepth << "\", ";
     if(this->mMatchChecked) ss << "\"mMatchChecked\":\"" << ((this->mMatchChecked)?"true":"false") << "\", ";
@@ -300,5 +302,12 @@ UiSelector *UiSelector::description(std::string description)
 {
     this->mDescription = description;
     this->mMatchDescription = true;
+    return this;
+}
+
+UiSelector *UiSelector::imgSrc(std::string imgSrc)
+{
+    this->mImgSrc = imgSrc;
+    this->mMatchImgSrc = true;
     return this;
 }

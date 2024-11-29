@@ -108,6 +108,7 @@ message Element {
 
    string interface = 33;
    string description = 34;
+   string imgSrc = 35;
 }
 
 message Point {
@@ -233,6 +234,10 @@ message ReqFindElement {
       string description = 26;
    }
 
+   oneof reqImgSrc {
+      string imgSrc = 28;
+   }
+
    repeated ReqFindElement children = 27;
 }
 
@@ -343,6 +348,10 @@ message ReqFindElements {
 
    oneof reqDescription {
       string description = 26;
+   }
+
+   oneof reqImgSrc {
+      string imgSrc = 28;
    }
 
    repeated ReqFindElements children = 27;

@@ -352,6 +352,11 @@ public:
     std::string getDescription() const;
 
     /**
+     * @copydoc UiObject::getImgSrc()
+     */
+    std::string getImgSrc() const;
+
+    /**
      * @copydoc UiObject::isCheckable()
      */
     bool isCheckable() const;
@@ -621,6 +626,7 @@ protected:
     std::string mToolkitName;
     std::string mInterface;
     std::string mDescription;
+    std::string mImgSrc;
     Rect<int> mScreenBoundingBox;
     Rect<int> mWindowBoundingBox;
     Rect<int> mTextMinBoundingRect;
