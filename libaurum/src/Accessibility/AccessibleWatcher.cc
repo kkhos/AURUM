@@ -19,8 +19,9 @@
 
 #ifdef TIZEN
 #include "AtspiAccessibleWatcher.h"
-#endif
+#else
 #include "MockAccessibleWatcher.h"
+#endif
 
 #include <string.h>
 #include <iostream>
@@ -52,7 +53,7 @@ AccessibleWatcher *AccessibleWatcher::getInstance(AccessibleWatcher *watcherImpl
 #ifdef TIZEN
             mInstance = new AtspiAccessibleWatcher();
 #else
-            mInstance = new MockAccessibleWatcher();
+            mInstance = new Mock::MockAccessibleWatcher();
 #endif
         }
     }

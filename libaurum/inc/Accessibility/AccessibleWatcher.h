@@ -25,7 +25,6 @@
 #include "A11yEvent.h"
 #include "A11yEventHandler.h"
 #include "AurumXML.h"
-#include <atspi/atspi.h>
 
 #include <memory>
 #include <vector>

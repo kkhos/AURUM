@@ -19,9 +19,10 @@
 
 #ifdef TIZEN
 #include "TizenDeviceImpl.h"
-#endif
-#include "MockDeviceImpl.h"
 #include "AtspiAccessibleWatcher.h"
+#else
+#include "MockDeviceImpl.h"
+#endif
 #include <unistd.h>
 #include <utility>
 #include <vector>
@@ -144,7 +145,7 @@ std::shared_ptr<UiDevice> UiDevice::getInstance(IDevice *deviceImpl)
 #ifdef TIZEN
             device.reset(new UiDevice(new TizenDeviceImpl()));
 #else
-            device.reset(new UiDevice(new MockDeviceImpl()));
+            device.reset(new UiDevice(new Mock::MockDeviceImpl()));
 #endif
         }
     });
