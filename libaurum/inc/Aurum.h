@@ -18,6 +18,7 @@
 #ifndef _AURUM_H_
 #define _AURUM_H_
 
+#ifdef TIZEN
 #include <dlog.h>
 
 #ifdef LOG_TAG
@@ -42,6 +43,11 @@
                    FONT_RED "%s: %s(%d) > " fmt FONT_RESET, \
                    __FILE__, __func__, __LINE__, ##arg); \
     } while (0); })
+#endif
+#else
+#include <cstdio>
+#define LOGI(fmt, ...) printf("[INFO]" fmt "\n", ##__VA_ARGS__)
+#define LOGE(fmt, ...) fprintf(stderr, "[ERROR]" fmt "\n", ##__VA_ARGS__)
 #endif
 
 #include "UiDevice.h"

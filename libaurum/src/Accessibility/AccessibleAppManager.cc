@@ -20,8 +20,9 @@
 
 #ifdef TIZEN
 #include "AtspiAccessibleAppManager.h"
-#endif
+#else
 #include "MockAccessibleAppManager.h"
+#endif
 
 using namespace Aurum;
 using namespace AurumInternal;
@@ -47,7 +48,7 @@ AccessibleAppManager *AccessibleAppManager::getInstance(AccessibleAppManager *ap
 #ifdef TIZEN
             mInstance = new AtspiAccessibleAppManager();
 #else
-            mInstance = new MockAccessibleAppManager();
+            mInstance = new Mock::MockAccessibleAppManager();
 #endif
         }
     }

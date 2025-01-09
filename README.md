@@ -26,3 +26,9 @@ Please refer [grpc](https://grpc.io/) and [proto buffers](https://developers.goo
 - [Automation application(C++) in target](https://github.sec.samsung.net/TizenUIFW/aurum-test-sample)
 - [UI Analyzer](https://github.sec.samsung.net/TizenNativeUI/ui-analyzer)
    * Aurum API is not public. we dont recommand direct calling aurum API in target.
+
+### Local Build (Ubuntu)
+```bash
+meson setup builddir -Dlibaurum_only=true
+meson compile -C builddir/
+```

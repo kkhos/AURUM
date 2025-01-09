@@ -49,7 +49,6 @@ libaurum_src = []
 subdir('src')
 
 libaurum_dep = [
-  dependency('atspi-2'),
   dependency('gio-2.0'),
   dependency('threads'),
   libpugixml_dep,
@@ -57,6 +56,7 @@ libaurum_dep = [
 
 if get_option('tizen') == true
   libaurum_dep += [
+    dependency('atspi-2'),
     dependency('capi-system-info'),
     dependency('capi-ui-efl-util'),
     dependency('dlog'),
