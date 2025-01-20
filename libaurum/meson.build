@@ -86,3 +86,9 @@ libaurum =  declare_dependency(link_with: libaurum_lib,
 
 install_headers(libaurum_install_inc,
 )
+
+if get_option('build_c_bindings') == true
+  c_bindings_dir = dir_include + '/c_bindings'
+  message('install c bindings header to ' + c_bindings_dir)
+  install_headers('./inc/AurumCBindings.h', install_dir: c_bindings_dir,)
+endif

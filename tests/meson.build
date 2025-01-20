@@ -6,6 +6,10 @@ test_src = [
     ['test_uiselector', files('Test_UiSelector.cc')],
 ]
 
+if get_option('build_c_bindings') == true
+    test_src += [['Test_CBindings', files('Test_CBindings.cc')]]
+endif
+
 test_inc = [
     include_directories('./')
 ]

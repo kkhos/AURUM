@@ -32,3 +32,9 @@ option('libaurum_only',
   value: false,
   description: 'skip building grpc and protobuf protocol'
 )
+
+option('build_c_bindings',
+  type: 'boolean',
+  value: false,
+  description: 'build c bindings to be called from rust code'
+)

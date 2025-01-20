@@ -16,3 +16,7 @@ libaurum_src += [
 subdir('Accessibility')
 subdir('Impl')
 subdir('Runnable')
+
+if get_option('build_c_bindings') == true
+  subdir('c_bindings')
+endif
