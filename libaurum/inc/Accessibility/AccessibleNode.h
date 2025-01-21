@@ -142,6 +142,13 @@ public:
     virtual std::vector<std::shared_ptr<AccessibleNode>> getMatchesInMatches(const std::shared_ptr<UiSelector> firstSelector, const std::shared_ptr<UiSelector> secondSelector, const bool ealryReturn) const = 0;
 
     /**
+     * @brief dump current tree in json string
+     *
+     * @return string
+     */
+    virtual std::string dumpTree() const = 0;
+
+    /**
      * @copydoc UiObject::next()
      */
     virtual std::shared_ptr<AccessibleNode> next() const = 0;

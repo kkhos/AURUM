@@ -41,9 +41,8 @@ const char* dump_screen()
     dumpResult += " : [";
 
     for (const auto& root: windowRoots) {
-        // TODO: implement dump logic
-        // root->dump();
-        dumpResult += "{},";
+        dumpResult += root->dumpTree();
+        dumpResult += ",";
     }
 
     // remove last comma if exists.

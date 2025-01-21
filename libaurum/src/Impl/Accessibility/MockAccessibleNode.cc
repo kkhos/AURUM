@@ -125,6 +125,10 @@ std::vector<std::shared_ptr<AccessibleNode>> MockAccessibleNode::getMatchesInMat
     return ret;
 }
 
+std::string MockAccessibleNode::dumpTree() const
+{
+    return {"{}"};
+}
 
 void* MockAccessibleNode::getRawHandler(void) const
 {
