@@ -692,6 +692,22 @@ std::vector<std::shared_ptr<AccessibleNode>> AtspiAccessibleNode::getMatchesInMa
     return ret;
 }
 
+std::string AtspiAccessibleNode::dumpTree() const
+{
+    if (!isValid()) {
+        return {};
+    }
+
+    gchar *c_result = AtspiWrapper::Atspi_accessible_dump_tree(mNode, ATSPI_DUMP_FULL_SHOWING_ONLY, NULL);
+    if (c_result) {
+        std::string result{c_result};
+        g_free(c_result);
+        return result;
+    }
+
+    return {};
+}
+
 std::shared_ptr<AccessibleNode> AtspiAccessibleNode::next() const
 {
     if (!isValid()) {
