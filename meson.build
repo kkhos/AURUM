@@ -29,6 +29,11 @@ if get_option('libaurum_only') == false
 endif
 subdir('tests')
 
+dlog = dependency('dlog', required:false)
+if (dlog.found())
+  config_h.set('HAVE_DLOG', 1)
+endif
+
 configure_file(
   output: 'config.h',
   configuration: config_h,

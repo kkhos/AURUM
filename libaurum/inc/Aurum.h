@@ -18,7 +18,9 @@
 #ifndef _AURUM_H_
 #define _AURUM_H_
 
-#ifdef TIZEN
+#include "config.h"
+
+#ifdef HAVE_DLOG
 #include <dlog.h>
 
 #ifdef LOG_TAG
