@@ -80,6 +80,13 @@ cp %{SOURCE1001} .
 export LDFLAGS+="-Wl,-z,noexecstack"
 %endif
 
+%if "%{gen_c_bindings}" == "1"
+echo "Generating C bindings..."
+%define GEN_C_BINDINGS true
+%else
+%define GEN_C_BINDINGS false
+%endif
+
 %if 0%{?gendoc:1}
 %define TIZEN_GEN_DOC true
 %else
@@ -94,6 +101,7 @@ meson \
     -Denable_documentation=%{TIZEN_GEN_DOC} \
     -Dtzapp_path=%{TZ_SYS_RO_APP} \
     -Dtzpackage_path=%{TZ_SYS_RO_PACKAGES} \
+    -Dbuild_c_bindings=%{GEN_C_BINDINGS} \
     gbsbuild 2>&1 | sed \
         -e 's%^.*: error: .*$%\x1b[37;41m&\x1b[m%' \
         -e 's%^.*: warning: .*$%\x1b[30;43m&\x1b[m%'
