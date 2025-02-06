@@ -30,5 +30,5 @@ Please refer [grpc](https://grpc.io/) and [proto buffers](https://developers.goo
 ### Local Build (Ubuntu)
 ```bash
 meson setup builddir -Dlibaurum_only=true
-meson compile -C builddir/
+ninja -C builddir/
 ```
