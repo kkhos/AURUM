@@ -349,6 +349,17 @@ public:
     UiSelector *isHighlightable(bool condition);
 
     /**
+     * @brief Sets the search criteria to match the object that is highlighted.
+     *
+     * @param[in] condition object's highlighted condition
+     *
+     * @return UiSelector class instance
+     *
+     * @since_tizen 10.0
+     */
+    UiSelector *isHighlighted(bool condition);
+
+    /**
      * @brief Sets the child selector.
      *
      * @param[in] child @UiSelector
@@ -456,6 +467,7 @@ public:
     bool mMatchVisible;
     bool mMatchSelectable;
     bool mMatchHighlightable;
+    bool mMatchHighlighted;
 
     int mMinDepth;
     int mMaxDepth;
@@ -473,6 +485,7 @@ public:
     bool mIsvisible;
     bool mIsselectable;
     bool mIshighlightable;
+    bool mIshighlighted;
 
     bool mGeometryIsEqual;
 

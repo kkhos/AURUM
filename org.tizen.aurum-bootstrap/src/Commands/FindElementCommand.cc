@@ -72,6 +72,7 @@ std::shared_ptr<UiSelector> FindElementCommand::getSelector(void)
     if(mRequest->reqIsvisible_case())        sel->isVisible(mRequest->isvisible());
     if(mRequest->reqIsselectable_case())     sel->isSelectable(mRequest->isselectable());
     if(mRequest->reqIshighlightable_case())  sel->isHighlightable(mRequest->ishighlightable());
+    if(mRequest->reqIshighlighted_case())    sel->isHighlighted(mRequest->ishighlighted());
     if(mRequest->reqDescription_case())      sel->description(mRequest->description());
     if(mRequest->reqImgSrc_case())           sel->imgSrc(mRequest->imgsrc());
 
@@ -140,6 +141,7 @@ std::shared_ptr<UiSelector> FindElementCommand::getSelector(void)
         elm->set_isvisible(obj->isVisible());
         elm->set_isselectable(obj->isSelectable());
         elm->set_ishighlightable(obj->isHighlightable());
+        elm->set_ishighlighted(obj->isHighlighted());
 
         elm->set_minvalue(obj->getMinValue());
         elm->set_maxvalue(obj->getMaxValue());
