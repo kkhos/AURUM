@@ -77,6 +77,7 @@ void DumpObjectTreeCommand::traverse(::aurum::Element *root, std::shared_ptr<Nod
     root->set_isvisible(obj->isVisible());
     root->set_isselectable(obj->isSelectable());
     root->set_ishighlightable(obj->isHighlightable());
+    root->set_ishighlighted(obj->isHighlighted());
 
     root->set_minvalue(obj->getMinValue());
     root->set_maxvalue(obj->getMaxValue());
