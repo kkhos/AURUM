@@ -97,6 +97,7 @@ message Element {
    bool isVisible = 24;
    bool isSelectable = 25;
    bool isHighlightable = 26;
+   bool isHighlighted = 36;
 
    double minValue = 27;
    double maxValue = 28;
@@ -230,6 +231,10 @@ message ReqFindElement {
       bool isHighlightable = 25;
    }
 
+   oneof reqIshighlighted {
+      bool isHighlighted = 29;
+   }
+
    oneof reqDescription {
       string description = 26;
    }
@@ -344,6 +349,10 @@ message ReqFindElements {
 
    oneof reqIshighlightable {
       bool isHighlightable = 25;
+   }
+
+   oneof reqIshighlighted {
+      bool isHighlighted = 29;
    }
 
    oneof reqDescription {
