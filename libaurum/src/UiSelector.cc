@@ -26,9 +26,9 @@ UiSelector::UiSelector()
   mMatchId{}, mMatchAutomationId{}, mMatchRole{}, mMatchText{}, mMatchPkg{}, mMatchType{}, mMatchStyle{},
   mMatchTextPartialMatch{}, mMatchXPath{}, mMatchOcrText{}, mMatchGeometry{}, mMatchDescription{}, mMatchImgSrc{}, mMatchChecked{}, mMatchCheckable{}, mMatchClickable{}, mMatchEnabled{},
   mMatchFocused{}, mMatchFocusable{}, mMatchScrollable{}, mMatchSelected{}, mMatchShowing{}, mMatchActive{}, mMatchVisible{},
-  mMatchSelectable{}, mMatchHighlightable{}, mMinDepth{}, mMaxDepth{}, mIschecked{}, mIscheckable{}, mIsclickable{}, mIsenabled{},
+  mMatchSelectable{}, mMatchHighlightable{}, mMatchHighlighted{}, mMinDepth{}, mMaxDepth{}, mIschecked{}, mIscheckable{}, mIsclickable{}, mIsenabled{},
   mIsfocused{}, mIsfocusable{}, mIsscrollable{}, mIsselected{}, mIsshowing{}, mIsactive{}, mIsvisible{},
-  mIsselectable{}, mIshighlightable{}, mGeometryIsEqual{}, mChild{}, mParent{}, mGeometry{}
+  mIsselectable{}, mIshighlightable{}, mIshighlighted{}, mGeometryIsEqual{}, mChild{}, mParent{}, mGeometry{}
 {
 }
 
@@ -77,6 +77,7 @@ std::string UiSelector::description()
     if(this->mMatchVisible) ss << "\"mMatchVisible\":\"" << ((this->mMatchVisible)?"true":"false") << "\", ";
     if(this->mMatchSelectable) ss << "\"mMatchSelectable\":\"" << ((this->mMatchSelectable)?"true":"false") << "\", ";
     if(this->mMatchHighlightable) ss << "\"mMatchHighlightable\":\"" << ((this->mMatchHighlightable)?"true":"false") << "\", ";
+    if(this->mMatchHighlighted) ss << "\"mMatchHighlighted\":\"" << ((this->mMatchHighlighted)?"true":"false") << "\", ";
     if(this->mParent) {
         ss << "\"mParent\":" << this->mParent->description();
     }
@@ -275,6 +276,13 @@ UiSelector *UiSelector::isHighlightable(bool condition)
 {
     this->mIshighlightable = condition;
     this->mMatchHighlightable = true;
+    return this;
+}
+
+UiSelector *UiSelector::isHighlighted(bool condition)
+{
+    this->mIshighlighted = condition;
+    this->mMatchHighlighted = true;
     return this;
 }
 

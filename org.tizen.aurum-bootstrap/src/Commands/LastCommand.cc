@@ -87,6 +87,7 @@ LastCommand::LastCommand(const ::aurum::ReqLast *request,
         elm->set_isvisible(obj->isVisible());
         elm->set_isselectable(obj->isSelectable());
         elm->set_ishighlightable(obj->isHighlightable());
+        elm->set_ishighlighted(obj->isHighlighted());
 
         elm->set_minvalue(obj->getMinValue());
         elm->set_maxvalue(obj->getMaxValue());

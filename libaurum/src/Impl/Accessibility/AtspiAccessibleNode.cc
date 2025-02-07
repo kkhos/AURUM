@@ -591,6 +591,9 @@ void AtspiAccessibleNode::setFeatureProperty(AtspiStateType type)
         case ATSPI_STATE_HIGHLIGHTABLE:
             setFeatureProperty(NodeFeatureProperties::HIGHLIGHTABLE, true);
             break;
+        case ATSPI_STATE_HIGHLIGHTED:
+            setFeatureProperty(NodeFeatureProperties::HIGHLIGHTED, true);
+            break;
         case ATSPI_STATE_DEFUNCT:
         case ATSPI_STATE_INVALID:
             setFeatureProperty(NodeFeatureProperties::INVALID, true);

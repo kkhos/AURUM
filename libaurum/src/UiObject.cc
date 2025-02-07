@@ -377,6 +377,11 @@ bool UiObject::isHighlightable() const
     return mNode->isHighlightable();
 }
 
+bool UiObject::isHighlighted() const
+{
+    return mNode->isHighlighted();
+}
+
 void UiObject::refresh() const
 {
     mNode->refresh();
