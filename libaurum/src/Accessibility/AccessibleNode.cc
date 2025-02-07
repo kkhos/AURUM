@@ -315,6 +315,11 @@ bool AccessibleNode::isHighlightable() const
     return hasFeatureProperty(NodeFeatureProperties::HIGHLIGHTABLE);
 }
 
+bool AccessibleNode::isHighlighted() const
+{
+    return hasFeatureProperty(NodeFeatureProperties::HIGHLIGHTED);
+}
+
 double AccessibleNode::getMinValue() const
 {
     return mMinValue;

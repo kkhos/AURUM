@@ -109,6 +109,8 @@ message Element {
    string interface = 33;
    string description = 34;
    string imgSrc = 35;
+
+   bool isHighlighted = 36;
 }
 
 message Point {
@@ -239,6 +241,10 @@ message ReqFindElement {
    }
 
    repeated ReqFindElement children = 27;
+
+   oneof reqIshighlighted {
+      bool isHighlighted = 29;
+   }
 }
 
 message RspFindElement {
@@ -355,6 +361,10 @@ message ReqFindElements {
    }
 
    repeated ReqFindElements children = 27;
+
+   oneof reqIshighlighted {
+      bool isHighlighted = 29;
+   }
 }
 
 message RspFindElements {
