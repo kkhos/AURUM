@@ -16,6 +16,23 @@
       "message": "LGTM",
       "revId": "8a658dabb1ecd1f54f58483e53eccb7641b4e52f",
       "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d09d959c_5e976d29",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9694
+      },
+      "writtenOn": "2025-02-10T04:09:53Z",
+      "side": 1,
+      "message": "Could you merge this commit please?\nI don\u0027t have any authority for this repo 😂",
+      "revId": "8a658dabb1ecd1f54f58483e53eccb7641b4e52f",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
     }
   ]
 }
