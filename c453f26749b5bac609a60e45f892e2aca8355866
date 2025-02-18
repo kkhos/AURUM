@@ -24,6 +24,30 @@
       "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "15e805fd_51710009",
+        "filename": "protocol/aurum.proto",
+        "patchSetId": 2
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 9609
+      },
+      "writtenOn": "2025-02-18T10:42:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f5a6b23_588f3a2d",
+      "range": {
+        "startLine": 100,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 27
+      },
+      "revId": "c453f26749b5bac609a60e45f892e2aca8355866",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f55ef77b_4e77de24",
@@ -47,6 +71,30 @@
       "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eafef4dc_4778a691",
+        "filename": "protocol/aurum.proto",
+        "patchSetId": 2
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 9609
+      },
+      "writtenOn": "2025-02-18T10:42:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f55ef77b_4e77de24",
+      "range": {
+        "startLine": 234,
+        "startChar": 0,
+        "endLine": 237,
+        "endChar": 0
+      },
+      "revId": "c453f26749b5bac609a60e45f892e2aca8355866",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c5b2003_7c241b48",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-02-18T10:34:32Z",
       "side": 1,
       "message": "Could you move it to the last?",
+      "range": {
+        "startLine": 354,
+        "startChar": 0,
+        "endLine": 356,
+        "endChar": 4
+      },
+      "revId": "c453f26749b5bac609a60e45f892e2aca8355866",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fca9a313_ee231b3c",
+        "filename": "protocol/aurum.proto",
+        "patchSetId": 2
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 9609
+      },
+      "writtenOn": "2025-02-18T10:42:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c5b2003_7c241b48",
       "range": {
         "startLine": 354,
         "startChar": 0,
