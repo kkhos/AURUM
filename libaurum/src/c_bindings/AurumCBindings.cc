@@ -21,11 +21,6 @@
 
 using namespace Aurum;
 
-namespace
-{
-    constexpr const char WINDOWS_KEY[] = "\"windows\"";
-}
-
 void aurum_init()
 {
     LOGI("aurum_init");
@@ -37,8 +32,7 @@ const char* dump_screen()
     LOGI("dump_screen");
     auto device = UiDevice::getInstance();
     auto windowRoots = device->getWindowRoot();
-    std::string dumpResult{WINDOWS_KEY};
-    dumpResult += " : [";
+    std::string dumpResult{"["};
 
     for (const auto& root: windowRoots) {
         dumpResult += root->dumpTree();
