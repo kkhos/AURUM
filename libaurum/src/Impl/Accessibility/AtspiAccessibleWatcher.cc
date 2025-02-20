@@ -523,8 +523,6 @@ std::map<std::pair<std::string, int>, std::shared_ptr<AurumXML>> AtspiAccessible
 
         LOGI("mAppCount: %d, mAppXMLLoadedCount: %d", mAppCount, mAppXMLLoadedCount);
         mXMLConditionVar.wait(lk, [&] {return mAppCount <= mAppXMLLoadedCount;});
-
-        lk.unlock();
     }
 
     return mXMLDocMap;
@@ -538,8 +536,6 @@ std::shared_ptr<AurumXML> AtspiAccessibleWatcher::getXMLDoc(std::pair<std::strin
 
         LOGI("mAppCount: %d, mAppXMLLoadedCount: %d", mAppCount, mAppXMLLoadedCount);
         mXMLConditionVar.wait(lk, [&] {return mAppCount <= mAppXMLLoadedCount;});
-
-        lk.unlock();
     }
 
     if (mXMLDocMap.count(process) > 0)
