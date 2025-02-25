@@ -5,12 +5,13 @@
 TEST(CBindingsTest, DumpScreen)
 {
     aurum_init();
-    const char *c_str = dump_screen();
+    const char *c_str = aurum_dump_screen();
     EXPECT_NE(c_str, nullptr);
-    free_string_result(c_str);
+    aurum_free_string_result(c_str);
+    aurum_shutdown();
 }
 
 TEST(CBindingsTest, FreeStringResultWorksWithNull)
 {
-    free_string_result(nullptr);
+    aurum_free_string_result(nullptr);
 }
