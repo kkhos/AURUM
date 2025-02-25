@@ -106,6 +106,11 @@ public:
     std::shared_ptr<AccessibleNode> last() const override;
 
     /**
+     * @copydoc AccessibleNode::refAccessibleNode()
+     */
+    std::shared_ptr<AccessibleNode> refAccessibleNode(const std::string &appName, const std::string &path ) const override;
+
+    /**
      * @copydoc AccessibleNode::isValid()
      */
     bool isValid() const override;

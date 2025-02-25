@@ -170,6 +170,18 @@ public:
     virtual std::shared_ptr<AccessibleNode> last() const = 0;
 
     /**
+     * @brief Gets reference of AccessibleNode.
+     *
+     * @param[in] appName application name
+     * @param[in] path path of node
+     *
+     * @return AccessibleNode pointer
+     *
+     * @since_tizen 10.0
+     */
+    virtual std::shared_ptr<AccessibleNode> refAccessibleNode(const std::string &appName, const std::string &path ) const = 0;
+
+    /**
      * @brief Called by @AccessibleWatcher::notifyAll.
      *        Changes Node property If it's @EventType, @ObjectEventType are matches.
      *

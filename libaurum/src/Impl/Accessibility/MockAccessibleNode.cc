@@ -350,3 +350,9 @@ bool MockAccessibleNode::getIncludeHidden() const
 {
     return false;
 }
+
+std::shared_ptr<AccessibleNode> MockAccessibleNode::refAccessibleNode(const std::string &appName, const std::string &path) const
+{
+    return nullptr;
+}
+
