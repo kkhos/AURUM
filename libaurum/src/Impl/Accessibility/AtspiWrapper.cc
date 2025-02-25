@@ -302,3 +302,9 @@ gchar *AtspiWrapper::Atspi_accessible_dump_tree(AtspiAccessible *obj, AtspiDumpD
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_dump_tree(obj, detail_level, error);
 }
+
+AtspiAccessible *AtspiWrapper::Atspi_ref_accessible(const gchar *app_name, const gchar *path)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return ref_accessible(app_name, path);
+}
