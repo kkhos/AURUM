@@ -16,6 +16,24 @@
       "message": "Use STROKE type instead of PRESS, PRESS means only press keycode, it doesn\u0027t release keycode.",
       "revId": "4cf9c5fdd90dd1a2fa5723d9ecf7e6c1423daab7",
       "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee72be33_68fd2b69",
+        "filename": "libaurum/src/c_bindings/AurumCBindings.cc",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 15148
+      },
+      "writtenOn": "2025-02-25T05:10:48Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9cd62b31_76ba7232",
+      "revId": "4cf9c5fdd90dd1a2fa5723d9ecf7e6c1423daab7",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
     }
   ]
 }
