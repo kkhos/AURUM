@@ -298,7 +298,13 @@ gboolean AtspiWrapper::Atspi_accessible_get_include_hidden(AtspiAccessible *obj,
 }
 
 gchar *AtspiWrapper::Atspi_accessible_dump_tree(AtspiAccessible *obj, AtspiDumpDetailLevelType detail_level, GError **error)
+{    
+    std::unique_lock<std::recursive_mutex> lock(mMutex);    
+    return atspi_accessible_dump_tree(obj, detail_level, error);
+}
+
+AtspiAccessible *AtspiWrapper::Atspi_ref_accessible(const gchar *app_name, const gchar *path)
 {
     std::unique_lock<std::recursive_mutex> lock(mMutex);
-    return atspi_accessible_dump_tree(obj, detail_level, error);
+    return ref_accessible(app_name, path);
 }
