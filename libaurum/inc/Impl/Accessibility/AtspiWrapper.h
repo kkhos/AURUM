@@ -82,6 +82,7 @@ public:
     static void Atspi_accessible_set_include_hidden(AtspiAccessible *obj, gboolean enabled, GError **error);
     static gboolean Atspi_accessible_get_include_hidden(AtspiAccessible *obj, GError **error);
     static gchar *Atspi_accessible_dump_tree(AtspiAccessible *obj, AtspiDumpDetailLevelType detail_level, GError **error);
+    static AtspiAccessible *Atspi_ref_accessible(const gchar *app_name, const gchar *path);
 
 private:
     static std::recursive_mutex mMutex;

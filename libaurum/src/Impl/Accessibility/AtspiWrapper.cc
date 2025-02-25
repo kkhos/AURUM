@@ -302,3 +302,13 @@ gchar *AtspiWrapper::Atspi_accessible_dump_tree(AtspiAccessible *obj, AtspiDumpD
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return atspi_accessible_dump_tree(obj, detail_level, error);
 }
+
+AtspiAccessible *AtspiWrapper::Atspi_ref_accessible(const gchar *app_name, const gchar *path)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    AtspiAccessible *accessible = ref_accessible(app_name, path);
+    /* This is a bit of a hack since the cache holds a ref, so we don't need
+     * the one provided for us anymore */
+    g_object_unref (accessible);
+    return accessible;
+}

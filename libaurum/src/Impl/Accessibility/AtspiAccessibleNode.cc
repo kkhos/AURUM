@@ -803,3 +803,11 @@ bool AtspiAccessibleNode::getIncludeHidden() const
 
     return false;
 }
+
+std::shared_ptr<AccessibleNode> AtspiAccessibleNode::refAccessibleNode(const std::string &appName, const std::string &path) const
+{
+    AtspiAccessible *accessible = AtspiWrapper::Atspi_ref_accessible(appName.c_str(), path.c_str());
+    auto node = std::make_shared<AtspiAccessibleNode>(accessible);
+
+    return node;
+}
