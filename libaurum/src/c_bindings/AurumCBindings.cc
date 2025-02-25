@@ -19,6 +19,10 @@
 #include "Aurum.h"
 #include <cstring>
 
+#ifdef TIZEN
+#include <Ecore.h>
+#endif
+
 using namespace Aurum;
 
 namespace
@@ -30,9 +34,24 @@ void aurum_init()
 {
     LOGI("aurum_init");
     AccessibleWatcher::getInstance();
+// TODO: Move this to Application side.
+#ifdef TIZEN
+    ecore_init();
+    ecore_main_loop_begin();
+#endif
 }
 
-const char* dump_screen()
+void aurum_shutdown()
+{
+    LOGI("aurum_shutdown");
+// TODO: Move this to Application side.
+#ifdef TIZEN
+    ecore_main_loop_quit();
+    ecore_shutdown();
+#endif
+}
+
+const char* aurum_dump_screen()
 {
     LOGI("dump_screen");
     auto device = UiDevice::getInstance();
@@ -41,6 +60,7 @@ const char* dump_screen()
     dumpResult += " : [";
 
     for (const auto& root: windowRoots) {
+        root->setIncludeHidden(true);
         dumpResult += root->dumpTree();
         dumpResult += ",";
     }
@@ -54,11 +74,24 @@ const char* dump_screen()
     char* cResult = new char[dumpResult.size() + 1]; // Consumers must free this memory later
     std::strcpy(cResult, dumpResult.c_str());
     return cResult;
-
 }
 
-void free_string_result(const char* ptr)
+void aurum_free_string_result(const char* ptr)
 {
     LOGI("free_string_result");
     delete[] ptr;
+}
+
+int aurum_click(int x, int y)
+{
+    LOGI("click(%d,%d)", x, y);
+    auto device = UiDevice::getInstance();
+    return device->click(x, y) ? 0 : -1;;
+}
+
+int aurum_press_key_code(const char *key_code)
+{
+    LOGI("press_key_code(%s)", key_code);
+    auto device = UiDevice::getInstance();
+    return device->pressKeyCode(key_code, KeyRequestType::PRESS) ? 0 : -1;
 }

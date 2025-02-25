@@ -56,8 +56,7 @@ TizenDeviceImpl::TizenDeviceImpl()
     ecore_main_loop_thread_safe_call_sync([](void *data)->void*{
         TizenDeviceImpl *obj = static_cast<TizenDeviceImpl*>(data);
         obj->mFakeTouchHandle = efl_util_input_initialize_generator_with_sync(EFL_UTIL_INPUT_DEVTYPE_TOUCHSCREEN, "SMSRC Fake Input");
-        obj->mFakeKeyboardHandle =
-        efl_util_input_initialize_generator_with_sync(EFL_UTIL_INPUT_DEVTYPE_KEYBOARD, "SMSRC Fake Input");
+        obj->mFakeKeyboardHandle = efl_util_input_initialize_generator_with_sync(EFL_UTIL_INPUT_DEVTYPE_KEYBOARD, "SMSRC Fake Input");
         obj->mFakePointerHandle = efl_util_input_initialize_generator_with_sync(EFL_UTIL_INPUT_DEVTYPE_POINTER, "SMSRC Fake Input");
 
         return NULL;

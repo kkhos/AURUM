@@ -23,10 +23,16 @@ extern "C" {
 #endif
     // Initialize the Aurum library.
     void aurum_init();
+    // Shutdown the Aurum library. This will release all resources.
+    void aurum_shutdown();
     // Dump current screen as JSON string.
-    const char* dump_screen();
+    const char* aurum_dump_screen();
     // Free the allocated string memory.
-    void free_string_result(const char* ptr);
+    void aurum_free_string_result(const char* ptr);
+    // Click the given coordinates. Returns 1 if successful. Otherwise -1.
+    int aurum_click(int x, int y);
+    // Press the given key code. Returns 1 if successful. Otherwise -1.
+    int aurum_press_key_code(const char* key_code);
 #ifdef __cplusplus
 }
 #endif
