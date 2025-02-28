@@ -104,6 +104,11 @@ public:
      */
     std::shared_ptr<AccessibleNode> last() const override;
 
+    /**
+     * @copydoc AccessibleNode::refAccessibleNode()
+     */
+    std::shared_ptr<AccessibleNode> refAccessibleNode(const std::string appName, const std::string path ) const override;
+
 public:
     /**
      * @brief TBD
@@ -205,6 +210,13 @@ public:
      * @since_tizen 6.5
      */
     void refresh(bool updateAll = true) override;
+
+    /**
+     * @brief TBD
+     */
+    void refresh(std::string text, std::string role, std::string type,
+                 std::string automationId, std::string description, std::string imgSrc,
+                 double value, double minValue, double maxValue, double increment, Rect<int> extents) override;
 
     /**
      * @brief TBD

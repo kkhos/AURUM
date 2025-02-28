@@ -225,6 +225,12 @@ void MockAccessibleNode::refresh(bool updateAll)
     mFeatureProperty = (int)NodeFeatureProperties::SELECTABLE | (int)NodeFeatureProperties::SELECTED;
 }
 
+void MockAccessibleNode::refresh(std::string text, std::string role, std::string type,
+                                 std::string automationId, std::string description, std::string imgSrc,
+                                 double value, double minValue, double maxValue, double increment, Rect<int> extents)
+{
+}
+
 std::vector<std::string> MockAccessibleNode::getActions() const
 {
     std::vector<std::string> ret{};
@@ -350,3 +356,9 @@ bool MockAccessibleNode::getIncludeHidden() const
 {
     return false;
 }
+
+std::shared_ptr<AccessibleNode> MockAccessibleNode::refAccessibleNode(const std::string appName, const std::string path) const
+{
+    return nullptr;
+}
+

@@ -35,7 +35,6 @@ void DumpObjectTreeCommand::traverse(::aurum::Element *root, std::shared_ptr<Nod
     if (!node->mNode) return;
     std::shared_ptr<UiObject> obj = node->mNode;
 
-    obj->refresh();
     if (mObjMap->getElement(obj->getId()) == nullptr)
         mObjMap->addElement(obj);
 
