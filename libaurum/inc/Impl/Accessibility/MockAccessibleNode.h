@@ -213,6 +213,13 @@ public:
 
     /**
      * @brief TBD
+     */
+    void refresh(std::string text, std::string role, std::string type,
+                 std::string automationId, std::string description, std::string imgSrc,
+                 double value, double minValue, double maxValue, double increment, Rect<int> extents) override;
+
+    /**
+     * @brief TBD
      * @since_tizen 6.5
      */
     std::vector<std::string> getActions() const override;

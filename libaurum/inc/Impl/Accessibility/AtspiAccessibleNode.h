@@ -202,6 +202,13 @@ public:
     void refresh(bool updateAll = true) override;
 
     /**
+     * @copydoc AccessibleNode::refresh()
+     */
+    void refresh(std::string text, std::string role, std::string type,
+                 std::string automationId, std::string description, std::string imgSrc,
+                 double value, double minValue, double maxValue, double increment, Rect<int> extents) override;
+
+    /**
      * @copydoc AccessibleNode::getActions()
      */
     std::vector<std::string> getActions() const override;
