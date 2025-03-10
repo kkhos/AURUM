@@ -26,8 +26,12 @@
 #include "UiSelector.h"
 #include "Waiter.h"
 
+#include "rapidjson/document.h"
+
 #include <memory>
 #include <vector>
+
+using namespace rapidjson;
 
 namespace Aurum {
 
@@ -790,6 +794,9 @@ public:
      * @since_tizen 9.0
      */
     bool getIncludeHidden() const;
+
+private:
+    std::shared_ptr<Node> parseTreeFromJson(Value &doc);
 
 private:
     std::shared_ptr<UiDevice> mDevice;
