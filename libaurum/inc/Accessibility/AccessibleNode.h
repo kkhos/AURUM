@@ -526,6 +526,24 @@ public:
     virtual void refresh(bool updateAll = true) = 0;
 
     /**
+     * @brief refresh method for updating properties of accessible node. This method is called when the node is created.
+     *
+     * @param text
+     * @param role
+     * @param type
+     * @param automationId
+     * @param description
+     * @param value
+     * @param minValue
+     * @param maxValue
+     * @param increment
+     * @param extents
+     */
+    virtual void refresh(std::string text, std::string role, std::string type,
+                         std::string automationId, std::string description, std::string imgSrc,
+                         double value, double minValue, double maxValue, double increment, Rect<int> extents) = 0;
+
+    /**
      * @brief Gets available atspi action name.
      *
      * @return string vector
