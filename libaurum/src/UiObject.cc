@@ -180,12 +180,63 @@ std::vector<std::shared_ptr<UiObject>> UiObject::getChildren() const
     return ret;
 }
 
-std::shared_ptr<Node> UiObject::getDescendant()
+std::shared_ptr<Node> UiObject::parseTreeFromJson(Value &value)
 {
     std::vector<std::shared_ptr<Node>> nodeChildren{};
 
+    if ((value.HasMember("appname") && value["appname"].IsString()) &&
+        (value.HasMember("path") && value["path"].IsString())) {        
+        auto appName = value["appname"].GetString();
+        auto path = value["path"].GetString();
+
+        auto node = mNode->refAccessibleNode(appName, path);
+
+        if (node) {
+            auto text = value.HasMember("text") && value["text"].IsString()? value["text"].GetString() : "";
+            auto role = value.HasMember("role") && value["role"].IsString()? value["role"].GetString() : "";
+            auto type = value.HasMember("type") && value["type"].IsString()? value["type"].GetString() : "";
+            auto automationId = value.HasMember("automationId") && value["automationId"].IsString()? value["automationId"].GetString() : "";
+            auto description = value.HasMember("description") && value["description"].IsString()? value["description"].GetString() : "";
+            auto current = value.HasMember("value") && value["value"].HasMember("current") && value["value"]["current"].IsDouble()? value["value"]["current"].GetDouble() : 0.0f;
+            auto minValue = value.HasMember("value") && value["value"].HasMember("min") && value["value"]["min"].IsDouble()? value["value"]["min"].GetDouble() : 0.0f;
+            auto maxValue = value.HasMember("value") && value["value"].HasMember("max") && value["value"]["max"].IsDouble()? value["value"]["mimaxn"].GetDouble() : 0.0f;
+            auto increment = value.HasMember("value") && value["value"].HasMember("increment") && value["value"]["increment"].IsDouble()? value["value"]["increment"].GetDouble() : 0.0f;            
+            auto x = value.HasMember("x") ? (value["x"].IsInt() ? value["x"].GetInt() : value["x"].GetDouble()) : 0;
+            auto y = value.HasMember("y") ? (value["y"].IsInt() ? value["y"].GetInt() : value["y"].GetDouble()) : 0;
+            auto w = value.HasMember("w") ? (value["w"].IsInt() ? value["w"].GetInt() : value["w"].GetDouble()) : 0;
+            auto h = value.HasMember("h") ? (value["h"].IsInt() ? value["h"].GetInt() : value["h"].GetDouble()) : 0;
+            auto extents = Rect<int>{x, y, x + w, y + h};
+            auto imgSrc = value.HasMember("attributes") && value["attributes"].HasMember("imgSrc") && value["attributes"]["imgSrc"].IsString() ? value["attributes"]["imgSrc"].GetString() : "";
+            
+            node->refresh(text, role, type, automationId, description, imgSrc, current, minValue, maxValue, increment, extents);
+
+            auto obj = std::make_shared<UiObject>(mDevice, mSelector, node);
+
+            if (value.HasMember("children") && value["children"].IsArray()) {
+                for (auto &child : value["children"].GetArray()) {
+                    nodeChildren.push_back(parseTreeFromJson(child));
+                }
+            }            
+            return std::make_shared<Node>(obj, nodeChildren);
+        }
+    }
+    return std::make_shared<Node>(nullptr, nodeChildren);
+}
+
+std::shared_ptr<Node> UiObject::getDescendant()
+{
+    Document document;
+    std::vector<std::shared_ptr<Node>> nodeChildren{};
+
+    auto json = mNode->dumpTree();
+    document.Parse(json.c_str());
+    if (!document.HasParseError()) {    
+        return parseTreeFromJson(document);
+    }
+
     auto children = getChildren();
     for (auto &&child : children) {
+        child->refresh();
         nodeChildren.push_back(child->getDescendant());
     }
     return std::make_shared<Node>(shared_from_this(), nodeChildren);
