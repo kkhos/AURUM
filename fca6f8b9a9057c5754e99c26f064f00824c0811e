@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c5bd294_819043e9",
+        "filename": "rapidjson/internal/strtod.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 12582
+      },
+      "writtenOn": "2025-03-10T04:54:31Z",
+      "side": 1,
+      "message": "[Potential Defect]\nUsing char type (without signed or unsigned) in the definition of variable \u0027decimals\u0027 in a conditional expression. In some build environments it can be interpreted as \u0027unsigned char\u0027 and may result in unexpected behavior\n",
+      "revId": "fca6f8b9a9057c5754e99c26f064f00824c0811e",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b21a8f9_93824326",
+        "filename": "rapidjson/reader.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 1729,
+      "author": {
+        "id": 12582
+      },
+      "writtenOn": "2025-03-10T04:54:31Z",
+      "side": 1,
+      "message": "[Potential Defect]\nThis statement in the source code might be unreachable during program execution.\n",
+      "revId": "fca6f8b9a9057c5754e99c26f064f00824c0811e",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    }
+  ]
+}
