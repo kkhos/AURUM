@@ -456,6 +456,23 @@ void AtspiAccessibleNode::refresh(bool updateAll)
     }
 }
 
+void AtspiAccessibleNode::refresh(const std::string &text, const std::string &role, const std::string &type,
+                                  const std::string &automationId, const std::string &description, const std::string &imgSrc,
+                                  double value, double minValue, double maxValue, double increment, const Rect<int> &extents)
+{
+    mText = text;
+    mRole = role;
+    mType = type;
+    mAutomationId = automationId;
+    mDescription = description;
+    mImgSrc = imgSrc;
+    mValue = value;
+    mMinValue = minValue;
+    mMaxValue = maxValue;
+    mIncrement = increment;
+    mScreenBoundingBox = extents;
+}
+
 std::vector<std::string> AtspiAccessibleNode::getActions() const
 {
     std::vector<std::string> result{};
