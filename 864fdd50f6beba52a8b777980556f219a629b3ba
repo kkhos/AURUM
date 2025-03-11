@@ -16,6 +16,40 @@
       "message": "LGTM 😊",
       "revId": "864fdd50f6beba52a8b777980556f219a629b3ba",
       "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ce90f60_43e9b456",
+        "filename": "libaurum/inc/Impl/Accessibility/MockAccessibleNode.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 15148
+      },
+      "writtenOn": "2025-03-11T01:02:33Z",
+      "side": 1,
+      "message": "\"const std::string\u0026\" instead of passing value",
+      "revId": "864fdd50f6beba52a8b777980556f219a629b3ba",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6eddbf7a_60df53e6",
+        "filename": "libaurum/src/Impl/Accessibility/AtspiWrapper.cc",
+        "patchSetId": 3
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 15148
+      },
+      "writtenOn": "2025-03-11T01:02:33Z",
+      "side": 1,
+      "message": "Where do we \"unref\" accessible?",
+      "revId": "864fdd50f6beba52a8b777980556f219a629b3ba",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
     }
   ]
 }
