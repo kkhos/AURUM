@@ -16,6 +16,57 @@
       "message": "LGTM 😊",
       "revId": "6aa3b22d196d3b56f0d536fdd4cb961aa7e56424",
       "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b94c00b_daf018e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 15148
+      },
+      "writtenOn": "2025-03-11T01:21:36Z",
+      "side": 1,
+      "message": "Why not use existing rapidjson here? https://review.tizen.org/gerrit/gitweb?p\u003dplatform/upstream/rapidjson.git;a\u003dsummary",
+      "revId": "6aa3b22d196d3b56f0d536fdd4cb961aa7e56424",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19974f8c_498fdc98",
+        "filename": "libaurum/src/UiObject.cc",
+        "patchSetId": 3
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 15148
+      },
+      "writtenOn": "2025-03-11T01:21:36Z",
+      "side": 1,
+      "message": "std::move string and Rect type or pass const ref to avoid copy.",
+      "revId": "6aa3b22d196d3b56f0d536fdd4cb961aa7e56424",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0315b320_00e635b5",
+        "filename": "libaurum/src/UiObject.cc",
+        "patchSetId": 3
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 15148
+      },
+      "writtenOn": "2025-03-11T01:21:36Z",
+      "side": 1,
+      "message": "This means we want to use parsed tree if no parse error occurs but will fall back to the old logic if there is a parse error, right?",
+      "revId": "6aa3b22d196d3b56f0d536fdd4cb961aa7e56424",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
     }
   ]
 }
