@@ -86,6 +86,24 @@
       "parentUuid": "6eddbf7a_60df53e6",
       "revId": "864fdd50f6beba52a8b777980556f219a629b3ba",
       "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a20fec4a_1bdf96f8",
+        "filename": "libaurum/src/Impl/Accessibility/AtspiWrapper.cc",
+        "patchSetId": 3
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 15148
+      },
+      "writtenOn": "2025-03-11T02:20:10Z",
+      "side": 1,
+      "message": "ref_accessible increases reference count internally so we should call g_object_unref when we are done with the object to avoid mem leak.",
+      "parentUuid": "a02a93f4_9ba6ace7",
+      "revId": "864fdd50f6beba52a8b777980556f219a629b3ba",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
     }
   ]
 }
