@@ -35,6 +35,24 @@
       "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "306fbe42_58989242",
+        "filename": "libaurum/inc/Impl/Accessibility/MockAccessibleNode.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 9609
+      },
+      "writtenOn": "2025-03-11T02:06:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ce90f60_43e9b456",
+      "revId": "864fdd50f6beba52a8b777980556f219a629b3ba",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6eddbf7a_60df53e6",
@@ -48,6 +66,24 @@
       "writtenOn": "2025-03-11T01:02:33Z",
       "side": 1,
       "message": "Where do we \"unref\" accessible?",
+      "revId": "864fdd50f6beba52a8b777980556f219a629b3ba",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a02a93f4_9ba6ace7",
+        "filename": "libaurum/src/Impl/Accessibility/AtspiWrapper.cc",
+        "patchSetId": 3
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 9609
+      },
+      "writtenOn": "2025-03-11T02:06:45Z",
+      "side": 1,
+      "message": "There is no unref api because at-spi2-core manages the objects.",
+      "parentUuid": "6eddbf7a_60df53e6",
       "revId": "864fdd50f6beba52a8b777980556f219a629b3ba",
       "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
     }
