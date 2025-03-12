@@ -53,6 +53,24 @@
       "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe754284_04882e52",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 15148
+      },
+      "writtenOn": "2025-03-12T08:19:07Z",
+      "side": 1,
+      "message": "Yes, that\u0027s correct. However, from a code maintenance perspective, it would be better to have a single set of RapidJSON across the entire Tizen codebase.",
+      "parentUuid": "68535a99_5d3898fc",
+      "revId": "6aa3b22d196d3b56f0d536fdd4cb961aa7e56424",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "19974f8c_498fdc98",
