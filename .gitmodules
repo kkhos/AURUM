@@ -1,0 +1,4 @@
+[submodule "rapid"]
+	path = rapid
+	url = git://review.tizen.org/git/platform/upstream/rapidjson
+	branch = tizen
