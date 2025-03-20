@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd262ae1_f7943ad5",
+        "filename": "libaurum/src/Impl/Accessibility/AtspiAccessibleNode.cc",
+        "patchSetId": 8
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 15148
+      },
+      "writtenOn": "2025-03-20T02:17:34Z",
+      "side": 1,
+      "message": "It seems this is reverted to std::string from \"const std::string\u0026\", any reasons?",
+      "revId": "27cce41bd67a294937723f1a32d59bdc9ee55042",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    }
+  ]
+}
