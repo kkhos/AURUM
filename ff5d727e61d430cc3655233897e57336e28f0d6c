@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afa50bfb_88de19f1",
+        "filename": "libaurum/src/c_bindings/AurumCBindings.cc",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 15148
+      },
+      "writtenOn": "2025-03-25T05:46:21Z",
+      "side": 1,
+      "message": "It this ok to be outside of thread block?",
+      "revId": "ff5d727e61d430cc3655233897e57336e28f0d6c",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    }
+  ]
+}
