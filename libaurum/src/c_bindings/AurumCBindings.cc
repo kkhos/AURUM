@@ -21,6 +21,8 @@
 
 #ifdef TIZEN
 #include <Ecore.h>
+static std::once_flag init_flag;
+static std::once_flag shutdown_flag;
 #endif
 
 using namespace Aurum;
@@ -28,12 +30,16 @@ using namespace Aurum;
 void aurum_init()
 {
     LOGI("aurum_init");
-    AccessibleWatcher::getInstance();
 // TODO: Move this to Application side.
 #ifdef TIZEN
-    ecore_init();
-    ecore_main_loop_begin();
+    std::call_once(init_flag, []() {
+        ecore_init();
+        std::thread([]() {
+            ecore_main_loop_begin();
+        }).detach();
+    });
 #endif
+    AccessibleWatcher::getInstance();
 }
 
 void aurum_shutdown()
@@ -41,8 +47,13 @@ void aurum_shutdown()
     LOGI("aurum_shutdown");
 // TODO: Move this to Application side.
 #ifdef TIZEN
-    ecore_main_loop_quit();
-    ecore_shutdown();
+    std::call_once(shutdown_flag, []() {
+        std::thread([]() {
+            ecore_main_loop_quit();
+        }).detach();
+
+        ecore_shutdown();
+    });
 #endif
 }
 
