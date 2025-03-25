@@ -16,6 +16,24 @@
       "message": "It this ok to be outside of thread block?",
       "revId": "ff5d727e61d430cc3655233897e57336e28f0d6c",
       "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6e41ef4_e24837ff",
+        "filename": "libaurum/src/c_bindings/AurumCBindings.cc",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 9694
+      },
+      "writtenOn": "2025-03-25T06:26:14Z",
+      "side": 1,
+      "message": "Good question!\nI follow the same approach as `aurum_init()`, running `aurum_shutdown()` in a separate thread to avoid blocking Rust\u0027s execution flow.\nThis ensures that shutdown happens correctly without interfering with other async tasks. \nHowever, running the executable with \"exit\" command still doesn\u0027t completely shut it down.\nBut, when launched using `app_launcher -s`, due to security issues, the app terminates, and any remaining processes can be fully terminated through this code.",
+      "parentUuid": "afa50bfb_88de19f1",
+      "revId": "ff5d727e61d430cc3655233897e57336e28f0d6c",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
     }
   ]
 }
