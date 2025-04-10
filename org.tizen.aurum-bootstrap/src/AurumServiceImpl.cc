@@ -391,3 +391,19 @@ aurumServiceImpl::~aurumServiceImpl()
     std::unique_ptr<GetIncludeHiddenCommand> cmd = std::make_unique<GetIncludeHiddenCommand>(request, response);
     return execute(cmd.get(), false);
 }
+
+::grpc::Status aurumServiceImpl::addWatcher(::grpc::ServerContext *context,
+                                            const ::aurum::ReqAddWatcher *request,
+                                            ::aurum::RspAddWatcher *response)
+{
+    std::unique_ptr<AddWatcherCommand> cmd = std::make_unique<AddWatcherCommand>(request, response);
+    return execute(cmd.get(), false);
+}
+
+::grpc::Status aurumServiceImpl::clearWatcher(::grpc::ServerContext *context,
+                                            const ::aurum::ReqClearWatcher *request,
+                                            ::aurum::RspClearWatcher *response)
+{
+    std::unique_ptr<ClearWatcherCommand> cmd = std::make_unique<ClearWatcherCommand>(request, response);
+    return execute(cmd.get(), false);
+}
