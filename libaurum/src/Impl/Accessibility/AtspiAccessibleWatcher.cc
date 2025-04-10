@@ -615,6 +615,12 @@ bool AtspiAccessibleWatcher::registerCallback(const A11yEvent type, EventHandler
     return true;
 }
 
+bool AtspiAccessibleWatcher::clearCallback()
+{
+    mHandlers.clear();
+    return true;
+}
+
 void AtspiAccessibleWatcher::setXMLsync(bool sync)
 {
     LOGI("setXMLSync: %s", (sync ? "TRUE" : "FALSE"));

@@ -440,6 +440,11 @@ bool UiDevice::registerCallback(const A11yEvent type, EventHandler cb, void *dat
     return AccessibleWatcher::getInstance()->registerCallback(type, cb, data);
 }
 
+bool UiDevice::clearCallback() const
+{
+    return AccessibleWatcher::getInstance()->clearCallback();
+}
+
 int UiDevice::getWindowAngle()
 {
     auto wins = getWindowRoot();
