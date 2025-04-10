@@ -25,7 +25,7 @@ using namespace grpc;
 using namespace aurum;
 
 aurumServiceImpl::aurumServiceImpl()
-    : WAIT_TIMEOUT_MS{0}
+    : mStopFlag{false}, WAIT_TIMEOUT_MS{0}
 {
     LOGI("creates watcher instance (start to look up at_spi server)");
     AccessibleWatcher::getInstance();
@@ -33,6 +33,9 @@ aurumServiceImpl::aurumServiceImpl()
 
 ::grpc::Status aurumServiceImpl::execute(Command *cmd, bool clean)
 {
+    std::unique_lock<std::mutex> lk(mLock);
+    mCond.wait(lk, [&] {return !mStopFlag;});
+    mLock.unlock();
     std::unique_ptr<PreCommand>  proxyPreCmd  = std::make_unique<PreCommand>(cmd);
     std::unique_ptr<PostCommand> proxyPostCmd = std::make_unique<PostCommand>(proxyPreCmd.get());
     ::grpc::Status ret = proxyPostCmd->execute();
@@ -389,5 +392,21 @@ aurumServiceImpl::~aurumServiceImpl()
                                                   ::aurum::RspGetIncludeHidden *response)
 {
     std::unique_ptr<GetIncludeHiddenCommand> cmd = std::make_unique<GetIncludeHiddenCommand>(request, response);
+    return execute(cmd.get(), false);
+}
+
+::grpc::Status aurumServiceImpl::addWatcher(::grpc::ServerContext *context,
+                                            const ::aurum::ReqAddWatcher *request,
+                                            ::aurum::RspAddWatcher *response)
+{
+    std::shared_ptr<AddWatcherCommand> cmd = std::make_shared<AddWatcherCommand>(request, response, mLock, mCond, mStopFlag);
+    return execute(cmd.get(), false);
+}
+
+::grpc::Status aurumServiceImpl::clearWatcher(::grpc::ServerContext *context,
+                                            const ::aurum::ReqClearWatcher *request,
+                                            ::aurum::RspClearWatcher *response)
+{
+    std::unique_ptr<ClearWatcherCommand> cmd = std::make_unique<ClearWatcherCommand>(request, response);
     return execute(cmd.get(), false);
 }

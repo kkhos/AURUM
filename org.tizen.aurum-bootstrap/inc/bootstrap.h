@@ -21,6 +21,7 @@
 #include <gio/gio.h>
 #include <grpcpp/grpcpp.h>
 #include <aurum.grpc.pb.h>
+#include <mutex>
 
 #include "Commands/Command.h"
 #include "ObjectMapper.h"
