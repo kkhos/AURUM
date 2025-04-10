@@ -123,6 +123,11 @@ public:
     virtual bool registerCallback(const A11yEvent type, EventHandler cb, void *data) override;
 
     /**
+     * @copydoc @AccessibleWatcher::clearCallback()
+     */
+    virtual bool clearCallback() override;
+
+    /**
      * @copydoc @AccessibleWatcher::setXMLsync()
      */
     virtual void setXMLsync(bool sync) override;

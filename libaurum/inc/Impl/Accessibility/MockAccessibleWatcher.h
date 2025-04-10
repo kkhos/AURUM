@@ -57,6 +57,8 @@ public:
 
     virtual bool registerCallback(const A11yEvent type, EventHandler cb, void *data) override;
 
+    virtual bool clearCallback() override;
+
     std::map<std::pair<std::string, int>, std::shared_ptr<AurumXML>> getXMLDocMap(void);
 
     std::shared_ptr<AurumXML> getXMLDoc(std::pair<std::string, int> process);

@@ -354,7 +354,7 @@ public:
     bool executeAndWaitForEvents(
         const Runnable *cmd, const A11yEvent type, const int timeout, const std::string packageName, const int count) const;
 
-/**
+    /**
      * @brief Register atspi event callback.
      *
      * @param[in] type @A11yEvent
@@ -365,6 +365,14 @@ public:
      * @since_tizen 7.0
      */
     bool registerCallback(const A11yEvent type, EventHandler cb, void *data) const;
+
+    /**
+     * @brief Clear atspi event callbacks.
+     * 
+     * @return true 
+     * @return false 
+     */
+    bool clearCallback() const;
 
 public:
     /**
