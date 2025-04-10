@@ -60,6 +60,8 @@ bootstrap_svr_src += [
    files('src/Commands/MouseUpCommand.cc'),
    files('src/Commands/SetIncludeHiddenCommand.cc'),
    files('src/Commands/GetIncludeHiddenCommand.cc'),
+   files('src/Commands/AddWatcherCommand.cc'),
+   files('src/Commands/ClearWatcherCommand.cc'),
 ]
 
 bootstrap_svr_dep = [

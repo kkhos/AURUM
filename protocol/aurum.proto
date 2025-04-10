@@ -49,6 +49,8 @@ service Bootstrap {
    rpc mouseUp(ReqMouseUp) returns (RspMouseUp) {}
    rpc setIncludeHidden(ReqSetIncludeHidden) returns (RspSetIncludeHidden) {}
    rpc getIncludeHidden(ReqGetIncludeHidden) returns (RspGetIncludeHidden) {}
+   rpc addWatcher(ReqAddWatcher) returns (RspAddWatcher) {}
+   rpc clearWatcher(ReqClearWatcher) returns (RspClearWatcher) {}
 }
 
 // ------------------------------------ //
@@ -798,4 +800,33 @@ message ReqGetIncludeHidden {
 message RspGetIncludeHidden {
    RspStatus status = 1;
    bool enabled = 2;
+}
+
+message ReqAddWatcher {
+   enum Type {
+      TAP = 0;
+      TAP_ON = 1;
+      PRESS = 2;
+      SLEEP = 3;
+   }
+   Type type = 1;
+   string text = 2;
+   string pkg = 3;
+
+   oneof params {
+      string target = 4;
+      string XF86keyCode = 5;
+      int32 durationMs = 6;
+   }
+}
+
+message RspAddWatcher {
+   RspStatus status = 1;
+}
+
+message ReqClearWatcher {
+}
+
+message RspClearWatcher {
+   RspStatus status = 1;
 }
