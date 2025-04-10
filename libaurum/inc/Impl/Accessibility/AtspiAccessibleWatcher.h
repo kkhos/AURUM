@@ -163,7 +163,7 @@ private:
     void appendApp(AtspiAccessible *app, char *pkg, int pid);
     void removeApp(char *pkg, int pid);
     void setXMLsync();
-    void processCallback(char *type, char *name, char *pkg);
+    void processCallback(char *type, char *name, char *pkg, AtspiAccessible *node = nullptr);
     void processWindowEvent(AtspiEvent *event);
     void processPostRender();
 
