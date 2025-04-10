@@ -27,8 +27,7 @@ A11yEvent A11yEventHandler::getType() const
 {
     return mType;
 }
-bool A11yEventHandler::operator() (std::string pkg)
+bool A11yEventHandler::operator() (std::shared_ptr<AccessibleNode> node)
 {
-    return mCb(mData, mType, pkg);
+    return mCb(mData, mType, node);
 }
-

@@ -298,7 +298,7 @@ gpointer AtspiAccessibleWatcher::timerThread(gpointer data)
     return NULL;
 }
 
-void AtspiAccessibleWatcher::processCallback(char *type, char *name, char *pkg)
+void AtspiAccessibleWatcher::processCallback(char *type, char *name, char *pkg, AtspiAccessible *node)
 {
     mMutex.lock();
     auto a11yEvent = std::make_shared<A11yEventInfo>(std::string(type), std::string(name), std::string(pkg));
@@ -313,7 +313,8 @@ void AtspiAccessibleWatcher::processCallback(char *type, char *name, char *pkg)
         {
             LOGI("Callback call type %s pkg %s", type, pkg);
             auto handler = *it;
-            bool res = (*handler)(std::string(pkg));
+            if (node) g_object_ref(node);
+            bool res = (*handler)(std::make_shared<AtspiAccessibleNode>(node));
             if (!res) it = list.erase(it);
             else ++it;
         }
@@ -420,7 +421,7 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
         char *name = NULL, *pkg = NULL;
         name = AtspiWrapper::Atspi_accessible_get_name(event->source, NULL);
         pkg = AtspiWrapper::Atspi_accessible_get_name(event->sender, NULL);
-        instance->processCallback(event->type, name, pkg);
+        instance->processCallback(event->type, name, pkg, event->source);
         if (name) g_free(name);
         if (pkg) g_free(pkg);
     }
