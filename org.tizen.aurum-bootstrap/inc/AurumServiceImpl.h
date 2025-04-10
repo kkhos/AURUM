@@ -17,6 +17,8 @@
 
 #pragma once
 
+#include <mutex>
+
 #include "bootstrap.h"
 
 class aurumServiceImpl final : public aurum::Bootstrap::Service {
@@ -165,6 +167,15 @@ public:
     ::grpc::Status getIncludeHidden(::grpc::ServerContext *context,
                              const ::aurum::ReqGetIncludeHidden *request,
                              ::aurum::RspGetIncludeHidden *response) override;
+    ::grpc::Status addWatcher(::grpc::ServerContext *context,
+                              const ::aurum::ReqAddWatcher *request,
+                              ::aurum::RspAddWatcher *response) override;
+    ::grpc::Status clearWatcher(::grpc::ServerContext *context,
+                              const ::aurum::ReqClearWatcher *request,
+                              ::aurum::RspClearWatcher *response) override;
 public:
+    std::mutex mLock;
+    std::condition_variable mCond;
+    bool mStopFlag;
     int WAIT_TIMEOUT_MS;
 };

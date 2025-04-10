@@ -437,7 +437,7 @@ bool UiDevice::getExternalAppLaunched()
 
 bool UiDevice::registerCallback(const A11yEvent type, EventHandler cb, void *data) const
 {
-    return AccessibleWatcher::getInstance()->registerCallback(type, cb, data);
+    return AccessibleWatcher::getInstance()->registerCallback(type, std::move(cb), data);
 }
 
 bool UiDevice::clearCallback() const

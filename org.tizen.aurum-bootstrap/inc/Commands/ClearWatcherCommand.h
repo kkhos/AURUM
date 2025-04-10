@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2025 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,19 +15,16 @@
  *
  */
 
-#include "Aurum.h"
+#include "bootstrap.h"
 
-using namespace Aurum;
+class ClearWatcherCommand : public Command {
 
-A11yEventHandler::A11yEventHandler(A11yEvent type, EventHandler cb, void *data)
-    : mType(type), mCb(std::move(cb)), mData(data)
-{
-}
-A11yEvent A11yEventHandler::getType() const
-{
-    return mType;
-}
-bool A11yEventHandler::operator() (std::shared_ptr<AccessibleNode> node)
-{
-    return mCb(mData, mType, node);
-}
+protected:
+    const ::aurum::ReqClearWatcher *mRequest;
+    ::aurum::RspClearWatcher *mResponse;
+
+public:
+    ClearWatcherCommand(const ::aurum::ReqClearWatcher *request,
+                      ::aurum::RspClearWatcher *response);
+    ::grpc::Status execute() override;
+};

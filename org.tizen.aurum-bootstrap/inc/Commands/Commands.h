@@ -57,3 +57,5 @@
 #include "Commands/MouseUpCommand.h"
 #include "Commands/SetIncludeHiddenCommand.h"
 #include "Commands/GetIncludeHiddenCommand.h"
+#include "Commands/AddWatcherCommand.h"
+#include "Commands/ClearWatcherCommand.h"

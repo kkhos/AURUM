@@ -602,14 +602,14 @@ bool AtspiAccessibleWatcher::addToWindowSet(AtspiAccessible *node)
 
 bool AtspiAccessibleWatcher::registerCallback(const A11yEvent type, EventHandler cb, void *data)
 {
-    auto handler = std::make_shared<A11yEventHandler>(type, cb, data);
+    auto handler = std::make_shared<A11yEventHandler>(type, std::move(cb), data);
     if (mHandlers.count(type)) {
         auto list = mHandlers[type];
-        list.push_back(handler);
+        list.push_back(std::move(handler));
         mHandlers[type] = list;
     } else {
         std::list<std::shared_ptr<A11yEventHandler>> list;
-        list.push_back(handler);
+        list.push_back(std::move(handler));
         mHandlers.insert(std::pair<const A11yEvent, std::list<std::shared_ptr<A11yEventHandler>>>(type, list));
     }
     return true;
