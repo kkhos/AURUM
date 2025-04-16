@@ -18,6 +18,7 @@
 #include "AurumCBindings.h"
 #include "Aurum.h"
 #include <cstring>
+#include <thread>
 
 #ifdef TIZEN
 #include <Ecore.h>
