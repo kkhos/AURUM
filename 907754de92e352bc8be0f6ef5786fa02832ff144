@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fad568ef_dc2ec7cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9694
+      },
+      "writtenOn": "2025-04-16T07:14:09Z",
+      "side": 1,
+      "message": "Apologies for making gbs build error of `gen_c_bindings` command for AI Assistant.",
+      "revId": "907754de92e352bc8be0f6ef5786fa02832ff144",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    }
+  ]
+}
