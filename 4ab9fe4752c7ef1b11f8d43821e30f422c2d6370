@@ -18,6 +18,24 @@
       "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7b8b9e9_c61fe6b1",
+        "filename": "org.tizen.aurum-bootstrap/inc/bootstrap.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 9609
+      },
+      "writtenOn": "2025-04-24T06:30:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f83413b1_0e159af4",
+      "revId": "4ab9fe4752c7ef1b11f8d43821e30f422c2d6370",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "626b3f1d_6d4f8764",
