@@ -59,6 +59,30 @@
       "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "da6f8d7d_dba2085a",
+        "filename": "org.tizen.aurum-bootstrap/src/Commands/ClearWatcherCommand.cc",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 9609
+      },
+      "writtenOn": "2025-04-24T06:32:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "626b3f1d_6d4f8764",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 4
+      },
+      "revId": "4ab9fe4752c7ef1b11f8d43821e30f422c2d6370",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7a71a23f_f1a13660",
@@ -72,6 +96,30 @@
       "writtenOn": "2025-04-24T06:23:56Z",
       "side": 1,
       "message": "Remove white space, please.",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 2
+      },
+      "revId": "4ab9fe4752c7ef1b11f8d43821e30f422c2d6370",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26be0e68_01527bd9",
+        "filename": "org.tizen.aurum-bootstrap/src/Commands/ClearWatcherCommand.cc",
+        "patchSetId": 5
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 9609
+      },
+      "writtenOn": "2025-04-24T06:32:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a71a23f_f1a13660",
       "range": {
         "startLine": 38,
         "startChar": 0,
