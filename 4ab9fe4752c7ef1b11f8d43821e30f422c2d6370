@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f83413b1_0e159af4",
+        "filename": "org.tizen.aurum-bootstrap/inc/bootstrap.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 8156
+      },
+      "writtenOn": "2025-04-24T05:56:21Z",
+      "side": 1,
+      "message": "Wouldn\u0027t it be better to move #include \u003cmutex\u003e to AddWatcherCommand.h and ClearWatcherCommand.h ?\nBecause the mutet is definically used to both AddWatcherCommand.h and ClearWatcherCommand.h",
+      "revId": "4ab9fe4752c7ef1b11f8d43821e30f422c2d6370",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    }
+  ]
+}
