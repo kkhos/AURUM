@@ -16,6 +16,52 @@
       "message": "Wouldn\u0027t it be better to move #include \u003cmutex\u003e to AddWatcherCommand.h and ClearWatcherCommand.h ?\nBecause the mutet is definically used to both AddWatcherCommand.h and ClearWatcherCommand.h",
       "revId": "4ab9fe4752c7ef1b11f8d43821e30f422c2d6370",
       "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "626b3f1d_6d4f8764",
+        "filename": "org.tizen.aurum-bootstrap/src/Commands/ClearWatcherCommand.cc",
+        "patchSetId": 5
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 8156
+      },
+      "writtenOn": "2025-04-24T06:23:56Z",
+      "side": 1,
+      "message": "Remove white space, please.",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 4
+      },
+      "revId": "4ab9fe4752c7ef1b11f8d43821e30f422c2d6370",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a71a23f_f1a13660",
+        "filename": "org.tizen.aurum-bootstrap/src/Commands/ClearWatcherCommand.cc",
+        "patchSetId": 5
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 8156
+      },
+      "writtenOn": "2025-04-24T06:23:56Z",
+      "side": 1,
+      "message": "Remove white space, please.",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 2
+      },
+      "revId": "4ab9fe4752c7ef1b11f8d43821e30f422c2d6370",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
     }
   ]
 }
