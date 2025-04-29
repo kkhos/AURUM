@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns="http://tizen.org/ns/packages" api-version="5.5" package="org.tizen.aurum-bootstrap" version="0.1.0">
+<manifest xmlns="http://tizen.org/ns/packages" api-version="9.0" package="org.tizen.aurum-bootstrap" version="1.0.14">
 	<label>aurum-bootstrap</label>
-	<author email="wonki_.kim@samsung.com" href="www.samsung.com">Wonki Kim</author>
+	<author email="hosang12.kim@samsung.com" href="www.samsung.com">Honsang Kim</author>
 	<description>autofilld</description>
 	<service-application appid="org.tizen.aurum-bootstrap" exec="aurum-bootstrap" multiple="false" nodisplay="true" taskmanage="false" type="capp">
 		<label>aurum bootstrap daemon</label>
