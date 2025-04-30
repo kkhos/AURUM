@@ -88,7 +88,7 @@ public:
      * @since_tizen 6.5
      */
     static std::function<bool(const ISearchable *)> hasObject(
-        const std::shared_ptr<UiSelector> selector);
+        const std::shared_ptr<UiSelector> &selector);
 
     /**
      * @brief Checks that there is an object that are satisfied with selector condition.
@@ -101,7 +101,7 @@ public:
      * @since_tizen 6.5
      */
     static std::function<std::shared_ptr<UiObject>(const ISearchable *)>
-                                                 findObject(const std::shared_ptr<UiSelector> selector);
+                                                 findObject(const std::shared_ptr<UiSelector> &selector);
 
     /**
      * @brief Checks the given object on checkable state.
@@ -127,7 +127,7 @@ public:
      * @since_tizen 7.0
      */
     static std::function<std::vector<std::shared_ptr<UiObject>>(const ISearchable *)>
-                                                 findObjects(const std::shared_ptr<UiSelector> selector);
+                                                 findObjects(const std::shared_ptr<UiSelector> &selector);
 };
 
 }

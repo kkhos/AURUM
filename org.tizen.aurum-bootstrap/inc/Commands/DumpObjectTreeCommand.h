@@ -31,5 +31,5 @@ public:
     ::grpc::Status execute() override;
 
 private:
-    void traverse(::aurum::Element *root, std::shared_ptr<Node> node, int depth);
+    void traverse(::aurum::Element *root, const std::shared_ptr<Node> &node, int depth);
 };
