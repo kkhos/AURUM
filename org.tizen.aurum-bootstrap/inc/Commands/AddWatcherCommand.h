@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Samsung Electronics Co., Ltd All Rights Reserved
+ * Copyright (c) 2025 Samsung Electronics Co., Ltd All Rights Reserved
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,21 +15,24 @@
  *
  */
 
+#include <mutex>
+
 #include "bootstrap.h"
 
-class DumpObjectTreeCommand: public Command {
-protected:
-    const ::aurum::ReqDumpObjectTree *mRequest;
-    ::aurum::RspDumpObjectTree *mResponse;
+class AddWatcherCommand : public Command {
 
 protected:
-    ObjectMapper *mObjMap;
+    const ::aurum::ReqAddWatcher *mRequest;
+    ::aurum::RspAddWatcher *mResponse;
+    std::mutex &mLock;
+    std::condition_variable &mCond;
+    bool &mStopFlag;
 
 public:
-    DumpObjectTreeCommand(const ::aurum::ReqDumpObjectTree *request,
-                       ::aurum::RspDumpObjectTree *response);
+    AddWatcherCommand(const ::aurum::ReqAddWatcher *request,
+                      ::aurum::RspAddWatcher *response,
+                      std::mutex &m,
+                      std::condition_variable &cond,
+                      bool &stopFlag);
     ::grpc::Status execute() override;
-
-private:
-    void traverse(::aurum::Element *root, const std::shared_ptr<Node> &node, int depth);
 };

@@ -298,7 +298,7 @@ gpointer AtspiAccessibleWatcher::timerThread(gpointer data)
     return NULL;
 }
 
-void AtspiAccessibleWatcher::processCallback(char *type, char *name, char *pkg)
+void AtspiAccessibleWatcher::processCallback(char *type, char *name, char *pkg, AtspiAccessible *node)
 {
     mMutex.lock();
     auto a11yEvent = std::make_shared<A11yEventInfo>(std::string(type), std::string(name), std::string(pkg));
@@ -313,7 +313,8 @@ void AtspiAccessibleWatcher::processCallback(char *type, char *name, char *pkg)
         {
             LOGI("Callback call type %s pkg %s", type, pkg);
             auto handler = *it;
-            bool res = (*handler)(std::string(pkg));
+            if (node) g_object_ref(node);
+            bool res = (*handler)(std::make_shared<AtspiAccessibleNode>(node));
             if (!res) it = list.erase(it);
             else ++it;
         }
@@ -420,7 +421,7 @@ void AtspiAccessibleWatcher::onAtspiEvents(AtspiEvent *event, void *watcher)
         char *name = NULL, *pkg = NULL;
         name = AtspiWrapper::Atspi_accessible_get_name(event->source, NULL);
         pkg = AtspiWrapper::Atspi_accessible_get_name(event->sender, NULL);
-        instance->processCallback(event->type, name, pkg);
+        instance->processCallback(event->type, name, pkg, event->source);
         if (name) g_free(name);
         if (pkg) g_free(pkg);
     }
@@ -601,16 +602,22 @@ bool AtspiAccessibleWatcher::addToWindowSet(AtspiAccessible *node)
 
 bool AtspiAccessibleWatcher::registerCallback(const A11yEvent type, EventHandler cb, void *data)
 {
-    auto handler = std::make_shared<A11yEventHandler>(type, cb, data);
+    auto handler = std::make_shared<A11yEventHandler>(type, std::move(cb), data);
     if (mHandlers.count(type)) {
         auto list = mHandlers[type];
-        list.push_back(handler);
+        list.push_back(std::move(handler));
         mHandlers[type] = list;
     } else {
         std::list<std::shared_ptr<A11yEventHandler>> list;
-        list.push_back(handler);
+        list.push_back(std::move(handler));
         mHandlers.insert(std::pair<const A11yEvent, std::list<std::shared_ptr<A11yEventHandler>>>(type, list));
     }
+    return true;
+}
+
+bool AtspiAccessibleWatcher::clearCallback()
+{
+    mHandlers.clear();
     return true;
 }
 
