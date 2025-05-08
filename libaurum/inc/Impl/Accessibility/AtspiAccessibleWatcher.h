@@ -123,6 +123,11 @@ public:
     virtual bool registerCallback(const A11yEvent type, EventHandler cb, void *data) override;
 
     /**
+     * @copydoc @AccessibleWatcher::clearCallback()
+     */
+    virtual bool clearCallback() override;
+
+    /**
      * @copydoc @AccessibleWatcher::setXMLsync()
      */
     virtual void setXMLsync(bool sync) override;
@@ -163,7 +168,7 @@ private:
     void appendApp(AtspiAccessible *app, char *pkg, int pid);
     void removeApp(char *pkg, int pid);
     void setXMLsync();
-    void processCallback(char *type, char *name, char *pkg);
+    void processCallback(char *type, char *name, char *pkg, AtspiAccessible *node = nullptr);
     void processWindowEvent(AtspiEvent *event);
     void processPostRender();
 

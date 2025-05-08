@@ -114,6 +114,14 @@ public:
     virtual bool registerCallback(const A11yEvent type, EventHandler cb, void *data) = 0;
 
     /**
+     * @brief Clear atspi event callbacks.
+     *
+     * @return true if callback is unregistered, else false
+     * @since_tizen 10.0
+     */
+    virtual bool clearCallback() = 0;
+
+    /**
      * @brief Set AurumXML synchronization.
      *
      * @param[in] sync Whether to synchronize

@@ -30,7 +30,7 @@ DumpObjectTreeCommand::DumpObjectTreeCommand(const ::aurum::ReqDumpObjectTree *r
     mObjMap = ObjectMapper::getInstance();
 }
 
-void DumpObjectTreeCommand::traverse(::aurum::Element *root, std::shared_ptr<Node> node, int depth)
+void DumpObjectTreeCommand::traverse(::aurum::Element *root, const std::shared_ptr<Node> &node, int depth)
 {
     if (!node->mNode) return;
     std::shared_ptr<UiObject> obj = node->mNode;

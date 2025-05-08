@@ -20,15 +20,14 @@
 using namespace Aurum;
 
 A11yEventHandler::A11yEventHandler(A11yEvent type, EventHandler cb, void *data)
-    : mType(type), mCb(cb), mData(data)
+    : mType(type), mCb(std::move(cb)), mData(data)
 {
 }
 A11yEvent A11yEventHandler::getType() const
 {
     return mType;
 }
-bool A11yEventHandler::operator() (std::string pkg)
+bool A11yEventHandler::operator() (std::shared_ptr<AccessibleNode> node)
 {
-    return mCb(mData, mType, pkg);
+    return mCb(mData, mType, node);
 }
-

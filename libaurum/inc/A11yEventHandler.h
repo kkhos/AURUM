@@ -19,10 +19,11 @@
 #define _A11Y_EVENT_HANDLER_H_
 
 #include "A11yEvent.h"
+#include <functional>
 
 namespace Aurum {
 
-typedef bool (*EventHandler)(void *data, const A11yEvent type, std::string pkg);
+using EventHandler = std::function<bool(void *, const A11yEvent, std::shared_ptr<AccessibleNode>)>;
 
 /**
  * @class A11yEventHandler
@@ -62,7 +63,7 @@ public:
     *
     * @since_tizen 7.5
     */
-    bool operator() (std::string pkg);
+    bool operator() (std::shared_ptr<AccessibleNode> node);
 
 private:
     A11yEvent mType;

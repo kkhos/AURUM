@@ -19,6 +19,8 @@ endif
 
 root_inc = include_directories('./')
 
+install_subdir('rapidjson', install_dir: dir_include)
+
 subdir('pugixml')
 subdir('libaurum')
 if get_option('libaurum_only') == false
