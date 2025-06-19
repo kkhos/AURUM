@@ -246,6 +246,11 @@ const double UiObject::getValue() const
     return mNode->getValue();
 }
 
+const int UiObject::getPid() const
+{
+    return mNode->getPid();
+}
+
 const double UiObject::getIncrement() const
 {
     return mNode->getIncrement();
@@ -440,6 +445,11 @@ void UiObject::updateToolkitName() const
 void UiObject::updateTextMinBoundingRect() const
 {
     mNode->updateTextMinBoundingRect();
+}
+
+void UiObject::updateInterface() const
+{
+    mNode->updateInterface();
 }
 
 bool UiObject::setFocus() const
