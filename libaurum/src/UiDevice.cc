@@ -245,9 +245,9 @@ bool UiDevice::waitForIdle() const
 }
 
 bool UiDevice::waitForEvents(
-    const A11yEvent type, const int timeout) const
+    const A11yEvent type, const int timeout, const std::string packageName) const
 {
-    return executeAndWaitForEvents(NULL, type, timeout, std::string(), 0);
+    return executeAndWaitForEvents(NULL, type, timeout, packageName, 0);
 }
 
 //FIXME: obj only need for idle event
@@ -267,10 +267,10 @@ bool UiDevice::executeAndWaitForEvents
 }
 
 bool UiDevice::sendKeyAndWaitForEvents(
-    const std::string keycode, const A11yEvent type, const int timeout) const
+    const std::string keycode, const A11yEvent type, const int timeout, const std::string packageName) const
 {
     std::unique_ptr<SendKeyRunnable> cmd = std::make_unique<SendKeyRunnable>(keycode);
-    return executeAndWaitForEvents(cmd.get(), type, timeout, std::string(), 0);
+    return executeAndWaitForEvents(cmd.get(), type, timeout, packageName, 0);
 }
 
 bool UiDevice::click(const int x, const int y)
