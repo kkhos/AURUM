@@ -45,7 +45,7 @@ namespace Aurum {
  * @brief UiDevice provides access to state information about the device.
  *        You can also use this class to simulate user actions on the device.
  */
-class UiDevice : public IDevice, public ISearchable {
+class UiDevice : public ISearchable, public IDevice {
 public:
     /**
      * @brief Performs a click at arbitrary coordinates specified by the user.
@@ -316,13 +316,14 @@ public:
      *
      * @param[in] type one of @A11yEvent
      * @param[in] timeout time(millisecond) to wait event occur
+     * @param[in] packageName package name that event occurs
      *
      * @return true if event happened in time, otherwise false
      *
      * @since_tizen 6.5
      */
     bool waitForEvents(
-        const A11yEvent type, const int timeout) const;
+        const A11yEvent type, const int timeout, const std::string packageName = std::string()) const;
 
     /**
      * @brief Sends key event and Wait for a specific A11y Event for a some time by user set.
@@ -330,13 +331,14 @@ public:
      * @param[in] keycode keycode
      * @param[in] type one of @A11yEvent
      * @param[in] timeout time(millisecond) to wait event occur
+     * @param[in] packageName package name that event occurs
      *
      * @return true if event happened in time, otherwise false
      *
      * @since_tizen 6.5
      */
     bool sendKeyAndWaitForEvents(
-        const std::string keycode, const A11yEvent type, const int timeout) const;
+        const std::string keycode, const A11yEvent type, const int timeout, const std::string packageName = std::string()) const;
 
     /**
      * @brief Runs command and Wait for a specific A11y Event for a some time by user set.
