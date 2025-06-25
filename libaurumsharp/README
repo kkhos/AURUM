@@ -1,0 +1,4 @@
+1. swig -csharp -c++ -I../libaurum/inc -namespace Aurum -outdir ./cs_output -o aurum_wrapper.cpp libaurum.i
+2. aurumPINVOKE.cs:
+   add public const string Lib = "libaurumsharp.so";
+   change "aurum" to "libaurumsharp.so"
