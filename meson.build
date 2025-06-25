@@ -26,6 +26,7 @@ if get_option('tizen') == true
   subdir('org.tizen.aurum-bootstrap')
 endif
 subdir('tests')
+subdir('libaurumsharp')
 
 configure_file(
   output: 'config.h',
