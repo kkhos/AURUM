@@ -30,6 +30,7 @@ if get_option('libaurum_only') == false
   endif
 endif
 subdir('tests')
+subdir('libaurumsharp')
 
 dlog = dependency('dlog', required:false)
 if (dlog.found())
