@@ -203,6 +203,7 @@ void AtspiAccessibleNode::updateAttributes()
         char *s = (char*)g_hash_table_lookup(attributes, "style");
         char *a = (char*)g_hash_table_lookup(attributes, "automationId");
         char *i = (char*)g_hash_table_lookup(attributes, "imgSrc");
+        char *id = (char*)g_hash_table_lookup(attributes, "id");
 
         if (t) mType =  std::string(t);
         else {
@@ -211,6 +212,7 @@ void AtspiAccessibleNode::updateAttributes()
         }
         if (s) mStyle = std::string(s);
         if (a) mAutomationId = std::string(a);
+        else if (id) mAutomationId = std::string(id);
         if (i) mImgSrc = std::string(i);
 
         g_hash_table_unref(attributes);
