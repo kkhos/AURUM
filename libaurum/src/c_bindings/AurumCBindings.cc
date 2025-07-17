@@ -67,7 +67,9 @@ const char* aurum_dump_screen()
 
     for (const auto& root: windowRoots) {
         root->setIncludeHidden(true);
-        dumpResult += root->dumpTree();
+
+        std::string packageName = root->getPkg();
+        dumpResult += "{\"package\":\"" + packageName + "\",\"tree\":" + root->dumpTree() + "}";
         dumpResult += ",";
     }
 
