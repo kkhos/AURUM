@@ -2141,8 +2141,8 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_new_UiSelector() {
   Aurum::UiSelector *result = 0 ;
   
   result = (Aurum::UiSelector *)new Aurum::UiSelector();
-  
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_1) : 0;
+ 
+  jresult =  new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_1);
   
   return jresult;
 }
@@ -2156,7 +2156,7 @@ SWIGEXPORT char * SWIGSTDCALL CSharp_Aurum_UiSelector_description__SWIG_0(void *
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() :0 ); 
   result = (arg1)->description();
   jresult = SWIG_csharp_string_callback((&result)->c_str()); 
   return jresult;
@@ -2172,7 +2172,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_id(void * jarg1, char * ja
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() :0 ); 
   if (!jarg2) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
     return 0;
@@ -2180,7 +2180,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_id(void * jarg1, char * ja
   (&arg2)->assign(jarg2); 
   result = (Aurum::UiSelector *)(arg1)->id(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2203,7 +2203,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_automationid(void * jarg1,
   (&arg2)->assign(jarg2); 
   result = (Aurum::UiSelector *)(arg1)->automationid(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2218,7 +2218,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_text(void * jarg1, char * 
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0 ); 
   if (!jarg2) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
     return 0;
@@ -2226,7 +2226,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_text(void * jarg1, char * 
   (&arg2)->assign(jarg2); 
   result = (Aurum::UiSelector *)(arg1)->text(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2249,7 +2249,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_ocrText(void * jarg1, char
   (&arg2)->assign(jarg2); 
   result = (Aurum::UiSelector *)(arg1)->ocrText(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2264,7 +2264,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_textPartialMatch(void * ja
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0 ); 
   if (!jarg2) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
     return 0;
@@ -2272,7 +2272,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_textPartialMatch(void * ja
   (&arg2)->assign(jarg2); 
   result = (Aurum::UiSelector *)(arg1)->textPartialMatch(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2295,7 +2295,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_pkg(void * jarg1, char * j
   (&arg2)->assign(jarg2); 
   result = (Aurum::UiSelector *)(arg1)->pkg(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2318,7 +2318,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_role(void * jarg1, char * 
   (&arg2)->assign(jarg2); 
   result = (Aurum::UiSelector *)(arg1)->role(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2341,7 +2341,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_type(void * jarg1, char * 
   (&arg2)->assign(jarg2); 
   result = (Aurum::UiSelector *)(arg1)->type(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2356,7 +2356,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_style(void * jarg1, char *
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0 ); 
   if (!jarg2) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
     return 0;
@@ -2364,7 +2364,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_style(void * jarg1, char *
   (&arg2)->assign(jarg2); 
   result = (Aurum::UiSelector *)(arg1)->style(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2379,11 +2379,11 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_depth__SWIG_0(void * jarg1
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)( smartarg1->get() ); 
   arg2 = (int)jarg2; 
   result = (Aurum::UiSelector *)(arg1)->depth(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2399,12 +2399,12 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_depth__SWIG_1(void * jarg1
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)(smartarg1->get() ); 
   arg2 = (int)jarg2; 
   arg3 = (int)jarg3; 
   result = (Aurum::UiSelector *)(arg1)->depth(arg2,arg3);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2419,11 +2419,11 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_minDepth(void * jarg1, int
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)( smartarg1->get() ); 
   arg2 = (int)jarg2; 
   result = (Aurum::UiSelector *)(arg1)->minDepth(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) ;
   
   return jresult;
 }
@@ -2438,11 +2438,11 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_maxDepth(void * jarg1, int
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)( smartarg1->get()  ); 
   arg2 = (int)jarg2; 
   result = (Aurum::UiSelector *)(arg1)->maxDepth(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2457,11 +2457,11 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_isChecked(void * jarg1, un
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)( smartarg1->get() ); 
   arg2 = jarg2 ? true : false; 
   result = (Aurum::UiSelector *)(arg1)->isChecked(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2476,11 +2476,11 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_isCheckable(void * jarg1, 
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)( smartarg1->get() ); 
   arg2 = jarg2 ? true : false; 
   result = (Aurum::UiSelector *)(arg1)->isCheckable(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2495,11 +2495,11 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_isClickable(void * jarg1, 
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)( smartarg1->get() ); 
   arg2 = jarg2 ? true : false; 
   result = (Aurum::UiSelector *)(arg1)->isClickable(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2514,11 +2514,11 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_isEnabled(void * jarg1, un
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)( smartarg1->get() ); 
   arg2 = jarg2 ? true : false; 
   result = (Aurum::UiSelector *)(arg1)->isEnabled(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2533,11 +2533,11 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_isFocused(void * jarg1, un
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)( smartarg1->get() ); 
   arg2 = jarg2 ? true : false; 
   result = (Aurum::UiSelector *)(arg1)->isFocused(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2552,11 +2552,11 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_isFocusable(void * jarg1, 
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)( smartarg1->get() ); 
   arg2 = jarg2 ? true : false; 
   result = (Aurum::UiSelector *)(arg1)->isFocusable(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult =  new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) ;
   
   return jresult;
 }
@@ -2571,11 +2571,11 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_isScrollable(void * jarg1,
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)( smartarg1->get() ); 
   arg2 = jarg2 ? true : false; 
   result = (Aurum::UiSelector *)(arg1)->isScrollable(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2590,11 +2590,11 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_isSelected(void * jarg1, u
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)( smartarg1->get() ); 
   arg2 = jarg2 ? true : false; 
   result = (Aurum::UiSelector *)(arg1)->isSelected(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2609,11 +2609,11 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_isShowing(void * jarg1, un
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)( smartarg1->get() ); 
   arg2 = jarg2 ? true : false; 
   result = (Aurum::UiSelector *)(arg1)->isShowing(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2628,11 +2628,11 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_isActive(void * jarg1, uns
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)( smartarg1->get() ); 
   arg2 = jarg2 ? true : false; 
   result = (Aurum::UiSelector *)(arg1)->isActive(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) ;
   
   return jresult;
 }
@@ -2647,11 +2647,11 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_isVisible(void * jarg1, un
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)( smartarg1->get() ); 
   arg2 = jarg2 ? true : false; 
   result = (Aurum::UiSelector *)(arg1)->isVisible(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2666,11 +2666,11 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_isSelectable(void * jarg1,
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)( smartarg1->get() ); 
   arg2 = jarg2 ? true : false; 
   result = (Aurum::UiSelector *)(arg1)->isSelectable(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2685,11 +2685,11 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_isHighlightable(void * jar
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)( smartarg1->get() ); 
   arg2 = jarg2 ? true : false; 
   result = (Aurum::UiSelector *)(arg1)->isHighlightable(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2704,11 +2704,11 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_isHighlighted(void * jarg1
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)( smartarg1->get() ); 
   arg2 = jarg2 ? true : false; 
   result = (Aurum::UiSelector *)(arg1)->isHighlighted(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2723,11 +2723,11 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_hasChild(void * jarg1, voi
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)( smartarg1->get() ); 
   if (jarg2) arg2 = *(std::shared_ptr< Aurum::UiSelector > *)jarg2; 
   result = (Aurum::UiSelector *)(arg1)->hasChild(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2742,11 +2742,11 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_fromParent(void * jarg1, v
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)( smartarg1->get() ); 
   if (jarg2) arg2 = *(std::shared_ptr< Aurum::UiSelector > *)jarg2; 
   result = (Aurum::UiSelector *)(arg1)->fromParent(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2761,7 +2761,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_xpath(void * jarg1, char *
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)( smartarg1->get() ); 
   if (!jarg2) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
     return 0;
@@ -2769,7 +2769,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_xpath(void * jarg1, char *
   (&arg2)->assign(jarg2); 
   result = (Aurum::UiSelector *)(arg1)->xpath(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2786,7 +2786,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_geometry(void * jarg1, voi
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiSelector > *)jarg1;
-  arg1 = (Aurum::UiSelector *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiSelector *)( smartarg1->get() ); 
   argp2 = (Aurum::Rect< int > *)jarg2; 
   if (!argp2) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "Attempt to dereference null Aurum::Rect< int >", 0);
@@ -2796,7 +2796,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_geometry(void * jarg1, voi
   arg3 = jarg3 ? true : false; 
   result = (Aurum::UiSelector *)(arg1)->geometry(arg2,arg3);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2819,7 +2819,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_description__SWIG_1(void *
   (&arg2)->assign(jarg2); 
   result = (Aurum::UiSelector *)(arg1)->description(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2842,7 +2842,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiSelector_imgSrc(void * jarg1, char 
   (&arg2)->assign(jarg2); 
   result = (Aurum::UiSelector *)(arg1)->imgSrc(arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiSelector >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -2870,7 +2870,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_Sel_text(char * jarg1) {
   }
   (&arg1)->assign(jarg1); 
   result = Aurum::Sel::text(arg1);
-  jresult = result ? new std::shared_ptr< Aurum::UiSelector >(result) : 0; 
+  jresult = new std::shared_ptr< Aurum::UiSelector >(result); 
   return jresult;
 }
 
@@ -2886,7 +2886,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_Sel_type(char * jarg1) {
   }
   (&arg1)->assign(jarg1); 
   result = Aurum::Sel::type(arg1);
-  jresult = result ? new std::shared_ptr< Aurum::UiSelector >(result) : 0; 
+  jresult = new std::shared_ptr< Aurum::UiSelector >(result); 
   return jresult;
 }
 
@@ -2902,7 +2902,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_Sel_style(char * jarg1) {
   }
   (&arg1)->assign(jarg1); 
   result = Aurum::Sel::style(arg1);
-  jresult = result ? new std::shared_ptr< Aurum::UiSelector >(result) : 0; 
+  jresult = new std::shared_ptr< Aurum::UiSelector >(result); 
   return jresult;
 }
 
@@ -2914,7 +2914,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_Sel_depth(int jarg1) {
   
   arg1 = (int)jarg1; 
   result = Aurum::Sel::depth(arg1);
-  jresult = result ? new std::shared_ptr< Aurum::UiSelector >(result) : 0; 
+  jresult = new std::shared_ptr< Aurum::UiSelector >(result); 
   return jresult;
 }
 
@@ -2968,7 +2968,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_ISearchable_findObject(void * jarg1, 
   arg1 = (Aurum::ISearchable *)jarg1; 
   if (jarg2) arg2 = *(std::shared_ptr< Aurum::UiSelector > *)jarg2; 
   result = ((Aurum::ISearchable const *)arg1)->findObject(arg2);
-  jresult = result ? new std::shared_ptr< Aurum::UiObject >(result) : 0; 
+  jresult = new std::shared_ptr< Aurum::UiObject >(result); 
   return jresult;
 }
 
@@ -3370,7 +3370,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_AccessibleNode_getChildAt(void * jarg
   arg1 = (Aurum::AccessibleNode *)(smartarg1 ? smartarg1->get() : 0); 
   arg2 = (int)jarg2; 
   result = ((Aurum::AccessibleNode const *)arg1)->getChildAt(arg2);
-  jresult = result ? new std::shared_ptr< Aurum::AccessibleNode >(result) : 0; 
+  jresult = new std::shared_ptr< Aurum::AccessibleNode >(result); 
   return jresult;
 }
 
@@ -3385,7 +3385,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_AccessibleNode_getParent(void * jarg1
   smartarg1 = (std::shared_ptr< const Aurum::AccessibleNode > *)jarg1;
   arg1 = (Aurum::AccessibleNode *)(smartarg1 ? smartarg1->get() : 0); 
   result = ((Aurum::AccessibleNode const *)arg1)->getParent();
-  jresult = result ? new std::shared_ptr< Aurum::AccessibleNode >(result) : 0; 
+  jresult = new std::shared_ptr< Aurum::AccessibleNode >(result); 
   return jresult;
 }
 
@@ -3400,7 +3400,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_AccessibleNode_next(void * jarg1) {
   smartarg1 = (std::shared_ptr< const Aurum::AccessibleNode > *)jarg1;
   arg1 = (Aurum::AccessibleNode *)(smartarg1 ? smartarg1->get() : 0); 
   result = ((Aurum::AccessibleNode const *)arg1)->next();
-  jresult = result ? new std::shared_ptr< Aurum::AccessibleNode >(result) : 0; 
+  jresult = new std::shared_ptr< Aurum::AccessibleNode >(result); 
   return jresult;
 }
 
@@ -3415,7 +3415,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_AccessibleNode_prev(void * jarg1) {
   smartarg1 = (std::shared_ptr< const Aurum::AccessibleNode > *)jarg1;
   arg1 = (Aurum::AccessibleNode *)(smartarg1 ? smartarg1->get() : 0); 
   result = ((Aurum::AccessibleNode const *)arg1)->prev();
-  jresult = result ? new std::shared_ptr< Aurum::AccessibleNode >(result) : 0; 
+  jresult = new std::shared_ptr< Aurum::AccessibleNode >(result); 
   return jresult;
 }
 
@@ -3430,7 +3430,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_AccessibleNode_first(void * jarg1) {
   smartarg1 = (std::shared_ptr< const Aurum::AccessibleNode > *)jarg1;
   arg1 = (Aurum::AccessibleNode *)(smartarg1 ? smartarg1->get() : 0); 
   result = ((Aurum::AccessibleNode const *)arg1)->first();
-  jresult = result ? new std::shared_ptr< Aurum::AccessibleNode >(result) : 0; 
+  jresult = new std::shared_ptr< Aurum::AccessibleNode >(result); 
   return jresult;
 }
 
@@ -3445,7 +3445,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_AccessibleNode_last(void * jarg1) {
   smartarg1 = (std::shared_ptr< const Aurum::AccessibleNode > *)jarg1;
   arg1 = (Aurum::AccessibleNode *)(smartarg1 ? smartarg1->get() : 0); 
   result = ((Aurum::AccessibleNode const *)arg1)->last();
-  jresult = result ? new std::shared_ptr< Aurum::AccessibleNode >(result) : 0; 
+  jresult = new std::shared_ptr< Aurum::AccessibleNode >(result); 
   return jresult;
 }
 
@@ -3456,7 +3456,7 @@ SWIGEXPORT void SWIGSTDCALL CSharp_Aurum_AccessibleNode_invalidate(void * jarg1)
   
   
   smartarg1 = (std::shared_ptr<  Aurum::AccessibleNode > *)jarg1;
-  arg1 = (Aurum::AccessibleNode *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::AccessibleNode *)(smartarg1 ? smartarg1->get() : 0 ); 
   (arg1)->invalidate();
 }
 
@@ -4325,7 +4325,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_AccessibleWatcher_getInstance__SWIG_0
   arg1 = (Aurum::AccessibleWatcher *)(smartarg1 ? smartarg1->get() : 0); 
   result = (Aurum::AccessibleWatcher *)Aurum::AccessibleWatcher::getInstance(arg1);
   
-  jresult = result ? new std::shared_ptr<  Aurum::AccessibleWatcher >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::AccessibleWatcher >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -4337,7 +4337,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_AccessibleWatcher_getInstance__SWIG_1
   
   result = (Aurum::AccessibleWatcher *)Aurum::AccessibleWatcher::getInstance();
   
-  jresult = result ? new std::shared_ptr<  Aurum::AccessibleWatcher >(result SWIG_NO_NULL_DELETER_0) : 0;
+  jresult = new std::shared_ptr<  Aurum::AccessibleWatcher >(result SWIG_NO_NULL_DELETER_0);
   
   return jresult;
 }
@@ -4387,7 +4387,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_new_Node(void * jarg1, void * jarg2) 
   arg2 = *argp2; 
   result = (Aurum::Node *)new Aurum::Node(arg1,arg2);
   
-  jresult = result ? new std::shared_ptr<  Aurum::Node >(result SWIG_NO_NULL_DELETER_1) : 0;
+  jresult = new std::shared_ptr<  Aurum::Node >(result SWIG_NO_NULL_DELETER_1);
   
   return jresult;
 }
@@ -4476,7 +4476,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_new_UiObject__SWIG_0(void * jarg1, vo
   arg3 = (Aurum::AccessibleNode *)(smartarg3 ? smartarg3->get() : 0); 
   result = (Aurum::UiObject *)new Aurum::UiObject(arg1,arg2,(Aurum::AccessibleNode const *)arg3);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiObject >(result SWIG_NO_NULL_DELETER_1) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiObject >(result SWIG_NO_NULL_DELETER_1);
   
   return jresult;
 }
@@ -4494,7 +4494,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_new_UiObject__SWIG_2(void * jarg1) {
   } 
   result = (Aurum::UiObject *)new Aurum::UiObject((Aurum::UiObject &&)*arg1);
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiObject >(result SWIG_NO_NULL_DELETER_1) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiObject >(result SWIG_NO_NULL_DELETER_1);
   
   return jresult;
 }
@@ -4506,7 +4506,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_new_UiObject__SWIG_3() {
   
   result = (Aurum::UiObject *)new Aurum::UiObject();
   
-  jresult = result ? new std::shared_ptr<  Aurum::UiObject >(result SWIG_NO_NULL_DELETER_1) : 0;
+  jresult = new std::shared_ptr<  Aurum::UiObject >(result SWIG_NO_NULL_DELETER_1);
   
   return jresult;
 }
@@ -4533,7 +4533,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiObject_getSelector(void * jarg1) {
   smartarg1 = (std::shared_ptr<  Aurum::UiObject > *)jarg1;
   arg1 = (Aurum::UiObject *)(smartarg1 ? smartarg1->get() : 0); 
   result = (arg1)->getSelector();
-  jresult = result ? new std::shared_ptr< Aurum::UiSelector >(result) : 0; 
+  jresult = new std::shared_ptr< Aurum::UiSelector >(result); 
   return jresult;
 }
 
@@ -4567,7 +4567,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiObject_findObject(void * jarg1, voi
   arg1 = (Aurum::UiObject *)(smartarg1 ? smartarg1->get() : 0); 
   if (jarg2) arg2 = *(std::shared_ptr< Aurum::UiSelector > *)jarg2; 
   result = ((Aurum::UiObject const *)arg1)->findObject(arg2);
-  jresult = result ? new std::shared_ptr< Aurum::UiObject >(result) : 0; 
+  jresult = new std::shared_ptr< Aurum::UiObject >(result); 
   return jresult;
 }
 
@@ -4670,7 +4670,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiObject_waitFor__SWIG_1(void * jarg1
   }
   arg2 = *argp2; 
   result = ((Aurum::UiObject const *)arg1)->waitFor(arg2);
-  jresult = result ? new std::shared_ptr< Aurum::UiObject >(result) : 0; 
+  jresult = new std::shared_ptr< Aurum::UiObject >(result); 
   return jresult;
 }
 
@@ -4873,7 +4873,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiObject_getParent(void * jarg1) {
   smartarg1 = (std::shared_ptr< const Aurum::UiObject > *)jarg1;
   arg1 = (Aurum::UiObject *)(smartarg1 ? smartarg1->get() : 0); 
   result = ((Aurum::UiObject const *)arg1)->getParent();
-  jresult = result ? new std::shared_ptr< Aurum::UiObject >(result) : 0; 
+  jresult = new std::shared_ptr< Aurum::UiObject >(result); 
   return jresult;
 }
 
@@ -4920,7 +4920,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiObject_getChildAt(void * jarg1, int
   arg1 = (Aurum::UiObject *)(smartarg1 ? smartarg1->get() : 0); 
   arg2 = (int)jarg2; 
   result = ((Aurum::UiObject const *)arg1)->getChildAt(arg2);
-  jresult = result ? new std::shared_ptr< Aurum::UiObject >(result) : 0; 
+  jresult = new std::shared_ptr< Aurum::UiObject >(result); 
   return jresult;
 }
 
@@ -4935,7 +4935,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiObject_getDescendant(void * jarg1) 
   smartarg1 = (std::shared_ptr<  Aurum::UiObject > *)jarg1;
   arg1 = (Aurum::UiObject *)(smartarg1 ? smartarg1->get() : 0); 
   result = (arg1)->getDescendant();
-  jresult = result ? new std::shared_ptr< Aurum::Node >(result) : 0; 
+  jresult = new std::shared_ptr< Aurum::Node >(result); 
   return jresult;
 }
 
@@ -5658,7 +5658,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiObject_getAccessibleNode(void * jar
   smartarg1 = (std::shared_ptr< const Aurum::UiObject > *)jarg1;
   arg1 = (Aurum::UiObject *)(smartarg1 ? smartarg1->get() : 0); 
   result = ((Aurum::UiObject const *)arg1)->getAccessibleNode();
-  jresult = result ? new std::shared_ptr< Aurum::AccessibleNode >(result) : 0; 
+  jresult = new std::shared_ptr< Aurum::AccessibleNode >(result); 
   return jresult;
 }
 
@@ -5673,7 +5673,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiObject_next(void * jarg1) {
   smartarg1 = (std::shared_ptr< const Aurum::UiObject > *)jarg1;
   arg1 = (Aurum::UiObject *)(smartarg1 ? smartarg1->get() : 0); 
   result = ((Aurum::UiObject const *)arg1)->next();
-  jresult = result ? new std::shared_ptr< Aurum::UiObject >(result) : 0; 
+  jresult = new std::shared_ptr< Aurum::UiObject >(result); 
   return jresult;
 }
 
@@ -5688,7 +5688,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiObject_prev(void * jarg1) {
   smartarg1 = (std::shared_ptr< const Aurum::UiObject > *)jarg1;
   arg1 = (Aurum::UiObject *)(smartarg1 ? smartarg1->get() : 0); 
   result = ((Aurum::UiObject const *)arg1)->prev();
-  jresult = result ? new std::shared_ptr< Aurum::UiObject >(result) : 0; 
+  jresult = new std::shared_ptr< Aurum::UiObject >(result); 
   return jresult;
 }
 
@@ -5703,7 +5703,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiObject_first(void * jarg1) {
   smartarg1 = (std::shared_ptr< const Aurum::UiObject > *)jarg1;
   arg1 = (Aurum::UiObject *)(smartarg1 ? smartarg1->get() : 0); 
   result = ((Aurum::UiObject const *)arg1)->first();
-  jresult = result ? new std::shared_ptr< Aurum::UiObject >(result) : 0; 
+  jresult = new std::shared_ptr< Aurum::UiObject >(result); 
   return jresult;
 }
 
@@ -5714,11 +5714,10 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiObject_last(void * jarg1) {
   std::shared_ptr< Aurum::UiObject const > *smartarg1 = 0 ;
   std::shared_ptr< Aurum::UiObject > result;
   
-  
   smartarg1 = (std::shared_ptr< const Aurum::UiObject > *)jarg1;
   arg1 = (Aurum::UiObject *)(smartarg1 ? smartarg1->get() : 0); 
   result = ((Aurum::UiObject const *)arg1)->last();
-  jresult = result ? new std::shared_ptr< Aurum::UiObject >(result) : 0; 
+  jresult = new std::shared_ptr< Aurum::UiObject >(result); 
   return jresult;
 }
 
@@ -5828,7 +5827,7 @@ SWIGEXPORT int SWIGSTDCALL CSharp_Aurum_UiDevice_touchDown(void * jarg1, int jar
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   arg2 = (int)jarg2; 
   arg3 = (int)jarg3; 
   result = (int)(arg1)->touchDown(arg2,arg3);
@@ -5848,7 +5847,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_touchMove(void * jarg1
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   arg2 = (int)jarg2; 
   arg3 = (int)jarg3; 
   arg4 = (int)jarg4; 
@@ -5869,7 +5868,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_touchUp(void * jarg1, 
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   arg2 = (int)jarg2; 
   arg3 = (int)jarg3; 
   arg4 = (int)jarg4; 
@@ -5889,7 +5888,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_wheelUp(void * jarg1, 
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   arg2 = (int)jarg2; 
   arg3 = (int)jarg3; 
   result = (bool)(arg1)->wheelUp(arg2,arg3);
@@ -5908,7 +5907,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_wheelDown(void * jarg1
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   arg2 = (int)jarg2; 
   arg3 = (int)jarg3; 
   result = (bool)(arg1)->wheelDown(arg2,arg3);
@@ -5928,7 +5927,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_mouseDown(void * jarg1
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   arg2 = (int)jarg2; 
   arg3 = (int)jarg3; 
   arg4 = (int)jarg4; 
@@ -5949,7 +5948,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_mouseMove(void * jarg1
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   arg2 = (int)jarg2; 
   arg3 = (int)jarg3; 
   arg4 = (int)jarg4; 
@@ -5970,7 +5969,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_mouseUp(void * jarg1, 
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   arg2 = (int)jarg2; 
   arg3 = (int)jarg3; 
   arg4 = (int)jarg4; 
@@ -5990,7 +5989,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_pressKeyCode(void * ja
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   if (!jarg2) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
     return 0;
@@ -6014,7 +6013,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_repeatKeyCode(void * j
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   if (!jarg2) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
     return 0;
@@ -6040,7 +6039,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_takeScreenshot__SWIG_0
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   if (!jarg2) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
     return 0;
@@ -6066,7 +6065,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_takeScreenshot__SWIG_1
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   if (!jarg2) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
     return 0;
@@ -6089,7 +6088,7 @@ SWIGEXPORT long long SWIGSTDCALL CSharp_Aurum_UiDevice_getSystemTime(void * jarg
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   arg2 = (Aurum::TimeRequestType)jarg2; 
   result = (long long)(arg1)->getSystemTime(arg2);
   jresult = result; 
@@ -6105,7 +6104,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiDevice_getScreenSize(void * jarg1) 
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   result = (arg1)->getScreenSize();
   jresult = new Aurum::Size2D< int >((const Aurum::Size2D< int > &)result); 
   return jresult;
@@ -6121,7 +6120,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_hasObject(void * jarg1
   
   
   smartarg1 = (std::shared_ptr< const Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   if (jarg2) arg2 = *(std::shared_ptr< Aurum::UiSelector > *)jarg2; 
   result = (bool)((Aurum::UiDevice const *)arg1)->hasObject(arg2);
   jresult = result; 
@@ -6138,10 +6137,10 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiDevice_findObject(void * jarg1, voi
   
   
   smartarg1 = (std::shared_ptr< const Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   if (jarg2) arg2 = *(std::shared_ptr< Aurum::UiSelector > *)jarg2; 
   result = ((Aurum::UiDevice const *)arg1)->findObject(arg2);
-  jresult = result ? new std::shared_ptr< Aurum::UiObject >(result) : 0; 
+  jresult = new std::shared_ptr< Aurum::UiObject >(result); 
   return jresult;
 }
 
@@ -6155,7 +6154,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiDevice_findObjects(void * jarg1, vo
   
   
   smartarg1 = (std::shared_ptr< const Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   if (jarg2) arg2 = *(std::shared_ptr< Aurum::UiSelector > *)jarg2; 
   result = ((Aurum::UiDevice const *)arg1)->findObjects(arg2);
   jresult = new std::vector< std::shared_ptr< Aurum::UiObject > >((const std::vector< std::shared_ptr< Aurum::UiObject > > &)result); 
@@ -6173,7 +6172,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiDevice_getMatches(void * jarg1, voi
   
   
   smartarg1 = (std::shared_ptr< const Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   if (jarg2) arg2 = *(std::shared_ptr< Aurum::UiSelector > *)jarg2; 
   arg3 = jarg3 ? true : false; 
   result = ((Aurum::UiDevice const *)arg1)->getMatches(arg2,arg3);
@@ -6193,7 +6192,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiDevice_getMatchesInMatches(void * j
   
   
   smartarg1 = (std::shared_ptr< const Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   if (jarg2) arg2 = *(std::shared_ptr< Aurum::UiSelector > *)jarg2; 
   if (jarg3) arg3 = *(std::shared_ptr< Aurum::UiSelector > *)jarg3; 
   arg4 = jarg4 ? true : false; 
@@ -6213,7 +6212,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_waitFor__SWIG_0(void *
   
   
   smartarg1 = (std::shared_ptr< const Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   argp2 = (std::function< bool (Aurum::ISearchable const *) > *)jarg2; 
   if (!argp2) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "Attempt to dereference null std::function< bool (Aurum::ISearchable const *) > const", 0);
@@ -6236,7 +6235,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiDevice_waitFor__SWIG_1(void * jarg1
   
   
   smartarg1 = (std::shared_ptr< const Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   argp2 = (std::function< std::shared_ptr< Aurum::UiObject > (Aurum::ISearchable const *) > *)jarg2; 
   if (!argp2) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "Attempt to dereference null std::function< std::shared_ptr< Aurum::UiObject > (Aurum::ISearchable const *) > const", 0);
@@ -6244,7 +6243,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiDevice_waitFor__SWIG_1(void * jarg1
   }
   arg2 = *argp2; 
   result = ((Aurum::UiDevice const *)arg1)->waitFor(arg2);
-  jresult = result ? new std::shared_ptr< Aurum::UiObject >(result) : 0; 
+  jresult = new std::shared_ptr< Aurum::UiObject >(result); 
   return jresult;
 }
 
@@ -6260,7 +6259,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_waitForEvents__SWIG_0(
   
   
   smartarg1 = (std::shared_ptr< const Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   arg2 = (Aurum::A11yEvent)jarg2; 
   arg3 = (int)jarg3; 
   if (!jarg4) {
@@ -6284,7 +6283,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_waitForEvents__SWIG_1(
   
   
   smartarg1 = (std::shared_ptr< const Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)( smartarg1->get() ); 
   arg2 = (Aurum::A11yEvent)jarg2; 
   arg3 = (int)jarg3; 
   result = (bool)((Aurum::UiDevice const *)arg1)->waitForEvents(arg2,arg3);
@@ -6305,7 +6304,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_sendKeyAndWaitForEvent
   
   
   smartarg1 = (std::shared_ptr< const Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   if (!jarg2) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
     return 0;
@@ -6335,7 +6334,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_sendKeyAndWaitForEvent
   
   
   smartarg1 = (std::shared_ptr< const Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   if (!jarg2) {
     SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
     return 0;
@@ -6354,7 +6353,7 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_UiDevice_getInstance__SWIG_1() {
   std::shared_ptr< Aurum::UiDevice > result;
   
   result = Aurum::UiDevice::getInstance();
-  jresult = result ? new std::shared_ptr< Aurum::UiDevice >(result) : 0; 
+  jresult = new std::shared_ptr< Aurum::UiDevice >(result); 
   return jresult;
 }
 
@@ -6367,7 +6366,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_getExternalAppLaunched
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   result = (bool)(arg1)->getExternalAppLaunched();
   jresult = result; 
   return jresult;
@@ -6382,7 +6381,7 @@ SWIGEXPORT int SWIGSTDCALL CSharp_Aurum_UiDevice_getWindowAngle(void * jarg1) {
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   result = (int)(arg1)->getWindowAngle();
   jresult = result; 
   return jresult;
@@ -6397,7 +6396,7 @@ SWIGEXPORT int SWIGSTDCALL CSharp_Aurum_UiDevice_getTargetAngle(void * jarg1) {
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   result = (int)(arg1)->getTargetAngle();
   jresult = result; 
   return jresult;
@@ -6414,7 +6413,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_generateKey(void * jar
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   arg2 = (Aurum::KeyType)jarg2; 
   arg3 = (Aurum::KeyRequestType)jarg3; 
   result = (bool)(arg1)->generateKey(arg2,arg3);
@@ -6432,7 +6431,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_pressBack(void * jarg1
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   arg2 = (Aurum::KeyRequestType)jarg2; 
   result = (bool)(arg1)->pressBack(arg2);
   jresult = result; 
@@ -6449,7 +6448,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_pressHome(void * jarg1
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   arg2 = (Aurum::KeyRequestType)jarg2; 
   result = (bool)(arg1)->pressHome(arg2);
   jresult = result; 
@@ -6466,7 +6465,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_pressMenu(void * jarg1
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   arg2 = (Aurum::KeyRequestType)jarg2; 
   result = (bool)(arg1)->pressMenu(arg2);
   jresult = result; 
@@ -6483,7 +6482,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_pressVolUp(void * jarg
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   arg2 = (Aurum::KeyRequestType)jarg2; 
   result = (bool)(arg1)->pressVolUp(arg2);
   jresult = result; 
@@ -6500,7 +6499,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_pressVolDown(void * ja
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   arg2 = (Aurum::KeyRequestType)jarg2; 
   result = (bool)(arg1)->pressVolDown(arg2);
   jresult = result; 
@@ -6517,7 +6516,7 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_pressPower(void * jarg
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   arg2 = (Aurum::KeyRequestType)jarg2; 
   result = (bool)(arg1)->pressPower(arg2);
   jresult = result; 
@@ -6531,7 +6530,7 @@ SWIGEXPORT void SWIGSTDCALL CSharp_Aurum_delete_UiDevice(void * jarg1) {
   
   
   smartarg1 = (std::shared_ptr<  Aurum::UiDevice > *)jarg1;
-  arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::UiDevice *)(smartarg1->get()); 
   (void)arg1; delete smartarg1;
 }
 
