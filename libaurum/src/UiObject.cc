@@ -180,6 +180,19 @@ std::vector<std::shared_ptr<UiObject>> UiObject::getChildren() const
     return ret;
 }
 
+double parseStringToDouble(const std::string& str) {
+    std::string processedStr = str;
+    size_t percentPos = processedStr.find('%');
+    if (percentPos != std::string::npos) {
+        processedStr = processedStr.substr(0, percentPos);
+    }
+    try {
+        return std::stod(processedStr);
+    } catch (const std::exception& e) {
+        return 0.0;
+    }
+}
+
 std::shared_ptr<Node> UiObject::parseTreeFromJson(Value &value)
 {
     std::vector<std::shared_ptr<Node>> nodeChildren{};
@@ -195,10 +208,22 @@ std::shared_ptr<Node> UiObject::parseTreeFromJson(Value &value)
             auto type = value.HasMember("type") && value["type"].IsString()? value["type"].GetString() : "";
             auto automationId = value.HasMember("automationId") && value["automationId"].IsString()? value["automationId"].GetString() : "";
             auto description = value.HasMember("description") && value["description"].IsString()? value["description"].GetString() : "";
-            auto current = value.HasMember("value") && value["value"].HasMember("current") && value["value"]["current"].IsDouble()? value["value"]["current"].GetDouble() : 0.0f;
-            auto minValue = value.HasMember("value") && value["value"].HasMember("min") && value["value"]["min"].IsDouble()? value["value"]["min"].GetDouble() : 0.0f;
-            auto maxValue = value.HasMember("value") && value["value"].HasMember("max") && value["value"]["max"].IsDouble()? value["value"]["mimaxn"].GetDouble() : 0.0f;
-            auto increment = value.HasMember("value") && value["value"].HasMember("increment") && value["value"]["increment"].IsDouble()? value["value"]["increment"].GetDouble() : 0.0f;
+            auto current = 0.0f;
+            auto minValue = 0.0f;
+            auto maxValue = 0.0f;
+            auto increment = 0.0f;
+
+            if (value.HasMember("value")) {
+                if (value["value"].IsObject()) {
+                    current = value["value"].HasMember("current") && value["value"]["current"].IsDouble()? value["value"]["current"].GetDouble() : 0.0f;
+                    minValue = value["value"].HasMember("min") && value["value"]["min"].IsDouble()? value["value"]["min"].GetDouble() : 0.0f;
+                    maxValue = value["value"].HasMember("max") && value["value"]["max"].IsDouble()? value["value"]["max"].GetDouble() : 0.0f;
+                    increment = value["value"].HasMember("increment") && value["value"]["increment"].IsDouble()? value["value"]["increment"].GetDouble() : 0.0f;
+                } else {
+                    auto currentAsStr = value["value"].IsString()? value["value"].GetString() : "";
+                    current = parseStringToDouble(currentAsStr);
+                }
+            }
             auto x = value.HasMember("x") ? (value["x"].IsInt() ? value["x"].GetInt() : value["x"].GetDouble()) : 0;
             auto y = value.HasMember("y") ? (value["y"].IsInt() ? value["y"].GetInt() : value["y"].GetDouble()) : 0;
             auto w = value.HasMember("w") ? (value["w"].IsInt() ? value["w"].GetInt() : value["w"].GetDouble()) : 0;
