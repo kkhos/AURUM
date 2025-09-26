@@ -330,6 +330,10 @@ void AtspiAccessibleNode::updateInterface()
         }
         g_array_free(interfaces, true);
     }
+    if (mInterface.empty()) {
+        if (!mRole.compare("slider")) mInterface = std::string("Value");
+        else if (!mRole.compare("entry")) mInterface = std::string("EditableText");
+    }
 }
 
 bool AtspiAccessibleNode::setFocus()
@@ -473,6 +477,9 @@ void AtspiAccessibleNode::refresh(const std::string &text, const std::string &ro
     mMaxValue = maxValue;
     mIncrement = increment;
     mScreenBoundingBox = extents;
+
+    if (!mRole.compare("slider")) mInterface = std::string("Value");
+    else if (!mRole.compare("entry")) mInterface = std::string("EditableText");
 }
 
 std::vector<std::string> AtspiAccessibleNode::getActions() const
