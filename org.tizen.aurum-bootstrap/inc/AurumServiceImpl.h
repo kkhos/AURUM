@@ -173,6 +173,9 @@ public:
     ::grpc::Status clearWatcher(::grpc::ServerContext *context,
                               const ::aurum::ReqClearWatcher *request,
                               ::aurum::RspClearWatcher *response) override;
+    ::grpc::Status doAction(::grpc::ServerContext *context,
+                              const ::aurum::ReqDoAction *request,
+                              ::aurum::RspDoAction *response) override;
 public:
     std::mutex mLock;
     std::condition_variable mCond;
