@@ -555,6 +555,10 @@ bool UiObject::DoAtspiActivate() const
     return mNode->doAction("activate");
 }
 
+bool UiObject::doAction(std::string actionName) const
+{
+    return mNode->doAction(actionName);
+}
 
 std::shared_ptr<AccessibleNode> UiObject::getAccessibleNode() const
 {

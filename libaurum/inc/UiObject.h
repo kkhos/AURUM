@@ -615,6 +615,17 @@ public:
     bool DoAtspiActivate() const;
 
     /**
+     * @brief Do atspi action.
+     *
+     * @param[in] action name of action
+     *
+     * @return true if success, else false
+     *
+     * @since_tizen 10.0
+     */
+    bool doAction(std::string actionName) const;
+
+    /**
      * @brief Updates object's role name information from atspi server.
      *
      * @since_tizen 6.5

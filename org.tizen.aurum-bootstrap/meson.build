@@ -62,6 +62,7 @@ bootstrap_svr_src += [
    files('src/Commands/GetIncludeHiddenCommand.cc'),
    files('src/Commands/AddWatcherCommand.cc'),
    files('src/Commands/ClearWatcherCommand.cc'),
+   files('src/Commands/DoActionCommand.cc'),
 ]
 
 bootstrap_svr_dep = [

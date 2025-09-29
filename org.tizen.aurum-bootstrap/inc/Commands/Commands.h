@@ -59,3 +59,4 @@
 #include "Commands/GetIncludeHiddenCommand.h"
 #include "Commands/AddWatcherCommand.h"
 #include "Commands/ClearWatcherCommand.h"
+#include "Commands/DoActionCommand.h"
