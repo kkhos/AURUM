@@ -182,6 +182,15 @@ public:
     virtual std::shared_ptr<AccessibleNode> refAccessibleNode(const std::string &appName, const std::string &path ) const = 0;
 
     /**
+     * @brief Gets string property of AcessibleNode.
+     * 
+     * @param[in] property string
+     * 
+     * @return string
+     */
+    virtual std::string getStringProperty(const std::string &property) const = 0;
+
+    /**
      * @brief Called by @AccessibleWatcher::notifyAll.
      *        Changes Node property If it's @EventType, @ObjectEventType are matches.
      *

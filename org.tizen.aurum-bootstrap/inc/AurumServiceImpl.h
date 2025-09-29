@@ -176,6 +176,9 @@ public:
     ::grpc::Status doAction(::grpc::ServerContext *context,
                               const ::aurum::ReqDoAction *request,
                               ::aurum::RspDoAction *response) override;
+    ::grpc::Status getStringProperty(::grpc::ServerContext *context,
+                              const ::aurum::ReqGetStringProperty *request,
+                              ::aurum::RspGetStringProperty *response) override;
 public:
     std::mutex mLock;
     std::condition_variable mCond;

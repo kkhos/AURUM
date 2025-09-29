@@ -52,6 +52,7 @@ service Bootstrap {
    rpc addWatcher(ReqAddWatcher) returns (RspAddWatcher) {}
    rpc clearWatcher(ReqClearWatcher) returns (RspClearWatcher) {}
    rpc doAction(ReqDoAction) returns (RspDoAction) {}
+   rpc getStringProperty(ReqGetStringProperty) returns (RspGetStringProperty) {}
 }
 
 // ------------------------------------ //
@@ -839,4 +840,14 @@ message ReqDoAction{
 
 message RspDoAction{
    RspStatus status = 1;
+}
+
+message ReqGetStringProperty {
+   string elementId = 1;
+   string property = 2;
+}
+
+message RspGetStringProperty {
+   RspStatus status = 1;
+   string propertyValue = 2;
 }
