@@ -173,6 +173,9 @@ public:
     ::grpc::Status clearWatcher(::grpc::ServerContext *context,
                               const ::aurum::ReqClearWatcher *request,
                               ::aurum::RspClearWatcher *response) override;
+    ::grpc::Status getStringProperty(::grpc::ServerContext *context,
+                              const ::aurum::ReqGetStringProperty *request,
+                              ::aurum::RspGetStringProperty *response) override;
 public:
     std::mutex mLock;
     std::condition_variable mCond;

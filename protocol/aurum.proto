@@ -51,6 +51,7 @@ service Bootstrap {
    rpc getIncludeHidden(ReqGetIncludeHidden) returns (RspGetIncludeHidden) {}
    rpc addWatcher(ReqAddWatcher) returns (RspAddWatcher) {}
    rpc clearWatcher(ReqClearWatcher) returns (RspClearWatcher) {}
+   rpc getStringProperty(ReqGetStringProperty) returns (RspGetStringProperty) {}
 }
 
 // ------------------------------------ //
@@ -829,4 +830,14 @@ message ReqClearWatcher {
 
 message RspClearWatcher {
    RspStatus status = 1;
+}
+
+message ReqGetStringProperty {
+   string elementId = 1;
+   string property = 2;
+}
+
+message RspGetStringProperty {
+   RspStatus status = 1;
+   string propertyValue = 2;
 }

@@ -830,3 +830,19 @@ std::shared_ptr<AccessibleNode> AtspiAccessibleNode::refAccessibleNode(const std
 
     return node;
 }
+
+std::string AtspiAccessibleNode::getStringProperty(const std::string &property) const
+{
+    if (!isValid()) {
+        return {};
+    }
+
+    gchar *c_result = AtspiWrapper::Atspi_accessible_get_string_property(mNode, property.c_str(), NULL);
+    if (c_result) {
+        std::string result{c_result};
+        g_free(c_result);
+        return result;
+    }
+
+    return {};
+}

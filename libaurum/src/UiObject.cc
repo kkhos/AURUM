@@ -603,3 +603,7 @@ void UiObject::setIncludeHidden(bool enabled) const {
 bool UiObject::getIncludeHidden() const {
     return mNode->getIncludeHidden();
 }
+
+std::string UiObject::getStringProperty(const std::string property) const {
+    return mNode->getStringProperty(property);
+}

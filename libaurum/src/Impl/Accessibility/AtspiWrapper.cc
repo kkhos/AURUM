@@ -308,3 +308,9 @@ AtspiAccessible *AtspiWrapper::Atspi_ref_accessible(const gchar *app_name, const
     std::unique_lock<std::recursive_mutex> lock(mMutex);
     return ref_accessible(app_name, path);
 }
+
+gchar *AtspiWrapper::Atspi_accessible_get_string_property(AtspiAccessible *obj, const gchar *property, GError **error)
+{
+    std::unique_lock<std::recursive_mutex> lock(mMutex);
+    return atspi_accessible_get_string_property(obj, property, error);
+}

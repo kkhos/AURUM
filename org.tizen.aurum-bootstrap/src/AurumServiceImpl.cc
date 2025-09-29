@@ -410,3 +410,11 @@ aurumServiceImpl::~aurumServiceImpl()
     std::unique_ptr<ClearWatcherCommand> cmd = std::make_unique<ClearWatcherCommand>(request, response);
     return execute(cmd.get(), false);
 }
+
+::grpc::Status aurumServiceImpl::getStringProperty(::grpc::ServerContext *context,
+                                                   const ::aurum::ReqGetStringProperty *request,
+                                                   ::aurum::RspGetStringProperty *response)
+{
+    std::unique_ptr<GetStringPropertyCommand> cmd = std::make_unique<GetStringPropertyCommand>(request, response);
+    return execute(cmd.get(), false);
+}

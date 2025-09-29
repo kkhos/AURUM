@@ -795,6 +795,13 @@ public:
      */
     bool getIncludeHidden() const;
 
+    /**
+     * @brief Gets object's string proprerty 
+     * 
+     * @since_tizen 10.0
+     */
+    std::string getStringProperty(const std::string property) const;
+
 private:
     std::shared_ptr<Node> parseTreeFromJson(Value &doc);
 
