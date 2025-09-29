@@ -59,4 +59,8 @@
 #include "Commands/GetIncludeHiddenCommand.h"
 #include "Commands/AddWatcherCommand.h"
 #include "Commands/ClearWatcherCommand.h"
+<<<<<<< HEAD
 #include "Commands/DoActionCommand.h"
+=======
+#include "Commands/GetStringPropertyCommand.h"
+>>>>>>> 348f725... Aurum: Introduce GetStringProperty

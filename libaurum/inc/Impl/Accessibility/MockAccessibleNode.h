@@ -109,6 +109,11 @@ public:
      */
     std::shared_ptr<AccessibleNode> refAccessibleNode(const std::string &appName, const std::string &path ) const override;
 
+    /**
+     * @copydoc AccessibleNode::getStringProperty()
+     */
+    std::string getStringProperty(const std::string &property) const override;
+    
 public:
     /**
      * @brief TBD

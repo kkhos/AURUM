@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "dgSpecHash": "LQ71413PTak=",
+  "success": true,
+  "projectFilePath": "/home/wonsik/work/UIAutomation/Source/aurum/examples/C#/GrpcSample.csproj",
+  "expectedPackageFiles": [
+    "/home/wonsik/.nuget/packages/google.protobuf/3.19.4/google.protobuf.3.19.4.nupkg.sha512",
+    "/home/wonsik/.nuget/packages/grpc.core/2.43.0/grpc.core.2.43.0.nupkg.sha512",
+    "/home/wonsik/.nuget/packages/grpc.core.api/2.43.0/grpc.core.api.2.43.0.nupkg.sha512",
+    "/home/wonsik/.nuget/packages/grpc.tools/2.43.0/grpc.tools.2.43.0.nupkg.sha512",
+    "/home/wonsik/.nuget/packages/microsoft.netcore.platforms/3.1.0/microsoft.netcore.platforms.3.1.0.nupkg.sha512",
+    "/home/wonsik/.nuget/packages/system.memory/4.5.3/system.memory.4.5.3.nupkg.sha512",
+    "/home/wonsik/.nuget/packages/system.runtime.compilerservices.unsafe/4.5.2/system.runtime.compilerservices.unsafe.4.5.2.nupkg.sha512",
+    "/home/wonsik/.nuget/packages/tizen.net/9.0.0.16445/tizen.net.9.0.0.16445.nupkg.sha512",
+    "/home/wonsik/.nuget/packages/tizen.net.api9/9.0.0.16445/tizen.net.api9.9.0.0.16445.nupkg.sha512",
+    "/home/wonsik/.nuget/packages/tizen.net.sdk/1.1.6/tizen.net.sdk.1.1.6.nupkg.sha512",
+    "/home/wonsik/.nuget/packages/tizen.nui.xamlbuild/1.0.27/tizen.nui.xamlbuild.1.0.27.nupkg.sha512",
+    "/home/wonsik/.nuget/packages/microsoft.netcore.app.ref/3.1.0/microsoft.netcore.app.ref.3.1.0.nupkg.sha512",
+    "/home/wonsik/.nuget/packages/microsoft.aspnetcore.app.ref/3.1.10/microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512",
+    "/home/wonsik/.nuget/packages/microsoft.netcore.app.host.linux-x64/3.1.32/microsoft.netcore.app.host.linux-x64.3.1.32.nupkg.sha512"
+  ],
+  "logs": []
+}

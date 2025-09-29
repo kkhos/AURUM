@@ -362,3 +362,7 @@ std::shared_ptr<AccessibleNode> MockAccessibleNode::refAccessibleNode(const std:
     return nullptr;
 }
 
+std::string MockAccessibleNode::getStringProperty(const std::string &property) const
+{
+    return {};
+}

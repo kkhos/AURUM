@@ -173,9 +173,15 @@ public:
     ::grpc::Status clearWatcher(::grpc::ServerContext *context,
                               const ::aurum::ReqClearWatcher *request,
                               ::aurum::RspClearWatcher *response) override;
+<<<<<<< HEAD
     ::grpc::Status doAction(::grpc::ServerContext *context,
                               const ::aurum::ReqDoAction *request,
                               ::aurum::RspDoAction *response) override;
+=======
+    ::grpc::Status getStringProperty(::grpc::ServerContext *context,
+                              const ::aurum::ReqGetStringProperty *request,
+                              ::aurum::RspGetStringProperty *response) override;
+>>>>>>> 348f725... Aurum: Introduce GetStringProperty
 public:
     std::mutex mLock;
     std::condition_variable mCond;

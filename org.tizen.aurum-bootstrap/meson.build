@@ -62,7 +62,11 @@ bootstrap_svr_src += [
    files('src/Commands/GetIncludeHiddenCommand.cc'),
    files('src/Commands/AddWatcherCommand.cc'),
    files('src/Commands/ClearWatcherCommand.cc'),
+<<<<<<< HEAD
    files('src/Commands/DoActionCommand.cc'),
+=======
+   files('src/Commands/GetStringPropertyCommand.cc'),
+>>>>>>> 348f725... Aurum: Introduce GetStringProperty
 ]
 
 bootstrap_svr_dep = [
