@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Import Project="$(NuGetPackageRoot)tizen.nui.xamlbuild/1.0.27/build/netstandard2.0/Tizen.NUI.XamlBuild.targets" Condition="Exists('$(NuGetPackageRoot)tizen.nui.xamlbuild/1.0.27/build/netstandard2.0/Tizen.NUI.XamlBuild.targets')" />
-    <Import Project="$(NuGetPackageRoot)tizen.net.sdk/1.1.6/build/Tizen.NET.Sdk.targets" Condition="Exists('$(NuGetPackageRoot)tizen.net.sdk/1.1.6/build/Tizen.NET.Sdk.targets')" />
-    <Import Project="$(NuGetPackageRoot)grpc.tools/2.43.0/build/Grpc.Tools.targets" Condition="Exists('$(NuGetPackageRoot)grpc.tools/2.43.0/build/Grpc.Tools.targets')" />
-  </ImportGroup>
-</Project>
