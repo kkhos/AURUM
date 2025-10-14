@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09d92b5a_78fc6939",
+        "filename": "libaurumsharp/aurum_wrapper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2145,
+      "author": {
+        "id": 12582
+      },
+      "writtenOn": "2025-10-14T08:18:49Z",
+      "side": 1,
+      "message": "[Potential Defect]\nThe pointer returned by operator new can\u0027t be null, but it\u0027s compared with null at aurum_wrapper.cpp:2145.\n",
+      "revId": "0b26454ad4f12a8ee2ee19dc200d274fe0d8a18a",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba2e769a_e9951388",
+        "filename": "libaurumsharp/aurum_wrapper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2873,
+      "author": {
+        "id": 12582
+      },
+      "writtenOn": "2025-10-14T08:18:49Z",
+      "side": 1,
+      "message": "[Potential Defect]\nPointer \u0027allocate(...)-\u003e_M_impl-\u003e_M_storage-\u003e_M_storage\u0027, which is dereferenced at aurum_wrapper.cpp:2872 by calling function \u0027Aurum::Sel::text\u0027, is compared to a NULL value at aurum_wrapper.cpp:2873.\n",
+      "revId": "0b26454ad4f12a8ee2ee19dc200d274fe0d8a18a",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e3258aa_c2f8f51c",
+        "filename": "libaurumsharp/aurum_wrapper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2889,
+      "author": {
+        "id": 12582
+      },
+      "writtenOn": "2025-10-14T08:18:49Z",
+      "side": 1,
+      "message": "[Potential Defect]\nPointer \u0027allocate(...)-\u003e_M_impl-\u003e_M_storage-\u003e_M_storage\u0027, which is dereferenced at aurum_wrapper.cpp:2888 by calling function \u0027Aurum::Sel::type\u0027, is compared to a NULL value at aurum_wrapper.cpp:2889.\n",
+      "revId": "0b26454ad4f12a8ee2ee19dc200d274fe0d8a18a",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53b2274e_53677290",
+        "filename": "libaurumsharp/aurum_wrapper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2905,
+      "author": {
+        "id": 12582
+      },
+      "writtenOn": "2025-10-14T08:18:49Z",
+      "side": 1,
+      "message": "[Potential Defect]\nPointer \u0027allocate(...)-\u003e_M_impl-\u003e_M_storage-\u003e_M_storage\u0027, which is dereferenced at aurum_wrapper.cpp:2904 by calling function \u0027Aurum::Sel::style\u0027, is compared to a NULL value at aurum_wrapper.cpp:2905.\n",
+      "revId": "0b26454ad4f12a8ee2ee19dc200d274fe0d8a18a",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbced710_b7f636e5",
+        "filename": "libaurumsharp/aurum_wrapper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2917,
+      "author": {
+        "id": 12582
+      },
+      "writtenOn": "2025-10-14T08:18:49Z",
+      "side": 1,
+      "message": "[Potential Defect]\nPointer \u0027allocate(...)-\u003e_M_impl-\u003e_M_storage-\u003e_M_storage\u0027, which is dereferenced at aurum_wrapper.cpp:2916 by calling function \u0027Aurum::Sel::depth\u0027, is compared to a NULL value at aurum_wrapper.cpp:2917.\n",
+      "revId": "0b26454ad4f12a8ee2ee19dc200d274fe0d8a18a",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "283dfa1c_d11f2983",
+        "filename": "libaurumsharp/aurum_wrapper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 4390,
+      "author": {
+        "id": 12582
+      },
+      "writtenOn": "2025-10-14T08:18:49Z",
+      "side": 1,
+      "message": "[Potential Defect]\nThe pointer returned by operator new can\u0027t be null, but it\u0027s compared with null at aurum_wrapper.cpp:4390.\n",
+      "revId": "0b26454ad4f12a8ee2ee19dc200d274fe0d8a18a",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c17d6066_adf799e6",
+        "filename": "libaurumsharp/aurum_wrapper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 4479,
+      "author": {
+        "id": 12582
+      },
+      "writtenOn": "2025-10-14T08:18:49Z",
+      "side": 1,
+      "message": "[Potential Defect]\nThe pointer returned by operator new can\u0027t be null, but it\u0027s compared with null at aurum_wrapper.cpp:4479.\n",
+      "revId": "0b26454ad4f12a8ee2ee19dc200d274fe0d8a18a",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa89c0f1_b8418f18",
+        "filename": "libaurumsharp/aurum_wrapper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 4497,
+      "author": {
+        "id": 12582
+      },
+      "writtenOn": "2025-10-14T08:18:49Z",
+      "side": 1,
+      "message": "[Potential Defect]\nThe pointer returned by operator new can\u0027t be null, but it\u0027s compared with null at aurum_wrapper.cpp:4497.\n",
+      "revId": "0b26454ad4f12a8ee2ee19dc200d274fe0d8a18a",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4be679c_b88609aa",
+        "filename": "libaurumsharp/aurum_wrapper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 4509,
+      "author": {
+        "id": 12582
+      },
+      "writtenOn": "2025-10-14T08:18:49Z",
+      "side": 1,
+      "message": "[Potential Defect]\nThe pointer returned by operator new can\u0027t be null, but it\u0027s compared with null at aurum_wrapper.cpp:4509.\n",
+      "revId": "0b26454ad4f12a8ee2ee19dc200d274fe0d8a18a",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    }
+  ]
+}
