@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e256b22_9e3c2549",
+        "filename": "libaurumsharp/aurum_wrapper.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 4688,
+      "author": {
+        "id": 12582
+      },
+      "writtenOn": "2025-10-16T14:19:43Z",
+      "side": 1,
+      "message": "[Potential Defect]\nThis statement in the source code might be unreachable during program execution.\n",
+      "revId": "1c20d5e3ce07261acad98bf9427e46f3f8e8d0ab",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    }
+  ]
+}
