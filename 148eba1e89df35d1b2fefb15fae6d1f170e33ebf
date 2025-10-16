@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b26c3a2_49753836",
+        "filename": "libaurumsharp/aurum_wrapper.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2343,
+      "author": {
+        "id": 12582
+      },
+      "writtenOn": "2025-10-16T11:48:43Z",
+      "side": 1,
+      "message": "[Potential Defect]\nAfter having been assigned to a NULL value at aurum_wrapper.cpp:2337, pointer \u0027arg1\u0027 is dereferenced at aurum_wrapper.cpp:2343.\n",
+      "revId": "148eba1e89df35d1b2fefb15fae6d1f170e33ebf",
+      "serverId": "e010ba19-9d5d-4e2b-accf-c7c313b0558c"
+    }
+  ]
+}
