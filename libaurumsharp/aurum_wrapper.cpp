@@ -3395,12 +3395,15 @@ SWIGEXPORT void * SWIGSTDCALL CSharp_Aurum_AccessibleNode_next(void * jarg1) {
   Aurum::AccessibleNode *arg1 = (Aurum::AccessibleNode *) 0 ;
   std::shared_ptr< Aurum::AccessibleNode const > *smartarg1 = 0 ;
   std::shared_ptr< Aurum::AccessibleNode > result;
-  
-  
+
+
   smartarg1 = (std::shared_ptr< const Aurum::AccessibleNode > *)jarg1;
-  arg1 = (Aurum::AccessibleNode *)(smartarg1 ? smartarg1->get() : 0); 
+  if(smartarg1 == 0) return 0;
+  arg1 = (Aurum::AccessibleNode *)(smartarg1->get());
+  if(arg1 == 0) return 0;
   result = ((Aurum::AccessibleNode const *)arg1)->next();
-  jresult = result ? new std::shared_ptr< Aurum::AccessibleNode >(result) : 0; 
+  if(result == 0) return 0; 
+  jresult = new std::shared_ptr< Aurum::AccessibleNode >(result);
   return jresult;
 }
 
@@ -4063,10 +4066,10 @@ SWIGEXPORT void SWIGSTDCALL CSharp_Aurum_AccessibleNode_print__SWIG_0(void * jar
   Aurum::AccessibleNode *arg1 = (Aurum::AccessibleNode *) 0 ;
   int arg2 ;
   std::shared_ptr< Aurum::AccessibleNode > *smartarg1 = 0 ;
-  
-  
+
+
   smartarg1 = (std::shared_ptr<  Aurum::AccessibleNode > *)jarg1;
-  arg1 = (Aurum::AccessibleNode *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (Aurum::AccessibleNode *)(smartarg1 ? smartarg1->get() :0);
   arg2 = (int)jarg2; 
   (arg1)->print(arg2);
 }
@@ -6514,8 +6517,8 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_pressPower(void * jarg
   Aurum::KeyRequestType arg2 ;
   std::shared_ptr< Aurum::UiDevice > *smartarg1 = 0 ;
   bool result;
-  
-  
+
+
   smartarg1 = (std::shared_ptr<  Aurum::UiDevice > *)jarg1;
   arg1 = (Aurum::UiDevice *)(smartarg1 ? smartarg1->get() : 0); 
   arg2 = (Aurum::KeyRequestType)jarg2; 
