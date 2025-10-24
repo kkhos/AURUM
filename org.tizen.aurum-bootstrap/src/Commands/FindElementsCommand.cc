@@ -47,7 +47,6 @@ std::vector<std::shared_ptr<UiSelector>> FindElementsCommand::getSelectors(void)
 {
     auto sel = std::make_shared<UiSelector>();
 
-    if(mRequest->reqElementid_case())        sel->id(mRequest->elementid());
     if(mRequest->reqAutomationid_case())     sel->automationid(mRequest->automationid());
     if(mRequest->reqTextfield_case())        sel->text(mRequest->textfield());
     if(mRequest->reqWidgettype_case())       sel->type(mRequest->widgettype());
