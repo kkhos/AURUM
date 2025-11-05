@@ -231,14 +231,20 @@ std::shared_ptr<Node> UiObject::parseTreeFromJson(Value &value)
             auto extents = Rect<int>{x, y, x + w, y + h};
             auto imgSrc = value.HasMember("attributes") && value["attributes"].HasMember("imgSrc") && value["attributes"]["imgSrc"].IsString() ? value["attributes"]["imgSrc"].GetString() : "";
             node->refresh(text, role, type, automationId, description, imgSrc, current, minValue, maxValue, increment, extents);
+            auto obj = std::make_shared<UiObject>(mDevice, mSelector, node);
 
-            if (value.HasMember("children") && value["children"].IsArray()) {
+            if (value.HasMember("children") && value["children"].IsArray() && value["children"].Size() > 0) {
                 for (auto &child : value["children"].GetArray()) {
                     nodeChildren.push_back(parseTreeFromJson(child));
                 }
+            } else if (!strcmp(role, "filler")) {
+                auto children = obj->getChildren();
+                for (auto &&child : children) {
+                    child->refresh();
+                    nodeChildren.push_back(child->getDescendant());
+                }
             }
 
-            auto obj = std::make_shared<UiObject>(mDevice, mSelector, node);
             return std::make_shared<Node>(obj, nodeChildren);
         }
     }
