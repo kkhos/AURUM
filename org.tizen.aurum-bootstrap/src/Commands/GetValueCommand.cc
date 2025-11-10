@@ -35,11 +35,19 @@ GetValueCommand::GetValueCommand(const ::aurum::ReqGetValue *request,
             mObjMap->getElement(mRequest->elementid());
 
         if (obj) {
-            obj->updateName();
-            std::string text = obj->getText();
-            mResponse->set_type(::aurum::STRING);
-            mResponse->set_stringvalue(text.c_str());
-            mResponse->set_status(::aurum::RspStatus::OK);
+            if (obj->getRole().compare("slider") == 0) {
+                obj->updateValue();
+                std::string value = obj->getValueText();
+                mResponse->set_type(::aurum::STRING);
+                mResponse->set_stringvalue(value.c_str());
+                mResponse->set_status(::aurum::RspStatus::OK);
+            } else {
+                obj->updateName();
+                std::string text = obj->getText();
+                mResponse->set_type(::aurum::STRING);
+                mResponse->set_stringvalue(text.c_str());
+                mResponse->set_status(::aurum::RspStatus::OK);
+            }
         } else {
             mResponse->set_status(::aurum::RspStatus::ERROR);
         }
@@ -53,10 +61,17 @@ GetValueCommand::GetValueCommand(const ::aurum::ReqGetValue *request,
 
         if (obj) {
             obj->updateValue();
-            double value = obj->getValue();
-            mResponse->set_type(::aurum::DOUBLE);
-            mResponse->set_doublevalue(value);
-            mResponse->set_status(::aurum::RspStatus::OK);
+            std::string valueText = obj->getValueText();
+            if (!valueText.empty()) {
+                mResponse->set_type(::aurum::STRING);
+                mResponse->set_stringvalue(valueText.c_str());
+                mResponse->set_status(::aurum::RspStatus::OK);
+            } else {
+                double value = obj->getValue();
+                mResponse->set_type(::aurum::DOUBLE);
+                mResponse->set_doublevalue(value);
+                mResponse->set_status(::aurum::RspStatus::OK);
+            }
         } else {
             mResponse->set_status(::aurum::RspStatus::ERROR);
         }

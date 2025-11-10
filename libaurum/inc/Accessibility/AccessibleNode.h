@@ -386,6 +386,11 @@ public:
     std::string getImgSrc() const;
 
     /**
+     * @copydoc UIObject::getValueText()
+     */
+    std::string getValueText() const;
+
+    /**
      * @copydoc UiObject::isCheckable()
      */
     bool isCheckable() const;
@@ -559,10 +564,12 @@ public:
      * @param maxValue
      * @param increment
      * @param extents
+     * @param valueText
      */
     virtual void refresh(const std::string &text, const std::string &role, const std::string &type,
                          const std::string &automationId, const std::string &description, const std::string &imgSrc,
-                         double value, double minValue, double maxValue, double increment, const Rect<int> &extents) = 0;
+                         double value, double minValue, double maxValue, double increment, const Rect<int> &extents,
+                         const std::string &valueText) = 0;
 
     /**
      * @brief Gets available atspi action name.
@@ -679,6 +686,7 @@ protected:
     std::string mInterface;
     std::string mDescription;
     std::string mImgSrc;
+    std::string mValueText;
     Rect<int> mScreenBoundingBox;
     Rect<int> mWindowBoundingBox;
     Rect<int> mTextMinBoundingRect;

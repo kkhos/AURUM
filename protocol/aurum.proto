@@ -115,6 +115,8 @@ message Element {
    string imgSrc = 35;
 
    bool isHighlighted = 36;
+
+   string valueText = 37;
 }
 
 message Point {

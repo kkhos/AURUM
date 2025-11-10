@@ -438,6 +438,15 @@ public:
     const double getValue() const;
 
     /**
+     * @brief Gets object's current value text.
+     *
+     * @return string
+     *
+     * @since_tizen 10.0
+     */
+    std::string getValueText() const;
+
+    /**
      * @brief Gets object's process id.
      *
      * @return int

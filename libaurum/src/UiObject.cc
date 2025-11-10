@@ -180,19 +180,6 @@ std::vector<std::shared_ptr<UiObject>> UiObject::getChildren() const
     return ret;
 }
 
-double parseStringToDouble(const std::string& str) {
-    std::string processedStr = str;
-    size_t percentPos = processedStr.find('%');
-    if (percentPos != std::string::npos) {
-        processedStr = processedStr.substr(0, percentPos);
-    }
-    try {
-        return std::stod(processedStr);
-    } catch (const std::exception& e) {
-        return 0.0;
-    }
-}
-
 std::shared_ptr<Node> UiObject::parseTreeFromJson(Value &value)
 {
     std::vector<std::shared_ptr<Node>> nodeChildren{};
@@ -212,6 +199,7 @@ std::shared_ptr<Node> UiObject::parseTreeFromJson(Value &value)
             auto minValue = 0.0f;
             auto maxValue = 0.0f;
             auto increment = 0.0f;
+            auto valueText = std::string("");
 
             if (value.HasMember("value")) {
                 if (value["value"].IsObject()) {
@@ -220,8 +208,7 @@ std::shared_ptr<Node> UiObject::parseTreeFromJson(Value &value)
                     maxValue = value["value"].HasMember("max") && value["value"]["max"].IsDouble()? value["value"]["max"].GetDouble() : 0.0f;
                     increment = value["value"].HasMember("increment") && value["value"]["increment"].IsDouble()? value["value"]["increment"].GetDouble() : 0.0f;
                 } else {
-                    auto currentAsStr = value["value"].IsString()? value["value"].GetString() : "";
-                    current = parseStringToDouble(currentAsStr);
+                    valueText = value["value"].IsString()? value["value"].GetString() : "";
                 }
             }
             auto x = value.HasMember("x") ? (value["x"].IsInt() ? value["x"].GetInt() : value["x"].GetDouble()) : 0;
@@ -230,7 +217,7 @@ std::shared_ptr<Node> UiObject::parseTreeFromJson(Value &value)
             auto h = value.HasMember("h") ? (value["h"].IsInt() ? value["h"].GetInt() : value["h"].GetDouble()) : 0;
             auto extents = Rect<int>{x, y, x + w, y + h};
             auto imgSrc = value.HasMember("attributes") && value["attributes"].HasMember("imgSrc") && value["attributes"]["imgSrc"].IsString() ? value["attributes"]["imgSrc"].GetString() : "";
-            node->refresh(text, role, type, automationId, description, imgSrc, current, minValue, maxValue, increment, extents);
+            node->refresh(text, role, type, automationId, description, imgSrc, current, minValue, maxValue, increment, extents, valueText);
             auto obj = std::make_shared<UiObject>(mDevice, mSelector, node);
 
             if (value.HasMember("children") && value["children"].IsArray() && value["children"].Size() > 0) {
@@ -385,6 +372,11 @@ std::string UiObject::getToolkitName() const
 {
     mNode->updateToolkitName();
     return mNode->getToolkitName();
+}
+
+std::string UiObject::getValueText() const
+{
+    return mNode->getValueText();
 }
 
 void UiObject::setOcrText(std::string text)

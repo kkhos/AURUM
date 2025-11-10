@@ -153,6 +153,7 @@ std::vector<std::shared_ptr<UiSelector>> FindElementsCommand::getSelectors(void)
             elm->set_maxvalue(obj->getMaxValue());
             elm->set_value(obj->getValue());
             elm->set_increment(obj->getIncrement());
+            elm->set_valuetext(obj->getValueText());
 
             elm->set_windowangle(obj->getWindowAngle());
             elm->set_targetangle(obj->getTargetAngle());
