@@ -75,6 +75,7 @@ std::shared_ptr<UiSelector> FindElementCommand::getSelector(void)
     if(mRequest->reqIshighlighted_case())    sel->isHighlighted(mRequest->ishighlighted());
     if(mRequest->reqDescription_case())      sel->description(mRequest->description());
     if(mRequest->reqImgSrc_case())           sel->imgSrc(mRequest->imgsrc());
+    if(mRequest->reqRole_case())             sel->role(mRequest->role());
 
     return sel;
 }
