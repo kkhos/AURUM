@@ -251,6 +251,10 @@ message ReqFindElement {
    oneof reqIshighlighted {
       bool isHighlighted = 29;
    }
+   
+   oneof reqRole {
+      string role = 30;
+   }
 }
 
 message RspFindElement {
@@ -370,6 +374,10 @@ message ReqFindElements {
 
    oneof reqIshighlighted {
       bool isHighlighted = 29;
+   }
+
+   oneof reqRole {
+      string role = 30;
    }
 }
 
