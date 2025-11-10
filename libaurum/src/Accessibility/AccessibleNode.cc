@@ -56,7 +56,7 @@ AccessibleNode::~AccessibleNode()
 }
 
 AccessibleNode::AccessibleNode()
-: mText{""}, mOcrText{""}, mPkg{""}, mRole{""}, mId{""}, mAutomationId{""}, mType{""}, mStyle{""}, mXPath{""}, mToolkitName{""}, mInterface{""}, mDescription{""}, mImgSrc{""},
+: mText{""}, mOcrText{""}, mPkg{""}, mRole{""}, mId{""}, mAutomationId{""}, mType{""}, mStyle{""}, mXPath{""}, mToolkitName{""}, mInterface{""}, mDescription{""}, mImgSrc{""}, mValueText{""},
   mScreenBoundingBox{0,0,0,0}, mWindowBoundingBox{0,0,0,0}, mTextMinBoundingRect{0,0,0,0}, mSupportingIfaces(0), mFeatureProperty(0), mPid(0), mWindowAngle(0), mTargetAngle(0), mMinValue{0.0}, mMaxValue{0.0}, mValue{0.0}, mIncrement{0.0}, mValid{true}, mLock{}
 {
 }
@@ -348,4 +348,9 @@ int AccessibleNode::getPid() const
 Rect<int> AccessibleNode::getTextMinBoundingRect() const
 {
     return mTextMinBoundingRect;
+}
+
+std::string AccessibleNode::getValueText() const
+{
+    return mValueText;
 }

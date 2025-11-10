@@ -82,6 +82,7 @@ void DumpObjectTreeCommand::traverse(::aurum::Element *root, const std::shared_p
     root->set_maxvalue(obj->getMaxValue());
     root->set_value(obj->getValue());
     root->set_increment(obj->getIncrement());
+    root->set_valuetext(obj->getValueText());
 
     root->set_windowangle(obj->getWindowAngle());
     root->set_targetangle(obj->getTargetAngle());

@@ -286,6 +286,17 @@ void AtspiAccessibleNode::updateValue()
         mValue= AtspiWrapper::Atspi_value_get_current_value(value, NULL);
         mIncrement= AtspiWrapper::Atspi_value_get_minimum_increment(value, NULL);
         g_object_unref(value);
+    } else {
+        AtspiAccessibleNodeInfo *ni = AtspiWrapper::Atspi_accessible_get_node_info(mNode, NULL);
+        if (ni) {
+            mMinValue = ni->lower;
+            mMaxValue = ni->upper;
+            mValue = ni->value;
+            mIncrement = ni->increment;
+            mValueText = ni->value_text;
+
+            AtspiWrapper::Atspi_accessible_free_node_info(ni);
+        }
     }
 }
 
@@ -428,6 +439,7 @@ void AtspiAccessibleNode::refresh(bool updateAll)
             mMaxValue = ni->upper;
             mValue = ni->value;
             mIncrement = ni->increment;
+            mValueText = ni->value_text;
 
             // TODO: It should be belongs into Atspi_accessible_get_node_info()
             gchar *description = AtspiWrapper::Atspi_accessible_get_description(mNode, NULL);
@@ -464,7 +476,8 @@ void AtspiAccessibleNode::refresh(bool updateAll)
 
 void AtspiAccessibleNode::refresh(const std::string &text, const std::string &role, const std::string &type,
                                   const std::string &automationId, const std::string &description, const std::string &imgSrc,
-                                  double value, double minValue, double maxValue, double increment, const Rect<int> &extents)
+                                  double value, double minValue, double maxValue, double increment, const Rect<int> &extents,
+                                  const std::string &valueText)
 {
     mText = text;
     mRole = role;
@@ -477,6 +490,7 @@ void AtspiAccessibleNode::refresh(const std::string &text, const std::string &ro
     mMaxValue = maxValue;
     mIncrement = increment;
     mScreenBoundingBox = extents;
+    mValueText = valueText;
 
     if (!mRole.compare("slider")) mInterface = std::string("Value");
     else if (!mRole.compare("entry")) mInterface = std::string("EditableText");

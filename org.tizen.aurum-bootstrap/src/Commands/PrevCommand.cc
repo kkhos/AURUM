@@ -93,6 +93,7 @@ PrevCommand::PrevCommand(const ::aurum::ReqPrev *request,
         elm->set_maxvalue(obj->getMaxValue());
         elm->set_value(obj->getValue());
         elm->set_increment(obj->getIncrement());
+        elm->set_valuetext(obj->getValueText());
 
         elm->set_windowangle(obj->getWindowAngle());
         elm->set_targetangle(obj->getTargetAngle());

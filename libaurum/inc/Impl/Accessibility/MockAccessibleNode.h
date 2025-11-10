@@ -221,7 +221,8 @@ public:
      */
     void refresh(const std::string &text, const std::string &role, const std::string &type,
                  const std::string &automationId, const std::string &description, const std::string &imgSrc,
-                 double value, double minValue, double maxValue, double increment, const Rect<int> &extents) override;
+                 double value, double minValue, double maxValue, double increment, const Rect<int> &extents,
+                 const std::string &valueText) override;
 
     /**
      * @brief TBD
