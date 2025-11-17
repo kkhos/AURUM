@@ -17,6 +17,7 @@ BuildRequires:  at-spi2-core-devel
 BuildRequires:  pkgconfig(capi-system-info)
 BuildRequires:  pkgconfig(capi-ui-efl-util)
 BuildRequires:  pkgconfig(elementary)
+BuildRequires:  pkgconfig(ecore-wl2)
 BuildRequires:  pkgconfig(gmock)
 
 BuildRequires: pkgconfig(aul)

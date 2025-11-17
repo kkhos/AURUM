@@ -28,6 +28,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <Ecore.h>
+#include <Ecore_Wl2.h>
 
 #include <tdm_helper.h>
 #include <tbm_surface.h>
@@ -64,8 +65,39 @@ TizenDeviceImpl::TizenDeviceImpl()
 
     int width = 0;
     int height = 0;
-    system_info_get_platform_int("http://tizen.org/feature/screen.width", &width);
-    system_info_get_platform_int("http://tizen.org/feature/screen.height", &height);
+    bool updateScreenSize = false;
+
+    Ecore_Wl2_Display *display = ecore_wl2_display_connect(nullptr);
+    if(display)
+    {
+        Eina_List* screenList = nullptr;
+
+        screenList = ecore_wl2_display_screens_get(display);
+        if(screenList)
+        {
+            Eina_List* l          = nullptr;
+            void*      screen     = nullptr;
+
+            EINA_LIST_FOREACH(screenList, l, screen)
+            {
+                if(screen)
+                {
+                    ecore_wl2_screen_size_get((Ecore_Wl2_Screen*)screen, &width, &height);
+                    LOGI("Get Screen Size(%d x %d) by ecore screen", width, height);
+                    updateScreenSize = true;
+                    break;
+                }
+            }
+        }
+        ecore_wl2_display_disconnect(display);
+    }
+
+    if(!updateScreenSize)
+    {
+        system_info_get_platform_int("http://tizen.org/feature/screen.width", &width);
+        system_info_get_platform_int("http://tizen.org/feature/screen.height", &height);
+        LOGI("Get Screen Size(%d x %d) by system information", width, height);
+    }
 
     mScreenSize = Size2D<int>{width, height};
 }
