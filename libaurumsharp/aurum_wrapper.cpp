@@ -4488,6 +4488,29 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_AccessibleNode_getIncludeHidden
   return jresult;
 }
 
+SWIGEXPORT char *  SWIGSTDCALL CSharp_Aurum_AccessibleNode_getStringProperty(void * node, char * property) {
+  char * jresult ;
+  Aurum::AccessibleNode *aurumNode = (Aurum::AccessibleNode *) 0 ;
+  std::shared_ptr< Aurum::AccessibleNode const > *smartarg1 = 0 ;
+  std::string stringProperty ;
+  std::string result;
+    
+  smartarg1 = (std::shared_ptr< const Aurum::AccessibleNode > *)node;
+  if(smartarg1 == nullptr ) return nullptr;
+  aurumNode = (Aurum::AccessibleNode *)(smartarg1->get() ); 
+  if(aurumNode == nullptr ) return nullptr;
+
+  if (!property) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
+    return nullptr;
+  }
+  (&stringProperty)->assign(property);
+
+
+  result = (bool)((Aurum::AccessibleNode const *)aurumNode)->getStringProperty(stringProperty);
+  jresult = SWIG_csharp_string_callback((&result)->c_str()); 
+  return jresult;
+}
 
 SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_AccessibleNode_isSupporting(void * jarg1, int jarg2) {
   unsigned int jresult ;
