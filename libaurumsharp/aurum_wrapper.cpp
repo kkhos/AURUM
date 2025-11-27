@@ -6214,6 +6214,30 @@ SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiObject_getIncludeHidden(void 
 }
 
 
+SWIGEXPORT char *  SWIGSTDCALL CSharp_Aurum_UiObject_getStringProperty(void * object, char * property) {
+  char * jresult ;
+  Aurum::UiObject *aurumObject = (Aurum::UiObject *) 0 ;
+  std::shared_ptr< Aurum::UiObject const > *smartarg1 = 0 ;
+  std::string stringProperty ;
+  std::string aurumStringProperty;
+    
+  smartarg1 = (std::shared_ptr< const Aurum::UiObject > *)object;
+  if(smartarg1 == nullptr ) return nullptr;
+  aurumObject = (Aurum::UiObject *)(smartarg1->get() ); 
+  if(aurumObject == nullptr ) return nullptr;
+
+  if (!property) {
+    SWIG_CSharpSetPendingExceptionArgument(SWIG_CSharpArgumentNullException, "null string", 0);
+    return nullptr;
+  }
+  (&stringProperty)->assign(property);
+
+  aurumStringProperty = ((Aurum::UiObject const *)aurumObject)->getStringProperty(stringProperty);
+  jresult = SWIG_csharp_string_callback((&aurumStringProperty)->c_str()); 
+  return jresult;
+}
+
+
 SWIGEXPORT unsigned int SWIGSTDCALL CSharp_Aurum_UiDevice_click__SWIG_0(void * jarg1, int jarg2, int jarg3) {
   unsigned int jresult ;
   Aurum::UiDevice *arg1 = (Aurum::UiDevice *) 0 ;
