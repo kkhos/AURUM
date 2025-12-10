@@ -19,7 +19,10 @@
 #define _A11Y_EVENT_HANDLER_H_
 
 #include "A11yEvent.h"
+#include "AccessibleNode.h"
+
 #include <functional>
+#include <memory>
 
 namespace Aurum {
 
