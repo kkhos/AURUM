@@ -194,7 +194,7 @@ private:
     static const int INTV_CLICK = 5;
     static const int INTV_SHORTSTROKE = 10;
     static const int INTV_LONGSTROKE = 2000;
-    static const int INTV_MINIMUM_DRAG_MS = 25;
+    static const int INTV_MINIMUM_DRAG_MS = 10;
     static const int INTV_MINIMUM_USLEEP = 1000;
     static const int MINIMUM_DURATION_DRAG = 100;
     static const int MINIMUM_REPEAT_INTERVAL = 20;
