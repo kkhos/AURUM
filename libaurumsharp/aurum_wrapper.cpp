@@ -5963,6 +5963,22 @@ SWIGEXPORT char *SWIGSTDCALL CSharp_Aurum_UiObject_getText(void *jarg1)
     return jresult;
 }
 
+SWIGEXPORT char *SWIGSTDCALL CSharp_Aurum_UiObject_getValueText(void *jarg1)
+{
+    char                                   *jresult;
+    Aurum::UiObject                        *arg1 = (Aurum::UiObject *)0;
+    std::shared_ptr<Aurum::UiObject const> *smartarg1 = 0;
+    std::string                             result;
+
+    smartarg1 = (std::shared_ptr<const Aurum::UiObject> *)jarg1;
+    if (smartarg1 == nullptr) return nullptr;
+    arg1 = (Aurum::UiObject *)(smartarg1->get());
+    if (arg1 == nullptr) return nullptr;
+    result = ((Aurum::UiObject const *)arg1)->getValueText();
+    jresult = SWIG_csharp_string_callback((&result)->c_str());
+    return jresult;
+}
+
 SWIGEXPORT char *SWIGSTDCALL CSharp_Aurum_UiObject_getRole(void *jarg1)
 {
     char                                   *jresult;
