@@ -184,31 +184,31 @@ std::shared_ptr<Node> UiObject::parseTreeFromJson(Value &value)
 {
     std::vector<std::shared_ptr<Node>> nodeChildren{};
 
-    if ((value.HasMember("appname") && value["appname"].IsString()) &&
-        (value.HasMember("path") && value["path"].IsString())) {
-        auto appName = value["appname"].GetString();
-        auto path = value["path"].GetString();
+    if ((value.HasMember("a") && value["a"].IsString()) &&
+        (value.HasMember("p") && value["p"].IsString())) {
+        auto appName = value["a"].GetString();
+        auto path = value["p"].GetString();
         auto node = mNode->refAccessibleNode(appName, path);
         if (node) {
-            auto text = value.HasMember("text") && value["text"].IsString()? value["text"].GetString() : "";
-            auto role = value.HasMember("role") && value["role"].IsString()? value["role"].GetString() : "";
-            auto type = value.HasMember("type") && value["type"].IsString()? value["type"].GetString() : "";
-            auto automationId = value.HasMember("automationId") && value["automationId"].IsString()? value["automationId"].GetString() : "";
-            auto description = value.HasMember("description") && value["description"].IsString()? value["description"].GetString() : "";
+            auto text = value.HasMember("t") && value["t"].IsString()? value["t"].GetString() : "";
+            auto role = value.HasMember("r") && value["r"].IsString()? value["r"].GetString() : "";
+            auto type = value.HasMember("ty") && value["ty"].IsString()? value["ty"].GetString() : "";
+            auto automationId = value.HasMember("aid") && value["aid"].IsString()? value["aid"].GetString() : "";
+            auto description = value.HasMember("d") && value["d"].IsString()? value["d"].GetString() : "";
             auto current = 0.0f;
             auto minValue = 0.0f;
             auto maxValue = 0.0f;
             auto increment = 0.0f;
             auto valueText = std::string("");
 
-            if (value.HasMember("value")) {
-                if (value["value"].IsObject()) {
-                    current = value["value"].HasMember("current") && value["value"]["current"].IsDouble()? value["value"]["current"].GetDouble() : 0.0f;
-                    minValue = value["value"].HasMember("min") && value["value"]["min"].IsDouble()? value["value"]["min"].GetDouble() : 0.0f;
-                    maxValue = value["value"].HasMember("max") && value["value"]["max"].IsDouble()? value["value"]["max"].GetDouble() : 0.0f;
-                    increment = value["value"].HasMember("increment") && value["value"]["increment"].IsDouble()? value["value"]["increment"].GetDouble() : 0.0f;
+            if (value.HasMember("v")) {
+                if (value["v"].IsObject()) {
+                    current = value["v"].HasMember("current") && value["v"]["current"].IsDouble()? value["v"]["current"].GetDouble() : 0.0f;
+                    minValue = value["v"].HasMember("min") && value["v"]["min"].IsDouble()? value["v"]["min"].GetDouble() : 0.0f;
+                    maxValue = value["v"].HasMember("max") && value["v"]["max"].IsDouble()? value["v"]["max"].GetDouble() : 0.0f;
+                    increment = value["v"].HasMember("increment") && value["v"]["increment"].IsDouble()? value["v"]["increment"].GetDouble() : 0.0f;
                 } else {
-                    valueText = value["value"].IsString()? value["value"].GetString() : "";
+                    valueText = value["v"].IsString()? value["v"].GetString() : "";
                 }
             }
             auto x = value.HasMember("x") ? (value["x"].IsInt() ? value["x"].GetInt() : value["x"].GetDouble()) : 0;
@@ -220,8 +220,8 @@ std::shared_ptr<Node> UiObject::parseTreeFromJson(Value &value)
             node->refresh(text, role, type, automationId, description, imgSrc, current, minValue, maxValue, increment, extents, valueText);
             auto obj = std::make_shared<UiObject>(mDevice, mSelector, node);
 
-            if (value.HasMember("children") && value["children"].IsArray() && value["children"].Size() > 0) {
-                for (auto &child : value["children"].GetArray()) {
+            if (value.HasMember("c") && value["c"].IsArray() && value["c"].Size() > 0) {
+                for (auto &child : value["c"].GetArray()) {
                     nodeChildren.push_back(parseTreeFromJson(child));
                 }
             } else if (!strcmp(role, "filler")) {
