@@ -58,15 +58,15 @@ void aurum_shutdown()
 #endif
 }
 
-const char* aurum_dump_screen()
+const char* aurum_dump_screen_ex(int includeHidden)
 {
-    LOGI("dump_screen");
+    LOGI("dump_screen_ex(includeHidden=%d)", includeHidden);
     auto device = UiDevice::getInstance();
     auto windowRoots = device->getWindowRoot();
     std::string dumpResult{"["};
 
-    for (const auto& root: windowRoots) {
-        root->setIncludeHidden(true);
+    for (const auto& root : windowRoots) {
+        root->setIncludeHidden(includeHidden != 0);
 
         std::string packageName = root->getPkg();
         dumpResult += "{\"package\":\"" + packageName + "\",\"tree\":" + root->dumpTree() + "}";
@@ -74,7 +74,7 @@ const char* aurum_dump_screen()
     }
 
     // remove last comma if exists.
-    if(dumpResult.back() == ',') {
+    if (dumpResult.back() == ',') {
         dumpResult.pop_back();
     }
 
@@ -82,6 +82,12 @@ const char* aurum_dump_screen()
     char* cResult = new char[dumpResult.size() + 1]; // Consumers must free this memory later
     std::strcpy(cResult, dumpResult.c_str());
     return cResult;
+}
+
+const char* aurum_dump_screen()
+{
+    // Backward compatible behavior: always include hidden by default.
+    return aurum_dump_screen_ex(1);
 }
 
 void aurum_free_string_result(const char* ptr)

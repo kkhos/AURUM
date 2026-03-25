@@ -30,6 +30,9 @@ extern "C" {
     void aurum_shutdown();
     // Dump current screen as JSON string.
     const char* aurum_dump_screen();
+    // Dump current screen as JSON string.
+    // @param includeHidden If non-zero, include hidden accessibility objects.
+    const char* aurum_dump_screen_ex(int includeHidden);
     // Free the allocated string memory.
     void aurum_free_string_result(const char* ptr);
     // Click the given coordinates. Returns 1 if successful. Otherwise -1.

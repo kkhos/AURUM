@@ -11,6 +11,21 @@ TEST(CBindingsTest, DumpScreen)
     aurum_shutdown();
 }
 
+TEST(CBindingsTest, DumpScreenIncludeHiddenToggle)
+{
+    aurum_init();
+
+    const char* withHidden = aurum_dump_screen_ex(1);
+    EXPECT_NE(withHidden, nullptr);
+    aurum_free_string_result(withHidden);
+
+    const char* withoutHidden = aurum_dump_screen_ex(0);
+    EXPECT_NE(withoutHidden, nullptr);
+    aurum_free_string_result(withoutHidden);
+
+    aurum_shutdown();
+}
+
 TEST(CBindingsTest, FreeStringResultWorksWithNull)
 {
     aurum_free_string_result(nullptr);

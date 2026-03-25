@@ -23,8 +23,160 @@
 
 #include <gio/gio.h>
 
+#include <cstdint>
+#include <cstring>
+#include <dlfcn.h>
+#include <mutex>
+#include <vector>
+
 using namespace Aurum;
 using namespace AurumInternal;
+
+namespace
+{
+constexpr const char* LZ4_MARKER{"lz4b64:"};
+
+const std::string BASE64_TABLE{"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"};
+
+std::vector<uint8_t> Base64Decode(const std::string& input)
+{
+    auto is_base64_char = [](unsigned char c) -> bool
+    {
+        return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || c == '+' || c == '/' || c == '=';
+    };
+    for(char c : input)
+    {
+        if(!is_base64_char(static_cast<unsigned char>(c))) return {};
+    }
+
+    auto decode_index = [](char c) -> int
+    {
+        if(c >= 'A' && c <= 'Z') return c - 'A';
+        if(c >= 'a' && c <= 'z') return 26 + (c - 'a');
+        if(c >= '0' && c <= '9') return 52 + (c - '0');
+        if(c == '+') return 62;
+        if(c == '/') return 63;
+        return -1;
+    };
+
+    size_t len = input.size();
+    if(len % 4 != 0) return {};
+
+    size_t padding = 0;
+    if(len >= 1 && input[len - 1] == '=') padding++;
+    if(len >= 2 && input[len - 2] == '=') padding++;
+
+    size_t out_len = (len / 4) * 3 - padding;
+    std::vector<uint8_t> out;
+    out.resize(out_len);
+
+    size_t out_i = 0;
+    for(size_t i = 0; i < len; i += 4)
+    {
+        char c0 = input[i];
+        char c1 = input[i + 1];
+        char c2 = input[i + 2];
+        char c3 = input[i + 3];
+
+        int b0 = decode_index(c0);
+        int b1 = decode_index(c1);
+        int b2 = c2 == '=' ? -1 : decode_index(c2);
+        int b3 = c3 == '=' ? -1 : decode_index(c3);
+
+        if(b0 < 0 || b1 < 0) return {};
+
+        uint32_t n = static_cast<uint32_t>(b0) << 18;
+        n |= static_cast<uint32_t>(b1) << 12;
+        if(b2 >= 0) n |= static_cast<uint32_t>(b2) << 6;
+        if(b3 >= 0) n |= static_cast<uint32_t>(b3);
+
+        if(out_i < out_len) out[out_i++] = (n >> 16) & 0xFF;
+        if(b2 >= 0 && out_i < out_len) out[out_i++] = (n >> 8) & 0xFF;
+        if(b3 >= 0 && out_i < out_len) out[out_i++] = n & 0xFF;
+    }
+
+    return out;
+}
+
+struct Lz4Api
+{
+    void* handle{nullptr};
+
+    int (*compressBound)(int) = nullptr;
+    int (*compressDefault)(const char*, char*, int, int) = nullptr;
+    int (*decompressSafe)(const char*, char*, int, int) = nullptr;
+
+    bool ok() const { return handle && decompressSafe; }
+};
+
+Lz4Api& GetLz4Api()
+{
+    static Lz4Api api;
+    static std::once_flag once;
+    std::call_once(once, [](){
+        const char* candidates[] = {"liblz4.so.1", "liblz4.so"};
+        for(const char* name : candidates)
+        {
+            api.handle = dlopen(name, RTLD_LAZY);
+            if(api.handle) break;
+        }
+        if(!api.handle) return;
+
+        api.decompressSafe = reinterpret_cast<int(*)(const char*, char*, int, int)>(dlsym(api.handle, "LZ4_decompress_safe"));
+    });
+    return api;
+}
+
+std::string MaybeDecompressLz4B64(const std::string& input)
+{
+    if(input.rfind(LZ4_MARKER, 0) != 0)
+    {
+        return input; // not compressed
+    }
+
+    const auto b64 = input.substr(std::strlen(LZ4_MARKER));
+    LOGI("MaybeDecompressLz4B64: input_chars=%zu b64_chars=%zu", input.size(), b64.size());
+    auto payload = Base64Decode(b64);
+    if(payload.size() < 4)
+    {
+        LOGI("MaybeDecompressLz4B64: base64 decode failed payload_bytes=%zu", payload.size());
+        return input;
+    }
+
+    const uint32_t origLen = static_cast<uint32_t>(payload[0]) |
+                              (static_cast<uint32_t>(payload[1]) << 8) |
+                              (static_cast<uint32_t>(payload[2]) << 16) |
+                              (static_cast<uint32_t>(payload[3]) << 24);
+
+    auto& api = GetLz4Api();
+    if(!api.ok() || origLen == 0)
+    {
+        LOGI("MaybeDecompressLz4B64: lz4 api not ok or origLen=0 api_ok=%d origLen=%u", (int)api.ok(), origLen);
+        return input;
+    }
+
+    const size_t compSize = payload.size() - 4;
+    std::string out;
+    out.resize(origLen);
+
+    LOGI("MaybeDecompressLz4B64: payload_bytes=%zu comp_bytes=%zu origLen=%u", payload.size(), compSize, origLen);
+    const int decompressedSize = api.decompressSafe(
+        reinterpret_cast<const char*>(payload.data() + 4),
+        out.data(),
+        static_cast<int>(compSize),
+        static_cast<int>(origLen));
+
+    if(decompressedSize < 0)
+    {
+        LOGI("MaybeDecompressLz4B64: LZ4_decompress_safe failed decompressedSize=%d", decompressedSize);
+        return input;
+    }
+
+    out.resize(static_cast<size_t>(decompressedSize));
+    LOGI("MaybeDecompressLz4B64: decompressedSize=%d out_bytes=%zu", decompressedSize, out.size());
+    return out;
+}
+} // namespace
 
 AtspiAccessibleNode::AtspiAccessibleNode(AtspiAccessible *node)
 : mNode{node}
@@ -741,11 +893,12 @@ std::string AtspiAccessibleNode::dumpTree() const
         return {};
     }
 
-    gchar *c_result = AtspiWrapper::Atspi_accessible_dump_tree(mNode, ATSPI_DUMP_FULL_SHOWING_ONLY, NULL);
+    // Request LZ4-compressed dump to avoid DBus payload size limits.
+    gchar *c_result = AtspiWrapper::Atspi_accessible_dump_tree(mNode, ATSPI_DUMP_FULL_SHOWING_ONLY_LZ4, NULL);
     if (c_result) {
         std::string result{c_result};
         g_free(c_result);
-        return result;
+        return MaybeDecompressLz4B64(result);
     }
 
     return {};
