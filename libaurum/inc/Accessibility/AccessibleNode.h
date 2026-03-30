@@ -82,6 +82,22 @@ enum class NodeFeatureProperties {
 };
 
 /**
+ * @brief Detail level for dumpTree() / AT-SPI DumpTree wire format.
+ *
+ * Integer values match AtspiDumpDetailLevelType in at-spi2-core.
+ * Default dumpTree() uses FULL_SHOWING_ONLY_LZ4 (compressed on DBus, JSON after return).
+ *
+ * @since_tizen 10.0
+ */
+enum class DumpTreeDetailLevel : int {
+    SHORT                   = 0,
+    SHORT_SHOWING_ONLY      = 1,
+    FULL                    = 2,
+    FULL_SHOWING_ONLY       = 3,
+    FULL_SHOWING_ONLY_LZ4   = 4,
+};
+
+/**
  * @brief AccessibleNode Class that provides the abstracted object information to uses.
  *
  * @since_tizen 6.5
@@ -143,11 +159,12 @@ public:
     virtual std::vector<std::shared_ptr<AccessibleNode>> getMatchesInMatches(const std::shared_ptr<UiSelector> firstSelector, const std::shared_ptr<UiSelector> secondSelector, const bool ealryReturn) const = 0;
 
     /**
-     * @brief dump current tree in json string
+     * @brief Dump current subtree as JSON string (decompressed when using LZ4 wire format).
      *
-     * @return string
+     * @param[in] detailLevel AT-SPI DumpTree detail level; default is FULL_SHOWING_ONLY_LZ4.
+     * @return JSON string
      */
-    virtual std::string dumpTree() const = 0;
+    virtual std::string dumpTree(DumpTreeDetailLevel detailLevel = DumpTreeDetailLevel::FULL_SHOWING_ONLY_LZ4) const = 0;
 
     /**
      * @copydoc UiObject::next()

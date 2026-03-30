@@ -135,7 +135,9 @@ std::string MaybeDecompressLz4B64(const std::string& input)
     }
 
     const auto b64 = input.substr(std::strlen(LZ4_MARKER));
-    LOGI("MaybeDecompressLz4B64: input_chars=%zu b64_chars=%zu", input.size(), b64.size());
+    // Sizes as received on wire (DBus string): full message, marker, base64 body (ASCII chars == bytes for payload).
+    LOGI("dumpTree compressed recv: wire_total_chars=%zu marker_len=%zu b64_body_chars=%zu",
+         input.size(), std::strlen(LZ4_MARKER), b64.size());
     auto payload = Base64Decode(b64);
     if(payload.size() < 4)
     {
@@ -159,7 +161,8 @@ std::string MaybeDecompressLz4B64(const std::string& input)
     std::string out;
     out.resize(origLen);
 
-    LOGI("MaybeDecompressLz4B64: payload_bytes=%zu comp_bytes=%zu origLen=%u", payload.size(), compSize, origLen);
+    LOGI("dumpTree compressed payload: binary_total_bytes=%zu header_u32_bytes=4 lz4_block_bytes=%zu declared_uncompressed_bytes=%u",
+         payload.size(), compSize, origLen);
     const int decompressedSize = api.decompressSafe(
         reinterpret_cast<const char*>(payload.data() + 4),
         out.data(),
@@ -173,7 +176,7 @@ std::string MaybeDecompressLz4B64(const std::string& input)
     }
 
     out.resize(static_cast<size_t>(decompressedSize));
-    LOGI("MaybeDecompressLz4B64: decompressedSize=%d out_bytes=%zu", decompressedSize, out.size());
+    LOGI("dumpTree compressed done: json_out_bytes=%zu (wire was %zu chars before decompress)", out.size(), input.size());
     return out;
 }
 } // namespace
@@ -887,16 +890,19 @@ std::vector<std::shared_ptr<AccessibleNode>> AtspiAccessibleNode::getMatchesInMa
     return ret;
 }
 
-std::string AtspiAccessibleNode::dumpTree() const
+std::string AtspiAccessibleNode::dumpTree(DumpTreeDetailLevel detailLevel) const
 {
     if (!isValid()) {
         return {};
     }
 
-    // Request LZ4-compressed dump to avoid DBus payload size limits.
-    gchar *c_result = AtspiWrapper::Atspi_accessible_dump_tree(mNode, ATSPI_DUMP_FULL_SHOWING_ONLY_LZ4, NULL);
+    const auto atspiLevel = static_cast<AtspiDumpDetailLevelType>(static_cast<int>(detailLevel));
+    gchar *c_result = AtspiWrapper::Atspi_accessible_dump_tree(mNode, atspiLevel, NULL);
     if (c_result) {
         std::string result{c_result};
+        const bool wireLooksCompressed = (result.rfind(LZ4_MARKER, 0) == 0);
+        LOGI("dumpTree: DumpTree wire_chars=%zu detail_level=%d looks_lz4b64=%d",
+             result.size(), static_cast<int>(detailLevel), wireLooksCompressed ? 1 : 0);
         g_free(c_result);
         return MaybeDecompressLz4B64(result);
     }
