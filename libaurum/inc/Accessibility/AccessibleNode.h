@@ -85,7 +85,7 @@ enum class NodeFeatureProperties {
  * @brief Detail level for dumpTree() / AT-SPI DumpTree wire format.
  *
  * Integer values match AtspiDumpDetailLevelType in at-spi2-core.
- * Default dumpTree() uses FULL_SHOWING_ONLY_LZ4 (compressed on DBus, JSON after return).
+ * Default dumpTree() uses FULL_LZ4 (compressed on DBus, JSON after return).
  *
  * @since_tizen 10.0
  */
@@ -95,6 +95,9 @@ enum class DumpTreeDetailLevel : int {
     FULL                    = 2,
     FULL_SHOWING_ONLY       = 3,
     FULL_SHOWING_ONLY_LZ4   = 4,
+    // LZ4-compressed payload for very large DumpTree responses with FULL semantics
+    // (i.e., include non-showing nodes).
+    FULL_LZ4                = 5,
 };
 
 /**
@@ -164,7 +167,7 @@ public:
      * @param[in] detailLevel AT-SPI DumpTree detail level; default is FULL_SHOWING_ONLY_LZ4.
      * @return JSON string
      */
-    virtual std::string dumpTree(DumpTreeDetailLevel detailLevel = DumpTreeDetailLevel::FULL_SHOWING_ONLY_LZ4) const = 0;
+    virtual std::string dumpTree(DumpTreeDetailLevel detailLevel = DumpTreeDetailLevel::FULL_LZ4) const = 0;
 
     /**
      * @copydoc UiObject::next()

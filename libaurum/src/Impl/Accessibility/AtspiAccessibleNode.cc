@@ -26,6 +26,8 @@
 #include <cstdint>
 #include <cstring>
 #include <dlfcn.h>
+#include <limits>
+#include <atomic>
 #include <mutex>
 #include <vector>
 
@@ -106,7 +108,7 @@ struct Lz4Api
     int (*compressDefault)(const char*, char*, int, int) = nullptr;
     int (*decompressSafe)(const char*, char*, int, int) = nullptr;
 
-    bool ok() const { return handle && decompressSafe; }
+    bool ok() const { return decompressSafe != nullptr; }
 };
 
 Lz4Api& GetLz4Api()
@@ -120,7 +122,12 @@ Lz4Api& GetLz4Api()
             api.handle = dlopen(name, RTLD_LAZY);
             if(api.handle) break;
         }
-        if(!api.handle) return;
+        // If the library isn't found by name, attempt resolving from already-loaded
+        // symbols in the current process as a best-effort fallback.
+        if(!api.handle)
+        {
+            api.handle = RTLD_DEFAULT;
+        }
 
         api.decompressSafe = reinterpret_cast<int(*)(const char*, char*, int, int)>(dlsym(api.handle, "LZ4_decompress_safe"));
     });
@@ -129,6 +136,10 @@ Lz4Api& GetLz4Api()
 
 std::string MaybeDecompressLz4B64(const std::string& input)
 {
+    // Upper bound to avoid pathological allocations if a malformed wire payload
+    // claims an enormous uncompressed size.
+    constexpr std::size_t MAX_DECOMPRESSED_BYTES = 256u * 1024u * 1024u; // 256 MiB
+
     if(input.rfind(LZ4_MARKER, 0) != 0)
     {
         return input; // not compressed
@@ -141,8 +152,12 @@ std::string MaybeDecompressLz4B64(const std::string& input)
     auto payload = Base64Decode(b64);
     if(payload.size() < 4)
     {
-        LOGI("MaybeDecompressLz4B64: base64 decode failed payload_bytes=%zu", payload.size());
-        return input;
+        static std::atomic_bool s_loggedBase64Fail{false};
+        if(!s_loggedBase64Fail.exchange(true))
+        {
+            LOGI("MaybeDecompressLz4B64: base64 decode failed payload_bytes=%zu", payload.size());
+        }
+        return "{}";
     }
 
     const uint32_t origLen = static_cast<uint32_t>(payload[0]) |
@@ -153,8 +168,22 @@ std::string MaybeDecompressLz4B64(const std::string& input)
     auto& api = GetLz4Api();
     if(!api.ok() || origLen == 0)
     {
-        LOGI("MaybeDecompressLz4B64: lz4 api not ok or origLen=0 api_ok=%d origLen=%u", (int)api.ok(), origLen);
-        return input;
+        static std::atomic_bool s_loggedLz4UnavailableOrZeroLen{false};
+        if(!s_loggedLz4UnavailableOrZeroLen.exchange(true))
+        {
+            LOGI("MaybeDecompressLz4B64: lz4 api not ok or origLen=0 api_ok=%d origLen=%u", (int)api.ok(), origLen);
+        }
+        return "{}";
+    }
+
+    if(static_cast<std::size_t>(origLen) > MAX_DECOMPRESSED_BYTES)
+    {
+        static std::atomic_bool s_loggedTooLargeOrigLen{false};
+        if(!s_loggedTooLargeOrigLen.exchange(true))
+        {
+            LOGI("MaybeDecompressLz4B64: origLen too large origLen=%u max=%zu", origLen, MAX_DECOMPRESSED_BYTES);
+        }
+        return "{}";
     }
 
     const size_t compSize = payload.size() - 4;
@@ -171,8 +200,12 @@ std::string MaybeDecompressLz4B64(const std::string& input)
 
     if(decompressedSize < 0)
     {
-        LOGI("MaybeDecompressLz4B64: LZ4_decompress_safe failed decompressedSize=%d", decompressedSize);
-        return input;
+        static std::atomic_bool s_loggedDecompressFail{false};
+        if(!s_loggedDecompressFail.exchange(true))
+        {
+            LOGI("MaybeDecompressLz4B64: LZ4_decompress_safe failed decompressedSize=%d", decompressedSize);
+        }
+        return "{}";
     }
 
     out.resize(static_cast<size_t>(decompressedSize));
