@@ -82,7 +82,7 @@ public:
     /**
      * @copydoc AccessibleNode::dumpTree()
      */
-    std::string dumpTree() const override;
+    std::string dumpTree(DumpTreeDetailLevel detailLevel) const override;
 
     /**
      * @copydoc UiObject::next()
