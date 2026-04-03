@@ -22,7 +22,7 @@ Use subcommands instead of many flags:
 
 - `aurum-cli find --text <value> [--timeout-ms 3000]`
 - `aurum-cli click --text <value>`
-- `aurum-cli click @e1` (use ref from `snapshot`; refs map to in-memory `UiObject` handles)
+- `aurum-cli click @e1` (use ref from `snapshot`; daemon keeps `ref -> UiObject` in memory)
 - `aurum-cli dblclick --text <value>`
 - `aurum-cli longclick --text <value> [--duration-ms 1000]`
 - `aurum-cli focus --text <value>`
@@ -38,7 +38,8 @@ Use subcommands instead of many flags:
 Guidelines:
 
 - Always support at least one selector option (`--text` minimum).
-- For post-snapshot interactions, support reference targets like `@e1` directly by keeping `ref -> UiObject` map in memory.
+- For post-snapshot interactions, support reference targets like `@e1` directly via daemon-managed `ref -> UiObject` map in memory.
+- Daemon should auto-start on first command and auto-exit after ~10 minutes of inactivity.
 - Prefer explicit names (`--timeout-ms`, `--duration-ms`) over short ambiguous flags.
 - Never silently ignore missing required options.
 

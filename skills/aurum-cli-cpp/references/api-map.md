@@ -63,7 +63,8 @@ Common filters:
 - pointer/actions: `click`, `dblclick`(two clicks), `longclick`, `drag`
 - focus/input: `focus`, `fill`, `press`
 - introspection: `get --field <text|value|role|description|count>`, `is --field <visible|enabled|checked|focusable|clickable>`
-- ref targets: snapshot stores `ref -> UiObject` in memory, and commands like `click @e1` use that object directly (no xpath re-find step).
+- ref targets: daemon stores `ref -> UiObject` in memory, and commands like `click @e1` use that object directly (no xpath re-find step).
+- lifecycle: daemon auto-starts on demand and should terminate after idle timeout (~10 min).
 
 ## CLI architecture tips
 

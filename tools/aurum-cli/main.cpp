@@ -10,10 +10,20 @@
 #include <unordered_set>
 #include <unordered_map>
 #include <vector>
+#include <cstring>
+#include <sys/socket.h>
+#include <sys/un.h>
+#include <sys/select.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 #include "Aurum.h"
 
 namespace {
+
+// Function declarations
+std::string lowerCopy(std::string s);
+std::string escapeForQuote(const std::string &src);
 
 enum ExitCode {
     EXIT_OK = 0,
@@ -25,6 +35,8 @@ enum ExitCode {
 
 using Options = std::unordered_map<std::string, std::string>;
 std::unordered_map<std::string, std::shared_ptr<Aurum::UiObject>> gRefObjectMap;
+constexpr const char *DAEMON_SOCKET_PATH = "/tmp/aurum-cli-daemon.sock";
+constexpr int DAEMON_IDLE_TIMEOUT_SEC = 600;
 
 int parsePositiveInt(const std::string &text, const std::string &optName);
 bool shouldIncludeInSnapshot(const std::shared_ptr<Aurum::AccessibleNode> &node, const std::string &role);
@@ -748,23 +760,26 @@ int runSnapshot(const std::shared_ptr<Aurum::UiDevice> &device, const Options &o
 
 } // namespace
 
-int main(int argc, char **argv)
+namespace {
+
+int runCliCommand(const std::vector<std::string> &argvList)
 {
-    if (argc < 2) {
+    if (argvList.empty()) {
         printUsage();
         return EXIT_INVALID_ARGS;
     }
 
-    const std::string command = argv[1];
+    const std::string command = argvList[0];
     if (command == "help" || command == "--help" || command == "-h") {
         printUsage();
         return EXIT_OK;
     }
 
     std::vector<std::string> rawArgs;
-    rawArgs.reserve(static_cast<size_t>(argc > 2 ? argc - 2 : 0));
-    for (int i = 2; i < argc; ++i)
-        rawArgs.emplace_back(argv[i]);
+    rawArgs.reserve(argvList.size() > 1 ? argvList.size() - 1 : 0);
+    for (size_t i = 1; i < argvList.size(); ++i) {
+        rawArgs.emplace_back(argvList[i]);
+    }
 
     Options opts;
     std::string parseError;
@@ -773,6 +788,7 @@ int main(int argc, char **argv)
         return EXIT_INVALID_ARGS;
     }
 
+    Aurum::AccessibleWatcher::getInstance();
     auto device = Aurum::UiDevice::getInstance();
 
     try {
@@ -812,4 +828,204 @@ int main(int argc, char **argv)
         std::cerr << "status=error code=ERROR detail='" << e.what() << "'\n";
         return EXIT_ERROR;
     }
+}
+
+bool connectToDaemon(int &sockFd)
+{
+    sockFd = socket(AF_UNIX, SOCK_STREAM, 0);
+    if (sockFd < 0)
+        return false;
+
+    sockaddr_un addr{};
+    addr.sun_family = AF_UNIX;
+    std::snprintf(addr.sun_path, sizeof(addr.sun_path), "%s", DAEMON_SOCKET_PATH);
+    if (connect(sockFd, reinterpret_cast<sockaddr *>(&addr), sizeof(addr)) < 0) {
+        close(sockFd);
+        sockFd = -1;
+        return false;
+    }
+    return true;
+}
+
+bool startDaemonProcess(const char *selfPath)
+{
+    pid_t pid = fork();
+    if (pid < 0)
+        return false;
+    if (pid == 0) {
+        execl(selfPath, selfPath, "--daemon-run", nullptr);
+        _exit(127);
+    }
+    int status = 0;
+    (void)waitpid(pid, &status, WNOHANG);
+    return true;
+}
+
+bool sendAll(int fd, const std::string &data)
+{
+    size_t sent = 0;
+    while (sent < data.size()) {
+        ssize_t n = send(fd, data.data() + sent, data.size() - sent, 0);
+        if (n <= 0)
+            return false;
+        sent += static_cast<size_t>(n);
+    }
+    return true;
+}
+
+std::string recvAll(int fd)
+{
+    std::string out;
+    char buf[4096];
+    while (true) {
+        ssize_t n = recv(fd, buf, sizeof(buf), 0);
+        if (n <= 0)
+            break;
+        out.append(buf, static_cast<size_t>(n));
+    }
+    return out;
+}
+
+int runClient(int argc, char **argv)
+{
+    if (argc < 2) {
+        printUsage();
+        return EXIT_INVALID_ARGS;
+    }
+
+    int sockFd = -1;
+    if (!connectToDaemon(sockFd)) {
+        if (!startDaemonProcess(argv[0])) {
+            std::cerr << "status=error code=ERROR detail='failed to start daemon'\n";
+            return EXIT_ERROR;
+        }
+
+        bool connected = false;
+        for (int i = 0; i < 50; ++i) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            if (connectToDaemon(sockFd)) {
+                connected = true;
+                break;
+            }
+        }
+        if (!connected) {
+            std::cerr << "status=error code=ERROR detail='daemon did not start'\n";
+            return EXIT_ERROR;
+        }
+    }
+
+    std::string payload;
+    for (int i = 1; i < argc; ++i) {
+        payload += argv[i];
+        payload.push_back('\n');
+    }
+
+    if (!sendAll(sockFd, payload)) {
+        close(sockFd);
+        std::cerr << "status=error code=ERROR detail='failed to send request'\n";
+        return EXIT_ERROR;
+    }
+    shutdown(sockFd, SHUT_WR);
+
+    std::string response = recvAll(sockFd);
+    close(sockFd);
+    if (response.empty()) {
+        std::cerr << "status=error code=ERROR detail='empty daemon response'\n";
+        return EXIT_ERROR;
+    }
+
+    auto nl = response.find('\n');
+    if (nl == std::string::npos) {
+        std::cerr << "status=error code=ERROR detail='invalid daemon response'\n";
+        return EXIT_ERROR;
+    }
+    int code = EXIT_ERROR;
+    try {
+        code = std::stoi(response.substr(0, nl));
+    } catch (...) {
+        std::cerr << "status=error code=ERROR detail='invalid response code'\n";
+        return EXIT_ERROR;
+    }
+
+    const std::string output = response.substr(nl + 1);
+    std::cout << output;
+    return code;
+}
+
+int runDaemon()
+{
+    unlink(DAEMON_SOCKET_PATH);
+    int serverFd = socket(AF_UNIX, SOCK_STREAM, 0);
+    if (serverFd < 0)
+        return EXIT_ERROR;
+
+    sockaddr_un addr{};
+    addr.sun_family = AF_UNIX;
+    std::snprintf(addr.sun_path, sizeof(addr.sun_path), "%s", DAEMON_SOCKET_PATH);
+
+    if (bind(serverFd, reinterpret_cast<sockaddr *>(&addr), sizeof(addr)) < 0) {
+        close(serverFd);
+        return EXIT_ERROR;
+    }
+
+    if (listen(serverFd, 16) < 0) {
+        close(serverFd);
+        return EXIT_ERROR;
+    }
+
+    while (true) {
+        fd_set rfds;
+        FD_ZERO(&rfds);
+        FD_SET(serverFd, &rfds);
+        timeval tv{};
+        tv.tv_sec = DAEMON_IDLE_TIMEOUT_SEC;
+        tv.tv_usec = 0;
+
+        int sel = select(serverFd + 1, &rfds, nullptr, nullptr, &tv);
+        if (sel == 0) {
+            break; // idle timeout
+        }
+        if (sel < 0) {
+            continue;
+        }
+
+        int clientFd = accept(serverFd, nullptr, nullptr);
+        if (clientFd < 0) {
+            continue;
+        }
+
+        std::string request = recvAll(clientFd);
+        std::vector<std::string> args;
+        std::stringstream ss(request);
+        std::string line;
+        while (std::getline(ss, line)) {
+            if (!line.empty())
+                args.push_back(line);
+        }
+
+        std::ostringstream captured;
+        auto *coutBuf = std::cout.rdbuf(captured.rdbuf());
+        auto *cerrBuf = std::cerr.rdbuf(captured.rdbuf());
+        int code = runCliCommand(args);
+        std::cout.rdbuf(coutBuf);
+        std::cerr.rdbuf(cerrBuf);
+
+        std::string response = std::to_string(code) + "\n" + captured.str();
+        (void)sendAll(clientFd, response);
+        close(clientFd);
+    }
+
+    close(serverFd);
+    unlink(DAEMON_SOCKET_PATH);
+    return EXIT_OK;
+}
+
+} // namespace
+
+int main(int argc, char **argv)
+{
+    if (argc >= 2 && std::string(argv[1]) == "--daemon-run") {
+        return runDaemon();
+    }
+    return runClient(argc, argv);
 }
