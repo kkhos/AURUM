@@ -152,6 +152,7 @@ echo "signing %{TZ_SYS_RO_APP}/org.tizen.aurum-bootstrap"
 %manifest %{name}.manifest
 %defattr(-,root,root)
 %license COPYING
+%{_bindir}/aurum-cli
 %{_libdir}/libaurum.so
 %{_libdir}/libaurum.so.*
 %{_libdir}/libpugixml.so
