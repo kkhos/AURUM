@@ -7,6 +7,7 @@
 #include <sstream>
 #include <string>
 #include <thread>
+#include <unordered_set>
 #include <unordered_map>
 #include <vector>
 
@@ -332,29 +333,80 @@ std::string roleOrFallback(const std::shared_ptr<Aurum::AccessibleNode> &node)
     return "node";
 }
 
-bool isInterestingRole(const std::string &role)
+enum class SnapshotRoleGroup {
+    INTERACTIVE,
+    CONTENT,
+    STRUCTURAL,
+    UNKNOWN,
+};
+
+SnapshotRoleGroup classifySnapshotRole(const std::string &role)
 {
-    static const std::vector<std::string> roleAllowList = {
-        "heading", "paragraph", "link", "button", "textbox", "checkbox",
-        "radio", "combobox", "menuitem", "tab", "switch", "slider", "listitem",
+    static const std::unordered_set<std::string> interactiveRoles = {
+        "check box", "menu item", "password text", "push button", "radio button",
+        "radio menu item", "scroll bar", "slider", "spin button", "text",
+        "toggle button", "edit bar", "entry", "link",
     };
-    for (const auto &allowed : roleAllowList) {
-        if (role == allowed)
-            return true;
+
+    static const std::unordered_set<std::string> contentRoles = {
+        "icon", "image", "label", "list item", "progress bar", "status bar",
+        "text", "tool tip", "notification", "info bar", "level bar",
+        "title bar", "video",
+    };
+
+    static const std::unordered_set<std::string> structuralRoles = {
+        "dialog", "list", "menu", "menu bar", "panel", "popup menu",
+        "scroll pane", "separator", "split pane", "table", "window",
+        "embedded", "input method window", "tool b", "tool bar",
+    };
+
+    if (interactiveRoles.find(role) != interactiveRoles.end()) {
+        return SnapshotRoleGroup::INTERACTIVE;
     }
-    return false;
+    if (contentRoles.find(role) != contentRoles.end()) {
+        return SnapshotRoleGroup::CONTENT;
+    }
+    if (structuralRoles.find(role) != structuralRoles.end()) {
+        return SnapshotRoleGroup::STRUCTURAL;
+    }
+    return SnapshotRoleGroup::UNKNOWN;
+}
+
+const char *snapshotGroupText(SnapshotRoleGroup group)
+{
+    switch (group) {
+    case SnapshotRoleGroup::INTERACTIVE:
+        return "interactive";
+    case SnapshotRoleGroup::CONTENT:
+        return "content";
+    case SnapshotRoleGroup::STRUCTURAL:
+        return "structural";
+    default:
+        return "unknown";
+    }
 }
 
 bool shouldIncludeInSnapshot(const std::shared_ptr<Aurum::AccessibleNode> &node, const std::string &role)
 {
+    const SnapshotRoleGroup group = classifySnapshotRole(role);
     if (node->isClickable() || node->isFocusable()) {
         return true;
     }
-    if (isInterestingRole(role)) {
+
+    const auto text = collapseWhitespace(node->getText());
+    const auto description = collapseWhitespace(node->getDescription());
+    const bool hasLabel = !text.empty() || !description.empty();
+
+    if (group == SnapshotRoleGroup::INTERACTIVE) {
         return true;
     }
-    const auto text = collapseWhitespace(node->getText());
-    return !text.empty() && role != "node";
+    if (group == SnapshotRoleGroup::CONTENT) {
+        return hasLabel;
+    }
+    if (group == SnapshotRoleGroup::STRUCTURAL) {
+        return hasLabel && role != "window";
+    }
+    return hasLabel && role != "node";
 }
 
 void appendSnapshotLines(const std::shared_ptr<Aurum::AccessibleNode> &node, int &refIndex, std::ostringstream &out)
@@ -365,7 +417,9 @@ void appendSnapshotLines(const std::shared_ptr<Aurum::AccessibleNode> &node, int
     const std::string label = !text.empty() ? text : description;
 
     if (shouldIncludeInSnapshot(node, role)) {
+        const SnapshotRoleGroup group = classifySnapshotRole(role);
         out << "[ref=e" << refIndex++ << "] " << role << " \"" << escapeForQuote(label) << "\"";
+        out << " [" << snapshotGroupText(group) << "]";
         if (node->isClickable()) {
             out << " [clickable]";
         }

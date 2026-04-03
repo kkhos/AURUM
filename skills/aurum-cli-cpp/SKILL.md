@@ -44,7 +44,7 @@ Guidelines:
 - Set text: `obj->setText("...")`
 - Press key: `device->pressKeyCode(key, Aurum::KeyRequestType::STROKE)`
 - Screenshot: `device->takeScreenshot(path, false, nullptr)`
-- Snapshot: traverse `device->getWindowRoot()` and emit filtered lines like `[ref=e1] button "OK"` for interactive/important roles.
+- Snapshot: traverse `device->getWindowRoot()` and emit filtered lines like `[ref=e1] push button "OK" [interactive]`, classifying roles into `INTERACTIVE_ROLES`, `CONTENT_ROLES`, `STRUCTURAL_ROLES`.
 - Screen size: `device->getScreenSize()`
 
 For broader selector/action coverage, read [references/api-map.md](references/api-map.md).

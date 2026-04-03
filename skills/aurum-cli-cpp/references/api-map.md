@@ -56,7 +56,7 @@ Common filters:
 - keys: `pressBack`, `pressHome`, `pressMenu`, `pressPower`, `pressKeyCode`, `repeatKeyCode`
 - device info: `getScreenSize`, `getSystemTime`, `getWindowAngle`, `getTargetAngle`
 - screenshot: `takeScreenshot(path, false, nullptr)`
-- tree snapshot (agent-browser style refs): `getWindowRoot()` + DFS over `getChildren()` and emit `[ref=eN] role "label"` for clickable/focusable/important-role nodes.
+- tree snapshot (agent-browser style refs): `getWindowRoot()` + DFS over `getChildren()` and emit `[ref=eN] role "label"` with role group tags (`interactive`/`content`/`structural`), prioritizing clickable/focusable nodes.
 
 ## CLI architecture tips
 
