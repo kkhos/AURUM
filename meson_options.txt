@@ -38,3 +38,8 @@ option('build_c_bindings',
   value: false,
   description: 'build c bindings to be called from rust code'
 )
+option('build_aurum_cli',
+  type: 'boolean',
+  value: false,
+  description: 'build aurum-cli executable that wraps libaurum APIs'
+)

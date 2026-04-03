@@ -23,6 +23,9 @@ install_subdir('rapidjson', install_dir: dir_include)
 
 subdir('pugixml')
 subdir('libaurum')
+if get_option('build_aurum_cli') == true
+  subdir('tools/aurum-cli')
+endif
 if get_option('libaurum_only') == false
   subdir('protocol')
   if get_option('tizen') == true
