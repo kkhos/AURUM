@@ -9,7 +9,7 @@ Use this skill when you need a native C++ executable that exposes Aurum automati
 
 ## Core Workflow
 
-1. **Define command surface**: decide subcommands and arguments (`find`, `click`, `fill`, `press`, `screenshot`, `snapshot`, `wait`).
+1. **Define command surface**: decide subcommands and arguments (`find`, `click`, `dblclick`, `longclick`, `focus`, `fill`, `press`, `drag`, `get`, `is`, `screenshot`, `snapshot`, `wait`).
 2. **Map command → libaurum API**: use `UiDevice`, `UiObject`, `UiSelector`, `Sel`, and `Until`.
 3. **Implement parser + dispatcher** in one binary (single `main.cpp` is preferred first).
 4. **Return stable exit codes**: `0` success, non-zero on invalid args/not found/action failure.
@@ -22,8 +22,14 @@ Use subcommands instead of many flags:
 
 - `aurum-cli find --text <value> [--timeout-ms 3000]`
 - `aurum-cli click --text <value>`
+- `aurum-cli dblclick --text <value>`
+- `aurum-cli longclick --text <value> [--duration-ms 1000]`
+- `aurum-cli focus --text <value>`
 - `aurum-cli fill --text <target> --value <new-value>`
 - `aurum-cli press --key <KEYCODE>`
+- `aurum-cli drag --sx 100 --sy 300 --ex 700 --ey 300 [--steps 10] [--duration-ms 500]`
+- `aurum-cli get --field text --text <value>`
+- `aurum-cli is --field enabled --text <value>`
 - `aurum-cli screenshot --path <file>`
 - `aurum-cli snapshot [--path <file>]` (agent-browser style refs)
 - `aurum-cli wait --text <value> [--timeout-ms 5000]`

@@ -25,6 +25,8 @@ enum ExitCode {
 
 using Options = std::unordered_map<std::string, std::string>;
 
+int parsePositiveInt(const std::string &text, const std::string &optName);
+
 void printUsage()
 {
     std::cout
@@ -32,9 +34,15 @@ void printUsage()
         << "Commands:\n"
         << "  find       --text <value> | --id <value> | --automationid <value>\n"
         << "  click      selector options\n"
+        << "  dblclick   selector options\n"
+        << "  longclick  selector options [--duration-ms <ms>]\n"
+        << "  focus      selector options\n"
         << "  fill       selector options + --value <new text>\n"
         << "  wait       selector options [--timeout-ms <ms>]\n"
         << "  press      --key <KEYCODE> [--type stroke|long-stroke|press|release|repeat]\n"
+        << "  drag       --sx <x> --sy <y> --ex <x> --ey <y> [--steps 10] [--duration-ms 500]\n"
+        << "  get        --field <text|value|role|description|count> + selector options\n"
+        << "  is         --field <visible|enabled|checked|focusable|clickable> + selector options\n"
         << "  screenshot --path <file>\n"
         << "  snapshot   [--path <file>]\n"
         << "  screen-size\n"
@@ -134,6 +142,80 @@ int runClick(const std::shared_ptr<Aurum::UiDevice> &device, const Options &opts
 
     obj->click();
     std::cout << "status=ok action=click\n";
+    return EXIT_OK;
+}
+
+int runDoubleClick(const std::shared_ptr<Aurum::UiDevice> &device, const Options &opts)
+{
+    auto selector = buildSelector(opts);
+    if (!selector) {
+        std::cerr << "status=error code=INVALID_ARGS detail='selector option required'\n";
+        return EXIT_INVALID_ARGS;
+    }
+
+    auto obj = device->findObject(selector);
+    if (!obj) {
+        std::cerr << "status=error code=NOT_FOUND\n";
+        return EXIT_NOT_FOUND;
+    }
+
+    obj->click();
+    obj->click();
+    std::cout << "status=ok action=dblclick\n";
+    return EXIT_OK;
+}
+
+int runLongClick(const std::shared_ptr<Aurum::UiDevice> &device, const Options &opts)
+{
+    auto selector = buildSelector(opts);
+    if (!selector) {
+        std::cerr << "status=error code=INVALID_ARGS detail='selector option required'\n";
+        return EXIT_INVALID_ARGS;
+    }
+
+    unsigned int durationMs = 500;
+    const auto durIter = opts.find("--duration-ms");
+    if (durIter != opts.end()) {
+        try {
+            durationMs = static_cast<unsigned int>(parsePositiveInt(durIter->second, "--duration-ms"));
+        } catch (const std::invalid_argument &e) {
+            std::cerr << "status=error code=INVALID_ARGS detail='" << e.what() << "'\n";
+            return EXIT_INVALID_ARGS;
+        }
+    }
+
+    auto obj = device->findObject(selector);
+    if (!obj) {
+        std::cerr << "status=error code=NOT_FOUND\n";
+        return EXIT_NOT_FOUND;
+    }
+
+    obj->longClick(durationMs);
+    std::cout << "status=ok action=longclick duration-ms=" << durationMs << "\n";
+    return EXIT_OK;
+}
+
+int runFocus(const std::shared_ptr<Aurum::UiDevice> &device, const Options &opts)
+{
+    auto selector = buildSelector(opts);
+    if (!selector) {
+        std::cerr << "status=error code=INVALID_ARGS detail='selector option required'\n";
+        return EXIT_INVALID_ARGS;
+    }
+
+    auto obj = device->findObject(selector);
+    if (!obj) {
+        std::cerr << "status=error code=NOT_FOUND\n";
+        return EXIT_NOT_FOUND;
+    }
+
+    bool ok = obj->setFocus();
+    if (!ok) {
+        std::cerr << "status=error code=ACTION_FAILED detail='setFocus returned false'\n";
+        return EXIT_ACTION_FAILED;
+    }
+
+    std::cout << "status=ok action=focus\n";
     return EXIT_OK;
 }
 
@@ -238,6 +320,128 @@ int runPressKey(const std::shared_ptr<Aurum::UiDevice> &device, const Options &o
     }
 
     std::cout << "status=ok action=press\n";
+    return EXIT_OK;
+}
+
+int runDrag(const std::shared_ptr<Aurum::UiDevice> &device, const Options &opts)
+{
+    const std::vector<std::string> required = {"--sx", "--sy", "--ex", "--ey"};
+    for (const auto &opt : required) {
+        if (opts.find(opt) == opts.end()) {
+            std::cerr << "status=error code=INVALID_ARGS detail='missing " << opt << "'\n";
+            return EXIT_INVALID_ARGS;
+        }
+    }
+
+    int sx = 0, sy = 0, ex = 0, ey = 0, steps = 10, durationMs = 500;
+    try {
+        sx = parsePositiveInt(opts.at("--sx"), "--sx");
+        sy = parsePositiveInt(opts.at("--sy"), "--sy");
+        ex = parsePositiveInt(opts.at("--ex"), "--ex");
+        ey = parsePositiveInt(opts.at("--ey"), "--ey");
+        if (opts.find("--steps") != opts.end())
+            steps = parsePositiveInt(opts.at("--steps"), "--steps");
+        if (opts.find("--duration-ms") != opts.end())
+            durationMs = parsePositiveInt(opts.at("--duration-ms"), "--duration-ms");
+    } catch (const std::invalid_argument &e) {
+        std::cerr << "status=error code=INVALID_ARGS detail='" << e.what() << "'\n";
+        return EXIT_INVALID_ARGS;
+    }
+
+    bool ok = device->drag(sx, sy, ex, ey, steps, durationMs);
+    if (!ok) {
+        std::cerr << "status=error code=ACTION_FAILED detail='drag returned false'\n";
+        return EXIT_ACTION_FAILED;
+    }
+
+    std::cout << "status=ok action=drag\n";
+    return EXIT_OK;
+}
+
+int runGet(const std::shared_ptr<Aurum::UiDevice> &device, const Options &opts)
+{
+    const auto fieldIter = opts.find("--field");
+    if (fieldIter == opts.end()) {
+        std::cerr << "status=error code=INVALID_ARGS detail='--field is required'\n";
+        return EXIT_INVALID_ARGS;
+    }
+    const std::string field = lowerCopy(fieldIter->second);
+    auto selector = buildSelector(opts);
+    if (!selector) {
+        std::cerr << "status=error code=INVALID_ARGS detail='selector option required'\n";
+        return EXIT_INVALID_ARGS;
+    }
+
+    if (field == "count") {
+        auto objs = device->findObjects(selector);
+        std::cout << "status=ok field=count value=" << objs.size() << "\n";
+        return EXIT_OK;
+    }
+
+    auto obj = device->findObject(selector);
+    if (!obj) {
+        std::cerr << "status=error code=NOT_FOUND\n";
+        return EXIT_NOT_FOUND;
+    }
+
+    if (field == "text") {
+        std::cout << "status=ok field=text value=\"" << escapeForQuote(obj->getText()) << "\"\n";
+        return EXIT_OK;
+    }
+    if (field == "value") {
+        std::cout << "status=ok field=value value=\"" << escapeForQuote(obj->getValueText()) << "\"\n";
+        return EXIT_OK;
+    }
+    if (field == "role") {
+        std::cout << "status=ok field=role value=\"" << escapeForQuote(obj->getRole()) << "\"\n";
+        return EXIT_OK;
+    }
+    if (field == "description") {
+        std::cout << "status=ok field=description value=\"" << escapeForQuote(obj->getDescription()) << "\"\n";
+        return EXIT_OK;
+    }
+
+    std::cerr << "status=error code=INVALID_ARGS detail='unsupported get field'\n";
+    return EXIT_INVALID_ARGS;
+}
+
+int runIs(const std::shared_ptr<Aurum::UiDevice> &device, const Options &opts)
+{
+    const auto fieldIter = opts.find("--field");
+    if (fieldIter == opts.end()) {
+        std::cerr << "status=error code=INVALID_ARGS detail='--field is required'\n";
+        return EXIT_INVALID_ARGS;
+    }
+    const std::string field = lowerCopy(fieldIter->second);
+    auto selector = buildSelector(opts);
+    if (!selector) {
+        std::cerr << "status=error code=INVALID_ARGS detail='selector option required'\n";
+        return EXIT_INVALID_ARGS;
+    }
+
+    auto obj = device->findObject(selector);
+    if (!obj) {
+        std::cerr << "status=error code=NOT_FOUND\n";
+        return EXIT_NOT_FOUND;
+    }
+
+    bool result = false;
+    if (field == "visible") {
+        result = obj->isVisible();
+    } else if (field == "enabled") {
+        result = obj->isEnabled();
+    } else if (field == "checked") {
+        result = obj->isChecked();
+    } else if (field == "focusable") {
+        result = obj->isFocusable();
+    } else if (field == "clickable") {
+        result = obj->isClickable();
+    } else {
+        std::cerr << "status=error code=INVALID_ARGS detail='unsupported is field'\n";
+        return EXIT_INVALID_ARGS;
+    }
+
+    std::cout << "status=ok field=" << field << " value=" << (result ? "true" : "false") << "\n";
     return EXIT_OK;
 }
 
@@ -494,12 +698,24 @@ int main(int argc, char **argv)
             return runFind(device, opts);
         if (command == "click")
             return runClick(device, opts);
+        if (command == "dblclick")
+            return runDoubleClick(device, opts);
+        if (command == "longclick")
+            return runLongClick(device, opts);
+        if (command == "focus")
+            return runFocus(device, opts);
         if (command == "fill")
             return runSetText(device, opts);
         if (command == "wait")
             return runWait(device, opts);
         if (command == "press")
             return runPressKey(device, opts);
+        if (command == "drag")
+            return runDrag(device, opts);
+        if (command == "get")
+            return runGet(device, opts);
+        if (command == "is")
+            return runIs(device, opts);
         if (command == "screenshot")
             return runScreenshot(device, opts);
         if (command == "snapshot")

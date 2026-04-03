@@ -58,6 +58,12 @@ Common filters:
 - screenshot: `takeScreenshot(path, false, nullptr)`
 - tree snapshot (agent-browser style refs): `getWindowRoot()` + DFS over `getChildren()` and emit `[ref=eN] role "label"` with role group tags (`interactive`/`content`/`structural`), prioritizing clickable/focusable nodes.
 
+## CLI coverage aligned with agent-browser-style core interactions
+
+- pointer/actions: `click`, `dblclick`(two clicks), `longclick`, `drag`
+- focus/input: `focus`, `fill`, `press`
+- introspection: `get --field <text|value|role|description|count>`, `is --field <visible|enabled|checked|focusable|clickable>`
+
 ## CLI architecture tips
 
 - Keep parsing separate from execution (`parse_*` + `run_*` functions).
