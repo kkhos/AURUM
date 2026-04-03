@@ -32,9 +32,9 @@ void printUsage()
         << "Commands:\n"
         << "  find       --text <value> | --id <value> | --automationid <value>\n"
         << "  click      selector options\n"
-        << "  set-text   selector options + --value <new text>\n"
+        << "  fill       selector options + --value <new text>\n"
         << "  wait       selector options [--timeout-ms <ms>]\n"
-        << "  press-key  --key <KEYCODE> [--type stroke|long-stroke|press|release|repeat]\n"
+        << "  press      --key <KEYCODE> [--type stroke|long-stroke|press|release|repeat]\n"
         << "  screenshot --path <file>\n"
         << "  snapshot   [--path <file>]\n"
         << "  screen-size\n"
@@ -97,7 +97,7 @@ Aurum::KeyRequestType parseKeyType(const std::string &raw)
         return Aurum::KeyRequestType::RELEASE;
     if (raw == "repeat")
         return Aurum::KeyRequestType::REPEAT;
-    throw std::invalid_argument("invalid --type for press-key: " + raw);
+    throw std::invalid_argument("invalid --type for press: " + raw);
 }
 
 int runFind(const std::shared_ptr<Aurum::UiDevice> &device, const Options &opts)
@@ -163,7 +163,7 @@ int runSetText(const std::shared_ptr<Aurum::UiDevice> &device, const Options &op
         return EXIT_ACTION_FAILED;
     }
 
-    std::cout << "status=ok action=set-text\n";
+    std::cout << "status=ok action=fill\n";
     return EXIT_OK;
 }
 
@@ -237,7 +237,7 @@ int runPressKey(const std::shared_ptr<Aurum::UiDevice> &device, const Options &o
         return EXIT_ACTION_FAILED;
     }
 
-    std::cout << "status=ok action=press-key\n";
+    std::cout << "status=ok action=press\n";
     return EXIT_OK;
 }
 
@@ -494,11 +494,11 @@ int main(int argc, char **argv)
             return runFind(device, opts);
         if (command == "click")
             return runClick(device, opts);
-        if (command == "set-text")
+        if (command == "fill")
             return runSetText(device, opts);
         if (command == "wait")
             return runWait(device, opts);
-        if (command == "press-key")
+        if (command == "press")
             return runPressKey(device, opts);
         if (command == "screenshot")
             return runScreenshot(device, opts);

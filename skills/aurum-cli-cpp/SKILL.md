@@ -1,6 +1,6 @@
 ---
 name: aurum-cli-cpp
-description: Build or modify a C++ command-line interface (CLI) that automates Tizen UI interactions using libaurum. Use this when the user asks to create an Aurum CLI tool, add CLI commands (find/click/set-text/screenshot/key input/wait), wire argument parsing to libaurum APIs, or generate a reusable C++ automation executable based on libaurum.
+description: Build or modify a C++ command-line interface (CLI) that automates Tizen UI interactions using libaurum. Use this when the user asks to create an Aurum CLI tool, add CLI commands (find/click/fill/press/screenshot/key input/wait), wire argument parsing to libaurum APIs, or generate a reusable C++ automation executable based on libaurum.
 ---
 
 # Build an Aurum CLI in C++ (libaurum)
@@ -9,7 +9,7 @@ Use this skill when you need a native C++ executable that exposes Aurum automati
 
 ## Core Workflow
 
-1. **Define command surface**: decide subcommands and arguments (`find`, `click`, `set-text`, `press-key`, `screenshot`, `snapshot`, `wait`).
+1. **Define command surface**: decide subcommands and arguments (`find`, `click`, `fill`, `press`, `screenshot`, `snapshot`, `wait`).
 2. **Map command → libaurum API**: use `UiDevice`, `UiObject`, `UiSelector`, `Sel`, and `Until`.
 3. **Implement parser + dispatcher** in one binary (single `main.cpp` is preferred first).
 4. **Return stable exit codes**: `0` success, non-zero on invalid args/not found/action failure.
@@ -22,8 +22,8 @@ Use subcommands instead of many flags:
 
 - `aurum-cli find --text <value> [--timeout-ms 3000]`
 - `aurum-cli click --text <value>`
-- `aurum-cli set-text --text <target> --value <new-value>`
-- `aurum-cli press-key --key <KEYCODE>`
+- `aurum-cli fill --text <target> --value <new-value>`
+- `aurum-cli press --key <KEYCODE>`
 - `aurum-cli screenshot --path <file>`
 - `aurum-cli snapshot [--path <file>]` (agent-browser style refs)
 - `aurum-cli wait --text <value> [--timeout-ms 5000]`
@@ -65,7 +65,7 @@ int main(int argc, char** argv) {
     auto device = Aurum::UiDevice::getInstance();
     std::string cmd = argv[1];
 
-    if (cmd == "press-key") {
+    if (cmd == "press") {
         if (argc < 4 || std::string(argv[2]) != "--key") return 2;
         bool ok = device->pressKeyCode(argv[3], Aurum::KeyRequestType::STROKE);
         return ok ? 0 : 1;
