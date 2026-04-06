@@ -332,6 +332,72 @@ std::unordered_map<std::string, std::shared_ptr<UiObject>> UiObject::getSnapshot
     std::unordered_set<uintptr_t> seenNodes{};
     int elementIndex = 0;
 
+    Document document;
+    auto json = mNode->dumpTree();
+    document.Parse(json.c_str());
+
+    std::function<void(Value &)> parseAndCollectSnapshot = [&](Value &value) {
+        if (!((value.HasMember("appname") && value["appname"].IsString()) &&
+              (value.HasMember("path") && value["path"].IsString()))) {
+            return;
+        }
+
+        auto appName = value["appname"].GetString();
+        auto path = value["path"].GetString();
+        auto node = mNode->refAccessibleNode(appName, path);
+        if (!node) return;
+
+        auto text = value.HasMember("text") && value["text"].IsString()? value["text"].GetString() : "";
+        auto role = value.HasMember("role") && value["role"].IsString()? value["role"].GetString() : "";
+        auto type = value.HasMember("type") && value["type"].IsString()? value["type"].GetString() : "";
+        auto automationId = value.HasMember("automationId") && value["automationId"].IsString()? value["automationId"].GetString() : "";
+        auto description = value.HasMember("description") && value["description"].IsString()? value["description"].GetString() : "";
+        auto current = 0.0f;
+        auto minValue = 0.0f;
+        auto maxValue = 0.0f;
+        auto increment = 0.0f;
+        auto valueText = std::string("");
+
+        if (value.HasMember("value")) {
+            if (value["value"].IsObject()) {
+                current = value["value"].HasMember("current") && value["value"]["current"].IsDouble()? value["value"]["current"].GetDouble() : 0.0f;
+                minValue = value["value"].HasMember("min") && value["value"]["min"].IsDouble()? value["value"]["min"].GetDouble() : 0.0f;
+                maxValue = value["value"].HasMember("max") && value["value"]["max"].IsDouble()? value["value"]["max"].GetDouble() : 0.0f;
+                increment = value["value"].HasMember("increment") && value["value"]["increment"].IsDouble()? value["value"]["increment"].GetDouble() : 0.0f;
+            } else {
+                valueText = value["value"].IsString()? value["value"].GetString() : "";
+            }
+        }
+
+        auto x = value.HasMember("x") ? (value["x"].IsInt() ? value["x"].GetInt() : value["x"].GetDouble()) : 0;
+        auto y = value.HasMember("y") ? (value["y"].IsInt() ? value["y"].GetInt() : value["y"].GetDouble()) : 0;
+        auto w = value.HasMember("w") ? (value["w"].IsInt() ? value["w"].GetInt() : value["w"].GetDouble()) : 0;
+        auto h = value.HasMember("h") ? (value["h"].IsInt() ? value["h"].GetInt() : value["h"].GetDouble()) : 0;
+        auto extents = Rect<int>{x, y, x + w, y + h};
+        auto imgSrc = value.HasMember("attributes") && value["attributes"].HasMember("imgSrc") && value["attributes"]["imgSrc"].IsString() ? value["attributes"]["imgSrc"].GetString() : "";
+
+        node->refresh(text, role, type, automationId, description, imgSrc, current, minValue, maxValue, increment, extents, valueText);
+
+        auto obj = std::make_shared<UiObject>(mDevice, mSelector, node);
+        if (shouldIncludeInSnapshot(obj)) {
+            auto rawAddress = reinterpret_cast<uintptr_t>(node.get());
+            if (seenNodes.insert(rawAddress).second) {
+                mSnapshotObjects["e" + std::to_string(++elementIndex)] = obj;
+            }
+        }
+
+        if (value.HasMember("children") && value["children"].IsArray()) {
+            for (auto &child : value["children"].GetArray()) {
+                parseAndCollectSnapshot(child);
+            }
+        }
+    };
+
+    if (!document.HasParseError()) {
+        parseAndCollectSnapshot(document);
+        if (!mSnapshotObjects.empty()) return mSnapshotObjects;
+    }
+
     auto tree = getDescendant();
     collectSnapshotObjects(tree, mSnapshotObjects, seenNodes, elementIndex);
 
