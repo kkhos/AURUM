@@ -866,7 +866,6 @@ message RspGetStringProperty {
 
 
 message ReqGetSnapshot {
-   string elementId = 1;
 }
 
 message RspGetSnapshot {

@@ -18,7 +18,11 @@
 #include "GetSnapshotCommand.h"
 
 #include "ObjectMapper.h"
+#include "UiDevice.h"
 #include "UiObject.h"
+
+#include <cstdint>
+#include <unordered_set>
 
 namespace {
 
@@ -91,27 +95,42 @@ GetSnapshotCommand::GetSnapshotCommand(const ::aurum::ReqGetSnapshot *request,
 ::grpc::Status GetSnapshotCommand::execute()
 {
     LOGI("GetSnapshot --------------- ");
+    (void)mRequest;
 
     ObjectMapper *mObjMap = ObjectMapper::getInstance();
-    std::shared_ptr<UiObject> base = mObjMap->getElement(mRequest->elementid());
+    auto device = UiDevice::getInstance();
 
-    if (!base) {
+    auto rootNodes = device->getWindowRoot();
+    if (rootNodes.empty()) {
         mResponse->set_status(::aurum::RspStatus::ERROR);
         return grpc::Status::OK;
     }
 
-    auto snapshot = base->getSnapshot();
-    for (const auto &entry : snapshot) {
-        auto snapshotObj = entry.second;
-        if (!snapshotObj) continue;
+    std::unordered_set<uintptr_t> dedupNodes{};
+    int snapshotIndex = 0;
 
-        snapshotObj->refresh();
-        mObjMap->setElement(entry.first, snapshotObj);
+    for (const auto &rootNode : rootNodes) {
+        if (!rootNode) continue;
 
-        auto *elm = mResponse->add_elements();
-        fillElement(elm, snapshotObj.get(), entry.first);
+        auto rootObj = std::make_shared<UiObject>(device, nullptr, rootNode);
+        auto snapshot = rootObj->getSnapshot();
+
+        for (const auto &entry : snapshot) {
+            auto snapshotObj = entry.second;
+            if (!snapshotObj) continue;
+
+            auto rawNode = reinterpret_cast<uintptr_t>(snapshotObj->getAccessibleNode().get());
+            if (!dedupNodes.insert(rawNode).second) continue;
+
+            snapshotObj->refresh();
+            auto snapshotId = std::string("e") + std::to_string(++snapshotIndex);
+            mObjMap->setElement(snapshotId, snapshotObj);
+
+            auto *elm = mResponse->add_elements();
+            fillElement(elm, snapshotObj.get(), snapshotId);
+        }
     }
 
-    mResponse->set_status(snapshot.empty() ? ::aurum::RspStatus::ERROR : ::aurum::RspStatus::OK);
+    mResponse->set_status(snapshotIndex == 0 ? ::aurum::RspStatus::ERROR : ::aurum::RspStatus::OK);
     return grpc::Status::OK;
 }
