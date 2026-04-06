@@ -15,31 +15,15 @@
  *
  */
 
-#pragma once
-
-#include <map>
-#include <string>
-
 #include "bootstrap.h"
-#include "UiObject.h"
 
-using namespace Aurum;
-
-class ObjectMapper {
-private:
-    std::map<std::string, std::shared_ptr<UiObject>> mObjectMap;
-
-private:
-    ObjectMapper();
+class GetSnapshotCommand : public Command {
+protected:
+    const ::aurum::ReqGetSnapshot *mRequest;
+    ::aurum::RspGetSnapshot *mResponse;
 
 public:
-    ~ObjectMapper();
-
-public:
-    static ObjectMapper *getInstance();
-    std::string addElement(std::shared_ptr<UiObject> object);
-    std::string setElement(const std::string& elementId, std::shared_ptr<UiObject> object);
-    std::shared_ptr<UiObject> getElement(const std::string& elementId);
-    bool removeElement(const std::string& elementId);
-    void cleanUp();
+    GetSnapshotCommand(const ::aurum::ReqGetSnapshot *request,
+                       ::aurum::RspGetSnapshot *response);
+    ::grpc::Status execute() override;
 };

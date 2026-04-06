@@ -53,6 +53,8 @@ service Bootstrap {
    rpc clearWatcher(ReqClearWatcher) returns (RspClearWatcher) {}
    rpc doAction(ReqDoAction) returns (RspDoAction) {}
    rpc getStringProperty(ReqGetStringProperty) returns (RspGetStringProperty) {}
+   rpc getSnapshot(ReqGetSnapshot) returns (RspGetSnapshot) {}
+   rpc findElementBySnapshot(ReqFindElementBySnapshot) returns (RspFindElement) {}
 }
 
 // ------------------------------------ //
@@ -860,4 +862,19 @@ message ReqGetStringProperty {
 message RspGetStringProperty {
    RspStatus status = 1;
    string propertyValue = 2;
+}
+
+
+message ReqGetSnapshot {
+   string elementId = 1;
+}
+
+message RspGetSnapshot {
+   RspStatus status = 1;
+   repeated Element elements = 2;
+}
+
+message ReqFindElementBySnapshot {
+   string snapshotId = 1;
+   ReqFindElement selector = 2;
 }

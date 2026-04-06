@@ -425,3 +425,22 @@ aurumServiceImpl::~aurumServiceImpl()
     std::unique_ptr<GetStringPropertyCommand> cmd = std::make_unique<GetStringPropertyCommand>(request, response);
     return execute(cmd.get(), false);
 }
+
+::grpc::Status aurumServiceImpl::getSnapshot(::grpc::ServerContext *context,
+                                             const ::aurum::ReqGetSnapshot *request,
+                                             ::aurum::RspGetSnapshot *response)
+{
+    std::unique_ptr<GetSnapshotCommand> cmd = std::make_unique<GetSnapshotCommand>(request, response);
+    return execute(cmd.get(), true);
+}
+
+::grpc::Status aurumServiceImpl::findElementBySnapshot(::grpc::ServerContext *context,
+                                                       const ::aurum::ReqFindElementBySnapshot *request,
+                                                       ::aurum::RspFindElement *response)
+{
+    aurum::ReqFindElement findRequest = request->selector();
+    findRequest.set_elementid(request->snapshotid());
+
+    std::unique_ptr<FindElementCommand> cmd = std::make_unique<FindElementCommand>(&findRequest, response, WAIT_TIMEOUT_MS);
+    return execute(cmd.get(), true);
+}

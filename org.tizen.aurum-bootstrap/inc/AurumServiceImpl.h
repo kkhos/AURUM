@@ -179,6 +179,12 @@ public:
     ::grpc::Status getStringProperty(::grpc::ServerContext *context,
                               const ::aurum::ReqGetStringProperty *request,
                               ::aurum::RspGetStringProperty *response) override;
+    ::grpc::Status getSnapshot(::grpc::ServerContext *context,
+                              const ::aurum::ReqGetSnapshot *request,
+                              ::aurum::RspGetSnapshot *response) override;
+    ::grpc::Status findElementBySnapshot(::grpc::ServerContext *context,
+                              const ::aurum::ReqFindElementBySnapshot *request,
+                              ::aurum::RspFindElement *response) override;
 public:
     std::mutex mLock;
     std::condition_variable mCond;
