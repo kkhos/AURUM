@@ -266,6 +266,11 @@ TEST_F(AurumTestUiObject, getSnapshot_P1)
 
     auto snapshot = win->getSnapshot();
     ASSERT_FALSE(snapshot.empty());
+    ASSERT_NE(win->getSnapshotObject("e1"), nullptr);
+
+    auto snapshotAgain = win->getSnapshot();
+    ASSERT_FALSE(snapshotAgain.empty());
+    ASSERT_NE(snapshotAgain.find("e1"), snapshotAgain.end());
 
     std::vector<std::string> texts{};
     for (const auto &entry : snapshot) {

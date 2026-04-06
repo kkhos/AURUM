@@ -327,14 +327,22 @@ std::shared_ptr<Node> UiObject::getDescendant()
 
 std::unordered_map<std::string, std::shared_ptr<UiObject>> UiObject::getSnapshot()
 {
-    std::unordered_map<std::string, std::shared_ptr<UiObject>> snapshot{};
+    mSnapshotObjects.clear();
+
     std::unordered_set<uintptr_t> seenNodes{};
     int elementIndex = 0;
 
     auto tree = getDescendant();
-    collectSnapshotObjects(tree, snapshot, seenNodes, elementIndex);
+    collectSnapshotObjects(tree, mSnapshotObjects, seenNodes, elementIndex);
 
-    return snapshot;
+    return mSnapshotObjects;
+}
+
+std::shared_ptr<UiObject> UiObject::getSnapshotObject(const std::string &snapshotId) const
+{
+    auto snapshotObject = mSnapshotObjects.find(snapshotId);
+    if (snapshotObject == mSnapshotObjects.end()) return nullptr;
+    return snapshotObject->second;
 }
 
 std::string UiObject::getApplicationPackage() const
