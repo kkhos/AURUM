@@ -29,6 +29,7 @@
 #include "rapidjson/document.h"
 
 #include <memory>
+#include <unordered_map>
 #include <vector>
 
 using namespace rapidjson;
@@ -317,6 +318,15 @@ public:
      * @since_tizen 6.5
      */
     std::shared_ptr<Node> getDescendant();
+
+    /**
+     * @brief Creates snapshot map with important objects from descendant tree.
+     *
+     * @return key-value map (e.g. "e1") to UiObject
+     *
+     * @since_tizen 10.0
+     */
+    std::unordered_map<std::string, std::shared_ptr<UiObject>> getSnapshot();
 
     /**
      * @brief Gets object's package name.

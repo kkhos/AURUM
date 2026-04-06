@@ -23,7 +23,74 @@
 #include <chrono>
 #include <thread>
 
+#include <algorithm>
+#include <cctype>
+#include <cstdint>
+#include <unordered_set>
+
 using namespace Aurum;
+
+namespace {
+
+const std::unordered_set<std::string> INTERACTIVE_ROLES = {
+    "check box", "dialog", "menu", "menu bar", "menu item", "password text",
+    "popup menu", "progress bar", "push button", "radio button", "radio menu item",
+    "scroll bar", "scroll pane", "separator", "slider", "spin button", "split pane",
+    "toggle button", "tool bar", "window", "edit bar", "embedded", "entry",
+    "input method window", "notification", "info bar", "level bar", "video"
+};
+
+const std::unordered_set<std::string> CONTENT_ROLES = {
+    "icon", "image", "label", "list item", "status bar", "text", "link", "tool tip", "title bar"
+};
+
+const std::unordered_set<std::string> STRUCTURAL_ROLES = {
+    "list", "table"
+};
+
+std::string toLower(std::string value)
+{
+    std::transform(value.begin(), value.end(), value.begin(), [](unsigned char c) {
+        return std::tolower(c);
+    });
+    return value;
+}
+
+bool isRoleInSnapshot(const std::string &role)
+{
+    const auto normalizedRole = toLower(role);
+    return INTERACTIVE_ROLES.find(normalizedRole) != INTERACTIVE_ROLES.end() ||
+           CONTENT_ROLES.find(normalizedRole) != CONTENT_ROLES.end() ||
+           STRUCTURAL_ROLES.find(normalizedRole) != STRUCTURAL_ROLES.end();
+}
+
+bool shouldIncludeInSnapshot(const std::shared_ptr<UiObject> &object)
+{
+    if (!object) return false;
+    return object->isClickable() || object->isFocusable() || isRoleInSnapshot(object->getRole());
+}
+
+void collectSnapshotObjects(const std::shared_ptr<Node> &node,
+                            std::unordered_map<std::string, std::shared_ptr<UiObject>> &snapshot,
+                            std::unordered_set<uintptr_t> &seenNodes,
+                            int &elementIndex)
+{
+    if (!node || !node->mNode) return;
+
+    if (shouldIncludeInSnapshot(node->mNode)) {
+        auto accessibleNode = node->mNode->getAccessibleNode();
+        auto rawAddress = reinterpret_cast<uintptr_t>(accessibleNode.get());
+        if (seenNodes.insert(rawAddress).second) {
+            snapshot["e" + std::to_string(++elementIndex)] = node->mNode;
+        }
+    }
+
+    for (const auto &child : node->mChildren) {
+        collectSnapshotObjects(child, snapshot, seenNodes, elementIndex);
+    }
+}
+
+} // namespace
 
 UiObject::UiObject() : UiObject(nullptr, nullptr, nullptr) {}
 
@@ -256,6 +323,18 @@ std::shared_ptr<Node> UiObject::getDescendant()
         nodeChildren.push_back(child->getDescendant());
     }
     return std::make_shared<Node>(shared_from_this(), nodeChildren);
+}
+
+std::unordered_map<std::string, std::shared_ptr<UiObject>> UiObject::getSnapshot()
+{
+    std::unordered_map<std::string, std::shared_ptr<UiObject>> snapshot{};
+    std::unordered_set<uintptr_t> seenNodes{};
+    int elementIndex = 0;
+
+    auto tree = getDescendant();
+    collectSnapshotObjects(tree, snapshot, seenNodes, elementIndex);
+
+    return snapshot;
 }
 
 std::string UiObject::getApplicationPackage() const
