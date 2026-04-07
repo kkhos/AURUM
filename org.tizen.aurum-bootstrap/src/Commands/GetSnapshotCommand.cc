@@ -96,6 +96,8 @@ GetSnapshotCommand::GetSnapshotCommand(const ::aurum::ReqGetSnapshot *request,
     (void)mRequest;
 
     ObjectMapper *mObjMap = ObjectMapper::getInstance();
+    mObjMap->clearSnapshotElements();
+
     auto device = UiDevice::getInstance();
 
     auto snapshot = device->getSnapshot();
