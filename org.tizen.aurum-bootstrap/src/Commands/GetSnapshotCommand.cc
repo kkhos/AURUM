@@ -21,8 +21,6 @@
 #include "UiDevice.h"
 #include "UiObject.h"
 
-#include <cstdint>
-#include <unordered_set>
 
 namespace {
 
@@ -100,37 +98,23 @@ GetSnapshotCommand::GetSnapshotCommand(const ::aurum::ReqGetSnapshot *request,
     ObjectMapper *mObjMap = ObjectMapper::getInstance();
     auto device = UiDevice::getInstance();
 
-    auto rootNodes = device->getWindowRoot();
-    if (rootNodes.empty()) {
+    auto snapshot = device->getSnapshot();
+    if (snapshot.empty()) {
         mResponse->set_status(::aurum::RspStatus::ERROR);
         return grpc::Status::OK;
     }
 
-    std::unordered_set<uintptr_t> dedupNodes{};
-    int snapshotIndex = 0;
+    for (const auto &entry : snapshot) {
+        auto snapshotObj = entry.second;
+        if (!snapshotObj) continue;
 
-    for (const auto &rootNode : rootNodes) {
-        if (!rootNode) continue;
+        snapshotObj->refresh();
+        mObjMap->setElement(entry.first, snapshotObj);
 
-        auto rootObj = std::make_shared<UiObject>(device, nullptr, rootNode);
-        auto snapshot = rootObj->getSnapshot();
-
-        for (const auto &entry : snapshot) {
-            auto snapshotObj = entry.second;
-            if (!snapshotObj) continue;
-
-            auto rawNode = reinterpret_cast<uintptr_t>(snapshotObj->getAccessibleNode().get());
-            if (!dedupNodes.insert(rawNode).second) continue;
-
-            snapshotObj->refresh();
-            auto snapshotId = std::string("e") + std::to_string(++snapshotIndex);
-            mObjMap->setElement(snapshotId, snapshotObj);
-
-            auto *elm = mResponse->add_elements();
-            fillElement(elm, snapshotObj.get(), snapshotId);
-        }
+        auto *elm = mResponse->add_elements();
+        fillElement(elm, snapshotObj.get(), entry.first);
     }
 
-    mResponse->set_status(snapshotIndex == 0 ? ::aurum::RspStatus::ERROR : ::aurum::RspStatus::OK);
+    mResponse->set_status(::aurum::RspStatus::OK);
     return grpc::Status::OK;
 }

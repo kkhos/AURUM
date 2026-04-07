@@ -299,6 +299,13 @@ public:
         const std::shared_ptr<UiSelector> firstSelector, const std::shared_ptr<UiSelector> secondSelector, const bool earlyReturn) const override;
 
     /**
+     * @brief Gets snapshot map from all device root windows.
+     *
+     * @return key-value map (e.g. "e1") to UiObject
+     */
+    std::unordered_map<std::string, std::shared_ptr<UiObject>> getSnapshot() const;
+
+    /**
      * TODO
      */
     bool waitFor(
