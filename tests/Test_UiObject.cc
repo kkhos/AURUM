@@ -60,6 +60,7 @@ class AurumTestUiObject : public ::testing::Test {
             mWin->addNode("VISIBLE", "pkg", "test_property", "res", "type", "style", "r.id.12",  {0,0,100,100}, 0, (int)NodeFeatureProperties::VISIBLE);
             mWin->addNode("CLICKABLE", "pkg", "test_property", "res", "type", "style", "r.id.13",  {0,0,100,100}, 0, (int)NodeFeatureProperties::CLICKABLE);
             mWin->addNode("ENABLED", "pkg", "test_property", "res", "type", "style", "r.id.14",  {500,500,600,600}, 0, (int)NodeFeatureProperties::ENABLED);
+            mWin->addNode("ROLE_IMAGE", "pkg", "image", "res", "type", "style", "r.id.15",  {500,500,600,600}, 0, 0);
         }
 
         void TearDown() override {
@@ -255,6 +256,33 @@ TEST_F(AurumTestUiObject, getDescendant_P1)
         ASSERT_EQ(node->mNode->getApplicationPackage(), "child");
         ASSERT_EQ(node->mNode->getRole(), "TeSt1234!@#$");
     }
+}
+
+TEST_F(AurumTestUiObject, getSnapshot_P1)
+{
+    auto obj = UiDevice::getInstance();
+    auto win = obj->findObject(Sel::text("title"));
+    ASSERT_NE(win, nullptr);
+
+    auto snapshot = win->getSnapshot();
+    ASSERT_FALSE(snapshot.empty());
+    ASSERT_NE(win->getSnapshotObject("e1"), nullptr);
+
+    auto snapshotAgain = win->getSnapshot();
+    ASSERT_FALSE(snapshotAgain.empty());
+    ASSERT_NE(snapshotAgain.find("e1"), snapshotAgain.end());
+
+    std::vector<std::string> texts{};
+    for (const auto &entry : snapshot) {
+        ASSERT_FALSE(entry.first.empty());
+        ASSERT_EQ(entry.first[0], 'e');
+        ASSERT_NE(entry.second, nullptr);
+        texts.push_back(entry.second->getText());
+    }
+
+    ASSERT_NE(std::find(texts.begin(), texts.end(), "CLICKABLE"), texts.end());
+    ASSERT_NE(std::find(texts.begin(), texts.end(), "FOCUSABLE"), texts.end());
+    ASSERT_NE(std::find(texts.begin(), texts.end(), "ROLE_IMAGE"), texts.end());
 }
 
 TEST_F(AurumTestUiObject, isChecked_P1)

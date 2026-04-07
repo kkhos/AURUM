@@ -226,6 +226,32 @@ std::vector<std::shared_ptr<UiObject>> UiDevice::getMatchesInMatches(
     return ret;
 }
 
+std::unordered_map<std::string, std::shared_ptr<UiObject>> UiDevice::getSnapshot() const
+{
+    std::unordered_map<std::string, std::shared_ptr<UiObject>> snapshot{};
+    std::unordered_set<uintptr_t> dedupNodes{};
+    int snapshotIndex = 0;
+
+    auto rootNodes = getWindowRoot();
+    for (const auto &rootNode : rootNodes) {
+        if (!rootNode) continue;
+
+        auto rootObj = std::make_shared<UiObject>(getInstance(), nullptr, rootNode);
+        auto rootSnapshot = rootObj->getSnapshot();
+        for (const auto &entry : rootSnapshot) {
+            auto snapshotObj = entry.second;
+            if (!snapshotObj) continue;
+
+            auto rawNode = reinterpret_cast<uintptr_t>(snapshotObj->getAccessibleNode().get());
+            if (!dedupNodes.insert(rawNode).second) continue;
+
+            snapshot["e" + std::to_string(++snapshotIndex)] = snapshotObj;
+        }
+    }
+
+    return snapshot;
+}
+
 bool UiDevice::waitFor(
     const std::function<bool(const ISearchable *)> condition) const
 {

@@ -39,6 +39,14 @@ std::string ObjectMapper::addElement(std::shared_ptr<UiObject> object)
     return value;
 }
 
+std::string ObjectMapper::setElement(const std::string& elementId, std::shared_ptr<UiObject> object)
+{
+    mObjectMap[elementId] = object;
+    mSnapshotElementIds.insert(elementId);
+    LOGI("setElement %p, id %s", object.get(), elementId.c_str());
+    return elementId;
+}
+
 std::shared_ptr<UiObject> ObjectMapper::getElement(const std::string& elementId)
 {
     LOGI("getElement for elementId(%s)", elementId.c_str());
@@ -65,6 +73,15 @@ bool ObjectMapper::removeElement(const std::string& elementId)
             return true;
     }
     return false;
+}
+
+void ObjectMapper::clearSnapshotElements()
+{
+    LOGI("clear snapshot elements");
+    for (const auto &snapshotId : mSnapshotElementIds) {
+        mObjectMap.erase(snapshotId);
+    }
+    mSnapshotElementIds.clear();
 }
 
 void ObjectMapper::cleanUp()

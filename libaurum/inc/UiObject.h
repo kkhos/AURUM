@@ -29,6 +29,7 @@
 #include "rapidjson/document.h"
 
 #include <memory>
+#include <unordered_map>
 #include <vector>
 
 using namespace rapidjson;
@@ -317,6 +318,24 @@ public:
      * @since_tizen 6.5
      */
     std::shared_ptr<Node> getDescendant();
+
+    /**
+     * @brief Creates snapshot map with important objects from descendant tree.
+     *
+     * @return key-value map (e.g. "e1") to UiObject
+     *
+     * @since_tizen 10.0
+     */
+    std::unordered_map<std::string, std::shared_ptr<UiObject>> getSnapshot();
+
+    /**
+     * @brief Gets one object from the latest snapshot by key (e.g. "e1").
+     *
+     * @return UiObject pointer when key exists, otherwise nullptr
+     *
+     * @since_tizen 10.0
+     */
+    std::shared_ptr<UiObject> getSnapshotObject(const std::string &snapshotId) const;
 
     /**
      * @brief Gets object's package name.
@@ -829,6 +848,7 @@ private:
     std::shared_ptr<UiDevice> mDevice;
     std::shared_ptr<UiSelector>  mSelector;
     std::shared_ptr<AccessibleNode> mNode;
+    std::unordered_map<std::string, std::shared_ptr<UiObject>> mSnapshotObjects;
     const Waiter *mWaiter;
     static const unsigned int LONGCLICK_INTERVAL = 500;
 };

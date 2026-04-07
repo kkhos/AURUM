@@ -64,6 +64,7 @@ bootstrap_svr_src += [
    files('src/Commands/ClearWatcherCommand.cc'),
    files('src/Commands/DoActionCommand.cc'),
    files('src/Commands/GetStringPropertyCommand.cc'),
+   files('src/Commands/GetSnapshotCommand.cc'),
 ]
 
 bootstrap_svr_dep = [

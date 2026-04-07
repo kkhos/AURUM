@@ -61,3 +61,5 @@
 #include "Commands/ClearWatcherCommand.h"
 #include "Commands/DoActionCommand.h"
 #include "Commands/GetStringPropertyCommand.h"
+
+#include "Commands/GetSnapshotCommand.h"

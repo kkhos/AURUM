@@ -18,6 +18,7 @@
 #pragma once
 
 #include <map>
+#include <unordered_set>
 #include <string>
 
 #include "bootstrap.h"
@@ -28,6 +29,7 @@ using namespace Aurum;
 class ObjectMapper {
 private:
     std::map<std::string, std::shared_ptr<UiObject>> mObjectMap;
+    std::unordered_set<std::string> mSnapshotElementIds;
 
 private:
     ObjectMapper();
@@ -38,7 +40,9 @@ public:
 public:
     static ObjectMapper *getInstance();
     std::string addElement(std::shared_ptr<UiObject> object);
+    std::string setElement(const std::string& elementId, std::shared_ptr<UiObject> object);
     std::shared_ptr<UiObject> getElement(const std::string& elementId);
     bool removeElement(const std::string& elementId);
+    void clearSnapshotElements();
     void cleanUp();
 };
